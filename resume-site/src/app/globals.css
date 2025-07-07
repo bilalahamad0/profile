@@ -1,0 +1,46 @@
+@config '../../tailwind.config.js';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #f8fafc; /* slate-50 */
+    color: #0f172a; /* slate-900 */
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  html.dark body {
+    background-color: #0f172a; /* slate-900 */
+    color: #f8fafc; /* slate-50 */
+  }
+}
+
+@layer components {
+  .glass {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+  }
+  html.dark .glass {
+    background: rgba(30, 41, 59, 0.3);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+@layer utilities {
+  .reveal {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+
+  .animate-fadeUp {
+    animation: fadeUp 0.6s ease-out forwards;
+  }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(2rem); }
+  to { opacity: 1; transform: none; }
+}
