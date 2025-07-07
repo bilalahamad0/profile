@@ -27,4 +27,3 @@ vercel --prod          # npx vercel --prod works as well
 Follow the prompts to log in and assign the deployment to your Vercel account. After deployment, Vercel will output a URL where the site is hosted. You can then map the custom domain (`bilalahamad.com`) via the Vercel dashboard. Until this step is complete, visiting the domain may show a 404 error.
 If this repository is linked to Vercel, every push to `main` will automatically create a new preview deployment.
 If your live site does not reflect the latest commit, ensure the changes are merged to `main` and run `vercel --prod` or push again to trigger a new build.
-
