@@ -10,7 +10,8 @@ Open `index.html` directly in your browser. No build step is required.
 
 ## Deploying
 
-Deploy the files to any static host or use Vercel.
+Deploy the files to any static host or use Vercel. The repository now includes a
+`vercel.json` configuration for static deployments.
 
 With the included `package.json`, simply run:
 
@@ -18,4 +19,4 @@ With the included `package.json`, simply run:
 npm run deploy
 ```
 
-This executes `npx vercel --prod` for you. After deployment, map the custom domain **bilalahamad.com** in your Vercel dashboard.
+This executes `npx vercel --prod --yes` for you so the deployment runs non-interactively. After deployment, map the custom domain **bilalahamad.com** in your Vercel dashboard.

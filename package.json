@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "description": "Personal resume website for Bilal Ahamad",
   "scripts": {
-    "deploy": "npx vercel --prod"
+    "deploy": "npx vercel --prod --yes"
   }
 }
