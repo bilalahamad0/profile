@@ -2,7 +2,13 @@
 
 This repository contains a responsive resume site built with **HTML**, **Tailwind CSS** and a small amount of JavaScript. The page uses a glossy glassmorphism design with animated section reveals and a dark/light theme toggle saved in `localStorage`.
 
-Sections include About, Skills, Experience, Projects, Education, Testimonials and Contact. A download button links to `docs/Bilal_Ahamad_Resume.pdf` so you can easily provide your own resume.
+Sections include About, Skills, Experience, Projects, Education, Testimonials and Contact. A download button links to `docs/Bilal_Ahamad_Resume.pdf`.
+
+## Resume PDF
+
+The repository cannot distribute Bilal Ahamad's actual resume. The file at
+`docs/Bilal_Ahamad_Resume.pdf` is only a minimal placeholder so the download
+link works. Replace this file with your own resume before deploying the site.
 
 ## Viewing Locally
 
