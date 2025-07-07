@@ -1,28 +1,75 @@
-// Theme toggle with localStorage
-const themeToggle = document.getElementById('theme-toggle');
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-const storedTheme = localStorage.getItem('theme');
-if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
-  document.documentElement.classList.add('dark');
-  themeToggle.setAttribute('aria-pressed', 'true');
-}
-
-themeToggle.addEventListener('click', () => {
-  const isDark = document.documentElement.classList.toggle('dark');
-  themeToggle.setAttribute('aria-pressed', isDark);
-  localStorage.setItem('theme', isDark ? 'dark' : 'light');
-});
-
-// Mobile nav toggle
+// Theme toggle logic with localStorage
+const toggle = document.getElementById('theme-toggle');
 const menuToggle = document.getElementById('menu-toggle');
 const navMenu = document.getElementById('nav-menu');
-menuToggle.addEventListener('click', () => {
-  const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
-  menuToggle.setAttribute('aria-expanded', String(!expanded));
-  navMenu.classList.toggle('hidden');
+const root = document.documentElement;
+const storedTheme = localStorage.getItem('theme');
+
+function setTheme(mode) {
+  if (mode === 'dark') {
+    root.classList.add('dark');
+    toggle.textContent = '☀️';
+    toggle.setAttribute('aria-pressed', 'true');
+  } else {
+    root.classList.remove('dark');
+    toggle.textContent = '🌙';
+    toggle.setAttribute('aria-pressed', 'false');
+  }
+  localStorage.setItem('theme', mode);
+}
+
+// Initialize theme
+if (storedTheme) {
+  setTheme(storedTheme);
+} else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  setTheme('dark');
+}
+
+// Toggle handler
+toggle.addEventListener('click', () => {
+  if (root.classList.contains('dark')) {
+    setTheme('light');
+  } else {
+    setTheme('dark');
+  }
 });
 
-// Reveal animations on scroll
+// Mobile navigation toggle
+if (menuToggle) {
+  menuToggle.addEventListener('click', () => {
+    navMenu.classList.toggle('hidden');
+    const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
+    menuToggle.setAttribute('aria-expanded', String(!expanded));
+  });
+  navMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navMenu.classList.add('hidden');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
+
+// Set current year
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Showcase auto scroll
+const showcase = document.getElementById('showcase');
+if (showcase) {
+  const slides = showcase.querySelectorAll('.slide');
+  let current = 0;
+  setInterval(() => {
+    current = (current + 1) % slides.length;
+    showcase.scrollTo({ left: slides[current].offsetLeft, behavior: 'smooth' });
+  }, 4000);
+  showcase.addEventListener('wheel', (e) => {
+    if (e.deltaY === 0) return;
+    e.preventDefault();
+    showcase.scrollLeft += e.deltaY;
+  }, { passive: false });
+}
+
+// Fade in sections on scroll
+const reveals = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -31,8 +78,4 @@ const observer = new IntersectionObserver(entries => {
     }
   });
 }, { threshold: 0.1 });
-
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// Update footer year
-document.getElementById('year').textContent = new Date().getFullYear();
+reveals.forEach(el => observer.observe(el));

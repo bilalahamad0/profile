@@ -14,11 +14,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
-    if (theme === 'dark') {
-      document.body.classList.add('page-overview', 'theme-dark');
-    } else {
-      document.body.classList.remove('page-overview', 'theme-dark');
-    }
     localStorage.setItem('theme', theme);
   }, [theme]);
 
@@ -66,7 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className={theme === 'dark' ? 'page-overview theme-dark' : undefined}>
+      <body>
         <a href="#maincontent" className="sr-only focus:not-sr-only">Skip to content</a>
         <header className="sticky top-0 z-20 backdrop-blur glass">
           <nav className="max-w-6xl mx-auto flex items-center justify-between p-4">
