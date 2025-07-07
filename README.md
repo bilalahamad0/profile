@@ -2,8 +2,9 @@
 
 This repository contains a modern personal website for Bilal Ahamad's resume. It uses **Tailwind CSS** for styling and includes a dark/light theme toggle with state saved to `localStorage`. The layout now adopts a glossy glassmorphism aesthetic for a sleek appearance.
 
-The latest version features an Apple-inspired layout with a full-screen hero and smooth typography using the Inter font. A new horizontally scrollable showcase section autoplays short videos for an interactive feel. The sample videos are linked from an external source to keep the repository lightweight.
-Each section sits on a translucent panel with a subtle blur, giving the site a polished glass look.
+The latest version features an Apple-inspired layout with a full-screen hero and smooth typography using the Inter font. A new horizontally scrollable showcase autoplays short videos for an interactive feel. Each section sits on a translucent glass panel with gentle shadows.
+
+Sections fade in as you scroll thanks to a small Intersection Observer script for a refined, modern feel.
 
 The website is published at
 [https://bilalahamad.com](https://bilalahamad.com). If you clone this
