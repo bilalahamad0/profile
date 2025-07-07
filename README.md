@@ -14,6 +14,14 @@ link works. Replace this file with your own resume before deploying the site.
 
 Open `index.html` directly in your browser. No build step is required.
 
+## External assets
+
+This site pulls the **Inter** font from Google Fonts using the public CDN and
+the showcase section references sample videos hosted on `w3schools.com`. These
+resources are fetched from the internet when the page loads. For a fully
+offline deployment you can download and host the font and video files yourself
+or replace them with system fonts and local assets.
+
 ## Deploying
 
 Deploy the files to any static host or use Vercel. The repository now includes a
