@@ -3,6 +3,7 @@
 This repository contains a responsive resume site built with **HTML**, **Tailwind CSS** and a small amount of JavaScript. The page uses a glossy glassmorphism design with animated section reveals and a dark/light theme toggle saved in `localStorage`.
 
 Sections include About, Skills, Experience, Projects, Education, Testimonials and Contact. A download button links to `docs/Bilal_Ahamad_Resume.pdf` so you can easily provide your own resume.
+Note: The `docs/Bilal_Ahamad_Resume.pdf` file currently included in this repository is only a stub placeholder. Replace it with your actual resume before deploying.
 
 ## Viewing Locally
 
