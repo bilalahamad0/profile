@@ -1,8 +1,9 @@
 # Bilal Ahamad Resume Website
 
-This repository contains a modern personal website for Bilal Ahamad's resume. It uses **Tailwind CSS** for styling and includes a dark/light theme toggle with state saved to `localStorage`.
+This repository contains a modern personal website for Bilal Ahamad's resume. It uses **Tailwind CSS** for styling and includes a dark/light theme toggle with state saved to `localStorage`. The layout now adopts a glossy glassmorphism aesthetic for a sleek appearance.
 
 The latest version features an Apple-inspired layout with a full-screen hero and smooth typography using the Inter font. A new horizontally scrollable showcase section autoplays short videos for an interactive feel. The sample videos are linked from an external source to keep the repository lightweight.
+Each section sits on a translucent panel with a subtle blur, giving the site a polished glass look.
 
 The website is published at
 [https://bilalahamad.com](https://bilalahamad.com). If you clone this
@@ -30,3 +31,4 @@ vercel --prod          # npx vercel --prod works as well
 Follow the prompts to log in and assign the deployment to your Vercel account. After deployment, Vercel will output a URL where the site is hosted. You can then map the custom domain (`bilalahamad.com`) via the Vercel dashboard. Until this step is complete, visiting the domain may show a 404 error.
 If this repository is linked to Vercel, every push to `main` will automatically create a new preview deployment.
 If your live site does not reflect the latest commit, ensure the changes are merged to `main` and run `vercel --prod` or push again to trigger a new build.
+

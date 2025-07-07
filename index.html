@@ -16,7 +16,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>body{font-family:'Inter',sans-serif;}
+  <style>
+    body {font-family:'Inter',sans-serif; background:linear-gradient(135deg,#e7e5f1,#f0fdf4);}
+    .glass {
+      background:rgba(255,255,255,0.3);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,0.2);
+      box-shadow:0 4px 30px rgba(0,0,0,0.1);
+    }
+    .dark .glass {
+      background:rgba(30,41,59,0.3);
+      border-color:rgba(255,255,255,0.1);
+    }
   </style>
   <script type="application/ld+json">
   {
@@ -41,7 +53,7 @@
 </head>
 <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 antialiased">
   <!-- Header with navigation and theme toggle -->
-  <header class="sticky top-0 z-20 bg-white/70 dark:bg-gray-900/70 backdrop-blur shadow-sm">
+  <header class="glass sticky top-0 z-20 bg-white/50 dark:bg-gray-800/50">
     <div class="container mx-auto flex items-center justify-between px-4 py-3">
       <a href="#about" class="text-xl font-semibold">Bilal Ahamad</a>
       <button id="menu-toggle" class="p-2 md:hidden" aria-label="Toggle navigation" aria-expanded="false">☰</button>
@@ -61,8 +73,8 @@
 <main>
 
   <!-- Hero -->
-  <section id="about" class="bg-gradient-to-b from-gray-100 to-white dark:from-gray-900 dark:to-gray-800">
-    <div class="container mx-auto flex flex-col-reverse md:flex-row items-center min-h-screen px-4 py-20">
+  <section id="about" class="glass max-w-5xl mx-auto my-12 rounded-xl">
+    <div class="flex flex-col-reverse md:flex-row items-center min-h-screen px-4 py-20">
       <div class="md:w-1/2 text-center md:text-left">
         <h2 class="text-4xl md:text-6xl font-bold mb-6">Bilal Ahamad</h2>
         <p class="text-lg md:text-xl mb-6">Accomplished Technical QA Lead/Manager with 16+ years of experience in hardware, IoT and automotive systems QA.</p>
@@ -78,7 +90,7 @@
   </section>
 
   <!-- Showcase Horizontal Scroll -->
-  <section id="showcase" class="h-screen overflow-x-auto snap-x snap-mandatory flex relative">
+  <section id="showcase" class="glass h-screen overflow-x-auto snap-x snap-mandatory flex relative rounded-xl my-12">
     <div class="slide w-screen flex-shrink-0 snap-center relative">
       <video class="absolute inset-0 w-full h-full object-cover" autoplay loop muted playsinline>
         <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
@@ -106,7 +118,7 @@
   </section>
 
   <!-- Skills -->
-  <section id="skills" class="max-w-4xl mx-auto p-8">
+  <section id="skills" class="glass max-w-4xl mx-auto p-8 my-12 rounded-xl">
     <h2 class="text-3xl font-semibold mb-6">Skills & Core Competencies</h2>
     <ul class="grid grid-cols-2 md:grid-cols-3 gap-3 list-disc list-inside text-lg">
       <li>Technical Leadership</li>
@@ -119,7 +131,7 @@
   </section>
 
   <!-- Work Experience -->
-  <section id="experience" class="max-w-4xl mx-auto p-8">
+  <section id="experience" class="glass max-w-4xl mx-auto p-8 my-12 rounded-xl">
     <h2 class="text-3xl font-semibold mb-6">Work Experience</h2>
     <div class="relative border-l-2 border-gray-300 dark:border-gray-600 ml-4">
       <div class="relative mb-8 pl-8">
@@ -145,7 +157,7 @@
   </section>
 
   <!-- Projects -->
-  <section id="projects" class="max-w-4xl mx-auto p-8">
+  <section id="projects" class="glass max-w-4xl mx-auto p-8 my-12 rounded-xl">
     <h2 class="text-3xl font-semibold mb-6">Key Accomplishments</h2>
     <ul class="list-disc list-inside text-lg space-y-2">
       <li>Reduced regression cycle by 50% through automation pipelines.</li>
@@ -155,19 +167,19 @@
   </section>
 
   <!-- Education -->
-  <section id="education" class="max-w-4xl mx-auto p-8">
+  <section id="education" class="glass max-w-4xl mx-auto p-8 my-12 rounded-xl">
     <h2 class="text-3xl font-semibold mb-6">Education</h2>
     <p>B.Tech in Electronics & Telecommunications Engineering, Biju Patnaik University of Technology, 2008</p>
   </section>
 
   <!-- Testimonials -->
-  <section id="testimonials" class="max-w-4xl mx-auto p-8">
+  <section id="testimonials" class="glass max-w-4xl mx-auto p-8 my-12 rounded-xl">
     <h2 class="text-3xl font-semibold mb-6">Testimonials</h2>
     <blockquote class="italic border-l-4 pl-4">"Bilal is a results-driven leader who consistently delivers quality products." - LinkedIn Recommendation</blockquote>
   </section>
 
   <!-- Contact -->
-  <section id="contact" class="max-w-4xl mx-auto p-8">
+  <section id="contact" class="glass max-w-4xl mx-auto p-8 my-12 rounded-xl">
     <h2 class="text-3xl font-semibold mb-6">Contact</h2>
     <form class="grid grid-cols-1 gap-4 max-w-lg" aria-label="Contact form" method="get" action="mailto:bilal.ahamad@gmail.com">
       <label>
