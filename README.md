@@ -66,3 +66,7 @@ This executes `npx vercel --prod --yes` for you so the deployment runs non-inter
 2. Go to the **Domains** tab and click **Add**.
 3. Enter `bilalahamad.com` and follow the displayed instructions to configure the DNS records with your domain registrar.
 4. Once the DNS changes propagate, the domain will point to your Vercel deployment.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
