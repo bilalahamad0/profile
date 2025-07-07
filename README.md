@@ -27,10 +27,42 @@ or replace them with system fonts and local assets.
 Deploy the files to any static host or use Vercel. The repository now includes a
 `vercel.json` configuration for static deployments.
 
+### Setting up Vercel
+
+1. Install the Vercel CLI if you do not already have it:
+
+   ```bash
+   npm install -g vercel
+   ```
+
+2. Authenticate with your Vercel account:
+
+   ```bash
+   vercel login
+   ```
+
+   Follow the prompts to sign in with your preferred method.
+
+3. From the project root run the following to link the directory to a Vercel project
+   (create a new project when prompted if one does not already exist):
+
+   ```bash
+   vercel
+   ```
+
+   You can also run `vercel link` to associate the folder with an existing Vercel project.
+
 With the included `package.json`, simply run:
 
 ```bash
 npm run deploy
 ```
 
-This executes `npx vercel --prod --yes` for you so the deployment runs non-interactively. After deployment, map the custom domain **bilalahamad.com** in your Vercel dashboard.
+This executes `npx vercel --prod --yes` for you so the deployment runs non-interactively.
+
+### Mapping the Custom Domain
+
+1. Open your project in the [Vercel dashboard](https://vercel.com/dashboard).
+2. Go to the **Domains** tab and click **Add**.
+3. Enter `bilalahamad.com` and follow the displayed instructions to configure the DNS records with your domain registrar.
+4. Once the DNS changes propagate, the domain will point to your Vercel deployment.
