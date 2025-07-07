@@ -23,4 +23,3 @@ npx vercel --prod
 ```
 
 Map the custom domain `bilalahamad.com` in your Vercel dashboard after deployment.
-

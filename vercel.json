@@ -1,0 +1,5 @@
+{
+  "version": 2,
+  "builds": [{ "src": "resume-site/package.json", "use": "@vercel/next" }],
+  "routes": [{ "src": "/(.*)", "dest": "resume-site/$1" }]
+}

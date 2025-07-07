@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import './globals.css';
 
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState('light');
 
