@@ -1,5 +1,7 @@
 // Theme toggle logic with localStorage
 const toggle = document.getElementById('theme-toggle');
+const menuToggle = document.getElementById('menu-toggle');
+const navMenu = document.getElementById('nav-menu');
 const root = document.documentElement;
 const storedTheme = localStorage.getItem('theme');
 
@@ -7,9 +9,11 @@ function setTheme(mode) {
   if (mode === 'dark') {
     root.classList.add('dark');
     toggle.textContent = '☀️';
+    toggle.setAttribute('aria-pressed', 'true');
   } else {
     root.classList.remove('dark');
     toggle.textContent = '🌙';
+    toggle.setAttribute('aria-pressed', 'false');
   }
   localStorage.setItem('theme', mode);
 }
@@ -29,6 +33,21 @@ toggle.addEventListener('click', () => {
     setTheme('dark');
   }
 });
+
+// Mobile navigation toggle
+if (menuToggle) {
+  menuToggle.addEventListener('click', () => {
+    navMenu.classList.toggle('hidden');
+    const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
+    menuToggle.setAttribute('aria-expanded', String(!expanded));
+  });
+  navMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navMenu.classList.add('hidden');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
 
 // Set current year
 document.getElementById('year').textContent = new Date().getFullYear();

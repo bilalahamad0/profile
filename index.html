@@ -25,7 +25,7 @@
   }
   </script>
   <meta property="og:url" content="https://bilalahamad.com/">
-  <meta property="og:image" content="https://via.placeholder.com/150">
+  <meta property="og:image" content="https://via.placeholder.com/1200x630.png?text=Bilal+Ahamad">
   <!-- TailwindCSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -36,9 +36,12 @@
 </head>
 <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
   <!-- Header with navigation and theme toggle -->
-  <header class="container mx-auto p-4 flex justify-between items-center">
-    <h1 class="text-2xl font-bold">Bilal Ahamad</h1>
-    <nav aria-label="Main navigation" class="hidden md:flex space-x-4">
+  <header class="sticky top-0 z-10 bg-white dark:bg-gray-900 bg-opacity-95 backdrop-blur container mx-auto p-4 flex justify-between items-center">
+    <div class="flex items-center">
+      <h1 class="text-2xl font-bold mr-4">Bilal Ahamad</h1>
+      <button id="menu-toggle" class="p-2 md:hidden" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    </div>
+    <nav id="nav-menu" aria-label="Main navigation" class="hidden md:flex space-x-4">
       <a href="#about" class="hover:underline">About</a>
       <a href="#skills" class="hover:underline">Skills</a>
       <a href="#experience" class="hover:underline">Experience</a>
@@ -46,19 +49,19 @@
       <a href="#education" class="hover:underline">Education</a>
       <a href="#contact" class="hover:underline">Contact</a>
     </nav>
-    <button id="theme-toggle" aria-label="Toggle dark mode" class="p-2 rounded border ml-4">
+    <button id="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false" class="p-2 rounded border ml-4">
       🌙
     </button>
   </header>
 <main>
 
   <!-- Hero / About Me -->
-  <section id="about" class="container mx-auto p-4 flex flex-col md:flex-row items-center">
+  <section id="about" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-16 container mx-auto p-4 flex flex-col md:flex-row items-center">
     <img src="https://via.placeholder.com/150" alt="Photo of Bilal Ahamad" class="w-32 h-32 rounded-full shadow-lg mr-0 md:mr-8 mb-4 md:mb-0">
     <div>
       <h2 class="text-xl font-semibold mb-2">About Me</h2>
       <p class="mb-4">Accomplished Technical QA Lead/Manager with 16+ years experience in hardware and systems QA, automation, and product quality for automotive, IoT, and wearables.</p>
-      <a href="Bilal_Ahamad_Resume.pdf" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded" download>Download Resume</a>
+      <a href="docs/Bilal_Ahamad_Resume.pdf" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded" download>Download Resume</a>
     </div>
   </section>
 
@@ -127,13 +130,22 @@
   <section id="contact" class="container mx-auto p-4">
     <h2 class="text-xl font-semibold mb-4">Contact</h2>
     <form class="grid grid-cols-1 gap-4 max-w-lg" aria-label="Contact form" method="get" action="mailto:bilal.ahamad@gmail.com">
-      <input name="name" type="text" placeholder="Your Name" aria-label="Your name" required class="p-2 border rounded">
-      <input name="email" type="email" placeholder="Your Email" aria-label="Your email" required class="p-2 border rounded">
-      <textarea name="message" placeholder="Message" aria-label="Your message" required class="p-2 border rounded"></textarea>
+      <label>
+        <span class="sr-only">Your name</span>
+        <input name="name" type="text" placeholder="Your Name" required class="p-2 border rounded" />
+      </label>
+      <label>
+        <span class="sr-only">Your email</span>
+        <input name="email" type="email" placeholder="Your Email" required class="p-2 border rounded" />
+      </label>
+      <label>
+        <span class="sr-only">Your message</span>
+        <textarea name="message" placeholder="Message" required class="p-2 border rounded"></textarea>
+      </label>
       <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Send</button>
     </form>
     <p class="mt-4">Email: <a href="mailto:bilal.ahamad@gmail.com" class="text-blue-600 underline">bilal.ahamad@gmail.com</a></p>
-    <p>LinkedIn: <a href="https://linkedin.com/in/bilalahamad" class="text-blue-600 underline">bilalahamad</a></p>
+    <p>LinkedIn: <a href="https://linkedin.com/in/bilalahamad" class="text-blue-600 underline" target="_blank" rel="noopener noreferrer">bilalahamad</a></p>
   </section>
 </main>
 
