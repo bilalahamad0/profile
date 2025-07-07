@@ -16,7 +16,10 @@ Open `http://localhost:3000` to view the site. Edit files in `src/app` to custom
 
 ## Deploying
 
-Deploy to Vercel with the following commands after logging in:
+Deploy to Vercel with the following commands after logging in.
+The project root is the **`resume-site`** folder. A `vercel.json`
+file at the repository root already points Vercel to this directory.
+Run the CLI from the repository root so this configuration is picked up:
 
 ```bash
 npx vercel --prod

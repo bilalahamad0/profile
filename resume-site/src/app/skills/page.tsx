@@ -27,6 +27,7 @@ export default function Skills() {
           <li key={s}>{s}</li>
         ))}
       </ul>
+
       <h2 className="text-2xl font-semibold mt-8 mb-4">Technical Proficiencies</h2>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 divide-y sm:divide-y-0 sm:divide-x">
         <div className="space-y-2 sm:pr-6">
