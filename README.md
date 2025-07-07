@@ -10,10 +10,21 @@ Open `index.html` directly in your browser. No build step is required.
 
 ## Deploying
 
-Deploy the files to any static host or use Vercel:
+Deploy the files to any static host or use Vercel.
+
+Before running `npm run deploy`, authenticate with Vercel so the CLI can access your account:
 
 ```bash
-npx vercel --prod
+npx vercel login
+# or provide a token: npx vercel --token <TOKEN>
 ```
+
+Then deploy:
+
+```bash
+npm run deploy
+```
+
+Ensure your network can reach `https://api.vercel.com` during deployment.
 
 After deployment, map the custom domain **bilalahamad.com** in your Vercel dashboard.
