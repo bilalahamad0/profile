@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Personal resume website for Bilal Ahamad",
   "scripts": {
+    "dev": "npm --prefix resume-site run dev",
+    "build": "npm --prefix resume-site run build",
+    "lint": "npm --prefix resume-site run lint",
+    "test": "echo \"No tests defined\"",
     "deploy": "npx vercel --prod --yes"
   }
 }
