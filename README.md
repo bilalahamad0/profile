@@ -2,10 +2,12 @@
 
 This repository contains a modern personal website for Bilal Ahamad's resume. It uses **Tailwind CSS** for styling and includes a dark/light theme toggle with state saved to `localStorage`.
 
+
 The website is intended to be deployed at
 [https://bilalahamad.com](https://bilalahamad.com) once the domain is mapped in
 Vercel. If you have not set up the deployment yet, follow the instructions
 below to create one.
+
 
 The site is optimized for mobile devices and includes a simple timeline layout for work experience. Update `index.html` to modify any content and replace the placeholder photo and resume with your own files.
 
