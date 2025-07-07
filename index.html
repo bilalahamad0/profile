@@ -28,11 +28,11 @@
       border:1px solid rgba(255,255,255,0.2);
       box-shadow:0 4px 30px rgba(0,0,0,0.1);
     }
-    .dark .glass {
+     body.page-overview.theme-dark .glass {
       background:rgba(30,41,59,0.3);
       border-color:rgba(255,255,255,0.1);
     }
-    html.dark body {
+    body.page-overview.theme-dark {
       background:linear-gradient(to bottom,#0f172a,#1e293b);
     }
     @keyframes fadeUp {
@@ -131,42 +131,147 @@
 
   <!-- Skills -->
   <section id="skills" class="glass reveal max-w-4xl mx-auto p-8 my-12 rounded-xl">
-    <h2 class="text-3xl font-semibold mb-6">Skills & Core Competencies</h2>
-    <ul class="grid grid-cols-2 md:grid-cols-3 gap-3 list-disc list-inside text-lg">
-      <li>Technical Leadership</li>
-      <li>Strategic Planning</li>
-      <li>Test Automation</li>
-      <li>Automotive + Infotainment</li>
-      <li>IoT, Wearables, AR/VR</li>
-      <li>CI/CD</li>
-    </ul>
-  </section>
+  <h2 class="text-3xl font-semibold mb-6">Skills & Core Competencies</h2>
+  <ul class="grid grid-cols-2 md:grid-cols-3 gap-3 list-disc list-inside text-lg">
+    <li>Technical Leadership & Innovation</li>
+    <li>Strategic Planning & Execution</li>
+    <li>Test Automation</li>
+    <li>Automotive + Infotainment</li>
+    <li>IoT, Wearables, AR/VR</li>
+    <li>NPI/V1 Innovation</li>
+  </ul>
+  <h3 class="text-2xl font-semibold mt-8 mb-4">Technical Proficiencies</h3>
+  <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6 text-sm">
+    <div>
+      <h4 class="font-semibold">Languages & Tools</h4>
+      <ul class="list-disc list-inside space-y-1">
+        <li>Python, JavaScript, Shell</li>
+        <li>Selenium, Appium, Jenkins</li>
+        <li>Git, Bazel, JIRA</li>
+        <li>Wireshark, CAN Analyzers</li>
+        <li>Raspberry Pi, Arduino</li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-semibold mt-4 sm:mt-0">Methodologies</h4>
+      <ul class="list-disc list-inside space-y-1">
+        <li>Agile, Waterfall</li>
+        <li>Scrum, CI/CD</li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-semibold mt-4 sm:mt-0">Data Visualization</h4>
+      <ul class="list-disc list-inside space-y-1">
+        <li>Splunk, Datadog</li>
+        <li>Databricks, Grafana</li>
+        <li>Kibana, GraphQL</li>
+      </ul>
+    </div>
+    <div class="sm:col-span-2 md:col-span-1">
+      <h4 class="font-semibold mt-4 sm:mt-0">Systems</h4>
+      <ul class="list-disc list-inside space-y-1">
+        <li>Android, iOS</li>
+        <li>QNX, Linux, Unix</li>
+        <li>RTOS</li>
+      </ul>
+    </div>
+  </div>
+</section>
 
   <!-- Work Experience -->
   <section id="experience" class="glass reveal max-w-4xl mx-auto p-8 my-12 rounded-xl">
-    <h2 class="text-3xl font-semibold mb-6">Work Experience</h2>
-    <div class="relative border-l-2 border-gray-300 dark:border-gray-600 ml-4">
-      <div class="relative mb-8 pl-8">
-        <span class="absolute -left-4 top-2 w-3 h-3 bg-blue-600 rounded-full"></span>
-        <h3 class="font-semibold">Senior Test Lead, Samsara Inc</h3>
-        <span class="text-sm text-gray-500">Dec 2023 - Present</span>
-        <p class="mt-2">Leading system tests for IoT Dash Cam product line with focus on AI/ML video-based safety.</p>
-      </div>
-      <div class="relative mb-8 pl-8">
-        <span class="absolute -left-4 top-2 w-3 h-3 bg-blue-600 rounded-full"></span>
-        <h3 class="font-semibold">Test Automation Lead, Cruise LLC</h3>
-        <span class="text-sm text-gray-500">Oct 2022 - Jun 2023</span>
-        <p class="mt-2">Oversaw firmware release for vehicle computational systems, ensuring reliability and safety.</p>
-      </div>
-      <div class="relative mb-8 pl-8">
-        <span class="absolute -left-4 top-2 w-3 h-3 bg-blue-600 rounded-full"></span>
-        <h3 class="font-semibold">Infotainment Test Lead, Rivian Automotive</h3>
-        <span class="text-sm text-gray-500">Jun 2021 - Sep 2022</span>
-        <p class="mt-2">Directed testing strategy for in-car Infotainment Systems in R1T, R1S and Fleet models.</p>
-      </div>
-      <!-- Additional experience entries can be added similarly -->
+  <h2 class="text-3xl font-semibold mb-6">Work Experience</h2>
+  <div class="relative border-l-2 border-gray-300 dark:border-gray-600 ml-4">
+    <div class="relative mb-8 pl-8">
+      <span class="absolute -left-4 top-3 w-3 h-3 bg-blue-600 rounded-full"></span>
+      <details>
+        <summary class="font-semibold cursor-pointer">Senior Test Lead, Samsara Inc, San Francisco, CA <span class="text-sm text-gray-500">Dec 2023 - Present</span></summary>
+        <ul class="mt-2 list-disc list-inside text-sm space-y-1">
+          <li>Spearheaded system tests for IoT Dash Cam product line with AI/ML video analytics.</li>
+          <li>Developed automation pipelines improving release cadence and cutting regression by 50%.</li>
+        </ul>
+      </details>
     </div>
-  </section>
+    <div class="relative mb-8 pl-8">
+      <span class="absolute -left-4 top-3 w-3 h-3 bg-blue-600 rounded-full"></span>
+      <details>
+        <summary class="font-semibold cursor-pointer">Test Automation Lead, Cruise LLC, San Francisco, CA <span class="text-sm text-gray-500">Oct 2022 - Jun 2023</span></summary>
+        <ul class="mt-2 list-disc list-inside text-sm space-y-1">
+          <li>Managed vehicle computational systems testing and firmware releases.</li>
+          <li>Designed frameworks for CPU/GPU integration, network reliability and V2X testing.</li>
+        </ul>
+      </details>
+    </div>
+    <div class="relative mb-8 pl-8">
+      <span class="absolute -left-4 top-3 w-3 h-3 bg-blue-600 rounded-full"></span>
+      <details>
+        <summary class="font-semibold cursor-pointer">Infotainment Test Lead, Rivian Automotive LLC, Palo Alto, CA <span class="text-sm text-gray-500">Jun 2021 - Sep 2022</span></summary>
+        <ul class="mt-2 list-disc list-inside text-sm space-y-1">
+          <li>Directed end-to-end testing strategy for R1T, R1S and Fleet models.</li>
+          <li>Built automation for OTA, connectivity, navigation and vehicle system integration.</li>
+        </ul>
+      </details>
+    </div>
+    <div class="relative mb-8 pl-8">
+      <span class="absolute -left-4 top-3 w-3 h-3 bg-blue-600 rounded-full"></span>
+      <details>
+        <summary class="font-semibold cursor-pointer">Senior QA Engineer II & Technical Lead, Amazon Lab126, Sunnyvale, CA <span class="text-sm text-gray-500">Jun 2018 - Jun 2021</span></summary>
+        <ul class="mt-2 list-disc list-inside text-sm space-y-1">
+          <li>Managed QA for Echo Buds, Echo Auto and Dash Button from concept to launch.</li>
+          <li>Developed automation for voice, ANC, connectivity; reduced manual effort by 80%.</li>
+          <li>Established CI/CD pipeline across 50+ devices resulting in 30% fewer post-launch issues.</li>
+        </ul>
+      </details>
+    </div>
+    <div class="relative mb-8 pl-8">
+      <span class="absolute -left-4 top-3 w-3 h-3 bg-blue-600 rounded-full"></span>
+      <details>
+        <summary class="font-semibold cursor-pointer">Software Test Engineer, Tech Mahindra/Google Inc, Mountain View, CA <span class="text-sm text-gray-500">Jan 2016 - Jun 2018</span></summary>
+        <ul class="mt-2 list-disc list-inside text-sm space-y-1">
+          <li>Led system testing for Google's VR controllers powering Daydream View.</li>
+          <li>Ensured KPI integrity and benchmarking for commercialization readiness.</li>
+        </ul>
+      </details>
+    </div>
+    <div class="relative mb-8 pl-8">
+      <span class="absolute -left-4 top-3 w-3 h-3 bg-blue-600 rounded-full"></span>
+      <details>
+        <summary class="font-semibold cursor-pointer">Test Engineer, Cognizant Technology/Cisco, Boston, MA <span class="text-sm text-gray-500">Sep 2015 - Jan 2016</span></summary>
+        <ul class="mt-2 list-disc list-inside text-sm space-y-1">
+          <li>Created Python-based framework for STB video apps, doubling efficiency.</li>
+        </ul>
+      </details>
+    </div>
+    <div class="relative mb-8 pl-8">
+      <span class="absolute -left-4 top-3 w-3 h-3 bg-blue-600 rounded-full"></span>
+      <details>
+        <summary class="font-semibold cursor-pointer">Radio Validation Engineer, Wistron Mobile, Rolling Meadows, IL <span class="text-sm text-gray-500">Dec 2014 - Sep 2015</span></summary>
+        <ul class="mt-2 list-disc list-inside text-sm space-y-1">
+          <li>Led Wi-Fi Alliance pre-certification and interoperability testing.</li>
+        </ul>
+      </details>
+    </div>
+    <div class="relative mb-8 pl-8">
+      <span class="absolute -left-4 top-3 w-3 h-3 bg-blue-600 rounded-full"></span>
+      <details>
+        <summary class="font-semibold cursor-pointer">Sr. Software Engineer in Test, L&T Tech Services/Motorola Mobility, Chicago, IL <span class="text-sm text-gray-500">Oct 2009 - Dec 2014</span></summary>
+        <ul class="mt-2 list-disc list-inside text-sm space-y-1">
+          <li>Pioneered Bluetooth test automation reducing certification effort by 70%.</li>
+          <li>Built modular 3-tier automation infrastructure.</li>
+        </ul>
+      </details>
+    </div>
+    <div class="relative mb-8 pl-8">
+      <span class="absolute -left-4 top-3 w-3 h-3 bg-blue-600 rounded-full"></span>
+      <details>
+        <summary class="font-semibold cursor-pointer">Test Engineer, Luminous Infoways, Bhubaneswar, India <span class="text-sm text-gray-500">Oct 2008 - Sep 2009</span></summary>
+        <ul class="mt-2 list-disc list-inside text-sm space-y-1">
+          <li>Led functional and integration testing of major web portals.</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+</section>
 
   <!-- Projects -->
   <section id="projects" class="glass reveal max-w-4xl mx-auto p-8 my-12 rounded-xl">

@@ -2,16 +2,16 @@
 const toggle = document.getElementById('theme-toggle');
 const menuToggle = document.getElementById('menu-toggle');
 const navMenu = document.getElementById('nav-menu');
-const root = document.documentElement;
+const body = document.body; const root = document.documentElement;
 const storedTheme = localStorage.getItem('theme');
 
 function setTheme(mode) {
   if (mode === 'dark') {
-    root.classList.add('dark');
+    body.classList.add("page-overview","theme-dark");root.classList.add("dark");
     toggle.textContent = '☀️';
     toggle.setAttribute('aria-pressed', 'true');
   } else {
-    root.classList.remove('dark');
+    body.classList.remove("page-overview","theme-dark");root.classList.remove("dark");
     toggle.textContent = '🌙';
     toggle.setAttribute('aria-pressed', 'false');
   }
@@ -27,7 +27,7 @@ if (storedTheme) {
 
 // Toggle handler
 toggle.addEventListener('click', () => {
-  if (root.classList.contains('dark')) {
+  if (body.classList.contains('theme-dark')) {
     setTheme('light');
   } else {
     setTheme('dark');
