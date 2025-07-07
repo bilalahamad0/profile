@@ -57,15 +57,31 @@ const showcase = document.getElementById('showcase');
 if (showcase) {
   const slides = showcase.querySelectorAll('.slide');
   let current = 0;
+  const focusSlide = (index) => {
+    slides[index].focus();
+  };
   setInterval(() => {
     current = (current + 1) % slides.length;
     showcase.scrollTo({ left: slides[current].offsetLeft, behavior: 'smooth' });
+    focusSlide(current);
   }, 4000);
   showcase.addEventListener('wheel', (e) => {
     if (e.deltaY === 0) return;
     e.preventDefault();
     showcase.scrollLeft += e.deltaY;
   }, { passive: false });
+  showcase.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
+      current = (current + 1) % slides.length;
+      showcase.scrollTo({ left: slides[current].offsetLeft, behavior: 'smooth' });
+      focusSlide(current);
+    } else if (e.key === 'ArrowLeft') {
+      current = (current - 1 + slides.length) % slides.length;
+      showcase.scrollTo({ left: slides[current].offsetLeft, behavior: 'smooth' });
+      focusSlide(current);
+    }
+  });
+  focusSlide(current);
 }
 
 // Fade in sections on scroll
