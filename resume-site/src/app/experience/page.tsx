@@ -55,7 +55,7 @@ export default function Experience() {
     },
   ];
   return (
-    <main className="max-w-4xl mx-auto p-8 reveal">
+    <main id="maincontent" className="max-w-4xl mx-auto p-8 reveal">
       <h1 className="text-3xl font-semibold mb-6">Work Experience</h1>
       <div className="relative border-l-2 border-gray-300 dark:border-gray-600 ml-4">
         {jobs.map(job => (

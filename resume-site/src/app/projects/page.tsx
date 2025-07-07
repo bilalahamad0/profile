@@ -6,7 +6,7 @@ const projects = [
 ];
 export default function Projects() {
   return (
-    <main className="max-w-4xl mx-auto p-8 space-y-6 reveal">
+    <main id="maincontent" className="max-w-4xl mx-auto p-8 space-y-6 reveal">
       <h1 className="text-3xl font-semibold mb-6">Projects</h1>
       <div className="grid md:grid-cols-3 gap-6">
         {projects.map(p => (

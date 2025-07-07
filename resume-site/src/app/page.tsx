@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    <main className="max-w-5xl mx-auto p-8 space-y-16">
+    <main id="maincontent" className="max-w-5xl mx-auto p-8 space-y-16">
       <section className="flex flex-col-reverse md:flex-row items-center gap-10 reveal">
         <div className="md:w-1/2">
           <h1 className="text-5xl font-bold mb-4">Bilal Ahamad</h1>
@@ -14,7 +14,8 @@ export default function Home() {
           </div>
         </div>
         <div className="md:w-1/2 flex justify-center">
-          <img src="/profile.svg" alt="Bilal Ahamad" className="rounded-full w-64 h-64 object-cover" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400&auto=format&fit=crop" alt="Professional headshot of Bilal Ahamad" className="rounded-full w-64 h-64 object-cover" />
         </div>
       </section>
       <section className="grid grid-cols-1 sm:grid-cols-3 gap-6 reveal">

@@ -1,7 +1,7 @@
 export const metadata = { title: 'Contact - Bilal Ahamad' };
 export default function Contact() {
   return (
-    <main className="max-w-4xl mx-auto p-8 reveal">
+    <main id="maincontent" className="max-w-4xl mx-auto p-8 reveal">
       <h1 className="text-3xl font-semibold mb-6">Contact</h1>
       <form className="grid grid-cols-1 gap-4 max-w-lg" method="get" action="mailto:bilal.ahamad@gmail.com" aria-label="Contact form">
         <input className="p-3 border rounded" name="name" type="text" placeholder="Your Name" required />
