@@ -5,53 +5,53 @@ export default function Experience() {
       title: 'Senior Test Lead, Samsara Inc',
       period: 'Dec 2023 - Present',
       desc:
-        'Spearheading system tests and automation for IoT Dash Cam products focused on AI/ML driver safety.',
+        'Spearheading system tests, strategies and execution for IoT Dash Cam fleets leveraging real-time video analytics. Developing pipelines for video quality, AI/ML accuracy and connectivity to cut regression cycles by 50%.',
     },
     {
       title: 'Test Automation Lead, Cruise LLC',
       period: 'Oct 2022 - Jun 2023',
       desc:
-        'Managed firmware releases and developed a CPU/GPU integration framework ensuring vehicle reliability.',
+        'Oversaw test delivery of vehicle compute systems and released multiple firmware versions. Built an automation framework for CPU/GPU integration, fault tolerance, networking and telematics.',
     },
     {
       title: 'Infotainment Test Lead, Rivian Automotive LLC',
       period: 'Jun 2021 - Sep 2022',
       desc:
-        'Directed end-to-end testing for R1T, R1S and Fleet infotainment systems with OTA updates and connectivity.',
+        'Directed technical testing for R1T, R1S and Fleet infotainment systems. Built automation for QNX and Android, OTA updates, navigation and telematics integration.',
     },
     {
       title: 'Senior QA Engineer II & Technical Lead, Amazon Lab126',
       period: 'Jun 2018 - Jun 2021',
       desc:
-        'Led QA for Alexa-enabled IoT products including Echo Buds and Echo Auto, building automation to reduce manual effort by 80%.',
+        'Managed QA for Alexa-enabled IoT products including Echo Buds and Echo Auto. Created automation for voice recognition, audio quality and connectivity, reducing manual effort by 80%.',
     },
     {
       title: 'Software Test Engineer, Tech Mahindra / Google',
       period: 'Jan 2016 - Jun 2018',
       desc:
-        'Drove system testing for Google’s VR Controller, contributing to successful Daydream launches.',
+        'Led system testing for Google’s VR Controller and supported Daydream headset launches, identifying features and comprehensive coverage.',
     },
     {
       title: 'Test Engineer, Cognizant Technology / Cisco',
       period: 'Sep 2015 - Jan 2016',
       desc:
-        'Created Python automation for Set‑top‑Box streaming, expanding scope by 40% and halving execution time.',
+        'Developed a Python-based automation framework for Set-top-Box streaming applications, boosting scope by 40% and halving execution time.',
     },
     {
       title: 'Radio Validation Engineer, Wistron Mobile Solutions',
       period: 'Dec 2014 - Sep 2015',
-      desc: 'Led Wi-Fi Alliance compliance testing on Android and BlackBerry handsets.',
+      desc: 'Led Wi-Fi Alliance compliance testing on Android and BlackBerry handsets including pre-certification and interoperability.',
     },
     {
       title: 'Senior Software Engineer in Test, L&T Tech Services / Motorola Mobility',
       period: 'Oct 2009 - Dec 2014',
       desc:
-        'Developed Bluetooth qualification automation, reducing certification cycle time and improving reusability.',
+        'Pioneered a Bluetooth qualification framework with a three-tier architecture to improve code reuse and cut certification cycle time.',
     },
     {
       title: 'Test Engineer, Luminous Infoways',
       period: 'Oct 2008 - Sep 2009',
-      desc: 'Led functional and integration testing for web portal applications.',
+      desc: 'Led functional and integration testing for web portal applications ensuring robust performance.',
     },
   ];
   return (
