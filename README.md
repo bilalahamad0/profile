@@ -10,6 +10,20 @@ The repository cannot distribute Bilal Ahamad's actual resume. The file at
 `docs/Bilal_Ahamad_Resume.pdf` is only a minimal placeholder so the download
 link works. Replace this file with your own resume before deploying the site.
 
+## Custom images
+
+The hero headshot and Open Graph preview defined in `index.html` currently use
+placeholder URLs from `via.placeholder.com`. Before publishing the site you
+should provide real images and update the HTML:
+
+- Replace the `src` of the hero `<img>` in the **About** section with a path to
+  your own photo (for example `images/headshot.jpg`).
+- Set the `content` of the `<meta property="og:image">` tag to the preview
+  image you want displayed when the site is shared (e.g. `images/og-image.png`).
+
+Create an `images` folder or another location of your choice and place these
+files there prior to deployment.
+
 ## Viewing Locally
 
 Open `index.html` directly in your browser. No build step is required.
