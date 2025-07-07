@@ -8,6 +8,19 @@ Sections include About, Skills, Experience, Projects, Education, Testimonials an
 
 Open `index.html` directly in your browser. No build step is required.
 
+## Dark Mode Styles
+
+The `theme-toggle` button toggles the `page-overview` and `theme-dark` classes on
+the `<body>` element. When those classes are present, CSS rules in
+`index.html` adjust the gradient background and glassmorphism effects to create a
+dark theme.
+
+### Customizing
+
+Edit the `body.page-overview.theme-dark` selectors in `index.html` to tweak the
+colors or add more rules. If you change the class names or want additional
+behavior, update the logic in `script.js` accordingly.
+
 ## Deploying
 
 Deploy the files to any static host or use Vercel.
