@@ -93,7 +93,6 @@ export default function Experience() {
       ],
     },
   ];
-
   return (
     <main id="maincontent" className="max-w-4xl mx-auto p-8 reveal">
       <h1 className="text-3xl font-semibold mb-6">Work Experience</h1>
