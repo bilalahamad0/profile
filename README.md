@@ -1,3 +1,21 @@
-# profile
-# profile
-# profile
+# Bilal Ahamad Resume Website
+
+This repository contains a responsive resume site built with **HTML**, **Tailwind CSS** and a small amount of JavaScript. The page uses a glossy glassmorphism design with animated section reveals and a dark/light theme toggle saved in `localStorage`.
+
+Sections include About, Skills, Experience, Projects, Education, Testimonials and Contact. A download button links to `docs/Bilal_Ahamad_Resume.pdf` so you can easily provide your own resume.
+
+## Viewing Locally
+
+Open `index.html` directly in your browser. No build step is required.
+
+## Deploying
+
+Deploy the files to any static host or use Vercel.
+
+With the included `package.json`, simply run:
+
+```bash
+npm run deploy
+```
+
+This executes `npx vercel --prod` for you. After deployment, map the custom domain **bilalahamad.com** in your Vercel dashboard.
