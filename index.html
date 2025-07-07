@@ -16,7 +16,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>body{font-family:'Inter',sans-serif;}</style>
+  <style>body{font-family:'Inter',sans-serif;}
+  </style>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -38,7 +39,7 @@
     }
   </script>
 </head>
-<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 antialiased">
   <!-- Header with navigation and theme toggle -->
   <header class="sticky top-0 z-20 bg-white/70 dark:bg-gray-900/70 backdrop-blur shadow-sm">
     <div class="container mx-auto flex items-center justify-between px-4 py-3">
@@ -72,6 +73,34 @@
       </div>
       <div class="md:w-1/2 flex justify-center mb-12 md:mb-0">
         <img src="https://via.placeholder.com/400x400.png?text=Bilal+Ahamad" alt="Bilal Ahamad" class="rounded-full shadow-2xl w-64 h-64 md:w-80 md:h-80 object-cover">
+      </div>
+    </div>
+  </section>
+
+  <!-- Showcase Horizontal Scroll -->
+  <section id="showcase" class="h-screen overflow-x-auto snap-x snap-mandatory flex relative">
+    <div class="slide w-screen flex-shrink-0 snap-center relative">
+      <video class="absolute inset-0 w-full h-full object-cover" autoplay loop muted playsinline>
+        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+      </video>
+      <div class="relative z-10 flex items-center justify-center h-full">
+        <h3 class="text-4xl md:text-6xl font-bold text-white drop-shadow">Innovation</h3>
+      </div>
+    </div>
+    <div class="slide w-screen flex-shrink-0 snap-center relative">
+      <video class="absolute inset-0 w-full h-full object-cover" autoplay loop muted playsinline>
+        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+      </video>
+      <div class="relative z-10 flex items-center justify-center h-full">
+        <h3 class="text-4xl md:text-6xl font-bold text-white drop-shadow">Leadership</h3>
+      </div>
+    </div>
+    <div class="slide w-screen flex-shrink-0 snap-center relative">
+      <video class="absolute inset-0 w-full h-full object-cover" autoplay loop muted playsinline>
+        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+      </video>
+      <div class="relative z-10 flex items-center justify-center h-full">
+        <h3 class="text-4xl md:text-6xl font-bold text-white drop-shadow">Results</h3>
       </div>
     </div>
   </section>

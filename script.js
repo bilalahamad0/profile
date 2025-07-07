@@ -51,3 +51,19 @@ if (menuToggle) {
 
 // Set current year
 document.getElementById('year').textContent = new Date().getFullYear();
+
+// Showcase auto scroll
+const showcase = document.getElementById('showcase');
+if (showcase) {
+  const slides = showcase.querySelectorAll('.slide');
+  let current = 0;
+  setInterval(() => {
+    current = (current + 1) % slides.length;
+    showcase.scrollTo({ left: slides[current].offsetLeft, behavior: 'smooth' });
+  }, 4000);
+  showcase.addEventListener('wheel', (e) => {
+    if (e.deltaY === 0) return;
+    e.preventDefault();
+    showcase.scrollLeft += e.deltaY;
+  }, { passive: false });
+}
