@@ -1,4 +1,8 @@
 const nodemailer = require('nodemailer');
+const dotenv = require('dotenv');
+
+// Load environment variables from .env.local when running locally
+dotenv.config();
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
@@ -30,27 +34,38 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const requiredVars = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'SMTP_FROM'];
-  const missing = requiredVars.filter(v => !process.env[v]);
+  const {
+    SMTP_HOST,
+    SMTP_PORT,
+    SMTP_USER,
+    SMTP_PASS,
+    SMTP_FROM,
+    SMTP_TO
+  } = process.env;
+
+  const requiredVars = { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_FROM };
+  const missing = Object.entries(requiredVars)
+    .filter(([, value]) => !value)
+    .map(([key]) => key);
   if (missing.length) {
     res.status(500).json({ error: `Server email configuration missing: ${missing.join(', ')}` });
     return;
   }
 
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: parseInt(process.env.SMTP_PORT || '465', 10),
+    host: SMTP_HOST,
+    port: parseInt(SMTP_PORT || '465', 10),
     secure: process.env.SMTP_SECURE !== 'false',
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS
+      user: SMTP_USER,
+      pass: SMTP_PASS
     }
   });
 
   try {
     await transporter.sendMail({
-      from: process.env.SMTP_FROM,
-      to: process.env.SMTP_TO || process.env.SMTP_FROM,
+      from: SMTP_FROM,
+      to: SMTP_TO || SMTP_FROM,
       replyTo: email,
       subject: `Contact from ${name}`,
       text: message,

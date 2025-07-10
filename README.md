@@ -19,7 +19,20 @@ Set the following variables in Vercel:
 - `SMTP_FROM` – sender address
 - `SMTP_TO` – recipient address (defaults to `SMTP_FROM`)
 
-Add these under **Project Settings → Environment Variables** in Vercel. The API will list any variables that are missing when you submit the form so you know exactly what to update.
+Add these under **Project Settings → Environment Variables** in Vercel (Production environment). The API will list any variables that are missing when you submit the form so you know exactly what to update.
+
+Example `.env.local`:
+
+```bash
+SMTP_HOST=smtp.example.com
+SMTP_PORT=465
+SMTP_USER=your_user
+SMTP_PASS=your_password
+SMTP_FROM="Bilal Ahamad <noreply@example.com>"
+SMTP_TO=bilal.ahamad@gmail.com
+```
+
+Vercel reads these same variable names from your project settings when you deploy. Add them under **Environment Variables** so the serverless function can send email in production.
 
 ### Testing locally
 
