@@ -25,6 +25,11 @@ module.exports = async (req, res) => {
     return;
   }
 
+  if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS || !process.env.SMTP_FROM) {
+    res.status(500).json({ error: 'Server email configuration missing' });
+    return;
+  }
+
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: parseInt(process.env.SMTP_PORT || '465', 10),

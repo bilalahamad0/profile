@@ -6,6 +6,8 @@ Sections include About, Skills, Experience, Projects, Education, Testimonials an
 
 The contact form sends data to a small Vercel Serverless Function located in `api/contact.js`. Configure SMTP credentials in your Vercel project settings so the function can deliver email without any activation steps.
 
+If you see a "Failed to send message" response, the function likely couldn't connect to your SMTP server. Double‑check your environment variables in Vercel and review the function logs for details.
+
 ### Required Environment Variables
 
 Set the following variables in Vercel:

@@ -94,11 +94,12 @@ if (contactForm) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
+      const result = await res.json().catch(() => ({}));
       if (res.ok) {
         contactForm.reset();
         formMsg.textContent = 'Message sent!';
       } else {
-        formMsg.textContent = 'Failed to send message.';
+        formMsg.textContent = result.error || 'Failed to send message.';
       }
     } catch {
       formMsg.textContent = 'Error sending message.';
