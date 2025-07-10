@@ -21,6 +21,17 @@ Set the following variables in Vercel:
 
 Add these under **Project Settings → Environment Variables** in Vercel. The API will list any variables that are missing when you submit the form so you know exactly what to update.
 
+### Testing locally
+
+Create a `.env.local` file in the project root with the variables above and run:
+
+```bash
+npm install
+npx vercel dev
+```
+
+The development server will read `.env.local` and proxy requests to `/api/contact`. Submit the contact form at `http://localhost:3000` to verify email delivery before deploying.
+
 ## Viewing Locally
 
 Run the Tailwind build once before opening `index.html`:
@@ -42,6 +53,8 @@ npm run deploy
 ```
 
 This executes `npx vercel --prod` for you. After deployment, map the custom domain **bilalahamad.com** in your Vercel dashboard.
+
+Vercel automatically deploys the serverless function under `api/contact.js`. When the build completes, POST requests to `/api/contact` will be handled by the function with your configured SMTP credentials.
 
 ### Vercel Output Directory
 

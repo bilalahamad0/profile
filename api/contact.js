@@ -20,16 +20,20 @@ module.exports = async (req, res) => {
   }
 
   const { name, email, message } = body;
-  if (!name || !email || !message) {
-    res.status(400).json({ error: 'Missing fields' });
+  const bad = [];
+  if (!name || !name.trim()) bad.push('name');
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailRegex.test(email)) bad.push('email');
+  if (!message || !message.trim()) bad.push('message');
+  if (bad.length) {
+    res.status(400).json({ error: `Invalid or missing: ${bad.join(', ')}` });
     return;
   }
 
-  const requiredVars = ['SMTP_HOST', 'SMTP_USER', 'SMTP_PASS', 'SMTP_FROM'];
+  const requiredVars = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'SMTP_FROM'];
   const missing = requiredVars.filter(v => !process.env[v]);
   if (missing.length) {
     res.status(500).json({ error: `Server email configuration missing: ${missing.join(', ')}` });
-
     return;
   }
 
