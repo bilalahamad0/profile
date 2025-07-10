@@ -24,11 +24,11 @@ Add these under **Project Settings → Environment Variables** in Vercel (Produc
 Example `.env.local`:
 
 ```bash
-SMTP_HOST=smtp.example.com
+SMTP_HOST=smtp.gmail.com
 SMTP_PORT=465
-SMTP_USER=your_user
-SMTP_PASS=your_password
-SMTP_FROM="Bilal Ahamad <noreply@example.com>"
+SMTP_USER=bilal.ahamad@gmail.com
+SMTP_PASS=ihnw elom gvgx dwgd
+SMTP_FROM=bilal.ahamad@gmail.com
 SMTP_TO=bilal.ahamad@gmail.com
 ```
 
