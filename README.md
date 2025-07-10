@@ -27,3 +27,7 @@ npm run deploy
 ```
 
 This executes `npx vercel --prod` for you. After deployment, map the custom domain **bilalahamad.com** in your Vercel dashboard.
+
+### Vercel Output Directory
+
+If Vercel shows a "No Output Directory named 'public'" error, ensure that `vercel.json` exists with `{"outputDirectory": "."}` so the root folder is served.
