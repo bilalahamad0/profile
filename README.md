@@ -4,7 +4,18 @@ This repository contains a responsive resume site built with **HTML**, **Tailwin
 
 Sections include About, Skills, Experience, Projects, Education, Testimonials and Contact. A download button links to `docs/Bilal_Ahamad_Resume.pdf` so you can easily provide your own resume.
 
-The contact form posts to [Formsubmit](https://formsubmit.co) so submissions work over HTTPS without requiring server-side code.
+The contact form sends data to a small Vercel Serverless Function located in `api/contact.js`. Configure SMTP credentials in your Vercel project settings so the function can deliver email without any activation steps.
+
+### Required Environment Variables
+
+Set the following variables in Vercel:
+
+- `SMTP_HOST` – your mail server host
+- `SMTP_PORT` – the server port
+- `SMTP_USER` – SMTP username
+- `SMTP_PASS` – SMTP password
+- `SMTP_FROM` – sender address
+- `SMTP_TO` – recipient address (defaults to `SMTP_FROM`)
 
 ## Viewing Locally
 

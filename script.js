@@ -79,3 +79,29 @@ const observer = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.1 });
 reveals.forEach(el => observer.observe(el));
+
+// Contact form submission via serverless function
+const contactForm = document.getElementById('contact-form');
+const formMsg = document.getElementById('form-msg');
+if (contactForm) {
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    formMsg.textContent = 'Sending...';
+    const data = Object.fromEntries(new FormData(contactForm));
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (res.ok) {
+        contactForm.reset();
+        formMsg.textContent = 'Message sent!';
+      } else {
+        formMsg.textContent = 'Failed to send message.';
+      }
+    } catch {
+      formMsg.textContent = 'Error sending message.';
+    }
+  });
+}
