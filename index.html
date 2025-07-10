@@ -55,13 +55,7 @@
   <meta property="og:url" content="https://bilalahamad.com/">
   <meta property="og:image" content="https://via.placeholder.com/1200x630.png?text=Bilal+Ahamad">
   <meta name="twitter:card" content="summary_large_image">
-  <!-- TailwindCSS via CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-    }
-  </script>
+  <link rel="stylesheet" href="dist/output.css">
 </head>
 <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
   <!-- Header with navigation and theme toggle -->
@@ -86,7 +80,7 @@
 
   <!-- Hero -->
   <section id="about" class="glass reveal max-w-5xl mx-auto my-12 rounded-xl">
-    <div class="flex flex-col-reverse md:flex-row items-center min-h-screen px-3 py-24 gap-10">
+    <div class="flex flex-col-reverse md:flex-row items-center min-h-screen px-6 py-24 gap-10">
       <div class="md:w-1/2 text-center md:text-left">
         <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6">Bilal Ahamad</h1>
         <p class="text-xl md:text-2xl mb-8">Technical QA Leader with 16+ years of experience in hardware, IoT and automotive systems.</p>
@@ -297,26 +291,9 @@
   </section>
 
   <!-- Contact -->
-  <!-- <section id="contact" class="glass reveal max-w-4xl mx-auto p-8 my-12 rounded-xl">
+  <section id="contact" class="glass reveal max-w-4xl mx-auto p-8 my-12 rounded-xl">
     <h2 class="text-3xl font-semibold mb-6">Contact</h2>
-    <form class="grid grid-cols-1 gap-4 max-w-lg" aria-label="Contact form" method="get" action="mailto:bilal.ahamad@gmail.com">
-      <label>
-        <span class="sr-only">Your name</span>
-        <input name="name" type="text" placeholder="Your Name" required class="p-3 border rounded" />
-      </label>
-      <label>
-        <span class="sr-only">Your email</span>
-        <input name="email" type="email" placeholder="Your Email" required class="p-3 border rounded" />
-      </label>
-      <label>
-        <span class="sr-only">Your message</span>
-        <textarea name="message" placeholder="Message" required class="p-3 border rounded"></textarea>
-      </label>
-      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded">Send</button>
-    </form>
-    <p class="mt-4">Email: <a href="mailto:bilal.ahamad@gmail.com" class="text-blue-600 underline">bilal.ahamad@gmail.com</a></p>
-    <p>LinkedIn: <a href="https://linkedin.com/in/bilalahamad" class="text-blue-600 underline" target="_blank" rel="noopener noreferrer">bilalahamad</a></p>
-  </section> -->
+    <form class="grid grid-cols-1 gap-4 max-w-lg" aria-label="Contact form" method="POST" action="https://formsubmit.co/bilal.ahamad@gmail.com">
 </main>
 
   <!-- Footer -->
@@ -325,6 +302,6 @@
   </footer>
 
   <script src="script.js"></script>
-  <script async data-explicit-opt-in="true" data-deployment-id="dpl_4LQXUMAZJ7CrgJrCEH7pJQZ6w3sG" src="https://vercel.live/_next-live/feedback/feedback.js"></script>
 </body>
 </html>
+<script async data-explicit-opt-in="true" data-deployment-id="dpl_4LQXUMAZJ7CrgJrCEH7pJQZ6w3sG" src="https://vercel.live/_next-live/feedback/feedback.js"></script>
