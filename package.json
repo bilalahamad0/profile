@@ -1,0 +1,17 @@
+{
+  "name": "bilal-ahamad-resume",
+  "version": "1.0.0",
+  "description": "Personal resume website for Bilal Ahamad",
+  "scripts": {
+    "build": "tailwindcss -i ./styles.css -o ./dist/output.css --minify",
+    "deploy": "npx vercel --prod"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.4"
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.11"
+  }
+}
