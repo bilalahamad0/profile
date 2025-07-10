@@ -29,6 +29,7 @@ module.exports = async (req, res) => {
   const missing = requiredVars.filter(v => !process.env[v]);
   if (missing.length) {
     res.status(500).json({ error: `Server email configuration missing: ${missing.join(', ')}` });
+
     return;
   }
 
