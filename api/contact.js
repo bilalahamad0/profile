@@ -25,8 +25,11 @@ module.exports = async (req, res) => {
     return;
   }
 
-  if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS || !process.env.SMTP_FROM) {
-    res.status(500).json({ error: 'Server email configuration missing' });
+  const requiredVars = ['SMTP_HOST', 'SMTP_USER', 'SMTP_PASS', 'SMTP_FROM'];
+  const missing = requiredVars.filter(v => !process.env[v]);
+  if (missing.length) {
+    res.status(500).json({ error: `Server email configuration missing: ${missing.join(', ')}` });
+
     return;
   }
 

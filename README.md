@@ -6,7 +6,7 @@ Sections include About, Skills, Experience, Projects, Education, Testimonials an
 
 The contact form sends data to a small Vercel Serverless Function located in `api/contact.js`. Configure SMTP credentials in your Vercel project settings so the function can deliver email without any activation steps.
 
-If you see a "Failed to send message" response, the function likely couldn't connect to your SMTP server. Double‑check your environment variables in Vercel and review the function logs for details.
+If you see a "Failed to send message" response, the function likely couldn't connect to your SMTP server. Double‑check your environment variables in Vercel and review the function logs for details. If the API responds with `Server email configuration missing: ...`, it means one or more of the variables below were not provided.
 
 ### Required Environment Variables
 
@@ -18,6 +18,8 @@ Set the following variables in Vercel:
 - `SMTP_PASS` – SMTP password
 - `SMTP_FROM` – sender address
 - `SMTP_TO` – recipient address (defaults to `SMTP_FROM`)
+
+Add these under **Project Settings → Environment Variables** in Vercel. The API will list any variables that are missing when you submit the form so you know exactly what to update.
 
 ## Viewing Locally
 
