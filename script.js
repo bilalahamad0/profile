@@ -101,8 +101,8 @@ if (contactForm) {
       } else {
         formMsg.textContent = result.error || 'Failed to send message.';
       }
-    } catch {
-      formMsg.textContent = 'Error sending message.';
+    } catch (err) {
+      formMsg.textContent = err.message || 'Error sending message.';
     }
   });
 }
