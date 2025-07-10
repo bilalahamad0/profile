@@ -1,8 +1,10 @@
 const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
 
-// Load environment variables from .env.local when running locally
-dotenv.config();
+// Load environment variables from .env.local in local development
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config({ path: '.env.local' });
+}
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
