@@ -18,6 +18,7 @@ Set the following variables in Vercel:
 - `SMTP_PASS` – SMTP password
 - `SMTP_FROM` – sender address
 - `SMTP_TO` – recipient address (defaults to `SMTP_FROM`)
+- `SMTP_SECURE` – set to `false` for ports like 587 (defaults to `true`)
 
 Add these under **Project Settings → Environment Variables** in Vercel (Production environment). The API will list any variables that are missing when you submit the form so you know exactly what to update.
 
@@ -30,6 +31,7 @@ SMTP_USER=your-smtp-user
 SMTP_PASS=your-smtp-pass
 SMTP_FROM=your-smtp-from
 SMTP_TO=your-smtp-to
+SMTP_SECURE=false
 ```
 
 Vercel reads these same variable names from your project settings when you deploy. Add them under **Environment Variables** so the serverless function can send email in production.
