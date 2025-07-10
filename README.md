@@ -24,12 +24,12 @@ Add these under **Project Settings → Environment Variables** in Vercel (Produc
 Example `.env.local`:
 
 ```bash
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=465
-SMTP_USER=bilal.ahamad@gmail.com
-SMTP_PASS=ihnw elom gvgx dwgd
-SMTP_FROM=bilal.ahamad@gmail.com
-SMTP_TO=bilal.ahamad@gmail.com
+SMTP_HOST=your-smtp-host
+SMTP_PORT=your-smtp-port
+SMTP_USER=your-smtp-user
+SMTP_PASS=your-smtp-pass
+SMTP_FROM=your-smtp-from
+SMTP_TO=your-smtp-to
 ```
 
 Vercel reads these same variable names from your project settings when you deploy. Add them under **Environment Variables** so the serverless function can send email in production.
