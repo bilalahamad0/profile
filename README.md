@@ -29,7 +29,7 @@ Example `.env.local`:
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=465
 SMTP_USER=bilal.ahamad@gmail.com
-SMTP_PASS=ihnw elom gvgx dwgd
+SMTP_PASS=[Vercel app password]
 SMTP_FROM=bilal.ahamad@gmail.com
 SMTP_TO=bilal.ahamad@gmail.com
 ```
