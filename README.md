@@ -18,20 +18,20 @@ Set the following variables in Vercel:
 - `SMTP_PASS` – SMTP password
 - `SMTP_FROM` – sender address
 - `SMTP_TO` – recipient address (defaults to `SMTP_FROM`)
-- `SMTP_SECURE` – set to `false` for ports like 587 (defaults to `true`)
 
 Add these under **Project Settings → Environment Variables** in Vercel (Production environment). The API will list any variables that are missing when you submit the form so you know exactly what to update.
+
+The serverless function logs which SMTP variables are loaded. If any are missing it prints them in the logs and returns a helpful error message.
 
 Example `.env.local`:
 
 ```bash
-SMTP_HOST=your-smtp-host
-SMTP_PORT=your-smtp-port
-SMTP_USER=your-smtp-user
-SMTP_PASS=your-smtp-pass
-SMTP_FROM=your-smtp-from
-SMTP_TO=your-smtp-to
-SMTP_SECURE=false
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=465
+SMTP_USER=bilal.ahamad@gmail.com
+SMTP_PASS=[Vercel app password]
+SMTP_FROM=bilal.ahamad@gmail.com
+SMTP_TO=bilal.ahamad@gmail.com
 ```
 
 Vercel reads these same variable names from your project settings when you deploy. Add them under **Environment Variables** so the serverless function can send email in production.
@@ -46,6 +46,7 @@ npx vercel dev
 ```
 
 The development server will read `.env.local` and proxy requests to `/api/contact`. Submit the contact form at `http://localhost:3000` to verify email delivery before deploying.
+Check the terminal output for log messages indicating which SMTP variables were loaded.
 
 ## Viewing Locally
 

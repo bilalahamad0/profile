@@ -1,10 +1,8 @@
 const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
 
-// Load environment variables from .env.local in local development
-if (process.env.NODE_ENV !== 'production') {
-  dotenv.config({ path: '.env.local' });
-}
+// Load environment variables from .env.local when running locally
+dotenv.config();
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
@@ -46,10 +44,19 @@ module.exports = async (req, res) => {
   } = process.env;
 
   const requiredVars = { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_FROM };
+  console.log('Loaded SMTP config', {
+    SMTP_HOST,
+    SMTP_PORT,
+    SMTP_USER,
+    hasPass: Boolean(SMTP_PASS),
+    SMTP_FROM,
+    SMTP_TO
+  });
   const missing = Object.entries(requiredVars)
     .filter(([, value]) => !value)
     .map(([key]) => key);
   if (missing.length) {
+    console.error('Missing env vars:', missing);
     res.status(500).json({ error: `Server email configuration missing: ${missing.join(', ')}` });
     return;
   }
@@ -76,6 +83,6 @@ module.exports = async (req, res) => {
     res.status(200).json({ message: 'Message sent' });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Failed to send email' });
   }
 };
