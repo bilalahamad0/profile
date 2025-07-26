@@ -71,7 +71,6 @@ module.exports = async (req, res) => {
     host: SMTP_HOST,
     port,
     secure,
-
     auth: {
       user: SMTP_USER,
       pass: SMTP_PASS,
