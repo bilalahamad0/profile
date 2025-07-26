@@ -61,11 +61,17 @@ module.exports = async (req, res) => {
     res.status(500).json({ error: msg });
     return;
   }
+  console.log('SMTP configuration validated');
 
+  const port = parseInt(SMTP_PORT || '465', 10);
+  const secure = process.env.SMTP_SECURE
+    ? process.env.SMTP_SECURE !== 'false'
+    : port === 465;
   const transporter = nodemailer.createTransport({
     host: SMTP_HOST,
-    port: parseInt(SMTP_PORT || '465', 10),
-    secure: process.env.SMTP_SECURE !== 'false',
+    port,
+    secure,
+
     auth: {
       user: SMTP_USER,
       pass: SMTP_PASS,
@@ -73,6 +79,9 @@ module.exports = async (req, res) => {
   });
 
   try {
+    console.log('Verifying SMTP connection...');
+    await transporter.verify();
+    console.log('SMTP connection verified, sending mail');
     await transporter.sendMail({
       from: SMTP_FROM,
       to: SMTP_TO || SMTP_FROM,
@@ -81,6 +90,7 @@ module.exports = async (req, res) => {
       text: message,
       html: `<p>${message}</p><p>From: ${name} (${email})</p>`
     });
+    console.log('Mail sent successfully');
     res.status(200).json({ message: 'Message sent' });
   } catch (err) {
     console.error('Email send error:', err);

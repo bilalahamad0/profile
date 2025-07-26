@@ -36,6 +36,8 @@ SMTP_TO=bilal.ahamad@gmail.com
 
 Vercel reads these same variable names from your project settings when you deploy. Add them under **Environment Variables** so the serverless function can send email in production.
 
+When using Gmail, keep `SMTP_HOST=smtp.gmail.com`, `SMTP_PORT=465`, and ensure `SMTP_SECURE` is not set to `false` so a secure SSL/TLS connection is used. A Gmail App Password is sufficient and you do **not** need to enable "Less secure apps".
+
 ### Testing locally
 
 Create a `.env.local` file in the project root with the variables above and run:
@@ -71,6 +73,15 @@ npm run deploy
 This executes `npx vercel --prod` for you. After deployment, map the custom domain **bilalahamad.com** in your Vercel dashboard.
 
 Vercel automatically deploys the serverless function under `api/contact.js`. When the build completes, POST requests to `/api/contact` will be handled by the function with your configured SMTP credentials.
+
+### Viewing Vercel Logs
+
+1. Open your project in the [Vercel dashboard](https://vercel.com/dashboard).
+2. Select **Deployments** and open the latest deployment.
+3. Click the **Functions** tab and expand `/api/contact`.
+4. Each invocation lists console output from the serverless function.
+
+These logs show which SMTP variables were loaded, confirm the connection with `transporter.verify()`, and display any Nodemailer errors so you can diagnose configuration issues.
 
 ### Vercel Output Directory
 
