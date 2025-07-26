@@ -56,8 +56,9 @@ module.exports = async (req, res) => {
     .filter(([, value]) => !value)
     .map(([key]) => key);
   if (missing.length) {
-    console.error('Missing env vars:', missing);
-    res.status(500).json({ error: `Server email configuration missing: ${missing.join(', ')}` });
+    const msg = `Server email configuration missing: ${missing.join(', ')}`;
+    console.error(msg);
+    res.status(500).json({ error: msg });
     return;
   }
 
@@ -67,8 +68,8 @@ module.exports = async (req, res) => {
     secure: process.env.SMTP_SECURE !== 'false',
     auth: {
       user: SMTP_USER,
-      pass: SMTP_PASS
-    }
+      pass: SMTP_PASS,
+    },
   });
 
   try {
@@ -82,7 +83,7 @@ module.exports = async (req, res) => {
     });
     res.status(200).json({ message: 'Message sent' });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to send email' });
+    console.error('Email send error:', err);
+    res.status(500).json({ error: err.message || 'Failed to send message' });
   }
 };

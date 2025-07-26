@@ -6,7 +6,7 @@ Sections include About, Skills, Experience, Projects, Education, Testimonials an
 
 The contact form sends data to a small Vercel Serverless Function located in `api/contact.js`. Configure SMTP credentials in your Vercel project settings so the function can deliver email without any activation steps.
 
-If you see a "Failed to send message" response, the function likely couldn't connect to your SMTP server. Double‑check your environment variables in Vercel and review the function logs for details. If the API responds with `Server email configuration missing: ...`, it means one or more of the variables below were not provided.
+If you see a "Failed to send message" response, the function prints the underlying error in the Vercel logs and returns that error message in JSON. Check the logs for details. If the API responds with `Server email configuration missing: ...`, it means one or more of the variables below were not provided.
 
 ### Required Environment Variables
 
@@ -19,9 +19,9 @@ Set the following variables in Vercel:
 - `SMTP_FROM` – sender address
 - `SMTP_TO` – recipient address (defaults to `SMTP_FROM`)
 
-Add these under **Project Settings → Environment Variables** in Vercel (Production environment). The API will list any variables that are missing when you submit the form so you know exactly what to update.
+Add these under **Project Settings → Environment Variables** in Vercel (Production environment). The API lists any missing variables when you submit the form so you know exactly what to update.
 
-The serverless function logs which SMTP variables are loaded. If any are missing it prints them in the logs and returns a helpful error message.
+The serverless function logs which SMTP variables are loaded. If any are missing it prints them in the logs and returns an error. When email sending fails for some other reason, the function now returns the underlying error message from Nodemailer to aid debugging.
 
 Example `.env.local`:
 
@@ -29,7 +29,7 @@ Example `.env.local`:
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=465
 SMTP_USER=bilal.ahamad@gmail.com
-SMTP_PASS=[Vercel app password]
+SMTP_PASS=ihnw elom gvgx dwgd
 SMTP_FROM=bilal.ahamad@gmail.com
 SMTP_TO=bilal.ahamad@gmail.com
 ```
