@@ -11,12 +11,29 @@ export function ContactSection() {
         e.preventDefault();
         setStatus("sending");
 
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        setStatus("success");
+        const formData = new FormData(e.currentTarget);
+        const name = formData.get("name") as string;
+        const email = formData.get("email") as string;
+        const message = formData.get("message") as string;
 
-        // Reset after 3 seconds
-        setTimeout(() => setStatus("idle"), 3000);
+        try {
+            const res = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, email, message }),
+            });
+
+            if (!res.ok) throw new Error("Failed to send");
+            
+            setStatus("success");
+            (e.target as HTMLFormElement).reset();
+        } catch (error) {
+            console.error("Submission error:", error);
+            setStatus("error");
+        } finally {
+            // Reset after 3 seconds
+            setTimeout(() => setStatus("idle"), 3000);
+        }
     };
 
     return (
@@ -74,6 +91,7 @@ export function ContactSection() {
                     <div className="space-y-2">
                         <input
                             type="text"
+                            name="name"
                             placeholder="Your Name"
                             required
                             className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all placeholder:text-gray-500"
@@ -82,6 +100,7 @@ export function ContactSection() {
                     <div className="space-y-2">
                         <input
                             type="email"
+                            name="email"
                             placeholder="Your Email"
                             required
                             className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all placeholder:text-gray-500"
@@ -89,6 +108,7 @@ export function ContactSection() {
                     </div>
                     <div className="space-y-2">
                         <textarea
+                            name="message"
                             placeholder="Message"
                             required
                             rows={4}

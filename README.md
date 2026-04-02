@@ -29,10 +29,10 @@ Example `.env.local`:
 ```bash
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=465
-SMTP_USER=bilal.ahamad@gmail.com
-SMTP_PASS=ihnw elom gvgx dwgd
-SMTP_FROM=bilal.ahamad@gmail.com
-SMTP_TO=bilal.ahamad@gmail.com
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
+SMTP_FROM=your-email@gmail.com
+SMTP_TO=your-email@gmail.com
 ```
 
 Vercel reads these same variable names from your project settings when you deploy. Add them under **Environment Variables** so the serverless function can send email in production.
