@@ -7,12 +7,14 @@ export const MagneticButton = ({
     children,
     className,
     onClick,
+    type = "submit",
 }: {
     children: React.ReactNode;
     className?: string;
     onClick?: () => void;
+    type?: "button" | "submit" | "reset";
 }) => {
-    const ref = useRef<HTMLDivElement>(null);
+    const ref = useRef<HTMLButtonElement>(null);
     const x = useMotionValue(0);
     const y = useMotionValue(0);
 
@@ -27,7 +29,7 @@ export const MagneticButton = ({
         }
     };
 
-    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
         if (!rectRef.current) return;
 
         const { clientX, clientY } = e;
@@ -45,8 +47,9 @@ export const MagneticButton = ({
     };
 
     return (
-        <motion.div
+        <motion.button
             ref={ref}
+            type={type}
             onMouseEnter={handleMouseEnter}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
@@ -55,6 +58,6 @@ export const MagneticButton = ({
             className={className}
         >
             {children}
-        </motion.div>
+        </motion.button>
     );
 };
