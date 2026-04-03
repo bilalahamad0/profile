@@ -56,6 +56,7 @@ interface Repository {
   html_url: string;
   stargazers_count: number;
   forks_count: number;
+  language: string | null;
 }
 
 export function BentoGridV2() {
@@ -253,14 +254,21 @@ export function BentoGridV2() {
                 rel="noreferrer"
                 className="block p-4 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 transition-colors group"
               >
-                <div className="flex items-center justify-between mb-1">
-                  <h4 className="text-sm font-semibold text-blue-400 group-hover:text-blue-300 transition-colors truncate pr-4">{repo.name}</h4>
+                <div className="flex items-start sm:items-center justify-between mb-2 gap-4 flex-col sm:flex-row">
+                  <div className="flex items-center gap-3 w-full sm:w-auto overflow-hidden">
+                    <h4 className="text-sm font-semibold text-blue-400 group-hover:text-blue-300 transition-colors truncate">{repo.name}</h4>
+                    {repo.language && (
+                      <span className="text-[10px] font-medium px-2 py-0.5 rounded-full border border-zinc-700 bg-zinc-800 text-zinc-300 shrink-0 whitespace-nowrap">
+                        {repo.language}
+                      </span>
+                    )}
+                  </div>
                   <div className="flex gap-3 text-xs text-zinc-500 font-medium shrink-0">
                     <span className="flex items-center gap-1"><Star className="w-3 h-3 fill-zinc-600" /> {repo.stargazers_count}</span>
                     <span className="flex items-center gap-1"><GitFork className="w-3 h-3" /> {repo.forks_count}</span>
                   </div>
                 </div>
-                <p className="text-xs text-zinc-400 line-clamp-1">{repo.description || "No description provided."}</p>
+                <p className="text-xs text-zinc-400 leading-relaxed">{repo.description || "No description provided."}</p>
               </a>
             )) : (
               <>
