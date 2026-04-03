@@ -70,11 +70,29 @@ export function BentoGridV2() {
   // Render 6 items initially to fully cover the height without large empty gaps
   const visibleExperiences = isExpanded ? experienceData : experienceData.slice(0, 6); 
 
+  const [badgeCount, setBadgeCount] = useState<number | string>("8+");
+
   useEffect(() => {
-    fetch("https://api.github.com/users/bilalahamad0/repos?sort=updated&per_page=3")
+    // Fetch specific repositories in order
+    const targetRepos = ['adhan-api', 'profile', 'tmo'];
+    Promise.all(
+      targetRepos.map(repo => 
+        fetch(`https://api.github.com/repos/bilalahamad0/${repo}`).then(res => res.json())
+      )
+    )
+      .then(data => {
+        const validRepos = data.filter(repo => repo && repo.id);
+        setRepos(validRepos);
+      })
+      .catch(console.error);
+
+    // Fetch dynamic badge count from our internal API route
+    fetch('/api/badges')
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data)) setRepos(data.slice(0, 3)); // Increased mapped array to 3 exactly as requested
+        if (data && typeof data.count === 'number') {
+          setBadgeCount(data.count.toString());
+        }
       })
       .catch(console.error);
   }, []);
@@ -90,7 +108,7 @@ export function BentoGridV2() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="lg:col-span-2 lg:row-span-4 glass-card rounded-3xl p-8 relative flex flex-col transition-all duration-500 h-full"
+          className="lg:col-span-2 lg:row-span-3 glass-card rounded-3xl p-8 relative flex flex-col transition-all duration-500 h-full"
         >
           <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
             <Activity className="w-32 h-32" />
@@ -179,32 +197,6 @@ export function BentoGridV2() {
           </div>
         </motion.div>
 
-        {/* 2. Metrics Segment (Split into 2 columns on large screens) */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="lg:col-span-1 glass-card rounded-3xl p-8 flex flex-col justify-start relative group overflow-hidden"
-        >
-          <div className="absolute -right-4 -bottom-4 w-32 h-32 bg-emerald-500/20 blur-2xl rounded-full group-hover:bg-emerald-500/30 transition-colors pointer-events-none" />
-          <ShieldCheck className="w-8 h-8 text-emerald-400 mb-3" />
-          <h3 className="text-4xl font-extrabold text-white tracking-tight mb-1">$5.1M+</h3>
-          <p className="text-sm font-medium text-zinc-400">Testing Costs Saved</p>
-        </motion.div>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="lg:col-span-1 glass-card rounded-3xl p-8 flex flex-col justify-start relative group overflow-hidden"
-        >
-          <div className="absolute -right-4 -bottom-4 w-32 h-32 bg-blue-500/20 blur-2xl rounded-full group-hover:bg-blue-500/30 transition-colors pointer-events-none" />
-          <Cpu className="w-8 h-8 text-blue-400 mb-3" />
-          <h3 className="text-4xl font-extrabold text-white tracking-tight mb-1">75%+</h3>
-          <p className="text-sm font-medium text-zinc-400">Automation Coverage</p>
-        </motion.div>
 
         {/* 3. Certifications */}
         <motion.div 
@@ -386,12 +378,12 @@ export function BentoGridV2() {
             {/* 4. I/O Attendance & Badges segment */}
             <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-4">I/O Attendance & Badges</h3>
             <div className="flex flex-wrap gap-2.5">
-              <span className="px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-semibold text-blue-400">I/O 2026 Registered</span>
+              {/* <span className="px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-semibold text-blue-400">I/O 2026 Registered</span> */}
               <span className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-zinc-300">I/O 2025</span>
               <span className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-zinc-300">I/O 2024</span>
               <span className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-zinc-300">I/O 2023 Attendee</span>
               <span className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-zinc-300">I/O 2022 Attendee</span>
-              <span className="px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-semibold text-emerald-400">8+ Developer Badges</span>
+              <span className="px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-semibold text-emerald-400">{badgeCount} Developer Badges</span>
             </div>
           </div>
 
@@ -402,12 +394,14 @@ export function BentoGridV2() {
              
              <div className="flex flex-row overflow-x-auto gap-4 snap-x snap-mandatory py-4 px-1 custom-scrollbar items-center">
                
-               {/* 2026 */}
+               {/* 2026 (Archived for future use) */}
+               {/* 
                <a href="https://developers.google.com/profile/badges/events/io/2026/registered" target="_blank" rel="noreferrer" className="relative w-48 h-64 min-w-[12rem] flex-shrink-0 rounded-2xl border border-blue-500/20 bg-[#0c1017] snap-center group hover:bg-[#121822] transition-colors flex flex-col items-center justify-center overflow-hidden shadow-lg">
                  <div className="absolute top-4 left-4 text-[10px] font-black text-blue-400/80 drop-shadow-md uppercase tracking-[0.2em] group-hover:text-blue-400 transition-colors z-20">2026</div>
                  <img src="/io/badge_2026.svg" alt="I/O 2026 Badge" className="w-28 h-28 object-contain group-hover:scale-110 transition-transform drop-shadow-xl" />
                  <span className="absolute bottom-4 inset-x-0 text-center text-[10px] font-bold text-blue-400/50 uppercase tracking-widest leading-snug px-2">Yet to Attend<br/>(Registered)</span>
                </a>
+               */}
 
                {/* 2025 (Black T-shirt) */}
                <a href="https://developers.google.com/profile/badges/events/io/2025/registered" target="_blank" rel="noreferrer" className="relative w-48 h-64 min-w-[12rem] flex-shrink-0 rounded-2xl border-4 border-[#1c1c1f] bg-zinc-900 snap-center group shadow-xl overflow-hidden">
