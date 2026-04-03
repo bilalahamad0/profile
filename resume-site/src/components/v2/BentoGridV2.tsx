@@ -376,33 +376,39 @@ export function BentoGridV2() {
           </div>
 
           {/* Photo Gallery Album */}
-          <div className="w-full lg:w-1/2 flex items-center justify-center relative min-h-[350px] mt-8 lg:mt-0 z-10">
+          <div className="w-full lg:w-1/2 flex items-center justify-center relative min-h-[350px] mt-8 lg:mt-0 z-10 box-border">
              {/* Base photos styled as an interactive masonry stacked polaroid album */}
-             <div className="relative w-full max-w-md aspect-square flex items-center justify-center">
+             <div className="relative w-full max-w-sm lg:max-w-md aspect-square flex items-center justify-center perspective-1000">
                
+               {/* Left Stacked Image (Google Glass) */}
                <motion.div 
                  whileHover={{ scale: 1.05, rotate: -2, zIndex: 40 }} 
-                 className="absolute w-44 h-56 rounded-2xl border-[6px] border-zinc-800 bg-zinc-900 overflow-hidden shadow-2xl -rotate-12 -translate-x-16 -translate-y-8 cursor-pointer transition-all z-10"
+                 className="absolute w-44 h-56 rounded-2xl border-[6px] border-zinc-800 bg-zinc-900 shadow-2xl -rotate-12 -translate-x-12 lg:-translate-x-16 -translate-y-8 cursor-pointer transition-all z-10"
                >
-                 <img src="/io/1.png" alt="Google IO" className="w-full h-full object-cover" />
+                 <img src="/io/3.jpg" alt="Google Glass prototype" className="w-full h-full object-cover rounded-xl" />
+                 <IOBadge year="'22" />
                </motion.div>
                
+               {/* Right Stacked Image (Brown Jacket) */}
                <motion.div 
                  whileHover={{ scale: 1.05, rotate: 2, zIndex: 40 }} 
-                 className="absolute w-40 h-48 rounded-2xl border-[6px] border-zinc-800 bg-zinc-900 overflow-hidden shadow-2xl rotate-12 translate-x-16 -translate-y-12 cursor-pointer transition-all z-10"
+                 className="absolute w-40 h-48 rounded-2xl border-[6px] border-zinc-800 bg-zinc-900 shadow-2xl rotate-12 translate-x-12 lg:translate-x-16 -translate-y-12 cursor-pointer transition-all z-10"
                >
-                 <img src="/io/3.png" alt="Google IO" className="w-full h-full object-cover" />
+                 <img src="/io/2.jpg" alt="Google IO brown jacket" className="w-full h-full object-cover rounded-xl" />
+                 <IOBadge year="'23" />
                </motion.div>
 
-               {/* Center Main Image (Black Tshirt selfie based on user descriptions) */}
+               {/* Center Main Image (Black Tshirt selfie) */}
                <motion.div 
                  whileHover={{ scale: 1.05, rotate: 0, zIndex: 50 }} 
-                 className="absolute w-56 h-72 rounded-2xl border-[6px] border-zinc-700 bg-zinc-800 overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-30 cursor-pointer transition-all translate-y-8"
+                 className="absolute w-56 h-72 rounded-2xl border-[6px] border-zinc-700 bg-zinc-800 shadow-[0_20px_50px_rgba(0,0,0,0.8)] z-30 cursor-pointer transition-all translate-y-8 flex flex-col relative"
                >
-                 <img src="/io/2.png" alt="Google IO 2025" className="w-full h-full object-cover object-top" />
-                 <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 pt-12 text-center select-none">
-                   <p className="text-[11px] font-bold text-white uppercase tracking-[0.2em]">Live at Mountain View</p>
+                 <img src="/io/1.jpg" alt="Google IO prototype viewing" className="w-full h-full object-cover rounded-xl object-top" />
+                 <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent p-4 text-center select-none rounded-b-xl border-t border-transparent">
+                   <p className="text-[12px] font-bold text-white uppercase tracking-[0.2em] relative z-20">Live at I/O</p>
                  </div>
+                 {/* Main overlaid badge */}
+                 <IOBadge year="'24" />
                </motion.div>
              </div>
           </div>
@@ -410,6 +416,20 @@ export function BentoGridV2() {
 
       </div>
     </section>
+  );
+}
+
+// Circular Glassy Badge explicitly replicating the physical Google I/O UI attendance badges
+function IOBadge({ year }: { year: string }) {
+  return (
+    <div className="absolute bottom-2 right-2 w-12 h-12 rounded-full border-2 border-zinc-800 bg-zinc-950 flex flex-col items-center justify-center shadow-lg z-50 overflow-hidden group">
+      {/* Dynamic colorful Google inner stroke indicator */}
+      <div className="absolute top-0 w-full h-0.5 bg-gradient-to-r from-[#4285F4] via-[#EA4335] to-[#FBBC05]"></div>
+      <div className="absolute bottom-0 w-full h-0.5 bg-gradient-to-r from-[#34A853] to-[#4285F4]"></div>
+      
+      <span className="text-[10px] font-bold text-zinc-100 tracking-wider">I/O</span>
+      <span className="text-[11px] font-black text-transparent bg-clip-text bg-gradient-to-b from-[#4285F4] to-[#34A853] mt-0.5">{year}</span>
+    </div>
   );
 }
 
