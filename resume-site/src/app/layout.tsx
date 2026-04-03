@@ -26,16 +26,17 @@ export default function RootLayout({
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
-          enableSystem
+          forcedTheme="dark"
           disableTransitionOnChange
         >
           <SmoothScroll>
             <main className="min-h-screen relative flex flex-col">
               {children}
 
-              <div className="fixed top-6 right-6 z-50">
+              {/* ThemeToggle archived — light mode needs redesign pass before re-enabling */}
+              {/* <div className="fixed top-6 right-6 z-50">
                 <ThemeToggle />
-              </div>
+              </div> */}
 
               <Footer />
             </main>
