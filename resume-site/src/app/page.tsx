@@ -1,19 +1,19 @@
-import { Hero } from "@/components/sections/hero";
-import { BentoGridSection } from "@/components/sections/bento-grid";
-import { ExperienceSection } from "@/components/sections/experience";
-import { ProjectsSection } from "@/components/sections/projects";
+import { HeroV2 } from "@/components/v2/HeroV2";
+import { BentoGridV2 } from "@/components/v2/BentoGridV2";
 import { ContactSection } from "@/components/sections/contact";
-import { TextRevealWrapper } from "@/components/ui/text-reveal-wrapper";
+import { NavbarV2 } from "@/components/v2/NavbarV2";
 
-export default function Home() {
+export default function V2Home() {
   return (
-    <div className="flex flex-col gap-12 md:gap-24 pb-24">
-      <Hero />
-      <TextRevealWrapper text="Building high-quality software with a focus on performance, scalability, and user experience." />
-      <BentoGridSection />
-      <ExperienceSection />
-      <ProjectsSection />
-      <ContactSection />
+    <div className="flex flex-col gap-0 pb-24 dark" id="top">
+      <NavbarV2 />
+      <HeroV2 />
+      <BentoGridV2 />
+      
+      {/* Reuse the contact form from V1 so email works seamlessly */}
+      <div id="contact" className="pt-24">
+        <ContactSection />
+      </div>
     </div>
   );
 }
