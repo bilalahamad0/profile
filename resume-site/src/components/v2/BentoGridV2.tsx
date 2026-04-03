@@ -142,7 +142,7 @@ export function BentoGridV2() {
                       />
                     </div>
                     {/* Hide timeline connector on the absolute last item shown */}
-                    {idx !== visibleExperiences.length - 1 && <div className="w-px h-full bg-gradient-to-b from-zinc-600 to-transparent mt-2 pointer-events-none" />}
+                    {idx !== visibleExperiences.length - 1 && <div className="w-px h-full bg-gradient-to-b from-zinc-300 dark:from-zinc-600 to-transparent mt-2 pointer-events-none" />}
                   </div>
                   <div className="pb-4 pt-1">
                     <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
@@ -323,8 +323,8 @@ export function BentoGridV2() {
           </h2>
           <div className="flex flex-col gap-4 relative z-10 flex-grow justify-between">
             {recommendations.map((rec, i) => (
-             <div key={i} className="p-5 rounded-xl border border-emerald-500/10 bg-emerald-500/10 dark:bg-emerald-500/5">
-               <p className="text-sm text-emerald-100/80 leading-relaxed italic mb-4 font-light">"{rec.review}"</p>
+             <div key={i} className="p-5 rounded-xl border border-emerald-500/20 bg-emerald-500/10 dark:bg-emerald-500/5">
+               <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed italic mb-4 font-light">"{rec.review}"</p>
                <div className="flex items-center gap-3">
                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400/30 to-blue-400/30 flex items-center justify-center shrink-0 border border-emerald-500/30">
                    <UserIconPlaceholder />
@@ -390,7 +390,7 @@ export function BentoGridV2() {
           {/* RIGHT COLUMN: Horizontal Reel */}
           <div className="w-full xl:w-[65%] z-10 box-border overflow-hidden rounded-2xl relative">
              {/* Fade gradient overlays for edge scrolling effect */}
-             <div className="absolute top-0 bottom-0 right-0 w-12 bg-gradient-to-l from-[#09090b] to-transparent pointer-events-none z-30 hidden xl:block" />
+             <div className="absolute top-0 bottom-0 right-0 w-12 bg-gradient-to-l from-white dark:from-[#09090b] to-transparent pointer-events-none z-30 hidden xl:block" />
              
              <div className="flex flex-row overflow-x-auto gap-4 snap-x snap-mandatory py-4 px-1 custom-scrollbar items-center">
                
