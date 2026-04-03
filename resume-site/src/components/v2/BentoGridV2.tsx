@@ -211,9 +211,12 @@ export function BentoGridV2() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="lg:col-span-2 glass-card rounded-3xl p-8"
+          className="lg:col-span-2 glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col justify-center"
         >
-          <h2 className="text-2xl font-bold text-white mb-5 flex items-center gap-2">
+          {/* Watermark */}
+          <Settings className="absolute -right-8 -bottom-8 w-48 h-48 text-zinc-500/5 pointer-events-none" />
+          
+          <h2 className="text-2xl font-bold text-white mb-5 flex items-center gap-2 relative z-10">
             <Settings className="w-6 h-6 text-zinc-400" />
             Certifications
           </h2>
@@ -344,6 +347,11 @@ export function BentoGridV2() {
           transition={{ duration: 0.5, delay: 0.8 }}
           className="lg:col-span-4 glass-card rounded-3xl p-8 lg:p-12 relative flex flex-col xl:flex-row gap-12 items-center justify-between overflow-hidden"
         >
+          {/* Watermark Logo */}
+          <div className="absolute -left-10 -bottom-10 pointer-events-none opacity-[0.03] z-0">
+            <img src="/logos/google.png" alt="" className="w-96 h-96 grayscale" />
+          </div>
+
           {/* Subtle Blue Glow specific to Google section */}
           <div className="absolute top-1/2 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none -translate-y-1/2" />
           
