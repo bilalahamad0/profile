@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Download, MoveRight, Star } from "lucide-react";
+import { Download, MoveRight, Star, Code2, Wifi, Car, Headset, Network, Database } from "lucide-react";
 import Link from "next/link";
 
 function InfographicBackground() {
@@ -12,36 +12,70 @@ function InfographicBackground() {
       <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-[100%] bg-emerald-600/10 blur-[100px] mix-blend-screen" />
       <div className="absolute top-[20%] right-[10%] w-[30%] h-[30%] rounded-[100%] bg-purple-600/10 blur-[150px] mix-blend-screen" />
       
-      {/* Data Visualization / Tech SVG Layout */}
-      <svg className="w-full h-full opacity-20" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Data Visualization Grid */}
+      <svg className="absolute inset-0 w-full h-full opacity-10" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
+          <pattern id="heroGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="1"/>
           </pattern>
         </defs>
-        <rect width="100%" height="100%" fill="url(#grid)" />
-        {/* Infographic pseudo-curves */}
-        <path d="M 0,200 Q 150,150 250,300 T 500,200 T 800,350 T 1000,100" fill="none" stroke="url(#lineGradient)" strokeWidth="1.5" strokeDasharray="5,5" className="animate-pulse" />
-        <path d="M -100,500 Q 200,600 450,400 T 800,200 T 1200,300" fill="none" stroke="url(#lineGradient2)" strokeWidth="1.5" />
-        
-        {/* Scattered interactive node points */}
-        <circle cx="250" cy="300" r="3" fill="#3B82F6" />
-        <circle cx="500" cy="200" r="3" fill="#3B82F6" />
-        <circle cx="800" cy="350" r="4" fill="#10B981" />
-        <circle cx="450" cy="400" r="3" fill="#8B5CF6" />
-        <circle cx="800" cy="200" r="3" fill="#8B5CF6" />
-
-        <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#3B82F6" stopOpacity="0" />
-          <stop offset="50%" stopColor="#3B82F6" stopOpacity="0.8" />
-          <stop offset="100%" stopColor="#10B981" stopOpacity="0" />
-        </linearGradient>
-        <linearGradient id="lineGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0" />
-          <stop offset="50%" stopColor="#8B5CF6" stopOpacity="0.5" />
-          <stop offset="100%" stopColor="#3B82F6" stopOpacity="0" />
-        </linearGradient>
+        <rect width="100%" height="100%" fill="url(#heroGrid)" />
       </svg>
+
+      {/* Floating Animated Technical Icons */}
+      <div className="absolute inset-0 opacity-20">
+        <motion.div 
+          animate={{ y: [0, -30, 0], x: [0, 20, 0], rotate: [0, 10, 0] }} 
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[20%] left-[15%] text-blue-400"
+        >
+          <Car size={64} />
+          <span className="block text-xs mt-2 font-mono">AV/EV SYSTEMS</span>
+        </motion.div>
+        
+        <motion.div 
+          animate={{ y: [0, 40, 0], x: [0, -20, 0] }} 
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute top-[60%] left-[10%] text-purple-400"
+        >
+          <Wifi size={56} />
+          <span className="block text-xs mt-2 font-mono">IoT NETWORK</span>
+        </motion.div>
+
+        <motion.div 
+          animate={{ y: [0, -40, 0], x: [0, -30, 0], rotate: [0, -15, 0] }} 
+          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute top-[25%] right-[15%] text-emerald-400"
+        >
+          <Headset size={72} />
+          <span className="block text-xs mt-2 font-mono">AR/VR HARDWARE</span>
+        </motion.div>
+
+        <motion.div 
+          animate={{ y: [0, 50, 0], x: [0, 30, 0], rotate: [0, 20, 0] }} 
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+          className="absolute top-[65%] right-[12%] text-amber-400"
+        >
+          <Code2 size={60} />
+          <span className="block text-xs mt-2 font-mono">FIRMWARE AUTOMATION</span>
+        </motion.div>
+
+        <motion.div 
+          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.7, 0.3] }} 
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[45%] left-[5%] text-zinc-400"
+        >
+          <Network size={48} />
+        </motion.div>
+
+        <motion.div 
+          animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.5, 0.2] }} 
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute top-[40%] right-[5%] text-zinc-400"
+        >
+          <Database size={52} />
+        </motion.div>
+      </div>
     </div>
   );
 }
