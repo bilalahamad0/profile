@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Download, MoveRight, Star, Code2, Wifi, Car, Headset, Network, Database } from "lucide-react";
+import { Download, MoveRight, Star, Code2, Wifi, Car, Headset, Network, Database, Smartphone, Watch, Microchip } from "lucide-react";
 import Link from "next/link";
 
 function InfographicBackground() {
@@ -27,16 +27,16 @@ function InfographicBackground() {
         <motion.div 
           animate={{ y: [0, -30, 0], x: [0, 20, 0], rotate: [0, 10, 0] }} 
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[20%] left-[15%] text-blue-400"
+          className="absolute top-[15%] left-[10%] text-blue-400"
         >
           <Car size={64} />
-          <span className="block text-xs mt-2 font-mono">AV/EV SYSTEMS</span>
+          <span className="block text-xs mt-2 font-mono ml-2">AV/EV SYSTEMS</span>
         </motion.div>
         
         <motion.div 
           animate={{ y: [0, 40, 0], x: [0, -20, 0] }} 
           transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute top-[60%] left-[10%] text-purple-400"
+          className="absolute top-[65%] left-[10%] text-purple-400"
         >
           <Wifi size={56} />
           <span className="block text-xs mt-2 font-mono">IoT NETWORK</span>
@@ -45,33 +45,62 @@ function InfographicBackground() {
         <motion.div 
           animate={{ y: [0, -40, 0], x: [0, -30, 0], rotate: [0, -15, 0] }} 
           transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="absolute top-[25%] right-[15%] text-emerald-400"
+          className="absolute top-[20%] right-[15%] text-emerald-400"
         >
           <Headset size={72} />
           <span className="block text-xs mt-2 font-mono">AR/VR HARDWARE</span>
         </motion.div>
 
+        {/* NEW ADDITIONS */}
+        <motion.div 
+          animate={{ y: [0, 20, 0], x: [0, -40, 0], rotate: [0, 5, 0] }} 
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute top-[45%] left-[25%] text-pink-400"
+        >
+          <Watch size={48} />
+          <span className="block text-[10px] mt-1 font-mono">WEARABLES</span>
+        </motion.div>
+
+        <motion.div 
+          animate={{ y: [0, -25, 0], x: [0, 30, 0], rotate: [0, -10, 0] }} 
+          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+          className="absolute top-[75%] right-[25%] text-cyan-400"
+        >
+          <Microchip size={54} />
+          <span className="block text-[10px] mt-1 font-mono">GPU COMPUTING</span>
+        </motion.div>
+
+        <motion.div 
+          animate={{ y: [0, 35, 0], x: [0, 15, 0], rotate: [0, 8, 0] }} 
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+          className="absolute top-[8%] right-[35%] text-indigo-400"
+        >
+          <Smartphone size={50} />
+          <span className="block text-[10px] mt-1 font-mono">MOBILE HANDSETS</span>
+        </motion.div>
+        {/* END NEW ADDITIONS */}
+
         <motion.div 
           animate={{ y: [0, 50, 0], x: [0, 30, 0], rotate: [0, 20, 0] }} 
           transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-          className="absolute top-[65%] right-[12%] text-amber-400"
+          className="absolute top-[50%] right-[8%] text-amber-400"
         >
           <Code2 size={60} />
-          <span className="block text-xs mt-2 font-mono">FIRMWARE AUTOMATION</span>
+          <span className="block text-xs mt-2 font-mono">FIRMWARE AUTO</span>
         </motion.div>
 
         <motion.div 
-          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.7, 0.3] }} 
+          animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.5, 0.2] }} 
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[45%] left-[5%] text-zinc-400"
+          className="absolute top-[80%] left-[45%] text-zinc-400/50"
         >
-          <Network size={48} />
+          <Network size={80} />
         </motion.div>
 
         <motion.div 
-          animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.5, 0.2] }} 
+          animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.3, 0.1] }} 
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="absolute top-[40%] right-[5%] text-zinc-400"
+          className="absolute top-[35%] left-[5%] text-zinc-400/50"
         >
           <Database size={52} />
         </motion.div>
@@ -86,7 +115,7 @@ export function HeroV2() {
       <div className="bg-noise" />
       <InfographicBackground />
 
-      <div className="w-full max-w-6xl mx-auto flex flex-col items-center text-center z-10 relative mt-16">
+      <div className="w-full max-w-6xl mx-auto flex flex-col items-center text-center z-10 relative mt-16 pt-8">
         
         {/* Ex-FAANG & Availability Badge */}
         <motion.div
