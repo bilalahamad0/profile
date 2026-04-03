@@ -16,9 +16,10 @@ export function NavbarV2() {
         {/* Logo/Name */}
         <Link 
           href="#top" 
-          className="text-zinc-900 dark:text-white font-bold tracking-tight pr-4 border-r border-black/10 dark:border-white/10 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+          className="text-zinc-900 dark:text-white font-bold tracking-tight pr-4 border-r border-black/10 dark:border-white/10 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors leading-none flex flex-col items-start"
         >
-          B.A.
+          <span className="text-sm font-extrabold tracking-widest uppercase">BILAL</span>
+          <span className="text-[10px] font-semibold tracking-[0.2em] uppercase text-zinc-500 dark:text-zinc-400">AHAMAD</span>
         </Link>
         
         <div className="flex items-center gap-5 sm:gap-6 text-sm font-medium text-zinc-700 dark:text-zinc-300">
