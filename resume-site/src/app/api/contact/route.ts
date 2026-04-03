@@ -28,9 +28,16 @@ export async function POST(req: Request) {
       from: process.env.SMTP_FROM,
       to: process.env.SMTP_TO || process.env.SMTP_FROM,
       replyTo: email,
-      subject: `Contact from \${name}`,
-      text: message,
-      html: `<p>\${message}</p><p>From: \${name} (\${email})</p>`,
+      subject: `New Lead [bilalahamad.com] - ${name}`,
+      text: `New submission from bilalahamad.com\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+      html: `
+        <h3>New Contact Form Submission from bilalahamad.com</h3>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <hr />
+        <p><strong>Message:</strong></p>
+        <p>${message}</p>
+      `,
     });
 
     return NextResponse.json({ message: "Message sent successfully" }, { status: 200 });
