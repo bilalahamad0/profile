@@ -98,7 +98,7 @@ export function BentoGridV2() {
   }, []);
 
   return (
-    <section id="experience" className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-24">
+    <section id="experience" className="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-24 pb-10">
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         
         {/* LEFT COLUMN STRUCTURE */}
