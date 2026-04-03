@@ -1,6 +1,5 @@
 "use client";
 
-import { MagneticButton } from "@/components/ui/magnetic-button";
 import { Mail, Send, Linkedin, Github } from "lucide-react";
 import { useState } from "react";
 
@@ -116,12 +115,16 @@ export function ContactSection() {
                         />
                     </div>
 
-                    <MagneticButton className="w-full group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-xl bg-blue-600 px-8 font-medium text-white transition-all duration-300 hover:bg-blue-700">
-                        <span className="mr-2">
-                            {status === "sending" ? "Sending..." : status === "success" ? "Sent!" : "Send Message"}
+                    <button
+                        type="submit"
+                        disabled={status === "sending"}
+                        className="w-full group relative inline-flex h-12 items-center justify-center gap-2 overflow-hidden rounded-xl bg-blue-600 px-8 font-medium text-white transition-colors duration-200 hover:bg-blue-700 disabled:opacity-70 disabled:cursor-not-allowed"
+                    >
+                        <span>
+                            {status === "sending" ? "Sending..." : status === "success" ? "✓ Sent!" : "Send Message"}
                         </span>
-                        {status === "idle" && <Send className="h-4 w-4 transition-transform group-hover:translate-x-1" />}
-                    </MagneticButton>
+                        {status === "idle" && <Send className="h-4 w-4" />}
+                    </button>
                 </form>
             </div>
         </section>
