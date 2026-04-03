@@ -45,8 +45,8 @@ const certs = [
 ];
 
 const recommendations = [
-  { name: "John Doe", title: "Add Title Here", review: "Please insert your authentic recommendation text here..." },
-  { name: "Jane Smith", title: "Add Title Here", review: "LinkedIn recommendations are strictly private, so you must paste your real reviews directly into this component array in BentoGridV2.tsx!" },
+  { name: "Sai Abhishek / MBA", title: "Project Manager | PMP | Scrum Master", review: "Bilal is an extremely hardworking and dedicated worker, he gives him 100% to all that he does. It was wonderful working with him in a brief stint way back in 2012, however, he has always kept in touch and has ensured that relations built stay forever. I wish him luck in all his future endeavours." },
+  { name: "Nimish Choudhary", title: "Senior Manager | Lead Digital Engineer", review: "I have worked with Bilal in Lnt where we both were in mysore office for some time. Bilal is a very in-tellectual person. He is born with gift of adapting to new technology quickly, his hunger to learn new things and implementing them, has let too many new ways in which a technology can be utilized. Apart from being a technically strong he is a good person to work with. His discussion points are strong and the way he presents them is even better." },
 ];
 
 interface Repository {
