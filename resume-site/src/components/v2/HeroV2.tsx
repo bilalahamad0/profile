@@ -147,7 +147,7 @@ export function HeroV2() {
           className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-extrabold tracking-tight mb-6"
         >
           <span className="text-zinc-900 dark:text-white drop-shadow-lg">BILAL </span>
-          <span className="text-transparent bg-clip-text bg-gradient-to-br from-blue-400 via-indigo-400 to-emerald-400 drop-shadow-sm">
+          <span className="text-transparent bg-clip-text bg-gradient-to-br from-blue-600 via-indigo-500 to-emerald-500 dark:from-blue-400 dark:via-indigo-400 dark:to-emerald-400 drop-shadow-sm">
             AHAMAD
           </span>
         </motion.h1>
@@ -159,7 +159,7 @@ export function HeroV2() {
           transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
           className="max-w-3xl text-xl sm:text-2xl text-zinc-600 dark:text-zinc-400 font-light mb-12 leading-relaxed"
         >
-          Data-driven <span className="text-zinc-900 dark:text-white font-medium">Engineering Manager & Technical QA Lead</span>. <br className="hidden md:block" />
+          Data-driven <span className="text-zinc-900 dark:text-white font-semibold">Engineering Manager & Technical QA Lead</span>. <br className="hidden md:block" />
           Specializing in executing massive test automation architectures <br className="hidden md:block" />
           across IoT, Autonomous Vehicles, and FAANG ecosystem hardware.
         </motion.p>
@@ -171,11 +171,11 @@ export function HeroV2() {
           transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
           className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center"
         >
-          <Link href="#experience" className="group w-full sm:w-auto relative inline-flex h-14 items-center justify-center overflow-hidden rounded-full bg-white px-8 font-medium text-neutral-950 transition-all hover:bg-neutral-200">
+          <Link href="#experience" className="group w-full sm:w-auto relative inline-flex h-14 items-center justify-center overflow-hidden rounded-full bg-zinc-900 dark:bg-white px-8 font-medium text-white dark:text-neutral-950 transition-all hover:bg-zinc-700 dark:hover:bg-neutral-200">
             <span className="mr-2 font-bold tracking-tight">Explore Impact</span>
             <MoveRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
-          <a href="/Resume_Bilal_Ahamad.pdf" download="Bilal_Ahamad_Resume.pdf" className="group w-full sm:w-auto h-14 px-8 inline-flex items-center justify-center rounded-full glass border border-black/10 dark:border-white/10 text-zinc-900 dark:text-white font-medium hover:bg-black/10 dark:bg-white/10 transition-colors gap-2">
+          <a href="/Resume_Bilal_Ahamad.pdf" download="Bilal_Ahamad_Resume.pdf" className="group w-full sm:w-auto h-14 px-8 inline-flex items-center justify-center rounded-full border border-zinc-300 dark:border-white/10 bg-white/80 dark:bg-white/5 text-zinc-900 dark:text-white font-medium hover:bg-zinc-100 dark:hover:bg-white/10 transition-colors gap-2">
             <Download className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
             Download CV
           </a>
