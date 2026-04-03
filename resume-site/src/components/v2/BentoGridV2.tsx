@@ -375,61 +375,58 @@ export function BentoGridV2() {
             </div>
           </div>
 
-          {/* Photo Gallery Album */}
-          <div className="w-full lg:w-1/2 flex items-center justify-center relative min-h-[350px] mt-8 lg:mt-0 z-10 box-border">
-             {/* Base photos styled as an interactive masonry stacked polaroid album */}
-             <div className="relative w-full max-w-sm lg:max-w-md aspect-square flex items-center justify-center perspective-1000">
+          {/* Google I/O Distinct Horizontal Timeline Album */}
+          <div className="w-full mt-8 lg:mt-12 z-10 box-border border-t border-white/5 pt-8">
+             <div className="flex flex-row overflow-x-auto gap-4 snap-x snap-mandatory pb-6 px-1 custom-scrollbar">
                
-               {/* Left Stacked Image (Google Glass) */}
-               <motion.div 
-                 whileHover={{ scale: 1.05, rotate: -2, zIndex: 40 }} 
-                 className="absolute w-44 h-56 rounded-2xl border-[6px] border-zinc-800 bg-zinc-900 shadow-2xl -rotate-12 -translate-x-12 lg:-translate-x-16 -translate-y-8 cursor-pointer transition-all z-10"
-               >
-                 <img src="/io/3.jpg" alt="Google Glass prototype" className="w-full h-full object-cover rounded-xl" />
-                 <IOBadge year="'22" />
-               </motion.div>
-               
-               {/* Right Stacked Image (Brown Jacket) */}
-               <motion.div 
-                 whileHover={{ scale: 1.05, rotate: 2, zIndex: 40 }} 
-                 className="absolute w-40 h-48 rounded-2xl border-[6px] border-zinc-800 bg-zinc-900 shadow-2xl rotate-12 translate-x-12 lg:translate-x-16 -translate-y-12 cursor-pointer transition-all z-10"
-               >
-                 <img src="/io/2.jpg" alt="Google IO brown jacket" className="w-full h-full object-cover rounded-xl" />
-                 <IOBadge year="'23" />
-               </motion.div>
+               {/* 2026 */}
+               <a href="https://developers.google.com/profile/badges/events/io/2026/registered" target="_blank" rel="noreferrer" className="relative w-40 h-52 min-w-[10rem] flex-shrink-0 rounded-2xl border border-blue-500/20 bg-blue-500/5 snap-center group hover:bg-blue-500/10 transition-colors flex items-center justify-center overflow-hidden">
+                 <div className="absolute top-4 left-4 text-xs font-bold text-blue-400/50 uppercase tracking-widest group-hover:text-blue-400 transition-colors">2026</div>
+                 <img src="/io/badge_2026.svg" alt="I/O 2026 Badge" className="w-24 h-24 object-contain group-hover:scale-110 transition-transform drop-shadow-xl" />
+               </a>
 
-               {/* Center Main Image (Black Tshirt selfie) */}
-               <motion.div 
-                 whileHover={{ scale: 1.05, rotate: 0, zIndex: 50 }} 
-                 className="absolute w-56 h-72 rounded-2xl border-[6px] border-zinc-700 bg-zinc-800 shadow-[0_20px_50px_rgba(0,0,0,0.8)] z-30 cursor-pointer transition-all translate-y-8 flex flex-col relative"
-               >
-                 <img src="/io/1.jpg" alt="Google IO prototype viewing" className="w-full h-full object-cover rounded-xl object-top" />
-                 <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent p-4 text-center select-none rounded-b-xl border-t border-transparent">
-                   <p className="text-[12px] font-bold text-white uppercase tracking-[0.2em] relative z-20">Live at I/O</p>
+               {/* 2025 (Black T-shirt) */}
+               <a href="https://developers.google.com/profile/badges/events/io/2025/registered" target="_blank" rel="noreferrer" className="relative w-48 h-64 min-w-[12rem] flex-shrink-0 rounded-2xl border-4 border-zinc-800 bg-zinc-900 snap-center group shadow-xl overflow-hidden">
+                 <img src="/io/1.jpg" alt="I/O 2025 Photo" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none"></div>
+                 <div className="absolute top-4 left-4 text-[10px] font-black text-white/90 drop-shadow-md uppercase tracking-[0.2em] group-hover:text-emerald-400 z-20">2025 Live</div>
+                 
+                 {/* Real SVG Corner Overlap */}
+                 <div className="absolute -bottom-2 -right-2 w-20 h-20 z-20 group-hover:scale-110 transition-transform drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">
+                   <img src="/io/badge_2025.svg" alt="2025 Badge" className="w-full h-full object-contain" />
                  </div>
-                 {/* Main overlaid badge */}
-                 <IOBadge year="'24" />
-               </motion.div>
+               </a>
+
+               {/* 2024 (Brown Jacket) */}
+               <a href="https://developers.google.com/profile/badges/events/io/2024/registered" target="_blank" rel="noreferrer" className="relative w-48 h-64 min-w-[12rem] flex-shrink-0 rounded-2xl border-4 border-zinc-800 bg-zinc-900 snap-center group shadow-xl overflow-hidden">
+                 <img src="/io/2.jpg" alt="I/O 2024 Photo" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none"></div>
+                 <div className="absolute top-4 left-4 text-[10px] font-black text-white/90 drop-shadow-md uppercase tracking-[0.2em] group-hover:text-blue-400 z-20">2024 Live</div>
+                 
+                 {/* Real SVG Corner Overlap */}
+                 <div className="absolute -bottom-2 -right-2 w-20 h-20 z-20 group-hover:scale-110 transition-transform drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">
+                   <img src="/io/badge_2024.svg" alt="2024 Badge" className="w-full h-full object-contain" />
+                 </div>
+               </a>
+
+               {/* 2023 */}
+               <a href="https://developers.google.com/profile/badges/events/io/2023/attendee" target="_blank" rel="noreferrer" className="relative w-40 h-52 min-w-[10rem] flex-shrink-0 rounded-2xl border border-white/5 bg-white/5 snap-center group hover:bg-white/10 transition-colors flex items-center justify-center self-end overflow-hidden">
+                 <div className="absolute top-4 left-4 text-xs font-bold text-zinc-600 uppercase tracking-widest group-hover:text-zinc-300 transition-colors">2023</div>
+                 <img src="/io/badge_2023.svg" alt="I/O 2023 Badge" className="w-24 h-24 object-contain group-hover:scale-110 transition-transform opacity-90 group-hover:opacity-100" />
+               </a>
+
+               {/* 2022 */}
+               <a href="https://developers.google.com/profile/badges/events/io/2022/attendee" target="_blank" rel="noreferrer" className="relative w-40 h-52 min-w-[10rem] flex-shrink-0 rounded-2xl border border-white/5 bg-white/5 snap-center group hover:bg-white/10 transition-colors flex items-center justify-center self-end overflow-hidden">
+                 <div className="absolute top-4 left-4 text-xs font-bold text-zinc-600 uppercase tracking-widest group-hover:text-zinc-300 transition-colors">2022</div>
+                 <img src="/io/badge_2022.svg" alt="I/O 2022 Badge" className="w-24 h-24 object-contain group-hover:scale-110 transition-transform opacity-90 group-hover:opacity-100" />
+               </a>
+
              </div>
           </div>
         </motion.div>
 
       </div>
     </section>
-  );
-}
-
-// Circular Glassy Badge explicitly replicating the physical Google I/O UI attendance badges
-function IOBadge({ year }: { year: string }) {
-  return (
-    <div className="absolute bottom-2 right-2 w-12 h-12 rounded-full border-2 border-zinc-800 bg-zinc-950 flex flex-col items-center justify-center shadow-lg z-50 overflow-hidden group">
-      {/* Dynamic colorful Google inner stroke indicator */}
-      <div className="absolute top-0 w-full h-0.5 bg-gradient-to-r from-[#4285F4] via-[#EA4335] to-[#FBBC05]"></div>
-      <div className="absolute bottom-0 w-full h-0.5 bg-gradient-to-r from-[#34A853] to-[#4285F4]"></div>
-      
-      <span className="text-[10px] font-bold text-zinc-100 tracking-wider">I/O</span>
-      <span className="text-[11px] font-black text-transparent bg-clip-text bg-gradient-to-b from-[#4285F4] to-[#34A853] mt-0.5">{year}</span>
-    </div>
   );
 }
 
