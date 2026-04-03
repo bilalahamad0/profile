@@ -130,7 +130,7 @@ export function HeroV2() {
             <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
             Ex-FAANG Team Lead
           </span>
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-emerald-500/20 bg-white/5 text-sm font-medium tracking-wide text-emerald-300">
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-emerald-500/20 bg-black/5 dark:bg-white/5 text-sm font-medium tracking-wide text-emerald-300">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -146,7 +146,7 @@ export function HeroV2() {
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
           className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-extrabold tracking-tight mb-6"
         >
-          <span className="text-white drop-shadow-lg">BILAL </span>
+          <span className="text-zinc-900 dark:text-white drop-shadow-lg">BILAL </span>
           <span className="text-transparent bg-clip-text bg-gradient-to-br from-blue-400 via-indigo-400 to-emerald-400 drop-shadow-sm">
             AHAMAD
           </span>
@@ -157,9 +157,9 @@ export function HeroV2() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-          className="max-w-3xl text-xl sm:text-2xl text-zinc-400 font-light mb-12 leading-relaxed"
+          className="max-w-3xl text-xl sm:text-2xl text-zinc-600 dark:text-zinc-400 font-light mb-12 leading-relaxed"
         >
-          Data-driven <span className="text-white font-medium">Engineering Manager & Technical QA Lead</span>. <br className="hidden md:block" />
+          Data-driven <span className="text-zinc-900 dark:text-white font-medium">Engineering Manager & Technical QA Lead</span>. <br className="hidden md:block" />
           Specializing in executing massive test automation architectures <br className="hidden md:block" />
           across IoT, Autonomous Vehicles, and FAANG ecosystem hardware.
         </motion.p>
@@ -175,7 +175,7 @@ export function HeroV2() {
             <span className="mr-2 font-bold tracking-tight">Explore Impact</span>
             <MoveRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
-          <a href="/Resume_Bilal_Ahamad.pdf" download="Bilal_Ahamad_Resume.pdf" className="group w-full sm:w-auto h-14 px-8 inline-flex items-center justify-center rounded-full glass border border-white/10 text-white font-medium hover:bg-white/10 transition-colors gap-2">
+          <a href="/Resume_Bilal_Ahamad.pdf" download="Bilal_Ahamad_Resume.pdf" className="group w-full sm:w-auto h-14 px-8 inline-flex items-center justify-center rounded-full glass border border-black/10 dark:border-white/10 text-zinc-900 dark:text-white font-medium hover:bg-black/10 dark:bg-white/10 transition-colors gap-2">
             <Download className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
             Download CV
           </a>
