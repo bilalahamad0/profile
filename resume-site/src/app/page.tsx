@@ -11,7 +11,7 @@ export default function V2Home() {
       <BentoGridV2 />
       
       {/* Reuse the contact form from V1 so email works seamlessly */}
-      <div id="contact" className="pt-24">
+      <div id="contact-wrapper">
         <ContactSection />
       </div>
     </div>
