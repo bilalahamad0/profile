@@ -336,6 +336,78 @@ export function BentoGridV2() {
           </div>
         </motion.div>
 
+        {/* NEW FULL-WIDTH SEGMENT: Google Developer Profile & I/O Album */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+          className="lg:col-span-4 glass-card rounded-3xl p-8 lg:p-12 relative flex flex-col lg:flex-row gap-8 items-center justify-between overflow-hidden"
+        >
+          {/* Subtle Blue Glow specific to Google section */}
+          <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none -translate-y-1/2" />
+          
+          {/* Text Info */}
+          <div className="flex flex-col flex-1 z-10 w-full lg:w-1/2">
+            <h2 className="text-2xl font-bold text-white mb-2 flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0">
+                <img src="/logos/google.png" alt="Google" className="w-5 h-5 object-contain" />
+              </div>
+              Google Developer Profile
+            </h2>
+            <a href="https://developers.google.com/profile/u/bahamad" target="_blank" rel="noreferrer" className="text-zinc-400 hover:text-blue-400 font-medium mb-6 font-mono text-sm underline underline-offset-4 decoration-zinc-700 inline-block w-fit transition-colors">
+              g.dev/bahamad
+            </a>
+            
+            <p className="text-sm text-zinc-300 leading-relaxed max-w-lg mb-8">
+              A recognized participant in the Google Developer Ecosystem. Attended multiple Google I/O flagship events in Mountain View, California, earning exclusive badges for technical integrations, Codelabs completions, and Android Platform Tool mastery.
+            </p>
+
+            {/* Badges Layout */}
+            <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-3">I/O Attendance & Badges</h3>
+            <div className="flex flex-wrap gap-2.5">
+              <span className="px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-semibold text-blue-400">I/O 2026 Registered</span>
+              <span className="px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-zinc-300">I/O 2025</span>
+              <span className="px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-zinc-300">I/O 2024</span>
+              <span className="px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-zinc-300">I/O 2023 Attendee</span>
+              <span className="px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-zinc-300">I/O 2022 Attendee</span>
+              <span className="px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-semibold text-emerald-400">8+ Developer Badges</span>
+            </div>
+          </div>
+
+          {/* Photo Gallery Album */}
+          <div className="w-full lg:w-1/2 flex items-center justify-center relative min-h-[350px] mt-8 lg:mt-0 z-10">
+             {/* Base photos styled as an interactive masonry stacked polaroid album */}
+             <div className="relative w-full max-w-md aspect-square flex items-center justify-center">
+               
+               <motion.div 
+                 whileHover={{ scale: 1.05, rotate: -2, zIndex: 40 }} 
+                 className="absolute w-44 h-56 rounded-2xl border-[6px] border-zinc-800 bg-zinc-900 overflow-hidden shadow-2xl -rotate-12 -translate-x-16 -translate-y-8 cursor-pointer transition-all z-10"
+               >
+                 <img src="/io/1.png" alt="Google IO" className="w-full h-full object-cover" />
+               </motion.div>
+               
+               <motion.div 
+                 whileHover={{ scale: 1.05, rotate: 2, zIndex: 40 }} 
+                 className="absolute w-40 h-48 rounded-2xl border-[6px] border-zinc-800 bg-zinc-900 overflow-hidden shadow-2xl rotate-12 translate-x-16 -translate-y-12 cursor-pointer transition-all z-10"
+               >
+                 <img src="/io/3.png" alt="Google IO" className="w-full h-full object-cover" />
+               </motion.div>
+
+               {/* Center Main Image (Black Tshirt selfie based on user descriptions) */}
+               <motion.div 
+                 whileHover={{ scale: 1.05, rotate: 0, zIndex: 50 }} 
+                 className="absolute w-56 h-72 rounded-2xl border-[6px] border-zinc-700 bg-zinc-800 overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-30 cursor-pointer transition-all translate-y-8"
+               >
+                 <img src="/io/2.png" alt="Google IO 2025" className="w-full h-full object-cover object-top" />
+                 <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 pt-12 text-center select-none">
+                   <p className="text-[11px] font-bold text-white uppercase tracking-[0.2em]">Live at Mountain View</p>
+                 </div>
+               </motion.div>
+             </div>
+          </div>
+        </motion.div>
+
       </div>
     </section>
   );
