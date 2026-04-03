@@ -29,7 +29,7 @@ function InfographicBackground() {
         <motion.div 
           animate={{ y: [0, -25, 0], x: [0, 15, 0], rotate: [0, 8, 0] }} 
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[18%] left-[8%] md:left-[15%] text-blue-400"
+          className="absolute top-[18%] left-[8%] md:left-[15%] text-blue-600 dark:text-blue-400"
         >
           <Car size={56} />
           <span className="block text-xs mt-2 font-mono ml-1">AV/EV SYS</span>
@@ -38,7 +38,7 @@ function InfographicBackground() {
         <motion.div 
           animate={{ y: [0, 20, 0], x: [0, -15, 0], rotate: [0, -5, 0] }} 
           transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="absolute top-[50%] left-[5%] md:left-[10%] text-indigo-400"
+          className="absolute top-[50%] left-[5%] md:left-[10%] text-indigo-600 dark:text-indigo-400"
         >
           <Smartphone size={50} />
           <span className="block text-[10px] mt-1 font-mono -ml-2">MOBILE OS</span>
@@ -47,7 +47,7 @@ function InfographicBackground() {
         <motion.div 
           animate={{ y: [0, -20, 0], x: [0, 20, 0], rotate: [0, 10, 0] }} 
           transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-          className="absolute top-[80%] left-[10%] md:left-[18%] text-pink-400"
+          className="absolute top-[80%] left-[10%] md:left-[18%] text-pink-600 dark:text-pink-400"
         >
           <Watch size={48} />
           <span className="block text-[10px] mt-1 font-mono -ml-1">WEARABLES</span>
@@ -58,7 +58,7 @@ function InfographicBackground() {
         <motion.div 
           animate={{ y: [0, 25, 0], x: [0, -20, 0], rotate: [0, -10, 0] }} 
           transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute top-[15%] right-[8%] md:right-[15%] text-amber-400"
+          className="absolute top-[15%] right-[8%] md:right-[15%] text-amber-600 dark:text-amber-400"
         >
           <Code2 size={56} />
           <span className="block text-xs mt-2 font-mono -ml-2">FW AUTO</span>
@@ -67,7 +67,7 @@ function InfographicBackground() {
         <motion.div 
           animate={{ y: [0, -30, 0], x: [0, 10, 0], rotate: [0, 5, 0] }} 
           transition={{ duration: 16, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-          className="absolute top-[48%] right-[5%] md:right-[10%] text-emerald-400"
+          className="absolute top-[48%] right-[5%] md:right-[10%] text-emerald-600 dark:text-emerald-400"
         >
           <Headset size={60} />
           <span className="block text-[10px] mt-1 font-mono">AR/VR HW</span>
@@ -76,7 +76,7 @@ function InfographicBackground() {
         <motion.div 
           animate={{ y: [0, 25, 0], x: [0, -15, 0], rotate: [0, 10, 0] }} 
           transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 2.5 }}
-          className="absolute top-[78%] right-[10%] md:right-[18%] text-cyan-400"
+          className="absolute top-[78%] right-[10%] md:right-[18%] text-cyan-600 dark:text-cyan-400"
         >
           <Microchip size={52} />
           <span className="block text-[10px] mt-1 font-mono -ml-2">GPU COMPUTE</span>
@@ -86,7 +86,7 @@ function InfographicBackground() {
         <motion.div 
           animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.6, 0.3] }} 
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[70%] left-[35%] text-zinc-500/30"
+          className="absolute top-[70%] left-[35%] text-zinc-500 dark:text-zinc-500/30"
         >
           <Network size={90} />
         </motion.div>
@@ -94,7 +94,7 @@ function InfographicBackground() {
         <motion.div 
           animate={{ scale: [1, 1.15, 1], opacity: [0.2, 0.5, 0.2] }} 
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="absolute top-[25%] right-[35%] text-zinc-500/30"
+          className="absolute top-[25%] right-[35%] text-zinc-500 dark:text-zinc-500/30"
         >
           <Database size={70} />
         </motion.div>
@@ -102,7 +102,7 @@ function InfographicBackground() {
         <motion.div 
           animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.4, 0.2] }} 
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 4 }}
-          className="absolute top-[40%] left-[25%] text-purple-400/20"
+          className="absolute top-[40%] left-[25%] text-purple-600 dark:text-purple-400/20"
         >
           <Wifi size={100} />
         </motion.div>
@@ -126,13 +126,13 @@ export function HeroV2() {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="mb-8 flex flex-wrap justify-center gap-3"
         >
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-amber-500/30 bg-amber-500/10 text-sm font-semibold tracking-wide text-amber-200">
-            <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-amber-500/30 bg-amber-500/10 text-sm font-semibold tracking-wide text-amber-700 dark:text-amber-200">
+            <Star className="w-4 h-4 fill-amber-500 dark:fill-amber-400 text-amber-600 dark:text-amber-400" />
             Ex-FAANG Team Lead
           </span>
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-emerald-500/20 bg-black/5 dark:bg-white/5 text-sm font-medium tracking-wide text-emerald-300">
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-emerald-500/20 bg-black/5 dark:bg-white/5 text-sm font-medium tracking-wide text-emerald-700 dark:text-emerald-300">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 dark:bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
             Available for Leadership Roles

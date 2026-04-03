@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
   :root {
@@ -71,7 +72,7 @@
 @layer utilities {
   .glass {
     backdrop-filter: blur(40px);
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.85);
     border: 1px solid rgba(0, 0, 0, 0.05);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
   }
@@ -84,7 +85,7 @@
 
   .glass-card {
     backdrop-filter: blur(24px);
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.85);
     border: 1px solid rgba(0, 0, 0, 0.05);
     box-shadow: 0 15px 40px -12px rgba(0, 0, 0, 0.1);
   }

@@ -16,14 +16,14 @@ export function NavbarV2() {
         {/* Logo/Name */}
         <Link 
           href="#top" 
-          className="text-zinc-900 dark:text-white font-bold tracking-tight pr-4 border-r border-black/10 dark:border-white/10 hover:text-emerald-400 transition-colors"
+          className="text-zinc-900 dark:text-white font-bold tracking-tight pr-4 border-r border-black/10 dark:border-white/10 hover:text-emerald-600 dark:text-emerald-400 transition-colors"
         >
           B.A.
         </Link>
         
         <div className="flex items-center gap-5 sm:gap-6 text-sm font-medium text-zinc-700 dark:text-zinc-300">
           <Link href="#experience" className="flex items-center gap-2 hover:text-zinc-900 dark:text-white transition-colors group">
-            <Briefcase className="w-4 h-4 text-zinc-600 dark:text-zinc-400 group-hover:text-blue-400 transition-colors" />
+            <Briefcase className="w-4 h-4 text-zinc-600 dark:text-zinc-400 group-hover:text-blue-600 dark:text-blue-400 transition-colors" />
             <span className="hidden sm:inline pt-0.5">Experience</span>
           </Link>
           
@@ -35,12 +35,12 @@ export function NavbarV2() {
           </Link>
 
           <a href="/Resume_Bilal_Ahamad.pdf" download="Bilal_Ahamad_Resume.pdf" className="flex items-center gap-2 hover:text-zinc-900 dark:text-white transition-colors group">
-            <User className="w-4 h-4 text-zinc-600 dark:text-zinc-400 group-hover:text-emerald-400 transition-colors" />
+            <User className="w-4 h-4 text-zinc-600 dark:text-zinc-400 group-hover:text-emerald-600 dark:text-emerald-400 transition-colors" />
             <span className="hidden sm:inline pt-0.5">Resume</span>
           </a>
           
           <Link href="#contact" className="flex items-center gap-2 hover:text-zinc-900 dark:text-white transition-colors group">
-            <Mail className="w-4 h-4 text-zinc-600 dark:text-zinc-400 group-hover:text-purple-400 transition-colors" />
+            <Mail className="w-4 h-4 text-zinc-600 dark:text-zinc-400 group-hover:text-purple-600 dark:text-purple-400 transition-colors" />
             <span className="hidden sm:inline pt-0.5">Contact</span>
           </Link>
         </div>

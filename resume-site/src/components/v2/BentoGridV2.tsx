@@ -22,16 +22,16 @@ const experienceData = [
 ];
 
 const skills = [
-  { name: "Python", icon: Code2, color: "text-blue-400" },
-  { name: "JavaScript", icon: Code2, color: "text-amber-400" },
+  { name: "Python", icon: Code2, color: "text-blue-600 dark:text-blue-400" },
+  { name: "JavaScript", icon: Code2, color: "text-amber-600 dark:text-amber-400" },
   { name: "Node.js", icon: Server, color: "text-green-500" },
   { name: "Jenkins", icon: Wrench, color: "text-red-400" },
   { name: "AWS", icon: Cloud, color: "text-orange-400" },
-  { name: "Appium", icon: Smartphone, color: "text-purple-400" },
-  { name: "Selenium", icon: Database, color: "text-emerald-400" },
+  { name: "Appium", icon: Smartphone, color: "text-purple-600 dark:text-purple-400" },
+  { name: "Selenium", icon: Database, color: "text-emerald-600 dark:text-emerald-400" },
   { name: "QNX", icon: Settings, color: "text-zinc-700 dark:text-zinc-300" },
   { name: "Android OS", icon: Smartphone, color: "text-green-400" },
-  { name: "IoT/Firmware", icon: Cpu, color: "text-blue-300" },
+  { name: "IoT/Firmware", icon: Cpu, color: "text-blue-700 dark:text-blue-300" },
   { name: "Scrum", icon: Layers, color: "text-blue-500" }
 ];
 
@@ -114,7 +114,7 @@ export function BentoGridV2() {
             <Activity className="w-32 h-32" />
           </div>
           <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-8 flex items-center gap-2">
-            <Layers className="w-6 h-6 text-blue-400" />
+            <Layers className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             {yearsOfExperience}+ Years Experience
           </h2>
           <div className="space-y-6 relative z-10 flex-grow">
@@ -147,11 +147,11 @@ export function BentoGridV2() {
                   <div className="pb-4 pt-1">
                     <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
                       <h3 className="text-lg font-semibold text-zinc-900 dark:text-white leading-tight">{exp.role}</h3>
-                      <span className={`font-medium tracking-tight ${exp.faang ? 'text-amber-400' : 'text-emerald-400'}`}>
+                      <span className={`font-medium tracking-tight ${exp.faang ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
                         {exp.company}
                       </span>
                     </div>
-                    <p className="text-xs text-zinc-500 mb-2 mt-1">{exp.duration}</p>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-500 mb-2 mt-1">{exp.duration}</p>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-md">{exp.desc}</p>
                   </div>
                 </motion.div>
@@ -184,7 +184,7 @@ export function BentoGridV2() {
           className="lg:col-span-2 glass-card rounded-3xl p-8 flex flex-col justify-start"
         >
           <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2">
-            <Terminal className="w-6 h-6 text-purple-400" />
+            <Terminal className="w-6 h-6 text-purple-600 dark:text-purple-400" />
             Technical Arsenal
           </h2>
           <div className="flex flex-wrap gap-2.5">
@@ -207,7 +207,7 @@ export function BentoGridV2() {
           className="lg:col-span-2 glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col justify-center"
         >
           {/* Watermark */}
-          <Settings className="absolute -right-8 -bottom-8 w-48 h-48 text-zinc-500/5 pointer-events-none" />
+          <Settings className="absolute -right-8 -bottom-8 w-48 h-48 text-zinc-500 dark:text-zinc-500/5 pointer-events-none" />
           
           <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
             <Settings className="w-6 h-6 text-zinc-600 dark:text-zinc-400" />
@@ -217,7 +217,7 @@ export function BentoGridV2() {
             {certs.map((cert, idx) => (
               <li key={idx} className="flex items-start gap-3">
                 <div className="flex-shrink-0 mt-0.5 w-5 h-5 rounded-md bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
-                  <Box className="w-3 h-3 text-blue-400" />
+                  <Box className="w-3 h-3 text-blue-600 dark:text-blue-400" />
                 </div>
                 <span className="text-sm text-zinc-700 dark:text-zinc-300 leading-snug">{cert}</span>
               </li>
@@ -248,14 +248,14 @@ export function BentoGridV2() {
               >
                 <div className="flex items-start sm:items-center justify-between mb-2 gap-4 flex-col sm:flex-row">
                   <div className="flex items-center gap-3 w-full sm:w-auto overflow-hidden">
-                    <h4 className="text-sm font-semibold text-blue-400 group-hover:text-blue-300 transition-colors truncate">{repo.name}</h4>
+                    <h4 className="text-sm font-semibold text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:text-blue-300 transition-colors truncate">{repo.name}</h4>
                     {repo.language && (
                       <span className="text-[10px] font-medium px-2 py-0.5 rounded-full border border-zinc-300 dark:border-zinc-700 bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 shrink-0 whitespace-nowrap">
                         {repo.language}
                       </span>
                     )}
                   </div>
-                  <div className="flex gap-3 text-xs text-zinc-500 font-medium shrink-0">
+                  <div className="flex gap-3 text-xs text-zinc-500 dark:text-zinc-500 font-medium shrink-0">
                     <span className="flex items-center gap-1"><Star className="w-3 h-3 fill-zinc-600" /> {repo.stargazers_count}</span>
                     <span className="flex items-center gap-1"><GitFork className="w-3 h-3" /> {repo.forks_count}</span>
                   </div>
@@ -264,11 +264,11 @@ export function BentoGridV2() {
               </a>
             )) : (
               <>
-                <div className="flex items-center justify-center p-8 text-zinc-500 text-sm border border-black/5 dark:border-white/5 rounded-xl border-dashed animate-pulse">
+                <div className="flex items-center justify-center p-8 text-zinc-500 dark:text-zinc-500 text-sm border border-black/5 dark:border-white/5 rounded-xl border-dashed animate-pulse">
                   Fetching repositories...
                 </div>
-                <div className="flex items-center justify-center p-8 text-zinc-500/50 text-sm border border-black/5 dark:border-white/5 rounded-xl border-dashed"></div>
-                <div className="flex items-center justify-center p-8 text-zinc-500/30 text-sm border border-black/5 dark:border-white/5 rounded-xl border-dashed"></div>
+                <div className="flex items-center justify-center p-8 text-zinc-500 dark:text-zinc-500/50 text-sm border border-black/5 dark:border-white/5 rounded-xl border-dashed"></div>
+                <div className="flex items-center justify-center p-8 text-zinc-500 dark:text-zinc-500/30 text-sm border border-black/5 dark:border-white/5 rounded-xl border-dashed"></div>
               </>
             )}
           </div>
@@ -298,11 +298,11 @@ export function BentoGridV2() {
              <a href="https://www.linkedin.com/in/bilalahamad/recent-activity/all/" target="_blank" rel="noreferrer" className="p-4 rounded-xl border border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 transition-colors block">
                <h4 className="text-sm font-medium text-zinc-900 dark:text-white mb-2">Engaging with the QA & IoT Community</h4>
                <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed mb-3">Actively participating in architectural discussions covering Automation, AI in Testing, and autonomous vehicle performance pipelines.</p>
-               <span className="text-xs font-semibold text-blue-400 flex items-center gap-1">Expand thread on LinkedIn &rarr;</span>
+               <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 flex items-center gap-1">Expand thread on LinkedIn &rarr;</span>
              </a>
              <a href="https://www.linkedin.com/in/bilalahamad/recent-activity/all/" target="_blank" rel="noreferrer" className="p-4 rounded-xl border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:bg-white/10 transition-colors block">
                <h4 className="text-sm font-medium text-zinc-900 dark:text-white mb-2 line-clamp-1">Continuing Education & Certifications</h4>
-               <p className="text-xs text-zinc-500 leading-relaxed">Shared updates regarding recent implementations of large scale infrastructure testing and AI Copilot integration workflow strategies.</p>
+               <p className="text-xs text-zinc-500 dark:text-zinc-500 leading-relaxed">Shared updates regarding recent implementations of large scale infrastructure testing and AI Copilot integration workflow strategies.</p>
              </a>
           </div>
         </motion.div>
@@ -318,12 +318,12 @@ export function BentoGridV2() {
             <MessageSquareQuote className="w-24 h-24" />
           </div>
           <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
-            <MessageSquareQuote className="w-6 h-6 text-emerald-400" />
+            <MessageSquareQuote className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
             Recommendations
           </h2>
           <div className="flex flex-col gap-4 relative z-10 flex-grow justify-between">
             {recommendations.map((rec, i) => (
-             <div key={i} className="p-5 rounded-xl border border-emerald-500/10 bg-emerald-500/5">
+             <div key={i} className="p-5 rounded-xl border border-emerald-500/10 bg-emerald-500/10 dark:bg-emerald-500/5">
                <p className="text-sm text-emerald-100/80 leading-relaxed italic mb-4 font-light">"{rec.review}"</p>
                <div className="flex items-center gap-3">
                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400/30 to-blue-400/30 flex items-center justify-center shrink-0 border border-emerald-500/30">
@@ -331,7 +331,7 @@ export function BentoGridV2() {
                  </div>
                  <div className="flex flex-col">
                    <span className="text-sm font-bold text-zinc-800 dark:text-zinc-200">{rec.name}</span>
-                   <span className="text-xs text-emerald-400/70">{rec.title}</span>
+                   <span className="text-xs text-emerald-600 dark:text-emerald-400/70">{rec.title}</span>
                  </div>
                </div>
              </div>
@@ -366,7 +366,7 @@ export function BentoGridV2() {
             </h2>
             
             {/* 2. Link under */}
-            <a href="https://developers.google.com/profile/u/bahamad" target="_blank" rel="noreferrer" className="text-zinc-600 dark:text-zinc-400 hover:text-blue-400 font-medium mb-6 font-mono text-sm underline underline-offset-4 decoration-zinc-700 inline-block w-fit transition-colors">
+            <a href="https://developers.google.com/profile/u/bahamad" target="_blank" rel="noreferrer" className="text-zinc-600 dark:text-zinc-400 hover:text-blue-600 dark:text-blue-400 font-medium mb-6 font-mono text-sm underline underline-offset-4 decoration-zinc-700 inline-block w-fit transition-colors">
               g.dev/bahamad
             </a>
             
@@ -376,14 +376,14 @@ export function BentoGridV2() {
             </p>
 
             {/* 4. I/O Attendance & Badges segment */}
-            <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-4">I/O Attendance & Badges</h3>
+            <h3 className="text-[10px] font-bold text-zinc-500 dark:text-zinc-500 uppercase tracking-widest mb-4">I/O Attendance & Badges</h3>
             <div className="flex flex-wrap gap-2.5">
-              {/* <span className="px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-semibold text-blue-400">I/O 2026 Registered</span> */}
+              {/* <span className="px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-semibold text-blue-600 dark:text-blue-400">I/O 2026 Registered</span> */}
               <span className="px-4 py-2 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-medium text-zinc-700 dark:text-zinc-300">I/O 2025</span>
               <span className="px-4 py-2 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-medium text-zinc-700 dark:text-zinc-300">I/O 2024</span>
               <span className="px-4 py-2 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-medium text-zinc-700 dark:text-zinc-300">I/O 2023 Attendee</span>
               <span className="px-4 py-2 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-medium text-zinc-700 dark:text-zinc-300">I/O 2022 Attendee</span>
-              <span className="px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-semibold text-emerald-400">{badgeCount} Developer Badges</span>
+              <span className="px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-semibold text-emerald-600 dark:text-emerald-400">{badgeCount} Developer Badges</span>
             </div>
           </div>
 
@@ -397,9 +397,9 @@ export function BentoGridV2() {
                {/* 2026 (Archived for future use) */}
                {/* 
                <a href="https://developers.google.com/profile/badges/events/io/2026/registered" target="_blank" rel="noreferrer" className="relative w-48 h-64 min-w-[12rem] flex-shrink-0 rounded-2xl border border-blue-500/20 bg-[#0c1017] snap-center group hover:bg-[#121822] transition-colors flex flex-col items-center justify-center overflow-hidden shadow-lg">
-                 <div className="absolute top-4 left-4 text-[10px] font-black text-blue-400/80 drop-shadow-md uppercase tracking-[0.2em] group-hover:text-blue-400 transition-colors z-20">2026</div>
+                 <div className="absolute top-4 left-4 text-[10px] font-black text-blue-600 dark:text-blue-400/80 drop-shadow-md uppercase tracking-[0.2em] group-hover:text-blue-600 dark:text-blue-400 transition-colors z-20">2026</div>
                  <img src="/io/badge_2026.svg" alt="I/O 2026 Badge" className="w-28 h-28 object-contain group-hover:scale-110 transition-transform drop-shadow-xl" />
-                 <span className="absolute bottom-4 inset-x-0 text-center text-[10px] font-bold text-blue-400/50 uppercase tracking-widest leading-snug px-2">Yet to Attend<br/>(Registered)</span>
+                 <span className="absolute bottom-4 inset-x-0 text-center text-[10px] font-bold text-blue-600 dark:text-blue-400/50 uppercase tracking-widest leading-snug px-2">Yet to Attend<br/>(Registered)</span>
                </a>
                */}
 
@@ -407,7 +407,7 @@ export function BentoGridV2() {
                <a href="https://developers.google.com/profile/badges/events/io/2025/registered" target="_blank" rel="noreferrer" className="relative w-48 h-64 min-w-[12rem] flex-shrink-0 rounded-2xl border-4 border-[#1c1c1f] bg-zinc-100 dark:bg-zinc-900 snap-center group shadow-xl overflow-hidden">
                  <img src="/io/1.jpg" alt="I/O 2025 Photo" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                  <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-black/10 to-transparent pointer-events-none"></div>
-                 <div className="absolute top-4 left-4 text-[10px] font-black text-zinc-900 dark:text-white/90 drop-shadow-md uppercase tracking-[0.2em] group-hover:text-emerald-400 z-20">2025 Live</div>
+                 <div className="absolute top-4 left-4 text-[10px] font-black text-zinc-900 dark:text-white/90 drop-shadow-md uppercase tracking-[0.2em] group-hover:text-emerald-600 dark:text-emerald-400 z-20">2025 Live</div>
                  {/* SVG Overlap */}
                  <div className="absolute -bottom-2 -right-2 w-20 h-20 z-20 group-hover:scale-110 transition-transform drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">
                    <img src="/io/badge_2025.svg" alt="2025 Badge" className="w-full h-full object-contain" />
@@ -418,7 +418,7 @@ export function BentoGridV2() {
                <a href="https://developers.google.com/profile/badges/events/io/2024/registered" target="_blank" rel="noreferrer" className="relative w-48 h-64 min-w-[12rem] flex-shrink-0 rounded-2xl border-4 border-[#1c1c1f] bg-zinc-100 dark:bg-zinc-900 snap-center group shadow-xl overflow-hidden">
                  <img src="/io/2.jpg" alt="I/O 2024 Photo" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                  <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-black/10 to-transparent pointer-events-none"></div>
-                 <div className="absolute top-4 left-4 text-[10px] font-black text-zinc-900 dark:text-white/90 drop-shadow-md uppercase tracking-[0.2em] group-hover:text-amber-400 z-20">2024 Live</div>
+                 <div className="absolute top-4 left-4 text-[10px] font-black text-zinc-900 dark:text-white/90 drop-shadow-md uppercase tracking-[0.2em] group-hover:text-amber-600 dark:text-amber-400 z-20">2024 Live</div>
                  {/* SVG Overlap */}
                  <div className="absolute -bottom-2 -right-2 w-20 h-20 z-20 group-hover:scale-110 transition-transform drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">
                    <img src="/io/badge_2024.svg" alt="2024 Badge" className="w-full h-full object-contain" />
@@ -429,7 +429,7 @@ export function BentoGridV2() {
                <a href="https://developers.google.com/profile/badges/events/io/2023/attendee" target="_blank" rel="noreferrer" className="relative w-48 h-64 min-w-[12rem] flex-shrink-0 rounded-2xl border-4 border-[#1c1c1f] bg-zinc-100 dark:bg-zinc-900 snap-center group shadow-xl overflow-hidden">
                  <img src="/io/3.jpg" alt="I/O 2023 Photo" className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform" />
                  <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-black/10 to-transparent pointer-events-none"></div>
-                 <div className="absolute top-4 left-4 text-[10px] font-black text-zinc-900 dark:text-white/90 drop-shadow-md uppercase tracking-[0.2em] group-hover:text-pink-400 z-20">2023 Live</div>
+                 <div className="absolute top-4 left-4 text-[10px] font-black text-zinc-900 dark:text-white/90 drop-shadow-md uppercase tracking-[0.2em] group-hover:text-pink-600 dark:text-pink-400 z-20">2023 Live</div>
                  {/* SVG Overlap */}
                  <div className="absolute -bottom-2 -right-2 w-20 h-20 z-20 group-hover:scale-110 transition-transform drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">
                    <img src="/io/badge_2023.svg" alt="2023 Badge" className="w-full h-full object-contain" />
@@ -438,7 +438,7 @@ export function BentoGridV2() {
 
                {/* 2022 */}
                <a href="https://developers.google.com/profile/badges/events/io/2022/attendee" target="_blank" rel="noreferrer" className="relative w-48 h-64 min-w-[12rem] flex-shrink-0 rounded-2xl border border-black/5 dark:border-white/5 bg-[#141416] snap-center group hover:bg-[#1a1a1c] transition-colors flex flex-col items-center justify-center overflow-hidden shadow-lg">
-                 <div className="absolute top-4 left-4 text-[10px] font-black text-zinc-500 drop-shadow-md uppercase tracking-[0.2em] group-hover:text-zinc-700 dark:text-zinc-300 transition-colors z-20">2022</div>
+                 <div className="absolute top-4 left-4 text-[10px] font-black text-zinc-500 dark:text-zinc-500 drop-shadow-md uppercase tracking-[0.2em] group-hover:text-zinc-700 dark:text-zinc-300 transition-colors z-20">2022</div>
                  <img src="/io/badge_2022.svg" alt="I/O 2022 Badge" className="w-28 h-28 object-contain group-hover:scale-110 transition-transform drop-shadow-xl opacity-90 group-hover:opacity-100" />
                </a>
 
@@ -453,6 +453,6 @@ export function BentoGridV2() {
 
 function UserIconPlaceholder() {
   return (
-    <svg className="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+    <svg className="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
   );
 }
