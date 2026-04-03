@@ -33,8 +33,6 @@ export default function RootLayout({
             <main className="min-h-screen relative flex flex-col">
               {children}
 
-              <NavDockWrapper />
-
               <div className="fixed top-6 right-6 z-50">
                 <ThemeToggle />
               </div>
