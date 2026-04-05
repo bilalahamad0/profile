@@ -23,16 +23,21 @@ const experienceData = [
 
 const skills = [
   { name: "Python", icon: Code2, color: "text-blue-600 dark:text-blue-400" },
-  { name: "JavaScript", icon: Code2, color: "text-amber-600 dark:text-amber-400" },
+  { name: "TypeScript", icon: Code2, color: "text-blue-500" },
+  { name: "React / Next.js", icon: Layout, color: "text-cyan-400" },
   { name: "Node.js", icon: Server, color: "text-green-500" },
-  { name: "Jenkins", icon: Wrench, color: "text-red-400" },
+  { name: "Tailwind CSS", icon: Layout, color: "text-sky-400" },
+  { name: "Docker", icon: Box, color: "text-blue-600" },
   { name: "AWS", icon: Cloud, color: "text-orange-400" },
+  { name: "Jenkins", icon: Wrench, color: "text-red-400" },
+  { name: "CI / CD", icon: Activity, color: "text-emerald-500" },
+  { name: "ADB & Android", icon: Smartphone, color: "text-green-400" },
+  { name: "IoT/Firmware", icon: Cpu, color: "text-blue-700 dark:text-blue-300" },
+  { name: "QNX / C++", icon: Settings, color: "text-zinc-700 dark:text-zinc-300" },
   { name: "Appium", icon: Smartphone, color: "text-purple-600 dark:text-purple-400" },
   { name: "Selenium", icon: Database, color: "text-emerald-600 dark:text-emerald-400" },
-  { name: "QNX", icon: Settings, color: "text-zinc-700 dark:text-zinc-300" },
-  { name: "Android OS", icon: Smartphone, color: "text-green-400" },
-  { name: "IoT/Firmware", icon: Cpu, color: "text-blue-700 dark:text-blue-300" },
-  { name: "Scrum", icon: Layers, color: "text-blue-500" }
+  { name: "Scrum", icon: Layers, color: "text-blue-500" },
+  { name: "AI Copilot / Cursor", icon: ShieldCheck, color: "text-purple-400" }
 ];
 
 const certs = [
@@ -91,8 +96,8 @@ export function BentoGridV2() {
   const currentYear = new Date().getFullYear();
   const yearsOfExperience = currentYear - 2008;
 
-  // Render 6 items initially to fully cover the height without large empty gaps
-  const visibleExperiences = isExpanded ? experienceData : experienceData.slice(0, 6); 
+  // Render 5 items initially to pair vertically with Arsenal and Certs on Desktop
+  const visibleExperiences = isExpanded ? experienceData : experienceData.slice(0, 5); 
 
   const [badgeCount, setBadgeCount] = useState<number | string>("8+");
 
@@ -133,7 +138,7 @@ export function BentoGridV2() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="lg:col-span-2 lg:row-span-3 glass-card rounded-3xl p-8 relative flex flex-col transition-all duration-500 h-full"
+          className="lg:col-span-2 lg:row-span-2 glass-card rounded-3xl p-8 relative flex flex-col transition-all duration-500 h-full"
         >
           <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
             <Activity className="w-32 h-32" />
@@ -206,7 +211,7 @@ export function BentoGridV2() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="lg:col-span-2 glass-card rounded-3xl p-8 flex flex-col justify-start"
+          className="lg:col-span-2 glass-card rounded-3xl p-8 flex flex-col justify-between"
         >
           <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2">
             <Terminal className="w-6 h-6 text-purple-600 dark:text-purple-400" />
@@ -229,7 +234,7 @@ export function BentoGridV2() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="lg:col-span-2 glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col justify-center"
+          className="lg:col-span-2 glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col justify-between"
         >
           {/* Watermark */}
           <Settings className="absolute -right-8 -bottom-8 w-48 h-48 text-zinc-500 dark:text-zinc-500/5 pointer-events-none" />
