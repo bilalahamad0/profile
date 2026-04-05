@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Terminal, ShieldCheck, Box, Activity, Cpu, Cloud, Settings, Layers, 
   ChevronDown, ChevronUp, Code2, Database, Wrench, Smartphone, Server, Github, GitFork, Star,
-  MessageSquareQuote, Linkedin, ExternalLink
+  MessageSquareQuote, Linkedin, ExternalLink, Monitor, Layout, Eye, FileCode, Check
 } from "lucide-react";
 
 // Experience array with `invertLogo` property to explicitly handle black logos in dark mode
@@ -59,9 +59,33 @@ interface Repository {
   language: string | null;
 }
 
+const WARN_SNIPPET = `def download_xlsx(force: bool = False):
+    """Download WARN XLSX with ETag caching."""
+    meta = _load_meta()
+    headers = {"User-Agent": "WARNMonitor/2.0"}
+    if not force and meta.get("etag"):
+        headers["If-None-Match"] = meta["etag"]
+    
+    resp = requests.get(WARN_XLSX_URL, headers=headers)
+    if resp.status_code == 304: 
+        return False, str(LOCAL_XLSX)
+
+    LOCAL_XLSX.write_bytes(resp.content)
+    new_hash = _file_hash(LOCAL_XLSX)
+    
+    meta.update({
+        "etag": resp.headers.get("ETag", ""),
+        "file_hash": new_hash,
+        "last_checked": datetime.utcnow().isoformat()
+    })
+    _save_meta(meta)
+    return True, str(LOCAL_XLSX)`;
+
 export function BentoGridV2() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [repos, setRepos] = useState<Repository[]>([]);
+  const [showWarnCode, setShowWarnCode] = useState(false);
+  const [warnDashboardExpanded, setWarnDashboardExpanded] = useState(false);
   
   // Dynamically calculate years of experience from 2008
   const currentYear = new Date().getFullYear();
@@ -74,7 +98,8 @@ export function BentoGridV2() {
 
   useEffect(() => {
     // Fetch specific repositories in order
-    const targetRepos = ['adhan-api', 'profile', 'tmo'];
+    // Fetch specific repositories in order - explicitly fetching warn and adhan-api first
+    const targetRepos = ['warn', 'adhan-api', 'profile', 'tmo'];
     Promise.all(
       targetRepos.map(repo => 
         fetch(`https://api.github.com/repos/bilalahamad0/${repo}`).then(res => res.json())
@@ -225,20 +250,224 @@ export function BentoGridV2() {
           </ul>
         </motion.div>
 
-        {/* 4. GitHub Projects */}
+        {/* FEATURED PROJECTS SECTION - Full Width Spotlight */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.7 }}
+          className="lg:col-span-4 space-y-10 py-12"
+        >
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-8">
+            <div>
+              <h2 className="text-3xl font-black text-zinc-900 dark:text-white uppercase tracking-tighter flex items-center gap-3">
+                <Layout className="w-8 h-8 text-blue-500" />
+                Featured Public Projects
+              </h2>
+              <p className="text-zinc-500 dark:text-zinc-400 mt-2 font-medium">Spotlight on high-impact open source tools and IoT orchestration.</p>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-bold text-blue-500 uppercase tracking-widest animate-pulse">
+                Live & Public
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            {/* 1. CALIFORNIA WARN MONITOR */}
+            <div className="glass-card rounded-[2.5rem] p-8 flex flex-col gap-8 relative overflow-hidden group border-white/5 hover:border-blue-500/20 transition-all duration-700">
+              <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-1000">
+                <Monitor className="w-64 h-64" />
+              </div>
+
+              <div className="flex flex-col gap-6 relative z-10">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
+                      <Monitor className="w-6 h-6 text-blue-500" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-black text-zinc-900 dark:text-white uppercase tracking-tight">WARN Layoff Monitor</h3>
+                      <div className="flex gap-3 mt-1">
+                        {repos.find(r => r.name === 'warn') && (
+                          <div className="flex gap-3 text-xs text-zinc-500 font-bold uppercase tracking-widest">
+                            <span className="flex items-center gap-1.5"><Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" /> {repos.find(r => r.name === 'warn')?.stargazers_count}</span>
+                            <span className="flex items-center gap-1.5"><GitFork className="w-3.5 h-3.5" /> {repos.find(r => r.name === 'warn')?.forks_count}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <a href="https://github.com/bilalahamad0/warn" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-blue-500 hover:text-white transition-all">
+                    <Github className="w-5 h-5" />
+                  </a>
+                </div>
+
+                <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed max-w-xl">
+                  A high-integrity data pipeline for the <span className="text-zinc-900 dark:text-zinc-200 font-bold">California WARN Act</span>. Automated via GitHub Actions, it implements ETag-based caching and MD5 verification to track layoff trends across the state with surgical precision.
+                </p>
+
+                <div className="flex flex-wrap gap-2">
+                  {['Python', 'GitHub Actions', 'ETag Cache', 'Data Visualization', 'MD5 Verification'].map(tag => (
+                    <span key={tag} className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{tag}</span>
+                  ))}
+                </div>
+
+                <div className="flex gap-4 pt-2">
+                  <button 
+                    onClick={() => setWarnDashboardExpanded(!warnDashboardExpanded)}
+                    className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold uppercase tracking-widest transition-all ${warnDashboardExpanded ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25' : 'bg-white/5 text-zinc-400 hover:bg-white/10'}`}
+                  >
+                    <Eye className="w-4 h-4" /> 
+                    {warnDashboardExpanded ? 'Minimize Dashboard' : 'View Full Dashboard'}
+                  </button>
+                  <button 
+                    onClick={() => setShowWarnCode(!showWarnCode)}
+                    className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold uppercase tracking-widest transition-all ${showWarnCode ? 'bg-zinc-800 text-emerald-400 border border-emerald-500/30' : 'bg-white/5 text-zinc-400 hover:bg-white/10'}`}
+                  >
+                    <FileCode className="w-4 h-4" /> 
+                    {showWarnCode ? 'Hide Snippet' : 'View Core Logic'}
+                  </button>
+                </div>
+              </div>
+
+              {/* Interactive Multi-View Container */}
+              <div className={`relative w-full overflow-hidden rounded-3xl border border-white/5 bg-black/40 backdrop-blur-xl transition-all duration-700 ease-in-out ${warnDashboardExpanded ? 'h-[800px]' : (showWarnCode ? 'h-[450px]' : 'h-[500px]')}`}>
+                <AnimatePresence mode="wait">
+                  {showWarnCode ? (
+                    <motion.div 
+                      key="code"
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      className="absolute inset-0 p-8 overflow-auto custom-scrollbar"
+                    >
+                      <div className="flex items-center justify-between mb-4 border-b border-white/10 pb-4">
+                        <span className="text-[10px] font-black text-emerald-500 uppercase tracking-[0.2em]">Robust Scraper Logic / Python</span>
+                        <div className="flex gap-1.5">
+                          <div className="w-2.5 h-2.5 rounded-full bg-red-500/50" />
+                          <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/50" />
+                          <div className="w-2.5 h-2.5 rounded-full bg-green-500/50" />
+                        </div>
+                      </div>
+                      <pre className="text-xs font-mono text-zinc-300 leading-relaxed">
+                        <code className="language-python">
+                          {WARN_SNIPPET.split('\n').map((line, i) => (
+                            <div key={i} className="flex gap-4 hover:bg-white/5 transition-colors group px-2 py-0.5">
+                              <span className="text-zinc-700 w-4 select-none group-hover:text-zinc-500">{i + 1}</span>
+                              <span dangerouslySetInnerHTML={{ 
+                                __html: line
+                                  .replace(/def |if |return |import /g, '<span className="text-purple-400">$&</span>')
+                                  .replace(/""".*"""/g, '<span className="text-zinc-500">$&</span>')
+                                  .replace(/requests|meta|LOCAL_XLSX/g, '<span className="text-blue-400">$&</span>')
+                                  .replace(/'.*'/g, '<span className="text-emerald-400">$&</span>')
+                              }} />
+                            </div>
+                          ))}
+                        </code>
+                      </pre>
+                    </motion.div>
+                  ) : (
+                    <motion.div 
+                      key="dashboard"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="h-full w-full"
+                    >
+                      <iframe
+                        src="https://bilalahamad0.github.io/warn/"
+                        className="w-full h-full border-none"
+                        title="California WARN Layoff Monitor"
+                        loading="lazy"
+                      />
+                      {!warnDashboardExpanded && (
+                        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black to-transparent pointer-events-none flex items-end justify-center pb-6">
+                           <span className="text-[10px] font-bold text-white/40 uppercase tracking-[0.3em]">Scroll to explore or expand for full view</span>
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+
+            {/* 2. ADHAN API / AUDIO CASTER */}
+            <div className="glass-card rounded-[2.5rem] p-8 flex flex-col gap-8 relative overflow-hidden group border-white/5 hover:border-emerald-500/20 transition-all duration-700">
+               <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-1000">
+                <Check className="w-64 h-64" />
+              </div>
+
+              <div className="flex flex-col gap-6 relative z-10">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+                      <Smartphone className="w-6 h-6 text-emerald-500" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-black text-zinc-900 dark:text-white uppercase tracking-tight">Adhan Audio Caster</h3>
+                      <div className="flex gap-3 mt-1">
+                        {repos.find(r => r.name === 'adhan-api') && (
+                          <div className="flex gap-3 text-xs text-zinc-500 font-bold uppercase tracking-widest">
+                            <span className="flex items-center gap-1.5"><Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" /> {repos.find(r => r.name === 'adhan-api')?.stargazers_count}</span>
+                            <span className="flex items-center gap-1.5"><GitFork className="w-3.5 h-3.5" /> {repos.find(r => r.name === 'adhan-api')?.forks_count}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <a href="https://github.com/bilalahamad0/adhan-api" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition-all">
+                    <Github className="w-5 h-5" />
+                  </a>
+                </div>
+
+                <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed max-w-xl">
+                  An advanced <span className="text-zinc-900 dark:text-zinc-200 font-bold">IoT Orchestration Layer</span> for automated prayer-time notifications. It integrates Raspberry Pi with Sony Android TV via ADB, managing media states and low-level system commands for a seamless home-automation experience.
+                </p>
+
+                <div className="flex flex-wrap gap-2">
+                  {['Node.js', 'ADB', 'Android TV', 'Raspberry Pi', 'IoT', 'Shell'].map(tag => (
+                    <span key={tag} className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{tag}</span>
+                  ))}
+                </div>
+
+                <div className="pt-2 flex items-center gap-2 text-emerald-500 font-black text-[10px] uppercase tracking-[0.2em]">
+                   <Check className="w-4 h-4" /> Production Ready Output
+                </div>
+              </div>
+
+              <div className="relative w-full h-[500px] overflow-hidden rounded-3xl border border-white/5 bg-black/20 group/img shadow-2xl">
+                <img 
+                  src="https://raw.githubusercontent.com/bilalahamad0/adhan-api/main/images/screenshots/final_maghrib_success.jpg" 
+                  alt="Adhan API Output"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
+                  <p className="text-xs text-white/60 font-medium">Captured Dashboard: Successful Maghrib prayer notification triggered via ADB.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </motion.div>
+
+
+        {/* 4. Recent Open Source - Refactored as 'Other Projects' */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.8 }}
           className="lg:col-span-2 glass-card rounded-3xl p-8 flex flex-col h-full"
         >
           <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2">
             <Github className="w-6 h-6 text-zinc-900 dark:text-zinc-100" />
-            Recent Open Source
+            Additional Repositories
           </h2>
           <div className="flex flex-col gap-3 flex-grow">
-            {repos.length > 0 ? repos.map((repo) => (
+            {repos.filter(r => !['warn', 'adhan-api'].includes(r.name)).length > 0 ? 
+             repos.filter(r => !['warn', 'adhan-api'].includes(r.name)).map((repo) => (
               <a 
                 key={repo.id} 
                 href={repo.html_url} 
@@ -263,13 +492,9 @@ export function BentoGridV2() {
                 <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">{repo.description || "No description provided."}</p>
               </a>
             )) : (
-              <>
-                <div className="flex items-center justify-center p-8 text-zinc-500 dark:text-zinc-500 text-sm border border-black/5 dark:border-white/5 rounded-xl border-dashed animate-pulse">
-                  Fetching repositories...
-                </div>
-                <div className="flex items-center justify-center p-8 text-zinc-500 dark:text-zinc-500/50 text-sm border border-black/5 dark:border-white/5 rounded-xl border-dashed"></div>
-                <div className="flex items-center justify-center p-8 text-zinc-500 dark:text-zinc-500/30 text-sm border border-black/5 dark:border-white/5 rounded-xl border-dashed"></div>
-              </>
+              <div className="flex items-center justify-center p-8 text-zinc-500 dark:text-zinc-500 text-sm border border-black/5 dark:border-white/5 rounded-xl border-dashed">
+                Loading community contributions...
+              </div>
             )}
           </div>
         </motion.div>
