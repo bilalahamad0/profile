@@ -21,9 +21,9 @@ const navLinks = [
     ),
   },
   {
-    href: "/Resume_Bilal_Ahamad.pdf",
+    href: "/resume",
     label: "Resume",
-    download: "Bilal_Ahamad_Resume.pdf",
+    external: true,
     icon: <User className="w-4 h-4 shrink-0" />,
   },
   {
@@ -55,7 +55,7 @@ export function NavbarV2() {
 
         {/* Nav links */}
         <div className="flex items-center gap-1 sm:gap-4 text-sm font-medium text-zinc-300 min-w-0">
-          {navLinks.map(({ href, label, icon, external, download }) => {
+          {navLinks.map(({ href, label, icon, external }) => {
             const shared =
               "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-0 py-1 rounded-lg hover:text-white transition-colors group whitespace-nowrap";
 
@@ -68,14 +68,6 @@ export function NavbarV2() {
             if (external) {
               return (
                 <a key={label} href={href} target="_blank" rel="noreferrer" className={shared}>
-                  {iconEl}
-                  <span className="hidden sm:inline">{label}</span>
-                </a>
-              );
-            }
-            if (download) {
-              return (
-                <a key={label} href={href} download={download} className={shared}>
                   {iconEl}
                   <span className="hidden sm:inline">{label}</span>
                 </a>

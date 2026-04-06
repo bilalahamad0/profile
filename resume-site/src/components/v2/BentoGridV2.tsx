@@ -8,53 +8,9 @@ import {
   MessageSquareQuote, Linkedin, ExternalLink, Monitor, Layout, Eye, FileCode, Check
 } from "lucide-react";
 
-// Experience array with `invertLogo` property to explicitly handle black logos in dark mode
-const experienceData = [
-  { role: "Test Lead / Sr Firmware QA", company: "Samsara", duration: "Dec 2023 - Present", desc: "E2E test strategies for Dash cam IoT products on video-based safety platforms.", file: "/logos/samsara.png", faang: false, invertLogo: true },
-  { role: "Test Lead / Sr Test Automation", company: "Cruise", duration: "Oct 2022 - Jun 2023", desc: "CPU/GPU System Computing test delivery. Developed automation achieving 75% test coverage.", file: "/logos/cruise.png", faang: false, invertLogo: false },
-  { role: "Infotainment Test Lead", company: "Rivian Automotive", duration: "Jun 2021 - Sep 2022", desc: "Infotainment QA for R1T/R1S. Designed QNX/Android firmware automation pipelines.", file: "/logos/rivian.png", faang: false, invertLogo: false },
-  { role: "Test Lead / Sr QA II", company: "Amazon Lab126", duration: "Jun 2018 - Jun 2021", desc: "Alexa IoT testing (Dash, Echo Auto, Echo Buds). Automated VUI tests saving $3M.", file: "/logos/amazon.png", faang: true, invertLogo: false },
-  { role: "Software Test Engineer", company: "Google (Tech Mahindra)", duration: "Jan 2016 - Jun 2018", desc: "Standalone VR Controller systems testing. Built 3DOF robot arm for automated motion tracking.", file: "/logos/google.png", faang: true, invertLogo: false },
-  { role: "Test Engineer", company: "Cisco (Cognizant)", duration: "Sep 2015 - Jan 2016", desc: "Python-based framework for Set-top-Box Video Streaming automation.", file: "/logos/cisco.png", faang: false, invertLogo: false },
-  { role: "Radio Validation Engineer", company: "Wistron Mobile", duration: "Dec 2014 - Sep 2015", desc: "Pre-certification and Interoperability testing on Android/BlackBerry handsets.", file: "/logos/wistron.png", faang: false, invertLogo: true },
-  { role: "Sr Software Engineer in Test", company: "Motorola Mobility", duration: "Oct 2009 - Dec 2014", desc: "Bluetooth automation framework for mobile handsets showcasing $2.1M savings.", file: "/logos/motorola.png", faang: false, invertLogo: false },
-  { role: "Test Engineer", company: "Luminous Infoways", duration: "Oct 2008 - Sep 2009", desc: "Web application deployment modules, feature integration.", file: "/logos/luminous.png", faang: false, invertLogo: false },
-];
+import { experienceData, skills, certs, recommendations } from "@/data/portfolio";
 
-const skills = [
-  { name: "Python", icon: Code2, color: "text-blue-600 dark:text-blue-400" },
-  { name: "TypeScript", icon: Code2, color: "text-blue-500" },
-  { name: "React / Next.js", icon: Layout, color: "text-cyan-400" },
-  { name: "Node.js", icon: Server, color: "text-green-500" },
-  { name: "Tailwind CSS", icon: Layout, color: "text-sky-400" },
-  { name: "Docker", icon: Box, color: "text-blue-600" },
-  { name: "AWS", icon: Cloud, color: "text-orange-400" },
-  { name: "Jenkins", icon: Wrench, color: "text-red-400" },
-  { name: "CI / CD", icon: Activity, color: "text-emerald-500" },
-  { name: "ADB & Android", icon: Smartphone, color: "text-green-400" },
-  { name: "IoT/Firmware", icon: Cpu, color: "text-blue-700 dark:text-blue-300" },
-  { name: "QNX / C++", icon: Settings, color: "text-zinc-700 dark:text-zinc-300" },
-  { name: "Appium", icon: Smartphone, color: "text-purple-600 dark:text-purple-400" },
-  { name: "Selenium", icon: Database, color: "text-emerald-600 dark:text-emerald-400" },
-  { name: "Scrum", icon: Layers, color: "text-blue-500" },
-  { name: "AI Copilot / Cursor", icon: ShieldCheck, color: "text-purple-400" }
-];
-
-const certs = [
-  "Software Testing Foundations: Integrating AI into Quality Process (2026)",
-  "AI Coding Agents with GitHub Copilot and Cursor (2025)",
-  "How to Master Your Executive Presence (2023)",
-  "Project Management Foundations (2023)",
-  "Scrum: Advanced (2021)",
-  "ISTQB Foundation Level"
-];
-
-const recommendations = [
-  { name: "Sai Abhishek / MBA", title: "Project Manager | PMP | Scrum Master", review: "Bilal is an extremely hardworking and dedicated worker, he gives him 100% to all that he does. It was wonderful working with him in a brief stint way back in 2012, however, he has always kept in touch and has ensured that relations built stay forever. I wish him luck in all his future endeavours." },
-  { name: "Nimish Choudhary", title: "Senior Manager | Lead Digital Engineer", review: "I have worked with Bilal in Lnt where we both were in mysore office for some time. Bilal is a very in-tellectual person. He is born with gift of adapting to new technology quickly, his hunger to learn new things and implementing them, has let too many new ways in which a technology can be utilized. Apart from being a technically strong he is a good person to work with. His discussion points are strong and the way he presents them is even better." },
-];
-
-interface Repository {
+export interface Repository {
   id: number;
   name: string;
   description: string;
@@ -86,8 +42,8 @@ const WARN_SNIPPET = `def download_xlsx(force: bool = False):
     _save_meta(meta)
     return True, str(LOCAL_XLSX)`;
 
-export function BentoGridV2() {
-  const [isExpanded, setIsExpanded] = useState(false);
+export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boolean }) {
+  const [isExpanded, setIsExpanded] = useState(showOnlyResume);
   const [repos, setRepos] = useState<Repository[]>([]);
   const [showWarnCode, setShowWarnCode] = useState(false);
   const [warnDashboardExpanded, setWarnDashboardExpanded] = useState(false);
@@ -128,90 +84,90 @@ export function BentoGridV2() {
   }, []);
 
   return (
-    <section id="experience" className="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-24 pb-10">
+    <section id="experience" className={`w-full max-w-7xl mx-auto px-4 sm:px-6 ${showOnlyResume ? 'py-10' : 'pt-24 pb-10'}`}>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         
-        {/* LEFT COLUMN STRUCTURE */}
-        {/* Timeline Panel */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="lg:col-span-2 lg:row-span-2 glass-card rounded-3xl p-8 relative flex flex-col transition-all duration-500 h-full"
-        >
-          <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
-            <Activity className="w-32 h-32" />
-          </div>
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-8 flex items-center gap-2">
-            <Layers className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-            {yearsOfExperience}+ Years Experience
-          </h2>
-          <div className="space-y-6 relative z-10 flex-grow">
-            <AnimatePresence>
-              {visibleExperiences.map((exp, idx) => (
-                <motion.div 
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  key={exp.company + idx} 
-                  className="flex gap-4 group overflow-hidden"
-                >
-                  <div className="flex flex-col items-center">
-                    <div className={`w-12 h-12 rounded-xl flex shrink-0 items-center justify-center transition-colors border overflow-hidden p-2.5
-                      ${exp.faang 
-                        ? 'bg-amber-500/10 border-amber-500/30 shadow-[0_0_15px_rgba(249,115,22,0.15)]' 
-                        : 'bg-black/5 dark:bg-white/5 border-black/10 dark:border-white/10 group-hover:bg-blue-500/20 group-hover:border-blue-500/50'
-                      }`}
-                    >
-                      <img 
-                        src={exp.file} 
-                        alt={exp.company} 
-                        className={`w-full h-full object-contain ${exp.invertLogo ? 'filter invert brightness-150' : ''}`} 
-                        onError={(e) => (e.currentTarget.style.display = 'none')}  
-                      />
+        {/* LEFT COLUMN STRUCTURE - EXPERIENCE TIMELINE */}
+        {(showOnlyResume || !showOnlyResume) && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className={`lg:col-span-2 lg:row-span-2 glass-card rounded-3xl p-8 relative flex flex-col transition-all duration-500 h-full ${!showOnlyResume ? 'hidden lg:flex' : ''}`}
+          >
+            {/* Show only on resume page or if expanded */}
+            <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+              <Activity className="w-32 h-32" />
+            </div>
+            <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-8 flex items-center gap-2">
+              <Layers className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+              Professional Career Timeline
+            </h2>
+            <div className="space-y-6 relative z-10 flex-grow">
+              <AnimatePresence>
+                {visibleExperiences.map((exp, idx) => (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    key={exp.company + idx} 
+                    className="flex gap-4 group overflow-hidden"
+                  >
+                    <div className="flex flex-col items-center">
+                      <div className={`w-12 h-12 rounded-xl flex shrink-0 items-center justify-center transition-colors border overflow-hidden p-2.5
+                        ${exp.faang 
+                          ? 'bg-amber-500/10 border-amber-500/30 shadow-[0_0_15px_rgba(249,115,22,0.15)]' 
+                          : 'bg-black/5 dark:bg-white/5 border-black/10 dark:border-white/10 group-hover:bg-blue-500/20 group-hover:border-blue-500/50'
+                        }`}
+                      >
+                        <img 
+                          src={exp.file} 
+                          alt={exp.company} 
+                          className={`w-full h-full object-contain ${exp.invertLogo ? 'filter invert brightness-150' : ''}`} 
+                          onError={(e) => (e.currentTarget.style.display = 'none')}  
+                        />
+                      </div>
+                      {/* Hide timeline connector on the absolute last item shown */}
+                      {idx !== visibleExperiences.length - 1 && <div className="w-px h-full bg-gradient-to-b from-zinc-300 dark:from-zinc-600 to-transparent mt-2 pointer-events-none" />}
                     </div>
-                    {/* Hide timeline connector on the absolute last item shown */}
-                    {idx !== visibleExperiences.length - 1 && <div className="w-px h-full bg-gradient-to-b from-zinc-300 dark:from-zinc-600 to-transparent mt-2 pointer-events-none" />}
-                  </div>
-                  <div className="pb-4 pt-1">
-                    <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
-                      <h3 className="text-lg font-semibold text-zinc-900 dark:text-white leading-tight">{exp.role}</h3>
-                      <span className={`font-medium tracking-tight ${exp.faang ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
-                        {exp.company}
-                      </span>
+                    <div className="pb-4 pt-1">
+                      <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
+                        <h3 className="text-lg font-semibold text-zinc-900 dark:text-white leading-tight">{exp.role}</h3>
+                        <span className={`font-medium tracking-tight ${exp.faang ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
+                          {exp.company}
+                        </span>
+                      </div>
+                      <p className="text-xs text-zinc-500 dark:text-zinc-500 mb-2 mt-1">{exp.duration}</p>
+                      <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-md">{exp.desc}</p>
                     </div>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-500 mb-2 mt-1">{exp.duration}</p>
-                    <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-md">{exp.desc}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-          
-          {experienceData.length > 6 && (
-            <button 
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="mt-6 flex items-center justify-center w-full py-3 rounded-xl border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:bg-white/10 text-zinc-700 dark:text-zinc-300 transition-colors gap-2 text-sm font-medium z-20 relative"
-            >
-              {isExpanded ? (
-                <><ChevronUp className="w-4 h-4" /> Collapse Timeline</>
-              ) : (
-                <><ChevronDown className="w-4 h-4" /> View All {experienceData.length} Experiences</>
-              )}
-            </button>
-          )}
-        </motion.div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+            
+            {experienceData.length > 5 && (
+              <button 
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="mt-6 flex items-center justify-center w-full py-3 rounded-xl border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:bg-white/10 text-zinc-700 dark:text-zinc-300 transition-colors gap-2 text-sm font-medium z-20 relative"
+              >
+                {isExpanded ? (
+                  <><ChevronUp className="w-4 h-4" /> Collapse Timeline</>
+                ) : (
+                  <><ChevronDown className="w-4 h-4" /> View Full Journey</>
+                )}
+              </button>
+            )}
+          </motion.div>
+        )}
 
 
-        {/* RIGHT COLUMN STRUCTURE */}
-        {/* 1. Technical Arsenal */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="lg:col-span-2 glass-card rounded-3xl p-8 flex flex-col justify-between"
+          className={`lg:col-span-2 glass-card rounded-3xl p-8 flex flex-col justify-between ${!showOnlyResume ? 'lg:col-span-4' : ''}`}
         >
           <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2">
             <Terminal className="w-6 h-6 text-purple-600 dark:text-purple-400" />
@@ -228,41 +184,43 @@ export function BentoGridV2() {
         </motion.div>
 
 
-        {/* 3. Certifications */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="lg:col-span-2 glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col justify-between"
-        >
-          {/* Watermark */}
-          <Settings className="absolute -right-8 -bottom-8 w-48 h-48 text-zinc-500 dark:text-zinc-500/5 pointer-events-none" />
-          
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
-            <Settings className="w-6 h-6 text-zinc-600 dark:text-zinc-400" />
-            Certifications
-          </h2>
-          <ul className="space-y-3.5">
-            {certs.map((cert, idx) => (
-              <li key={idx} className="flex items-start gap-3">
-                <div className="flex-shrink-0 mt-0.5 w-5 h-5 rounded-md bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
-                  <Box className="w-3 h-3 text-blue-600 dark:text-blue-400" />
-                </div>
-                <span className="text-sm text-zinc-700 dark:text-zinc-300 leading-snug">{cert}</span>
-              </li>
-            ))}
-          </ul>
-        </motion.div>
+        {(showOnlyResume || !showOnlyResume) && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className={`lg:col-span-2 glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col justify-between ${!showOnlyResume ? 'hidden lg:flex' : ''}`}
+          >
+            {/* Watermark */}
+            <Settings className="absolute -right-8 -bottom-8 w-48 h-48 text-zinc-500 dark:text-zinc-500/5 pointer-events-none" />
+            
+            <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
+              <Settings className="w-6 h-6 text-zinc-600 dark:text-zinc-400" />
+              Certifications
+            </h2>
+            <ul className="space-y-3.5">
+              {certs.map((cert, idx) => (
+                <li key={idx} className="flex items-start gap-3">
+                  <div className="flex-shrink-0 mt-0.5 w-5 h-5 rounded-md bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
+                    <Box className="w-3 h-3 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <span className="text-sm text-zinc-700 dark:text-zinc-300 leading-snug">{cert}</span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        )}
 
-        {/* FEATURED PROJECTS SECTION - Full Width Spotlight */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.7 }}
-          className="lg:col-span-4 space-y-10 py-12"
-        >
+        {/* FEATURED PROJECTS SECTION - Spotlight on Main Page */}
+        {!showOnlyResume && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.7 }}
+            className="lg:col-span-4 space-y-10 py-12"
+          >
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-8">
             <div>
               <h2 className="text-3xl font-black text-zinc-900 dark:text-white uppercase tracking-tighter flex items-center gap-3">
@@ -456,6 +414,7 @@ export function BentoGridV2() {
 
           </div>
         </motion.div>
+        )}
 
 
         {/* 4. Recent Open Source - Refactored as 'Other Projects' */}
@@ -505,69 +464,73 @@ export function BentoGridV2() {
         </motion.div>
 
 
-        {/* BOTTOM ROW STRUCTURE: LinkedIn Modules spanning the full width */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          className="lg:col-span-2 glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col"
-        >
-           <Linkedin className="absolute -right-4 -bottom-4 w-40 h-40 text-blue-500/10 pointer-events-none" />
-           <div className="flex items-center justify-between mb-5 relative z-10">
-             <h2 className="text-2xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-              <Linkedin className="w-6 h-6 text-[#0A66C2]" fill="currentColor" />
-              LinkedIn Activity
-             </h2>
-             <a href="https://www.linkedin.com/in/bilalahamad/recent-activity/all/" target="_blank" rel="noreferrer" className="text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-white flex items-center gap-1 transition-colors">
-               <span className="hidden sm:inline">View All Activity</span> <ExternalLink className="w-3 h-3" />
-             </a>
-           </div>
-          
-          <div className="flex flex-col gap-4 relative z-10 flex-grow">
-             <a href="https://www.linkedin.com/in/bilalahamad/recent-activity/all/" target="_blank" rel="noreferrer" className="p-4 rounded-xl border border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 transition-colors block">
-               <h4 className="text-sm font-medium text-zinc-900 dark:text-white mb-2">Engaging with the QA & IoT Community</h4>
-               <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed mb-3">Actively participating in architectural discussions covering Automation, AI in Testing, and autonomous vehicle performance pipelines.</p>
-               <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 flex items-center gap-1">Expand thread on LinkedIn &rarr;</span>
-             </a>
-             <a href="https://www.linkedin.com/in/bilalahamad/recent-activity/all/" target="_blank" rel="noreferrer" className="p-4 rounded-xl border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:bg-white/10 transition-colors block">
-               <h4 className="text-sm font-medium text-zinc-900 dark:text-white mb-2 line-clamp-1">Continuing Education & Certifications</h4>
-               <p className="text-xs text-zinc-500 dark:text-zinc-500 leading-relaxed">Shared updates regarding recent implementations of large scale infrastructure testing and AI Copilot integration workflow strategies.</p>
-             </a>
-          </div>
-        </motion.div>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.7 }}
-          className="lg:col-span-2 glass-card rounded-3xl p-8 relative flex flex-col"
-        >
-          <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none">
-            <MessageSquareQuote className="w-24 h-24" />
-          </div>
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
-            <MessageSquareQuote className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
-            Recommendations
-          </h2>
-          <div className="flex flex-col gap-4 relative z-10 flex-grow justify-between">
-            {recommendations.map((rec, i) => (
-             <div key={i} className="p-5 rounded-xl border border-emerald-500/20 bg-emerald-500/10 dark:bg-emerald-500/5">
-               <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed italic mb-4 font-light">"{rec.review}"</p>
-               <div className="flex items-center gap-3">
-                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400/30 to-blue-400/30 flex items-center justify-center shrink-0 border border-emerald-500/30">
-                   <UserIconPlaceholder />
-                 </div>
-                 <div className="flex flex-col">
-                   <span className="text-sm font-bold text-zinc-800 dark:text-zinc-200">{rec.name}</span>
-                   <span className="text-xs text-emerald-600 dark:text-emerald-400/70">{rec.title}</span>
-                 </div>
+        {/* LinkedIn & Recommendations - Only on detailed resume page */}
+        {showOnlyResume && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="lg:col-span-2 glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col"
+            >
+               <Linkedin className="absolute -right-4 -bottom-4 w-40 h-40 text-blue-500/10 pointer-events-none" />
+               <div className="flex items-center justify-between mb-5 relative z-10">
+                 <h2 className="text-2xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
+                  <Linkedin className="w-6 h-6 text-[#0A66C2]" fill="currentColor" />
+                  LinkedIn Activity
+                 </h2>
+                 <a href="https://www.linkedin.com/in/bilalahamad/recent-activity/all/" target="_blank" rel="noreferrer" className="text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:text-white flex items-center gap-1 transition-colors">
+                   <span className="hidden sm:inline">View All Activity</span> <ExternalLink className="w-3 h-3" />
+                 </a>
                </div>
-             </div>
-            ))}
-          </div>
-        </motion.div>
+              
+              <div className="flex flex-col gap-4 relative z-10 flex-grow">
+                 <a href="https://www.linkedin.com/in/bilalahamad/recent-activity/all/" target="_blank" rel="noreferrer" className="p-4 rounded-xl border border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 transition-colors block">
+                   <h4 className="text-sm font-medium text-zinc-900 dark:text-white mb-2">Engaging with the QA & IoT Community</h4>
+                   <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed mb-3">Actively participating in architectural discussions covering Automation, AI in Testing, and autonomous vehicle performance pipelines.</p>
+                   <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 flex items-center gap-1">Expand thread on LinkedIn &rarr;</span>
+                 </a>
+                 <a href="https://www.linkedin.com/in/bilalahamad/recent-activity/all/" target="_blank" rel="noreferrer" className="p-4 rounded-xl border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:bg-white/10 transition-colors block">
+                   <h4 className="text-sm font-medium text-zinc-900 dark:text-white mb-2 line-clamp-1">Continuing Education & Certifications</h4>
+                   <p className="text-xs text-zinc-500 dark:text-zinc-500 leading-relaxed">Shared updates regarding recent implementations of large scale infrastructure testing and AI Copilot integration workflow strategies.</p>
+                 </a>
+              </div>
+            </motion.div>
+
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+              className="lg:col-span-2 glass-card rounded-3xl p-8 relative flex flex-col"
+            >
+              <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none">
+                <MessageSquareQuote className="w-24 h-24" />
+              </div>
+              <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
+                <MessageSquareQuote className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+                Recommendations
+              </h2>
+              <div className="flex flex-col gap-4 relative z-10 flex-grow justify-between">
+                {recommendations.map((rec, i) => (
+                 <div key={i} className="p-5 rounded-xl border border-emerald-500/20 bg-emerald-500/10 dark:bg-emerald-500/5">
+                   <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed italic mb-4 font-light">"{rec.review}"</p>
+                   <div className="flex items-center gap-3">
+                     <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400/30 to-blue-400/30 flex items-center justify-center shrink-0 border border-emerald-500/30">
+                       <UserIconPlaceholder />
+                     </div>
+                     <div className="flex flex-col">
+                       <span className="text-sm font-bold text-zinc-800 dark:text-zinc-200">{rec.name}</span>
+                       <span className="text-xs text-emerald-600 dark:text-emerald-400/70">{rec.title}</span>
+                     </div>
+                   </div>
+                 </div>
+                ))}
+              </div>
+            </motion.div>
+          </>
+        )}
 
         {/* NEW FULL-WIDTH SEGMENT: Google Developer Profile & I/O Album */}
         <motion.div 
