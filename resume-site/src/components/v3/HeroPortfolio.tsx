@@ -1,8 +1,78 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MoveRight, Star, Code2, Cpu, Globe, Rocket, Terminal, ShieldCheck } from "lucide-react";
+import { MoveRight, Star, Code2, Cpu, Globe, Rocket, Terminal, ShieldCheck, Car, Smartphone, Watch, Headset, Microchip, Network, Database, Wifi } from "lucide-react";
 import Link from "next/link";
+
+function InfographicBackground() {
+  return (
+    <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+      {/* Dynamic Mesh Gradients */}
+      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-[100%] bg-blue-600/10 blur-[120px] mix-blend-screen" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-[100%] bg-emerald-600/10 blur-[100px] mix-blend-screen" />
+      
+      {/* Data Visualization Grid */}
+      <svg className="absolute inset-0 w-full h-full opacity-[0.05]" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="heroGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="1"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#heroGrid)" />
+      </svg>
+
+      {/* Floating Animated Technical Icons - Positioned to the Periphery */}
+      <div className="absolute inset-0 opacity-20">
+        {/* --- LEFT PERIPHERY --- */}
+        <motion.div 
+          animate={{ y: [0, -25, 0], x: [0, 15, 0], rotate: [0, 8, 0] }} 
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[10%] left-[5%] text-blue-500/40 hidden lg:block"
+        >
+          <Car size={64} />
+          <span className="block text-[10px] mt-2 font-mono ml-1 opacity-50 uppercase tracking-widest">AV Systems</span>
+        </motion.div>
+        
+        <motion.div 
+          animate={{ y: [0, 20, 0], x: [0, -15, 0], rotate: [0, -5, 0] }} 
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute bottom-[20%] left-[8%] text-indigo-500/40 hidden lg:block"
+        >
+          <Smartphone size={56} />
+          <span className="block text-[10px] mt-1 font-mono opacity-50 uppercase tracking-widest">Mobile OS</span>
+        </motion.div>
+
+        {/* --- RIGHT PERIPHERY --- */}
+        <motion.div 
+          animate={{ y: [0, 25, 0], x: [0, -20, 0], rotate: [0, -10, 0] }} 
+          transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute top-[15%] right-[5%] text-amber-500/40 hidden lg:block"
+        >
+          <Code2 size={64} />
+          <span className="block text-[10px] mt-2 font-mono ml-1 opacity-50 uppercase tracking-widest">FW Automation</span>
+        </motion.div>
+
+        <motion.div 
+          animate={{ y: [0, -30, 0], x: [0, 10, 0], rotate: [0, 5, 0] }} 
+          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+          className="absolute bottom-[15%] right-[8%] text-emerald-500/40 hidden lg:block"
+        >
+          <Microchip size={60} />
+          <span className="block text-[10px] mt-1 font-mono opacity-50 uppercase tracking-widest">GPU Compute</span>
+        </motion.div>
+
+        {/* --- SPACERS --- */}
+        <motion.div 
+          animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.3, 0.1] }} 
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[40%] left-[2%] text-zinc-500/20"
+        >
+          <Network size={80} />
+        </motion.div>
+      </div>
+    </div>
+  );
+}
 
 const logos = [
   { name: "Amazon", path: "/logos/amazon.png" },
@@ -15,12 +85,8 @@ const logos = [
 
 export function HeroPortfolio() {
   return (
-    <section className="relative min-h-[90vh] flex flex-col justify-center items-start px-6 lg:px-24 py-20 overflow-hidden">
-      {/* Subtle Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full -z-10 bg-[#09090b]">
-        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-blue-600/5 blur-[120px]" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-600/5 blur-[100px]" />
-      </div>
+    <section className="relative min-h-[95vh] flex flex-col justify-center items-start px-6 lg:px-24 py-20 overflow-hidden">
+      <InfographicBackground />
 
       <div className="w-full max-w-5xl z-10">
         {/* Intro Tag */}
@@ -54,7 +120,7 @@ export function HeroPortfolio() {
         >
           <p className="text-xl md:text-2xl text-zinc-400 font-light leading-relaxed mb-10">
             For 18+ years, I&apos;ve built specialized test architectures and IoT solutions for 
-            <span className="text-zinc-200"> global industry leaders</span>. Currently focusing on 
+            <span className="text-zinc-200 font-medium"> global industry leaders</span>. Currently focusing on 
             high-integrity data pipelines and automated production systems.
           </p>
 
@@ -63,8 +129,8 @@ export function HeroPortfolio() {
                View Featured Work
                <MoveRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
              </Link>
-             <Link href="/resume" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-3 px-8 py-4 rounded-full bg-white/5 border border-white/10 text-zinc-300 font-bold transition-all hover:bg-white/10 hover:border-white/20">
-               Nitty-Gritty Details
+             <Link href="/resume" className="group flex items-center gap-3 px-8 py-4 rounded-full bg-white/5 border border-white/10 text-zinc-300 font-bold transition-all hover:bg-white/10 hover:border-white/20">
+               Full Career Roadmap
                <Terminal className="w-5 h-5" />
              </Link>
           </div>
@@ -94,9 +160,9 @@ export function HeroPortfolio() {
       {/* Hero Graphic Element (Abstract Terminal) */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 0.1, scale: 1 }}
+        animate={{ opacity: 0.05, scale: 1 }}
         transition={{ duration: 2, delay: 0.5 }}
-        className="absolute right-[-10%] top-[20%] w-[600px] h-[600px] hidden xl:block"
+        className="absolute right-[-5%] top-[25%] w-[500px] h-[500px] hidden xl:block pointer-events-none"
       >
         <Terminal className="w-full h-full text-blue-500 rotate-12" />
       </motion.div>

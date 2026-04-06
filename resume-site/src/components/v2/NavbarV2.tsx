@@ -45,8 +45,8 @@ export function NavbarV2() {
 
         {/* Wordmark — full on sm+, condensed on xs */}
         <Link
-          href="#top"
-          aria-label="Bilal Ahamad — back to top"
+          href="/"
+          aria-label="Bilal Ahamad — home"
           className="shrink-0 text-white font-bold leading-none flex flex-col items-start pr-3 sm:pr-4 border-r border-white/10 hover:text-emerald-400 transition-colors"
         >
           <span className="text-[11px] sm:text-sm font-extrabold tracking-widest uppercase">BILAL</span>

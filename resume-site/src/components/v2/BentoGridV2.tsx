@@ -87,16 +87,14 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
     <section id="experience" className={`w-full max-w-7xl mx-auto px-4 sm:px-6 ${showOnlyResume ? 'py-10' : 'pt-24 pb-10'}`}>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         
-        {/* LEFT COLUMN STRUCTURE - EXPERIENCE TIMELINE */}
-        {(showOnlyResume || !showOnlyResume) && (
+        {showOnlyResume && (
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className={`lg:col-span-2 lg:row-span-2 glass-card rounded-3xl p-8 relative flex flex-col transition-all duration-500 h-full ${!showOnlyResume ? 'hidden lg:flex' : ''}`}
+            className="lg:col-span-2 lg:row-span-2 glass-card rounded-3xl p-8 relative flex flex-col transition-all duration-500 h-full"
           >
-            {/* Show only on resume page or if expanded */}
             <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
               <Activity className="w-32 h-32" />
             </div>
@@ -162,35 +160,37 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
         )}
 
 
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className={`lg:col-span-2 glass-card rounded-3xl p-8 flex flex-col justify-between ${!showOnlyResume ? 'lg:col-span-4' : ''}`}
-        >
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2">
-            <Terminal className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-            Technical Arsenal
-          </h2>
-          <div className="flex flex-wrap gap-2.5">
-            {skills.map((skill) => (
-              <span key={skill.name} className="px-3.5 py-1.5 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm font-medium text-zinc-800 dark:text-zinc-200 hover:bg-black/10 dark:bg-white/10 hover:border-white/20 transition-all flex items-center gap-2 cursor-default group">
-                <skill.icon className={`w-4 h-4 ${skill.color} group-hover:scale-110 transition-transform`} />
-                {skill.name}
-              </span>
-            ))}
-          </div>
-        </motion.div>
+        {!showOnlyResume && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="lg:col-span-4 glass-card rounded-3xl p-8 flex flex-col justify-between"
+          >
+            <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2">
+              <Terminal className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+              Technical Arsenal
+            </h2>
+            <div className="flex flex-wrap gap-2.5">
+              {skills.map((skill) => (
+                <span key={skill.name} className="px-3.5 py-1.5 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm font-medium text-zinc-800 dark:text-zinc-200 hover:bg-black/10 dark:bg-white/10 hover:border-white/20 transition-all flex items-center gap-2 cursor-default group">
+                  <skill.icon className={`w-4 h-4 ${skill.color} group-hover:scale-110 transition-transform`} />
+                  {skill.name}
+                </span>
+              ))}
+            </div>
+          </motion.div>
+        )}
 
 
-        {(showOnlyResume || !showOnlyResume) && (
+        {showOnlyResume && (
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className={`lg:col-span-2 glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col justify-between ${!showOnlyResume ? 'hidden lg:flex' : ''}`}
+            className="lg:col-span-2 glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col justify-between"
           >
             {/* Watermark */}
             <Settings className="absolute -right-8 -bottom-8 w-48 h-48 text-zinc-500 dark:text-zinc-500/5 pointer-events-none" />
@@ -215,6 +215,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
         {/* FEATURED PROJECTS SECTION - Spotlight on Main Page */}
         {!showOnlyResume && (
           <motion.div 
+            id="featured-projects"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
