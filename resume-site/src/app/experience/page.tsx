@@ -3,10 +3,38 @@
 import { BentoGridV2 } from "@/components/v2/BentoGridV2";
 import { NavbarV2 } from "@/components/v2/NavbarV2";
 import { motion } from "framer-motion";
-import { Download, ArrowLeft, FileText, Share2 } from "lucide-react";
+import { Download, ArrowLeft, FileText, Share2, Check } from "lucide-react";
+import { useState } from "react";
 import Link from "next/link";
 
 export default function ExperiencePage() {
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleShare = async () => {
+    const shareData = {
+      title: "Bilal Ahamad | Engineering Manager & Technical Lead",
+      text: "Checkout Bilal Ahamad's professional technical roadmap and career timeline.",
+      url: window.location.href,
+    };
+
+    if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        console.error("Error sharing:", err);
+      }
+    } else {
+      // Fallback to clipboard
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
+      } catch (err) {
+        console.error("Clipboard error:", err);
+      }
+    }
+  };
+
   return (
     <main className="min-h-screen bg-[#09090b] text-white">
       <NavbarV2 />
@@ -36,9 +64,19 @@ export default function ExperiencePage() {
               <Download className="w-5 h-5" />
               Download PDF
             </a>
-            <button className="flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-bold hover:bg-white/10 transition-all">
-              <Share2 className="w-5 h-5" />
-              Share Profile
+            <button 
+              onClick={handleShare}
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl border transition-all ${
+                isCopied 
+                ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-500' 
+                : 'bg-white/5 border-white/10 text-white hover:bg-white/10'
+              }`}
+            >
+              {isCopied ? (
+                <><Check className="w-5 h-5" /> Copied!</>
+              ) : (
+                <><Share2 className="w-5 h-5" /> Share Profile</>
+              )}
             </button>
           </div>
         </div>
