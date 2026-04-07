@@ -261,7 +261,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
             <div>
               <h2 className="text-3xl font-black text-zinc-900 dark:text-white uppercase tracking-tighter flex items-center gap-3">
                 <Layout className="w-8 h-8 text-blue-500" />
-                Featured Public Projects
+                FeaturedPublicProjects
               </h2>
               <p className="text-zinc-500 dark:text-zinc-400 mt-2 font-medium">Spotlight on high-impact open source tools and IoT orchestration.</p>
             </div>
@@ -272,7 +272,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 gap-8">
             
             {/* 1. CALIFORNIA WARN MONITOR */}
             <div className="glass-card rounded-[2.5rem] p-8 flex flex-col gap-8 relative overflow-hidden group border-white/5 hover:border-blue-500/20 transition-all duration-700">
@@ -287,7 +287,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                       <Monitor className="w-6 h-6 text-blue-500" />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-black text-zinc-900 dark:text-white uppercase tracking-tight">WARN Layoff Monitor</h3>
+                      <h3 className="text-2xl font-black text-zinc-900 dark:text-white uppercase tracking-tight">WarnLayoffMonitor</h3>
                       <div className="flex gap-3 mt-1">
                         {repos.find(r => r.name === 'warn') && (
                           <div className="flex gap-3 text-xs text-zinc-500 font-bold uppercase tracking-widest">
@@ -405,7 +405,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                       <Smartphone className="w-6 h-6 text-emerald-500" />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-black text-zinc-900 dark:text-white uppercase tracking-tight">Adhan Audio Caster</h3>
+                      <h3 className="text-2xl font-black text-zinc-900 dark:text-white uppercase tracking-tight">AdhanAudioCaster</h3>
                       <div className="flex gap-3 mt-1">
                         {repos.find(r => r.name === 'adhan-api') && (
                           <div className="flex gap-3 text-xs text-zinc-500 font-bold uppercase tracking-widest">

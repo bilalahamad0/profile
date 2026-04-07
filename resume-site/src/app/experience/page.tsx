@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { Download, ArrowLeft, FileText, Share2 } from "lucide-react";
 import Link from "next/link";
 
-export default function ResumePage() {
+export default function ExperiencePage() {
   return (
     <main className="min-h-screen bg-[#09090b] text-white">
       <NavbarV2 />
@@ -44,7 +44,7 @@ export default function ResumePage() {
         </div>
       </section>
 
-      {/* The Nitty-Gritty Detail (Bento Grid) */}
+      {/* Professional Dashboard (Bento Grid) */}
       <section className="relative py-12">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full -z-10">
            <div className="absolute top-0 left-0 w-full h-[500px] bg-blue-500/5 blur-[120px] rounded-full opacity-50" />
