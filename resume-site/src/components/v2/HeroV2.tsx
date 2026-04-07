@@ -175,7 +175,7 @@ export function HeroV2() {
             <span className="mr-2 font-bold tracking-tight">Explore Impact</span>
             <MoveRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
-          <a href="/Resume_Bilal_Ahamad.pdf" download="Bilal_Ahamad_Resume.pdf" className="group w-full sm:w-auto h-14 px-8 inline-flex items-center justify-center rounded-full border border-zinc-300 dark:border-white/10 bg-white/80 dark:bg-white/5 text-zinc-900 dark:text-white font-medium hover:bg-zinc-100 dark:hover:bg-white/10 transition-colors gap-2">
+          <a href="/Bilal_Ahamad_Resume.pdf" download="Bilal_Ahamad_Resume.pdf" className="group w-full sm:w-auto h-14 px-8 inline-flex items-center justify-center rounded-full border border-zinc-300 dark:border-white/10 bg-white/80 dark:bg-white/5 text-zinc-900 dark:text-white font-medium hover:bg-zinc-100 dark:hover:bg-white/10 transition-colors gap-2">
             <Download className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
             Download CV
           </a>
