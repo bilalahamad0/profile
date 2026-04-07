@@ -287,7 +287,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                       <Monitor className="w-6 h-6 text-blue-500" />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tight">Warn Layoff Monitor</h3>
+                      <h3 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tight">California WARN Pipeline: Live Layoff Intelligence</h3>
                       <div className="flex gap-3 mt-1">
                         {repos.find(r => r.name === 'warn') && (
                           <div className="flex gap-3 text-xs text-zinc-500 font-bold uppercase tracking-widest">
@@ -304,7 +304,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                 </div>
 
                 <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed max-w-xl">
-                  A high-integrity data pipeline for the <span className="text-zinc-900 dark:text-zinc-200 font-bold">California WARN Act</span>. Automated via GitHub Actions, it implements ETag-based caching and MD5 verification to track layoff trends across the state with surgical precision.
+                  A best-of-class, fully automated data pipeline for the <span className="text-zinc-900 dark:text-zinc-200 font-bold">California WARN Act</span>. Engineered for surgical precision, it transforms raw government filings into live actionable intelligence—leveraging ETag caching and MD5 verification to track economic trends as they happen.
                 </p>
 
                 <div className="flex flex-wrap gap-2">
@@ -377,8 +377,12 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                     >
                       <iframe
                         src="https://bilalahamad0.github.io/warn/"
-                        className="w-full h-full border-none"
-                        title="California WARN Layoff Monitor"
+                        className="w-full h-full border-none transition-all duration-700"
+                        style={{ 
+                          transform: !warnDashboardExpanded ? 'translateY(-260px)' : 'translateY(0)',
+                          height: !warnDashboardExpanded ? 'calc(100% + 260px)' : '100%'
+                        }}
+                        title="California WARN Pipeline"
                         loading="lazy"
                       />
                       {!warnDashboardExpanded && (
