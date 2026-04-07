@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Terminal, ShieldCheck, Box, Activity, Cpu, Cloud, Settings, Layers, 
   ChevronDown, ChevronUp, Code2, Database, Wrench, Smartphone, Server, Github, GitFork, Star,
-  MessageSquareQuote, Linkedin, ExternalLink, Monitor, Layout, Eye, FileCode, Check
+  MessageSquareQuote, Linkedin, ExternalLink, Monitor, Layout, Eye, FileCode, Check, MapPin
 } from "lucide-react";
 
 import { experienceData, skills, certs, recommendations } from "@/data/portfolio";
@@ -138,7 +138,12 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                             {exp.company}
                           </span>
                         </div>
-                        <p className="text-xs text-zinc-500 dark:text-zinc-500 mb-2 mt-1">{exp.duration}</p>
+                        <p className="text-xs text-zinc-500 dark:text-zinc-500 mb-2 mt-1 flex items-center gap-2">
+                          {exp.duration}
+                          <span className="opacity-30">•</span>
+                          {/* @ts-ignore */}
+                          <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {exp.location}</span>
+                        </p>
                         <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-md">{exp.desc}</p>
                       </div>
                     </motion.div>
