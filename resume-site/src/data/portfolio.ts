@@ -11,7 +11,7 @@ export const experienceData = [
   { role: "Software Test Engineer", company: "Google (via Tech Mahindra)", location: "Mountain View, CA", duration: "Jan 2016 - Jun 2018", desc: "Standalone VR Controller systems testing. Built 3DOF robot arm for automated motion tracking.", file: "/logos/google.png", faang: true, invertLogo: false },
   { role: "Test Engineer", company: "Cisco (via Cognizant)", location: "Boston, MA", duration: "Sep 2015 - Jan 2016", desc: "Python-based framework for Set-top-Box Video Streaming automation.", file: "/logos/cisco.png", faang: false, invertLogo: false },
   { role: "Radio Validation Engineer", company: "Wistron Mobile", location: "Chicago, IL", duration: "Dec 2014 - Sep 2015", desc: "Pre-certification and Interoperability testing on Android/BlackBerry handsets.", file: "/logos/wistron.png", faang: false, invertLogo: true },
-  { role: "Senior Software Engineer in Test", company: "Motorola Mobility (via L&T Infotech)", location: "Sunnyvale, CA", duration: "Oct 2009 - Dec 2014", desc: "Bluetooth automation framework for mobile handsets showcasing $2.1M savings.", file: "/logos/motorola.png", faang: false, invertLogo: false },
+  { role: "Senior Software Engineer in Test", company: "Motorola Mobility (via L&T Infotech)", location: "Sunnyvale, CA", duration: "Oct 2009 - Dec 2014", desc: "Bluetooth automation framework for mobile handsets showcasing $2.1M savings.", file: "/logos/motorola.png", faang: false, invertLogo: true },
   { role: "Test Engineer", company: "Luminous Infoways", location: "Bhubaneswar, India", duration: "Oct 2008 - Sep 2009", desc: "Web application deployment modules, feature integration.", file: "/logos/luminous.png", faang: false, invertLogo: false },
 ];
 

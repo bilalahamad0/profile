@@ -124,7 +124,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                           <img 
                             src={exp.file} 
                             alt={exp.company} 
-                            className={`w-full h-full object-contain ${exp.invertLogo ? 'filter invert brightness-150' : ''}`} 
+                            className={`w-full h-full object-contain ${exp.invertLogo ? "filter invert brightness-200" : ""}`} 
                             onError={(e) => (e.currentTarget.style.display = 'none')}  
                           />
                         </div>
