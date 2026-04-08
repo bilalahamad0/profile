@@ -2,13 +2,18 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Briefcase, Mail, User } from "lucide-react";
+import { Briefcase, Mail, User, Award } from "lucide-react";
 
 const navLinks = [
   {
     href: "/experience",
     label: "Experience",
     icon: <Briefcase className="w-4 h-4 shrink-0" />,
+  },
+  {
+    href: "/certifications",
+    label: "Certifications",
+    icon: <Award className="w-4 h-4 shrink-0" />,
   },
   {
     href: "https://github.com/bilalahamad0",
