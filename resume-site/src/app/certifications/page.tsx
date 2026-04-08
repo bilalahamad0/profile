@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { NavbarV2 } from "@/components/v2/NavbarV2";
 import { cn } from "@/lib/utils";
+import { trackEvent } from "@/components/analytics/google-analytics";
 
 // --- DATA ---
 
@@ -376,6 +377,10 @@ export default function CertificationsPage() {
                       <Link 
                         href={selectedCert.url} 
                         target="_blank"
+                        onClick={() => trackEvent('verify_certificate', { 
+                          title: selectedCert.title,
+                          issuer: selectedCert.issuer
+                        })}
                         className="group relative inline-flex items-center gap-3 px-8 py-4 bg-white text-black font-bold rounded-2xl transition-all hover:scale-[1.02] active:scale-[0.98]"
                       >
                         <span className="relative z-10">Verify Certificate</span>

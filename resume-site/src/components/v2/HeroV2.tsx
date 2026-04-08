@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Download, MoveRight, Star, Code2, Wifi, Car, Headset, Network, Database, Smartphone, Watch, Microchip } from "lucide-react";
 import Link from "next/link";
+import { trackEvent } from "@/components/analytics/google-analytics";
 
 function InfographicBackground() {
   return (
@@ -175,7 +176,12 @@ export function HeroV2() {
             <span className="mr-2 font-bold tracking-tight">Explore Impact</span>
             <MoveRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
-          <a href="/Bilal_Ahamad_Resume.pdf" download="Bilal_Ahamad_Resume.pdf" className="group w-full sm:w-auto h-14 px-8 inline-flex items-center justify-center rounded-full border border-zinc-300 dark:border-white/10 bg-white/80 dark:bg-white/5 text-zinc-900 dark:text-white font-medium hover:bg-zinc-100 dark:hover:bg-white/10 transition-colors gap-2">
+          <a 
+            href="/Bilal_Ahamad_Resume.pdf" 
+            download="Bilal_Ahamad_Resume.pdf" 
+            onClick={() => trackEvent('resume_download', { location: 'HeroV2' })}
+            className="group w-full sm:w-auto h-14 px-8 inline-flex items-center justify-center rounded-full border border-zinc-300 dark:border-white/10 bg-white/80 dark:bg-white/5 text-zinc-900 dark:text-white font-medium hover:bg-zinc-100 dark:hover:bg-white/10 transition-colors gap-2"
+          >
             <Download className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
             Download CV
           </a>
