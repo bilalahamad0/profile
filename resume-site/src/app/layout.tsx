@@ -8,6 +8,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/utils";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -25,6 +27,8 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body className={cn(inter.variable, "font-sans bg-background text-foreground antialiased")}>
         <GoogleAnalytics />
+        <Analytics />
+        <SpeedInsights />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
