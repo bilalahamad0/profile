@@ -2,7 +2,8 @@
 
 import Script from "next/script";
 
-export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID;
+// Use the ID from your dashboard as a fallback to ensure it works immediately
+export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID || "G-T9RMSTDGCT";
 
 // Track page views
 export const pageview = (url: string) => {
@@ -21,8 +22,6 @@ export const trackEvent = (action: string, params: Record<string, any>) => {
 };
 
 export const GoogleAnalytics = () => {
-  if (!GA_TRACKING_ID) return null;
-
   return (
     <>
       <Script
