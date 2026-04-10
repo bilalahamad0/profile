@@ -10,7 +10,7 @@ const DATA = {
         { href: "#experience", icon: Briefcase, label: "Experience" },
         { href: "#projects", icon: FileText, label: "Projects" },
         { href: "#education", icon: GraduationCap, label: "Education" },
-        { href: "#contact", icon: Mail, label: "Contact" },
+        { href: "/contact", icon: Mail, label: "Contact" },
     ],
 };
 

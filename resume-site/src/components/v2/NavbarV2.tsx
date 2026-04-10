@@ -26,7 +26,7 @@ const navLinks = [
     ),
   },
   {
-    href: "#contact",
+    href: "/contact",
     label: "Contact",
     icon: <Mail className="w-4 h-4 shrink-0" />,
   },

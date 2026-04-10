@@ -97,7 +97,7 @@ export default function ExperiencePage() {
       {/* Footer / CTA */}
       <section className="py-24 px-6 text-center border-t border-white/5">
         <h2 className="text-3xl font-bold mb-8">Ready to build something together?</h2>
-        <Link href="/#contact" className="inline-flex items-center gap-3 px-10 py-5 rounded-full bg-blue-600 text-white font-bold hover:bg-blue-700 hover:scale-105 transition-all shadow-2xl shadow-blue-600/20">
+        <Link href="/contact" className="inline-flex items-center gap-3 px-10 py-5 rounded-full bg-blue-600 text-white font-bold hover:bg-blue-700 hover:scale-105 transition-all shadow-2xl shadow-blue-600/20">
           Get in Touch
           <ArrowLeft className="w-5 h-5 rotate-180" />
         </Link>

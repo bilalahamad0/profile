@@ -1,6 +1,6 @@
 import { HeroPortfolio } from "@/components/v3/HeroPortfolio";
 import { BentoGridV2 } from "@/components/v2/BentoGridV2";
-import { ContactSection } from "@/components/sections/contact";
+
 import { NavbarV2 } from "@/components/v2/NavbarV2";
 
 export default function V2Home() {
@@ -10,10 +10,7 @@ export default function V2Home() {
       <HeroPortfolio />
       <BentoGridV2 showOnlyResume={false} />
       
-      {/* Reuse the contact form from V1 so email works seamlessly */}
-      <div id="contact-wrapper">
-        <ContactSection />
-      </div>
+
     </div>
   );
 }
