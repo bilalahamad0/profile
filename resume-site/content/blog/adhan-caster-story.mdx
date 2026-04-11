@@ -1,0 +1,66 @@
+---
+title: "Adhan Audio Caster: Engineering IoT Automation with AI"
+date: "2025-08-12"
+description: "A deep dive into building a prayer-time IoT orchestration system with Raspberry Pi, ADB, and Sony Android TV — compressed from 3 weeks to 4 days using AI pair programming."
+tags: ["IoT", "Raspberry Pi", "ADB", "Node.js", "Android TV"]
+category: "Project Story"
+featured: false
+---
+
+# Adhan Audio Caster
+
+## The Vision
+
+Five salah times per day. Each one requires:
+1. Playing an audio Adhan on the TV at precisely the right time
+2. Pausing whatever media is playing on the Sony Android TV
+3. Showing a visual display on a Google Nest Hub Max
+4. Resuming media after the Adhan completes
+5. Doing all of this *automatically*, every day, on a $35 device
+
+This is not a weekend project. This is systems engineering.
+
+## The Hardware Stack
+
+- **Raspberry Pi 4** — the brain. Runs the Node.js orchestration server.
+- **Sony Android TV** — receives ADB commands over LAN for media control
+- **Google Nest Hub Max** — displays prayer-specific visuals via Cast API
+- **Google Chromecast Audio** — handles the audio casting pipeline
+
+## The Software Challenge
+
+The hardest part wasn't any single piece — it was the **coordination** between them. ADB is finicky. The Nest Hub has no native API. Cast timing is unreliable. Media state detection is non-trivial.
+
+My original estimate: 3 weeks to get a stable version.
+
+## Bringing in AI
+
+I started working with **Antigravity (Gemini 3 Flash/Pro)** as an intelligent pair programmer. The difference was immediate.
+
+Instead of spending 2 days researching ADB command sequences, I described the problem. The AI produced working ADB command chains with error handling in under 10 minutes. I spent my time testing and refining edge cases, not searching Stack Overflow.
+
+```bash
+# AI-generated ADB media pause/resume sequence
+adb -s $TV_IP shell input keyevent KEYCODE_MEDIA_PAUSE
+sleep $ADHAN_DURATION
+adb -s $TV_IP shell input keyevent KEYCODE_MEDIA_PLAY
+```
+
+The Nest Hub dashboard was the biggest win. What I estimated as a 1-week design sprint became a 2-day build with the AI generating the CSS animations, prayer card layouts, and the dynamic dashboard refresh logic.
+
+## The 4-Day Sprint
+
+- **Day 1**: Architecture + ADB integration (AI-assisted)
+- **Day 2**: Nest Hub dashboard design (AI-generated CSS/animations)
+- **Day 3**: Prayer time calculation + scheduling (AI pair programming)
+- **Day 4**: Integration testing + production hardening (me, mostly)
+
+**Result**: A production-grade IoT system running 24/7 for several months without failure.
+
+## What I Learned
+
+AI doesn't replace engineering judgment. It accelerates the parts that are research-heavy and repetitive, freeing you to focus on the judgment calls that actually matter: system design, edge case handling, and knowing when something is "good enough for production."
+
+---
+
+*Explore the [source code on GitHub](https://github.com/bilalahamad0/adhan-api) or see the system flow animation in the README.*

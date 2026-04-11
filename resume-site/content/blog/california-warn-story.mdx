@@ -1,0 +1,71 @@
+---
+title: "Building California WARN Pipeline: Live Layoff Intelligence from Scratch"
+date: "2025-08-20"
+description: "How I built a fully automated data pipeline that transforms raw California WARN Act filings into live, actionable layoff intelligence — running twice daily with zero human intervention."
+tags: ["Python", "GitHub Actions", "Data Engineering", "Automation"]
+category: "Project Story"
+featured: true
+---
+
+# Building California WARN Pipeline
+
+## The Problem Nobody Solved Well
+
+The California WARN Act requires companies to notify the state 60 days before mass layoffs. This data is *public* — but it's locked behind a government Excel file that updates sporadically, has no API, and is formatted for bureaucrats, not engineers.
+
+The existing "solutions" were news articles written after the fact. I wanted early warning — before it made headlines.
+
+## The Architecture Decision
+
+The key insight was **ETag caching**. Instead of naively downloading the file on every run, I check the server's ETag header first. If it hasn't changed, we skip the full download. This:
+
+- Reduces bandwidth by ~95% on unchanged runs
+- Makes the twice-daily GitHub Actions schedule sustainable
+- Adds MD5 hash verification as a second layer of integrity
+
+```python
+def download_xlsx(force: bool = False):
+    """Download WARN XLSX with ETag caching."""
+    meta = _load_meta()
+    headers = {"User-Agent": "WARNMonitor/2.0"}
+    if not force and meta.get("etag"):
+        headers["If-None-Match"] = meta["etag"]
+    
+    resp = requests.get(WARN_XLSX_URL, headers=headers)
+    if resp.status_code == 304: 
+        return False, str(LOCAL_XLSX)
+
+    LOCAL_XLSX.write_bytes(resp.content)
+    new_hash = _file_hash(LOCAL_XLSX)
+    meta.update({
+        "etag": resp.headers.get("ETag", ""),
+        "file_hash": new_hash,
+        "last_checked": datetime.utcnow().isoformat()
+    })
+    _save_meta(meta)
+    return True, str(LOCAL_XLSX)
+```
+
+## The AI Partnership
+
+I built this with **Antigravity (Gemini 3 Pro)** as my pair programming partner. The AI contributed:
+
+- The initial ETag caching architecture (I described the problem, it proposed the solution)
+- Plotly visualization code for the interactive dashboard
+- The automated email notifier with deduplication logic
+- GitHub Actions workflow with proper caching
+
+What I contributed:
+- Domain expertise on the CA WARN Act data format
+- Edge case handling from manual testing
+- The insight to use MD5 + ETag dual-check approach
+
+## The Result
+
+The pipeline now runs at 6 AM and 6 PM daily. When a new filing appears, a Plotly dashboard updates automatically on GitHub Pages, and the system logs the delta. Anyone can see California's layoff landscape in near real-time.
+
+**Total development time with AI: 2 days. Estimated without: 2–3 weeks.**
+
+---
+
+*View the live dashboard at [bilalahamad0.github.io/warn](https://bilalahamad0.github.io/warn/) or explore the [source code](https://github.com/bilalahamad0/warn).*

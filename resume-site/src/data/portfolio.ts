@@ -47,3 +47,134 @@ export const recommendations = [
   { name: "Sai Abhishek / MBA", title: "Project Manager | PMP | Scrum Master", review: "Bilal is an extremely hardworking and dedicated worker, he gives him 100% to all that he does. It was wonderful working with him in a brief stint way back in 2012, however, he has always kept in touch and has ensured that relations built stay forever. I wish him luck in all his future endeavours." },
   { name: "Nimish Choudhary", title: "Senior Manager | Lead Digital Engineer", review: "I have worked with Bilal in Lnt where we both were in mysore office for some time. Bilal is a very in-tellectual person. He is born with gift of adapting to new technology quickly, his hunger to learn new things and implementing them, has let too many new ways in which a technology can be utilized. Apart from being a technically strong he is a good person to work with. His discussion points are strong and the way he presents them is even better." },
 ];
+
+export type ProjectCategory = "All" | "IoT & Automation" | "Data & Analytics" | "AI-Powered" | "Web & DevOps";
+
+export const projectsData = [
+  {
+    id: "warn",
+    name: "California WARN Pipeline",
+    tagline: "Live layoff intelligence from raw government filings",
+    description: "A fully automated data pipeline for the California WARN Act. Engineered for surgical precision, it transforms raw government filings into live actionable intelligence using ETag caching, MD5 verification, and GitHub Actions CI/CD — running twice daily with zero human intervention.",
+    category: "Data & Analytics" as ProjectCategory,
+    tech: ["Python", "GitHub Actions", "Plotly", "ETag Cache", "Pandas"],
+    repo: "https://github.com/bilalahamad0/warn",
+    demo: "https://bilalahamad0.github.io/warn/",
+    isAI: true,
+    aiTools: ["Antigravity", "Gemini 3 Pro"],
+    aiContribution: 88,
+    impact: "Automated 100% of data ingestion and alerting",
+    gradient: "from-blue-600/20 via-blue-500/10 to-transparent",
+    accent: "blue",
+    blogSlug: "california-warn-story",
+  },
+  {
+    id: "adhan",
+    name: "Adhan Audio Caster",
+    tagline: "AI-orchestrated IoT prayer time automation",
+    description: "An advanced IoT orchestration layer for automated prayer-time notifications. Integrates Raspberry Pi with Sony Android TV via ADB, managing media states and low-level system commands. Built from scratch using AI pair programming—compressing a 3-week engineering cycle into 4 days.",
+    category: "IoT & Automation" as ProjectCategory,
+    tech: ["Node.js", "ADB", "Raspberry Pi", "Shell", "Android TV"],
+    repo: "https://github.com/bilalahamad0/adhan-api",
+    demo: null,
+    isAI: true,
+    aiTools: ["Antigravity", "Gemini 3 Flash/Pro"],
+    aiContribution: 92,
+    impact: "Compressed 3-week build to 4 days",
+    gradient: "from-emerald-600/20 via-emerald-500/10 to-transparent",
+    accent: "emerald",
+    blogSlug: "adhan-caster-story",
+  },
+  {
+    id: "tmo",
+    name: "T-Mobile Bill Automation",
+    tagline: "From manual PDF parsing to fully automated billing pipeline",
+    description: "Originally a manual Python script to parse T-Mobile family plan PDFs and split costs, it was transformed into a fully automated, event-driven E2E system. The Mac Folder Action watches ~/Downloads and instantly processes new bills, calculates splits, and sends Zelle-ready summaries via email.",
+    category: "AI-Powered" as ProjectCategory,
+    tech: ["Python", "Shell", "macOS Automation", "Zelle", "SMTP"],
+    repo: "https://github.com/bilalahamad0/tmo",
+    demo: null,
+    isAI: true,
+    aiTools: ["Antigravity", "Gemini"],
+    aiContribution: 75,
+    impact: "Zero-touch monthly billing cycle",
+    gradient: "from-pink-600/20 via-rose-500/10 to-transparent",
+    accent: "pink",
+    blogSlug: null,
+  },
+  {
+    id: "profile",
+    name: "This Portfolio",
+    tagline: "A premium AI-native portfolio built with Next.js + Framer Motion",
+    description: "A fully responsive, dark-mode portfolio website built end-to-end with AI pair programming (Antigravity + Gemini). Features glassmorphism design, live GitHub data, Vercel Analytics, Google Analytics with custom events, and an interactive Certifications gallery.",
+    category: "Web & DevOps" as ProjectCategory,
+    tech: ["Next.js", "TypeScript", "Tailwind", "Framer Motion", "Vercel"],
+    repo: "https://github.com/bilalahamad0/profile",
+    demo: "https://bilalahamad.com",
+    isAI: true,
+    aiTools: ["Antigravity", "Gemini 3 Flash/Pro"],
+    aiContribution: 85,
+    impact: "Full-stack portfolio deployed to production",
+    gradient: "from-violet-600/20 via-purple-500/10 to-transparent",
+    accent: "violet",
+    blogSlug: null,
+  },
+];
+
+export type LinkedInPost = {
+  id: string;
+  title: string;
+  excerpt: string;
+  tags: string[];
+  date: string;
+  url: string;
+  category: string;
+};
+
+export const linkedInPosts: LinkedInPost[] = [
+  {
+    id: "li-1",
+    title: "AI + Predictive Analytics: The Future of Quality Assurance",
+    excerpt: "How predictive analytics powered by AI is reshaping QA from reactive bug-hunting to proactive defect prevention — a shift every engineering leader needs to understand.",
+    tags: ["#ai", "#qualityassurance", "#predictiveanalytics"],
+    date: "August 12, 2025",
+    url: "https://www.linkedin.com/posts/bilalahamad_ai-qualityassurance-predictiveanalytics-activity-7360870999065546753-zmX-",
+    category: "LinkedIn",
+  },
+  {
+    id: "li-2",
+    title: "AI Testing: Why Your QA Team Can't Afford to Ignore It",
+    excerpt: "AI-native testing pipelines aren't just faster — they surface systemic defects that humans consistently miss. Here's how I'm integrating AI testing into every new project.",
+    tags: ["#qualityassurance", "#ai", "#aitesting"],
+    date: "August 13, 2025",
+    url: "https://www.linkedin.com/posts/bilalahamad_qualityassurance-ai-aitesting-activity-7361425761225883648-16H9",
+    category: "LinkedIn",
+  },
+  {
+    id: "li-3",
+    title: "Fact-Checking in the Age of AI: A QA Perspective",
+    excerpt: "AI hallucinations aren't just a product problem — they're a quality problem. As QA engineers, we have a unique responsibility to build truth-verification into AI pipelines.",
+    tags: ["#ai", "#qualityassurance", "#factchecking"],
+    date: "August 20, 2025",
+    url: "https://www.linkedin.com/posts/bilalahamad_ai-qualityassurance-factchecking-activity-7363724206255063048-4C7i",
+    category: "LinkedIn",
+  },
+  {
+    id: "li-4",
+    title: "AI for Business: The Solopreneur's Secret Weapon",
+    excerpt: "Why solopreneurs who master AI tooling will outcompete entire teams. A first-hand account of building production-grade systems alone, faster than ever before.",
+    tags: ["#aiforbusiness", "#solopreneur", "#qualityassurance"],
+    date: "August 23, 2025",
+    url: "https://www.linkedin.com/posts/bilalahamad_aiforbusiness-solopreneur-qualityassurance-activity-7364945849866465280-2c8r",
+    category: "LinkedIn",
+  },
+  {
+    id: "li-5",
+    title: "Marketing Automation Meets QA: Closing the Loop on AI-Powered Growth",
+    excerpt: "What happens when you apply QA rigor to AI marketing pipelines? You get measurable, auditable, and reproducible growth. Here's the framework I use.",
+    tags: ["#marketingautomation", "#ai", "#qualityassurance"],
+    date: "August 26, 2025",
+    url: "https://www.linkedin.com/posts/bilalahamad_marketingautomation-ai-qualityassurance-activity-7366209393358471168-qUAE",
+    category: "LinkedIn",
+  },
+];
