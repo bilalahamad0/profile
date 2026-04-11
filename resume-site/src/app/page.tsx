@@ -1,13 +1,20 @@
 "use client";
 
 import { useEffect } from "react";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Sparkles, Github, BookOpen, ArrowRight, Terminal, ExternalLink, Trophy, Briefcase } from "lucide-react";
 import { NavbarV2 } from "@/components/v2/NavbarV2";
 import { HeroPortfolio } from "@/components/v3/HeroPortfolio";
-import { ResumeReel } from "@/components/v3/ResumeReel";
 import { projectsData, skills } from "@/data/portfolio";
+
+// Lazy-load the ResumeReel — heavy Framer Motion + IntersectionObserver component,
+// excluded from SSR and initial bundle so the hero renders instantly on mobile.
+const ResumeReel = dynamic(
+  () => import("@/components/v3/ResumeReel").then((m) => ({ default: m.ResumeReel })),
+  { ssr: false, loading: () => <div className="md:hidden h-20" /> }
+);
 
 
 function FeaturedProjectCard({ project }: { project: typeof projectsData[0] }) {

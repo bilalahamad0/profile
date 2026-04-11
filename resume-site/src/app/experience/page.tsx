@@ -14,8 +14,13 @@ export default function ExperiencePage() {
 
   // Ensure page always loads from the top regardless of scroll position from previous page
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
+    window.scrollTo(0, 0);
+    const timeout = setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }, 10);
+    return () => clearTimeout(timeout);
   }, []);
+
 
   const handleShare = async () => {
     const shareData = {

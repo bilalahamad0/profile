@@ -177,54 +177,9 @@ export default function ProjectsPage() {
                     {/* Gradient BG */}
                     <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`} />
 
-                    {/* Visual Artifact Window — type-aware preview */}
-                    {"previewType" in project && project.previewSrc && (
-                      <div className="relative w-full overflow-hidden bg-black/40 border-b border-white/5" style={{ height: "220px" }}>
-                        {(project as any).previewType === "iframe" ? (
-                          <>
-                            <iframe
-                              src={(project as any).previewSrc}
-                              className="w-full h-full border-0 scale-[0.85] origin-top-left"
-                              style={{ width: "117%", height: "280px", pointerEvents: "auto" }}
-                              loading="lazy"
-                              title={`${project.name} live preview`}
-                              sandbox="allow-scripts allow-same-origin"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/50 pointer-events-none" />
-                            <div className="absolute top-2 right-2 px-2 py-1 rounded-full bg-emerald-600/80 border border-emerald-500/40 text-[9px] font-black uppercase tracking-widest text-white flex items-center gap-1 pointer-events-none">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                              Live
-                            </div>
-                          </>
-                        ) : (project as any).previewType === "gif" ? (
-                          <>
-                            <img
-                              src={(project as any).previewSrc}
-                              alt={`${project.name} system flow`}
-                              className="w-full h-full object-contain object-center transition-transform duration-700 group-hover:scale-105"
-                              loading="lazy"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/50 pointer-events-none" />
-                            <div className="absolute top-2 right-2 px-2 py-1 rounded-full bg-black/60 border border-white/10 text-[9px] font-black uppercase tracking-widest text-white/70 pointer-events-none">System Flow</div>
-                          </>
-                        ) : (
-                          <>
-                            <img
-                              src={(project as any).previewSrc}
-                              alt={(project as any).thumbnailAlt ?? project.name}
-                              className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                              loading="lazy"
-                              onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/50 pointer-events-none" />
-                          </>
-                        )}
-                      </div>
-                    )}
-
-                    <div className="relative z-10 p-8 flex flex-col">
+                    <div className="relative z-10 p-6 md:p-8 flex flex-col h-full">
                       {/* Header */}
-                      <div className="flex items-start justify-between mb-6">
+                      <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
                           {project.isAI && (
                             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 mb-3">
@@ -232,7 +187,7 @@ export default function ProjectsPage() {
                               <span className="text-[10px] font-black uppercase tracking-wider text-purple-300">AI-Built</span>
                             </div>
                           )}
-                          <h2 className="text-xl font-black text-white tracking-tight">{project.name}</h2>
+                          <h2 className="text-xl md:text-2xl font-black text-white tracking-tight">{project.name}</h2>
                           <p className="text-sm text-zinc-400 mt-1">{project.tagline}</p>
                         </div>
                         <div className="flex gap-2 ml-4">
@@ -240,18 +195,18 @@ export default function ProjectsPage() {
                             href={project.repo}
                             target="_blank"
                             rel="noreferrer"
-                            className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-all"
+                            className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-all"
                           >
-                            <Github className="w-4 h-4" />
+                            <Github className="w-5 h-5" />
                           </a>
                           {project.demo && (
                             <a
                               href={project.demo}
                               target="_blank"
                               rel="noreferrer"
-                              className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-blue-500 transition-all"
+                              className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-blue-500 transition-all"
                             >
-                              <ExternalLink className="w-4 h-4" />
+                              <ExternalLink className="w-5 h-5" />
                             </a>
                           )}
                         </div>
@@ -260,14 +215,61 @@ export default function ProjectsPage() {
                       {/* Description */}
                       <p className="text-sm text-zinc-400 leading-relaxed mb-6">{project.description}</p>
 
-                      {/* Tech Tags — all shown, no truncation */}
-                      <div className="flex flex-wrap gap-2 mb-6">
+                      {/* Visual Artifact Window — Moved AFTER description as requested */}
+                      {"previewType" in project && project.previewSrc && (
+                        <div className="relative w-full overflow-hidden bg-black/40 rounded-2xl border border-white/5 mb-6" style={{ height: "200px" }}>
+                          {(project as any).previewType === "iframe" ? (
+                            <>
+                              <iframe
+                                src={(project as any).previewSrc}
+                                className="w-full h-full border-0 scale-[0.85] origin-top-left"
+                                style={{ width: "117%", height: "260px", pointerEvents: "auto" }}
+                                loading="lazy"
+                                title={`${project.name} live preview`}
+                                sandbox="allow-scripts allow-same-origin"
+                                onError={(e) => { (e.currentTarget as HTMLIFrameElement).style.display = "none"; }}
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
+                              <div className="absolute top-2 right-2 px-2 py-1 rounded-full bg-emerald-600/80 border border-emerald-500/40 text-[9px] font-black uppercase tracking-widest text-white flex items-center gap-1 pointer-events-none">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                Live
+                              </div>
+                            </>
+                          ) : (project as any).previewType === "gif" ? (
+                            <>
+                              <img
+                                src={(project as any).previewSrc}
+                                alt={`${project.name} system flow`}
+                                className="w-full h-full object-contain object-center transition-transform duration-700 group-hover:scale-105"
+                                loading="lazy"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
+                              <div className="absolute top-2 right-2 px-2 py-1 rounded-full bg-black/60 border border-white/10 text-[9px] font-black uppercase tracking-widest text-white/70 pointer-events-none">System Flow</div>
+                            </>
+                          ) : (
+                            <>
+                              <img
+                                src={(project as any).previewSrc}
+                                alt={(project as any).thumbnailAlt ?? project.name}
+                                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                                loading="lazy"
+                                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
+                            </>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Tech Tags — all fully displayed, no truncation */}
+                      <div className="flex flex-wrap gap-2 mb-6 flex-grow">
                         {project.tech.map((t) => (
                           <span key={t} className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-zinc-400 uppercase tracking-widest">
                             {t}
                           </span>
                         ))}
                       </div>
+
 
                       {/* AI Contribution Bar */}
                       {project.isAI && (

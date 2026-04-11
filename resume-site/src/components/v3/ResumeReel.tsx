@@ -240,7 +240,7 @@ export function ResumeReel() {
             animate="center"
             exit="exit"
             transition={{ type: "tween", duration: 0.35, ease: "easeInOut" }}
-            className={`absolute inset-0 bg-gradient-to-b ${slide.bg} flex flex-col pt-16 pb-32 px-7`}
+            className={`absolute inset-0 bg-gradient-to-b ${slide.bg} flex flex-col pt-16 pb-40 px-7`}
           >
             {/* Decorative glow */}
             <div
@@ -333,23 +333,24 @@ export function ResumeReel() {
           <div className="w-1/2 h-full cursor-pointer" onClick={() => advance(1)} />
         </div>
 
-        {/* Controls — above the slide counter, not overlapping content */}
-        <div className="absolute bottom-10 left-0 right-0 z-50 flex justify-center gap-6">
+        {/* Controls — positioned to avoid overlap with body text */}
+        <div className="absolute bottom-14 left-0 right-0 z-50 flex justify-center gap-8">
           <button
             onClick={(e) => { e.stopPropagation(); setPlaying((p) => !p); }}
-            className="p-2.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white active:scale-95 transition-transform"
+            className="p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white active:scale-95 transition-transform"
             aria-label={playing ? "Pause" : "Play"}
           >
-            {playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+            {playing ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
           </button>
           <button
             onClick={(e) => { e.stopPropagation(); setIndex(0); setProgress(0); setPlaying(true); }}
-            className="p-2.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white active:scale-95 transition-transform"
+            className="p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white active:scale-95 transition-transform"
             aria-label="Restart from beginning"
           >
-            <RefreshCw className="w-4 h-4" />
+            <RefreshCw className="w-5 h-5" />
           </button>
         </div>
+
 
         {/* Slide counter */}
         <p className="absolute bottom-3 left-0 right-0 z-50 text-center text-[9px] font-bold text-white/20 uppercase tracking-widest pointer-events-none">
