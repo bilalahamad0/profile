@@ -147,7 +147,19 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                           {/* @ts-ignore */}
                           <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {exp.location}</span>
                         </p>
-                        <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-md">{exp.desc}</p>
+                        <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-md mb-3">{exp.desc}</p>
+                        {/* Achievement bullets */}
+                        {"highlights" in exp && Array.isArray((exp as any).highlights) && (exp as any).highlights.length > 0 && (
+                          <ul className="space-y-1.5 max-w-md">
+                            {(exp as any).highlights.map((h: string, hi: number) => (
+                              <li key={hi} className="flex items-start gap-2 text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                                <Check className="w-3 h-3 text-emerald-500 shrink-0 mt-0.5" />
+                                <span>{h}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+
                       </div>
                     </motion.div>
                   ))}

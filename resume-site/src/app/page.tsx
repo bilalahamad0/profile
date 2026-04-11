@@ -6,7 +6,9 @@ import Link from "next/link";
 import { Sparkles, Github, BookOpen, ArrowRight, Terminal, ExternalLink, Trophy, Briefcase } from "lucide-react";
 import { NavbarV2 } from "@/components/v2/NavbarV2";
 import { HeroPortfolio } from "@/components/v3/HeroPortfolio";
+import { ResumeReel } from "@/components/v3/ResumeReel";
 import { projectsData, skills } from "@/data/portfolio";
+
 
 function FeaturedProjectCard({ project }: { project: typeof projectsData[0] }) {
   const accentBorder: Record<string, string> = {
@@ -77,7 +79,11 @@ export default function HomePage() {
       {/* Hero — keep as-is */}
       <HeroPortfolio />
 
+      {/* Mobile-Only Career Reel — shown only on phones, Instagram-style swipeable story */}
+      <ResumeReel />
+
       {/* Featured Projects — compact cards */}
+
       <section className="px-6 lg:px-24 py-20">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-end justify-between mb-10">
