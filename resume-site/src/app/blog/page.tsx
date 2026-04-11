@@ -61,7 +61,7 @@ export default function BlogPage() {
 
   // Merge MDX posts and LinkedIn post cards
   const allItems = [
-    ...mdxPosts.map((p) => ({ ...p, type: "mdx" as const })),
+    ...mdxPosts.map((p) => ({ ...p, type: "mdx" as const, thumbnail: undefined as string | undefined })),
     ...linkedInPosts.map((p) => ({
       slug: p.id,
       title: p.title,
@@ -73,6 +73,7 @@ export default function BlogPage() {
       featured: false,
       url: p.url,
       type: "linkedin" as const,
+      thumbnail: p.thumbnail,
     })),
   ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
@@ -190,8 +191,28 @@ export default function BlogPage() {
                     {/* Top accent line */}
                     <div className={`h-[2px] w-full ${colors.bg}`} />
 
+                    {/* Thumbnail — shown for LinkedIn posts and when available */}
+                    {post.thumbnail && (
+                      <div className="relative w-full h-44 overflow-hidden bg-black/40">
+                        <img
+                          src={post.thumbnail}
+                          alt={post.title}
+                          className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/70" />
+                        {isLinkedIn && (
+                          <div className="absolute top-2 right-2 px-2 py-1 rounded-full bg-sky-600/80 border border-sky-500/40 text-[9px] font-black uppercase tracking-widest text-white flex items-center gap-1">
+                            <Linkedin className="w-2.5 h-2.5" />
+                            LinkedIn
+                          </div>
+                        )}
+                      </div>
+                    )}
+
                     <div className="p-6 flex flex-col flex-grow">
                       {/* Category + Date */}
+
                       <div className="flex items-center gap-2 mb-4 flex-wrap">
                         <span className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full ${colors.bg} border ${colors.border} text-[10px] font-black uppercase tracking-wider ${colors.text}`}>
                           {isLinkedIn ? <Linkedin className="w-3 h-3" /> : <FileText className="w-3 h-3" />}

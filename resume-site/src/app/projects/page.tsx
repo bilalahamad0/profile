@@ -177,6 +177,26 @@ export default function ProjectsPage() {
                     {/* Gradient BG */}
                     <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`} />
 
+                    {/* Thumbnail — project artifact preview */}
+                    {"thumbnail" in project && project.thumbnail && (
+                      <div className="relative w-full h-44 overflow-hidden bg-black/30 border-b border-white/5">
+                        <img
+                          src={(project as any).thumbnail}
+                          alt={(project as any).thumbnailAlt ?? project.name}
+                          className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                          loading="lazy"
+                        />
+                        {/* Overlay gradient fading into card */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/60" />
+                        {(project as any).thumbnailType === "animation" && (
+                          <div className="absolute top-2 right-2 px-2 py-1 rounded-full bg-black/60 border border-white/10 text-[9px] font-black uppercase tracking-widest text-white/70">
+                            Live Preview
+                          </div>
+                        )}
+                      </div>
+                    )}
+
                     <div className="relative z-10 p-8 flex flex-col h-full">
                       {/* Header */}
                       <div className="flex items-start justify-between mb-6">

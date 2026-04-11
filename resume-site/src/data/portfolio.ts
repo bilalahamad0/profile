@@ -67,6 +67,9 @@ export const projectsData = [
     gradient: "from-blue-600/20 via-blue-500/10 to-transparent",
     accent: "blue",
     blogSlug: "california-warn-story",
+    thumbnail: "https://bilalahamad0.github.io/warn/charts/top_companies.png",
+    thumbnailAlt: "California WARN layoff dashboard — top companies by layoffs",
+    thumbnailType: "screenshot" as const,
   },
   {
     id: "adhan",
@@ -84,6 +87,9 @@ export const projectsData = [
     gradient: "from-emerald-600/20 via-emerald-500/10 to-transparent",
     accent: "emerald",
     blogSlug: "adhan-caster-story",
+    thumbnail: "https://raw.githubusercontent.com/bilalahamad0/adhan-api/main/images/system_flow/flow_animation.webp",
+    thumbnailAlt: "Adhan Audio Caster system flow animation",
+    thumbnailType: "animation" as const,
   },
   {
     id: "tmo",
@@ -101,11 +107,15 @@ export const projectsData = [
     gradient: "from-pink-600/20 via-rose-500/10 to-transparent",
     accent: "pink",
     blogSlug: null,
+    thumbnail: "https://opengraph.githubassets.com/1/bilalahamad0/tmo",
+    thumbnailAlt: "T-Mobile Bill Automation repository",
+    thumbnailType: "screenshot" as const,
   },
+
   {
     id: "profile",
-    name: "This Portfolio",
-    tagline: "A premium AI-native portfolio built with Next.js + Framer Motion",
+    name: "Portfolio: bilalahamad.com",
+    tagline: "Premium AI-native portfolio, built with Next.js + Framer Motion",
     description: "A fully responsive, dark-mode portfolio website built end-to-end with AI pair programming (Antigravity + Gemini). Features glassmorphism design, live GitHub data, Vercel Analytics, Google Analytics with custom events, and an interactive Certifications gallery.",
     category: "Web & DevOps" as ProjectCategory,
     tech: ["Next.js", "TypeScript", "Tailwind", "Framer Motion", "Vercel"],
@@ -118,8 +128,13 @@ export const projectsData = [
     gradient: "from-violet-600/20 via-purple-500/10 to-transparent",
     accent: "violet",
     blogSlug: null,
+    thumbnail: "https://opengraph.githubassets.com/1/bilalahamad0/profile",
+    thumbnailAlt: "Portfolio: bilalahamad.com website",
+    thumbnailType: "screenshot" as const,
   },
 ];
+
+
 
 export type LinkedInPost = {
   id: string;
@@ -129,6 +144,7 @@ export type LinkedInPost = {
   date: string;
   url: string;
   category: string;
+  thumbnail?: string;
 };
 
 export const linkedInPosts: LinkedInPost[] = [
@@ -140,15 +156,19 @@ export const linkedInPosts: LinkedInPost[] = [
     date: "August 12, 2025",
     url: "https://www.linkedin.com/posts/bilalahamad_ai-qualityassurance-predictiveanalytics-activity-7360870999065546753-zmX-",
     category: "LinkedIn",
+    thumbnail: "/blog-thumbs/adhan-iot.png",
   },
+
   {
     id: "li-2",
     title: "AI Testing: Why Your QA Team Can't Afford to Ignore It",
+
     excerpt: "AI-native testing pipelines aren't just faster — they surface systemic defects that humans consistently miss. Here's how I'm integrating AI testing into every new project.",
     tags: ["#qualityassurance", "#ai", "#aitesting"],
     date: "August 13, 2025",
     url: "https://www.linkedin.com/posts/bilalahamad_qualityassurance-ai-aitesting-activity-7361425761225883648-16H9",
     category: "LinkedIn",
+    thumbnail: "/blog-thumbs/adhan-iot.png",
   },
   {
     id: "li-3",
@@ -158,6 +178,7 @@ export const linkedInPosts: LinkedInPost[] = [
     date: "August 20, 2025",
     url: "https://www.linkedin.com/posts/bilalahamad_ai-qualityassurance-factchecking-activity-7363724206255063048-4C7i",
     category: "LinkedIn",
+    thumbnail: "/blog-thumbs/california-warn.png",
   },
   {
     id: "li-4",
@@ -167,6 +188,7 @@ export const linkedInPosts: LinkedInPost[] = [
     date: "August 23, 2025",
     url: "https://www.linkedin.com/posts/bilalahamad_aiforbusiness-solopreneur-qualityassurance-activity-7364945849866465280-2c8r",
     category: "LinkedIn",
+    thumbnail: "/blog-thumbs/ai-native-dev.png",
   },
   {
     id: "li-5",
@@ -176,5 +198,7 @@ export const linkedInPosts: LinkedInPost[] = [
     date: "August 26, 2025",
     url: "https://www.linkedin.com/posts/bilalahamad_marketingautomation-ai-qualityassurance-activity-7366209393358471168-qUAE",
     category: "LinkedIn",
+    thumbnail: "/blog-thumbs/ai-native-dev.png",
   },
 ];
+

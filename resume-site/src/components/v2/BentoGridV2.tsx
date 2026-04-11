@@ -5,8 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Terminal, ShieldCheck, Box, Activity, Cpu, Cloud, Settings, Layers, 
   ChevronDown, ChevronUp, Code2, Database, Wrench, Smartphone, Server, Github, GitFork, Star,
-  MessageSquareQuote, Linkedin, ExternalLink, Monitor, Layout, Eye, FileCode, Check, MapPin
+  MessageSquareQuote, Linkedin, ExternalLink, Monitor, Layout, Eye, FileCode, Check, MapPin, Sparkles
 } from "lucide-react";
+
+import Link from "next/link";
+
 
 import { experienceData, skills, certs, recommendations } from "@/data/portfolio";
 
@@ -189,7 +192,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                 </div>
               </motion.div>
 
-              {/* Certifications */}
+              {/* Certifications — now categorized */}
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -198,23 +201,52 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                 className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col h-fit"
               >
                 <Settings className="absolute -right-8 -bottom-8 w-48 h-48 text-zinc-500 dark:text-zinc-500/5 pointer-events-none" />
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
-                  <Settings className="w-6 h-6 text-zinc-600 dark:text-zinc-400" />
-                  Certifications
-                </h2>
-                <ul className="space-y-3.5">
-                  {certs.map((cert, idx) => (
-                    <li key={idx} className="flex items-start gap-3">
-                      <div className="flex-shrink-0 mt-0.5 w-5 h-5 rounded-md bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
-                        <Box className="w-3 h-3 text-blue-600 dark:text-blue-400" />
-                      </div>
-                      <span className="text-sm text-zinc-700 dark:text-zinc-300 leading-snug">{cert}</span>
-                    </li>
-                  ))}
-                </ul>
+                <div className="flex items-center justify-between mb-5 relative z-10">
+                  <h2 className="text-2xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
+                    <Settings className="w-6 h-6 text-zinc-600 dark:text-zinc-400" />
+                    Certifications
+                  </h2>
+                  <Link href="/certifications" className="flex items-center gap-1.5 text-[11px] font-bold text-blue-500 hover:text-blue-400 transition-colors uppercase tracking-widest">
+                    View All <ExternalLink className="w-3 h-3" />
+                  </Link>
+                </div>
+
+                {/* AI / Machine Learning */}
+                <div className="mb-4">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-purple-500 dark:text-purple-400 mb-2 flex items-center gap-1.5">
+                    <Sparkles className="w-3 h-3" /> AI & Machine Learning
+                  </span>
+                  <ul className="space-y-2 mt-2">
+                    {["AI Coding Agents with GitHub Copilot and Cursor (2025)", "Software Testing Foundations: Integrating AI into Quality Process (2026)"].map((cert, idx) => (
+                      <li key={idx} className="flex items-start gap-3">
+                        <div className="flex-shrink-0 mt-0.5 w-5 h-5 rounded-md bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
+                          <Box className="w-3 h-3 text-purple-400" />
+                        </div>
+                        <span className="text-sm text-zinc-700 dark:text-zinc-300 leading-snug">{cert}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Leadership & Management */}
+                <div className="mb-4">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 dark:text-blue-400 mb-2 flex items-center gap-1.5">
+                    <Box className="w-3 h-3" /> Leadership & Management
+                  </span>
+                  <ul className="space-y-2 mt-2">
+                    {["How to Master Your Executive Presence (2023)", "Project Management Foundations (2023)", "Scrum: Advanced (2021)"].map((cert, idx) => (
+                      <li key={idx} className="flex items-start gap-3">
+                        <div className="flex-shrink-0 mt-0.5 w-5 h-5 rounded-md bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
+                          <Box className="w-3 h-3 text-blue-400" />
+                        </div>
+                        <span className="text-sm text-zinc-700 dark:text-zinc-300 leading-snug">{cert}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </motion.div>
 
-              {/* Recommendations */}
+              {/* LinkedIn Recommendations */}
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -225,14 +257,18 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                 <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none">
                   <MessageSquareQuote className="w-24 h-24" />
                 </div>
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-1 flex items-center gap-2 relative z-10">
                   <MessageSquareQuote className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
-                  Recommendations
+                  LinkedIn Recommendations
                 </h2>
+                <a href="https://www.linkedin.com/in/bilalahamad/" target="_blank" rel="noreferrer" className="text-[11px] font-bold text-sky-500 hover:text-sky-400 mb-5 flex items-center gap-1.5 relative z-10 transition-colors">
+                  <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                  View on LinkedIn
+                </a>
                 <div className="flex flex-col gap-4 relative z-10">
                   {recommendations.map((rec, i) => (
                     <div key={i} className="p-5 rounded-xl border border-emerald-500/20 bg-emerald-500/10 dark:bg-emerald-500/5">
-                      <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed italic mb-4 font-light">"{rec.review}"</p>
+                      <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed italic mb-4 font-light">&ldquo;{rec.review}&rdquo;</p>
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400/30 to-blue-400/30 flex items-center justify-center shrink-0 border border-emerald-500/30">
                           <UserIconPlaceholder />
@@ -244,6 +280,79 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                       </div>
                     </div>
                   ))}
+                </div>
+              </motion.div>
+
+              {/* Awards — L&T Infotech */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col"
+              >
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2 flex items-center gap-2 relative z-10">
+                  <span className="text-2xl">🏆</span>
+                  Awards & Recognition
+                </h2>
+                <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6 relative z-10">L&T Infotech (2010–2011)</p>
+
+                {/* Ceremony Photo */}
+                <div className="relative mb-6 rounded-2xl overflow-hidden border border-white/10">
+                  <img
+                    src="/awards/award_ceremony.jpg"
+                    alt="Bilal Ahamad receiving the Excellent Performance Award at L&T Infotech"
+                    className="w-full h-52 object-cover object-top hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute bottom-0 left-0 p-4">
+                    <span className="text-white font-bold text-sm">Annual Best Performer · 2010–11</span>
+                    <span className="block text-zinc-300 text-xs mt-0.5">L&T Infotech, Motorola ODC</span>
+                  </div>
+                </div>
+
+                {/* Two Award Certificates side by side */}
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="group relative rounded-2xl overflow-hidden border border-emerald-500/20 hover:border-emerald-500/40 transition-all cursor-pointer">
+                    <img
+                      src="/awards/performance_award.jpeg"
+                      alt="Excellent Performance Award Certificate — L&T Infotech"
+                      className="w-full h-52 object-cover object-top hover:scale-105 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                    <div className="absolute bottom-0 left-0 p-3">
+                      <span className="text-white text-[11px] font-black uppercase tracking-wider block">Excellent Performance</span>
+                      <span className="text-emerald-400 text-[10px] font-semibold">Annual Best Performer</span>
+                    </div>
+                  </div>
+                  <div className="group relative rounded-2xl overflow-hidden border border-blue-500/20 hover:border-blue-500/40 transition-all cursor-pointer">
+                    <img
+                      src="/awards/eagle_award.jpeg"
+                      alt="Eagle Award for Best Managed Project — L&T Infotech"
+                      className="w-full h-52 object-cover object-top hover:scale-105 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                    <div className="absolute bottom-0 left-0 p-3">
+                      <span className="text-white text-[11px] font-black uppercase tracking-wider block">Eagle Award</span>
+                      <span className="text-blue-400 text-[10px] font-semibold">Best Managed Project</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Impact bullet */}
+                <div className="p-4 rounded-2xl bg-yellow-500/5 border border-yellow-500/20 relative z-10">
+                  <div className="flex items-start gap-3">
+                    <span className="text-yellow-400 text-lg shrink-0">⭐</span>
+                    <div>
+                      <p className="text-sm font-bold text-zinc-800 dark:text-zinc-200">Excellent Performance Award · L&T Infotech 2010–11</p>
+                      <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">
+                        Architected test automation infrastructure for Motorola ODC, validating multiple mobile platforms. Reduced man-hours by 25% through innovative automation of cumbersome stability testing procedures. Recognised as Annual Best Performer by EVP HR Sudhir Warde.
+                      </p>
+                      <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">
+                        <span className="text-yellow-500 font-bold">Eagle Award</span> — Led iDENITSTAnd Development project for Motorola Mobility System Testing, achieving remarkable productivity growth and significant business benefit.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             </div>

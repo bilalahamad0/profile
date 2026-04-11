@@ -4,12 +4,18 @@ import { BentoGridV2 } from "@/components/v2/BentoGridV2";
 import { NavbarV2 } from "@/components/v2/NavbarV2";
 import { motion } from "framer-motion";
 import { Download, ArrowLeft, FileText, Share2, Check } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
 import Link from "next/link";
 import { trackEvent } from "@/components/analytics/google-analytics";
 
 export default function ExperiencePage() {
   const [isCopied, setIsCopied] = useState(false);
+
+  // Ensure page always loads from the top regardless of scroll position from previous page
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
 
   const handleShare = async () => {
     const shareData = {
