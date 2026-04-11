@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {
   Play, Pause, RefreshCw, ChevronRight,
@@ -11,6 +11,9 @@ import {
 import { experienceData } from "@/data/portfolio";
 
 /* ─── Slide Definitions ─────────────────────────────── */
+// Note: experienceData indices after adding Stealth at [0]:
+// [0]=Stealth, [1]=Samsara, [2]=Cruise, [3]=Rivian, [4]=Amazon, [5]=Google
+// [6]=Cisco, [7]=Wistron, [8]=Motorola, [9]=Luminous
 const slides = [
   /* 0 — Intro */
   {
@@ -29,9 +32,9 @@ const slides = [
     id: "samsara",
     accent: "#f59e0b",
     bg: "from-amber-950 via-slate-950 to-black",
-    label: "CURRENT · DEC 2023 – PRESENT",
+    label: "SAMSARA · DEC 2023 – JUL 2025",
     title: "Samsara\nIoT & AI/ML QA",
-    body: experienceData[0]?.highlights?.[0] ?? experienceData[0]?.desc,
+    body: experienceData[1]?.highlights?.[0] ?? experienceData[1]?.desc,
     icon: <Zap className="w-10 h-10 text-amber-400" />,
     stat: { value: "50%", label: "Regression Cycles Reduced" },
     cta: null,
@@ -43,7 +46,7 @@ const slides = [
     bg: "from-orange-950 via-slate-950 to-black",
     label: "AMAZON LAB126 · 2018–2021",
     title: "Amazon\nAlexa IoT Lead",
-    body: experienceData[3]?.highlights?.[0] ?? experienceData[3]?.desc,
+    body: experienceData[4]?.highlights?.[0] ?? experienceData[4]?.desc,
     icon: <Shield className="w-10 h-10 text-orange-400" />,
     stat: { value: "$3M", label: "Manual Testing Cost Saved" },
     cta: null,
@@ -55,7 +58,7 @@ const slides = [
     bg: "from-blue-950 via-slate-950 to-black",
     label: "GOOGLE / DAYDREAM VR · 2016–2018",
     title: "Google\nVR Systems",
-    body: experienceData[4]?.highlights?.[0] ?? experienceData[4]?.desc,
+    body: experienceData[5]?.highlights?.[0] ?? experienceData[5]?.desc,
     icon: <Globe className="w-10 h-10 text-blue-400" />,
     stat: { value: "80%", label: "Execution Hours Cut via Robot Arm" },
     cta: null,
@@ -67,7 +70,7 @@ const slides = [
     bg: "from-emerald-950 via-slate-950 to-black",
     label: "RIVIAN AUTOMOTIVE · 2021–2022",
     title: "Rivian\nInfotainment QA",
-    body: experienceData[2]?.highlights?.[0] ?? experienceData[2]?.desc,
+    body: experienceData[3]?.highlights?.[0] ?? experienceData[3]?.desc,
     icon: <Car className="w-10 h-10 text-emerald-400" />,
     stat: { value: "R1T / R1S", label: "EV Models Shipped" },
     cta: null,
@@ -79,7 +82,7 @@ const slides = [
     bg: "from-violet-950 via-slate-950 to-black",
     label: "MOTOROLA / L&T INFOTECH · 2009–2014",
     title: "Motorola\nBluetooth Automation",
-    body: experienceData[7]?.highlights?.[0] ?? experienceData[7]?.desc,
+    body: experienceData[8]?.highlights?.[0] ?? experienceData[8]?.desc,
     icon: <Cpu className="w-10 h-10 text-violet-400" />,
     stat: { value: "$2.1M", label: "Revenue via Automation Framework" },
     cta: null,
@@ -103,7 +106,7 @@ const slides = [
     bg: "from-yellow-950 via-slate-950 to-black",
     label: "CERTIFIED",
     title: "Expertise\nValidated",
-    body: "AI Coding Agents (2025) · Software Testing Foundations: AI Integration (2026) · ISTQB CTFL · Scrum Advanced · Eagle Award · Excellence Award",
+    body: "AI Coding Agents (2025) · Software Testing Foundations: AI Integration (2026) · ISTQB CTFL · Scrum Advanced · Annual Best Performer · Excellent Performance Award",
     icon: <Award className="w-10 h-10 text-yellow-400" />,
     stat: null,
     cta: null,
@@ -127,10 +130,32 @@ const DURATION = 5000; // ms per slide
 /* ─── Component ─────────────────────────────────────── */
 export function ResumeReel() {
   const [index, setIndex] = useState(0);
-  const [playing, setPlaying] = useState(true);
+  const [playing, setPlaying] = useState(false); // Don't auto-play until in view
   const [progress, setProgress] = useState(0);
   const [direction, setDirection] = useState<1 | -1>(1);
+  const [hasEnteredView, setHasEnteredView] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Intersection Observer — start from slide 0 when first scrolled into view
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting && !hasEnteredView) {
+          setHasEnteredView(true);
+          setIndex(0);
+          setProgress(0);
+          setPlaying(true);
+        }
+      },
+      { threshold: 0.4 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [hasEnteredView]);
 
   const advance = useCallback((dir: 1 | -1 = 1) => {
     setDirection(dir);
@@ -175,7 +200,7 @@ export function ResumeReel() {
 
   return (
     // Only visible on mobile
-    <div className="md:hidden w-full flex flex-col items-center py-12 px-6 gap-6">
+    <div ref={containerRef} className="md:hidden w-full flex flex-col items-center py-12 px-6 gap-6">
       {/* Label */}
       <div className="text-center">
         <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-600 mb-2">Career Reel</p>
@@ -215,7 +240,7 @@ export function ResumeReel() {
             animate="center"
             exit="exit"
             transition={{ type: "tween", duration: 0.35, ease: "easeInOut" }}
-            className={`absolute inset-0 bg-gradient-to-b ${slide.bg} flex flex-col pt-16 pb-24 px-7`}
+            className={`absolute inset-0 bg-gradient-to-b ${slide.bg} flex flex-col pt-16 pb-32 px-7`}
           >
             {/* Decorative glow */}
             <div
@@ -302,30 +327,32 @@ export function ResumeReel() {
           </motion.div>
         </AnimatePresence>
 
-        {/* Tap zone overlay — left/right halves */}
-        <div className="absolute inset-0 z-40 flex pointer-events-auto">
+        {/* Tap zone overlay — left/right halves, below controls */}
+        <div className="absolute inset-0 z-40 flex pointer-events-auto" style={{ bottom: "80px" }}>
           <div className="w-1/2 h-full cursor-pointer" onClick={() => advance(-1)} />
           <div className="w-1/2 h-full cursor-pointer" onClick={() => advance(1)} />
         </div>
 
-        {/* Controls */}
-        <div className="absolute bottom-6 left-0 right-0 z-50 flex justify-center gap-6">
+        {/* Controls — above the slide counter, not overlapping content */}
+        <div className="absolute bottom-10 left-0 right-0 z-50 flex justify-center gap-6">
           <button
             onClick={(e) => { e.stopPropagation(); setPlaying((p) => !p); }}
-            className="p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white active:scale-95 transition-transform"
+            className="p-2.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white active:scale-95 transition-transform"
+            aria-label={playing ? "Pause" : "Play"}
           >
-            {playing ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+            {playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
           </button>
           <button
-            onClick={(e) => { e.stopPropagation(); setIndex(0); setProgress(0); }}
-            className="p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white active:scale-95 transition-transform"
+            onClick={(e) => { e.stopPropagation(); setIndex(0); setProgress(0); setPlaying(true); }}
+            className="p-2.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white active:scale-95 transition-transform"
+            aria-label="Restart from beginning"
           >
-            <RefreshCw className="w-5 h-5" />
+            <RefreshCw className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Navigation hint */}
-        <p className="absolute bottom-2 left-0 right-0 z-50 text-center text-[9px] font-bold text-white/20 uppercase tracking-widest pointer-events-none">
+        {/* Slide counter */}
+        <p className="absolute bottom-3 left-0 right-0 z-50 text-center text-[9px] font-bold text-white/20 uppercase tracking-widest pointer-events-none">
           {index + 1} / {slides.length} · tap to navigate
         </p>
       </div>

@@ -47,6 +47,7 @@ const WARN_SNIPPET = `def download_xlsx(force: bool = False):
 
 export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boolean }) {
   const [isExpanded, setIsExpanded] = useState(showOnlyResume);
+  const [awardLightbox, setAwardLightbox] = useState<string | null>(null);
   const [repos, setRepos] = useState<Repository[]>([]);
   const [showWarnCode, setShowWarnCode] = useState(false);
   const [warnDashboardExpanded, setWarnDashboardExpanded] = useState(false);
@@ -55,8 +56,8 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
   const currentYear = new Date().getFullYear();
   const yearsOfExperience = currentYear - 2008;
 
-  // Render 5 items initially to pair vertically with Arsenal and Certs on Desktop
-  const visibleExperiences = isExpanded ? experienceData : experienceData.slice(0, 5); 
+  // Render 6 items initially
+  const visibleExperiences = isExpanded ? experienceData : experienceData.slice(0, 6);
 
   const [badgeCount, setBadgeCount] = useState<number | string>("8+");
 
@@ -166,7 +167,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                 </AnimatePresence>
               </div>
               
-              {experienceData.length > 5 && (
+              {experienceData.length > 6 && (
                 <button 
                   onClick={() => setIsExpanded(!isExpanded)}
                   className="mt-6 flex items-center justify-center w-full py-3 rounded-xl border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:bg-white/10 text-zinc-700 dark:text-zinc-300 transition-colors gap-2 text-sm font-medium z-20 relative"
@@ -240,6 +241,23 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                   </ul>
                 </div>
 
+
+                {/* Testing & Standards */}
+                <div className="mb-4">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-500 dark:text-amber-400 mb-2 flex items-center gap-1.5">
+                    <ShieldCheck className="w-3 h-3" /> Testing &amp; Standards
+                  </span>
+                  <ul className="space-y-2 mt-2">
+                    {["ISTQB Certified Tester Foundation Level (CTFL)"].map((cert, idx) => (
+                      <li key={idx} className="flex items-start gap-3">
+                        <div className="flex-shrink-0 mt-0.5 w-5 h-5 rounded-md bg-amber-500/10 flex items-center justify-center border border-amber-500/20">
+                          <Box className="w-3 h-3 text-amber-400" />
+                        </div>
+                        <span className="text-sm text-zinc-700 dark:text-zinc-300 leading-snug">{cert}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
                 {/* Leadership & Management */}
                 <div className="mb-4">
                   <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 dark:text-blue-400 mb-2 flex items-center gap-1.5">
@@ -296,6 +314,15 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
               </motion.div>
 
               {/* Awards — L&T Infotech */}
+              {awardLightbox && (
+                <div
+                  className="fixed inset-0 z-[999] bg-black/90 flex items-center justify-center p-4 cursor-zoom-out"
+                  onClick={() => setAwardLightbox(null)}
+                >
+                  <img src={awardLightbox} alt="Award expanded view" className="max-w-full max-h-full rounded-2xl shadow-2xl object-contain" />
+                  <button className="absolute top-4 right-4 text-white/60 hover:text-white text-3xl leading-none" onClick={(e) => { e.stopPropagation(); setAwardLightbox(null); }}>&times;</button>
+                </div>
+              )}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -305,64 +332,63 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
               >
                 <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2 flex items-center gap-2 relative z-10">
                   <span className="text-2xl">🏆</span>
-                  Awards & Recognition
+                  Awards &amp; Recognition
                 </h2>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6 relative z-10">L&T Infotech (2010–2011)</p>
+                <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6 relative z-10">L&amp;T Infotech (2010–2011)</p>
 
-                {/* Ceremony Photo */}
-                <div className="relative mb-6 rounded-2xl overflow-hidden border border-white/10">
+                {/* Ceremony Stage Photo — correct photo, clickable */}
+                <div className="relative mb-6 rounded-2xl overflow-hidden border border-white/10 cursor-zoom-in group" onClick={() => setAwardLightbox("/awards/award_stage.jpg")}>
                   <img
-                    src="/awards/award_ceremony.jpg"
-                    alt="Bilal Ahamad receiving the Excellent Performance Award at L&T Infotech"
-                    className="w-full h-52 object-cover object-top hover:scale-105 transition-transform duration-700"
+                    src="/awards/award_stage.jpg"
+                    alt="Bilal Ahamad receiving Excellent Performance Award on stage at L&T Infotech"
+                    className="w-full h-52 object-cover object-center group-hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                   <div className="absolute bottom-0 left-0 p-4">
                     <span className="text-white font-bold text-sm">Annual Best Performer · 2010–11</span>
-                    <span className="block text-zinc-300 text-xs mt-0.5">L&T Infotech, Motorola ODC</span>
+                    <span className="block text-zinc-300 text-xs mt-0.5">L&amp;T Infotech · Receiving Award on Stage</span>
                   </div>
+                  <span className="absolute top-2 right-2 px-2 py-1 rounded-full bg-black/50 border border-white/20 text-[9px] font-bold text-white/70 uppercase tracking-wider">Click to expand</span>
                 </div>
 
-                {/* Two Award Certificates side by side */}
+                {/* Two Award Certificates — clickable */}
                 <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="group relative rounded-2xl overflow-hidden border border-emerald-500/20 hover:border-emerald-500/40 transition-all cursor-pointer">
-                    <img
-                      src="/awards/performance_award.jpeg"
-                      alt="Excellent Performance Award Certificate — L&T Infotech"
-                      className="w-full h-52 object-cover object-top hover:scale-105 transition-transform duration-700"
-                    />
+                  <div className="group relative rounded-2xl overflow-hidden border border-emerald-500/20 hover:border-emerald-500/40 transition-all cursor-zoom-in" onClick={() => setAwardLightbox("/awards/performance_award.jpeg")}>
+                    <img src="/awards/performance_award.jpeg" alt="Excellent Performance Award Certificate" className="w-full h-52 object-cover object-top group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
                     <div className="absolute bottom-0 left-0 p-3">
-                      <span className="text-white text-[11px] font-black uppercase tracking-wider block">Excellent Performance</span>
-                      <span className="text-emerald-400 text-[10px] font-semibold">Annual Best Performer</span>
+                      <span className="text-white text-[11px] font-black uppercase tracking-wider block">Annual Best Performer</span>
+                      <span className="text-emerald-400 text-[10px] font-semibold">Excellent Performance Award</span>
                     </div>
                   </div>
-                  <div className="group relative rounded-2xl overflow-hidden border border-blue-500/20 hover:border-blue-500/40 transition-all cursor-pointer">
-                    <img
-                      src="/awards/eagle_award.jpeg"
-                      alt="Eagle Award for Best Managed Project — L&T Infotech"
-                      className="w-full h-52 object-cover object-top hover:scale-105 transition-transform duration-700"
-                    />
+                  <div className="group relative rounded-2xl overflow-hidden border border-blue-500/20 hover:border-blue-500/40 transition-all cursor-zoom-in" onClick={() => setAwardLightbox("/awards/eagle_award.jpeg")}>
+                    <img src="/awards/eagle_award.jpeg" alt="Eagle Award for Best Managed Project" className="w-full h-52 object-cover object-top group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
                     <div className="absolute bottom-0 left-0 p-3">
-                      <span className="text-white text-[11px] font-black uppercase tracking-wider block">Eagle Award</span>
-                      <span className="text-blue-400 text-[10px] font-semibold">Best Managed Project</span>
+                      <span className="text-white text-[11px] font-black uppercase tracking-wider block">Annual Best Managed Project</span>
+                      <span className="text-blue-400 text-[10px] font-semibold">Eagle Award</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Impact bullet */}
-                <div className="p-4 rounded-2xl bg-yellow-500/5 border border-yellow-500/20 relative z-10">
-                  <div className="flex items-start gap-3">
-                    <span className="text-yellow-400 text-lg shrink-0">⭐</span>
-                    <div>
-                      <p className="text-sm font-bold text-zinc-800 dark:text-zinc-200">Excellent Performance Award · L&T Infotech 2010–11</p>
-                      <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">
-                        Architected test automation infrastructure for Motorola ODC, validating multiple mobile platforms. Reduced man-hours by 25% through innovative automation of cumbersome stability testing procedures. Recognised as Annual Best Performer by EVP HR Sudhir Warde.
-                      </p>
-                      <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">
-                        <span className="text-yellow-500 font-bold">Eagle Award</span> — Led iDENITSTAnd Development project for Motorola Mobility System Testing, achieving remarkable productivity growth and significant business benefit.
-                      </p>
+                {/* Impact detail */}
+                <div className="space-y-3 relative z-10">
+                  <div className="p-4 rounded-2xl bg-yellow-500/5 border border-yellow-500/20">
+                    <div className="flex items-start gap-3">
+                      <span className="text-yellow-400 text-lg shrink-0">⭐</span>
+                      <div>
+                        <p className="text-sm font-bold text-zinc-800 dark:text-zinc-200">Annual Best Performer · Excellent Performance Award · L&amp;T Infotech 2010–11</p>
+                        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">Architected test automation infrastructure for Motorola ODC, validating multiple mobile platforms. Reduced man-hours by 25% through innovative automation of cumbersome stability testing procedures. Recognised as Annual Best Performer by EVP HR Sudhir Warde.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-4 rounded-2xl bg-blue-500/5 border border-blue-500/20">
+                    <div className="flex items-start gap-3">
+                      <span className="text-blue-400 text-lg shrink-0">⭐</span>
+                      <div>
+                        <p className="text-sm font-bold text-zinc-800 dark:text-zinc-200">Annual Best Managed Project · Eagle Award · L&amp;T Infotech 2010–11</p>
+                        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">Led the Development project for Motorola Mobility System Testing, achieving remarkable productivity growth and significant business benefit.</p>
+                      </div>
                     </div>
                   </div>
                 </div>

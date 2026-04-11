@@ -5,29 +5,45 @@ import {
 
 export const experienceData = [
   {
-    role: "Firmware Quality Engineering Lead",
-    company: "Samsara",
+    role: "Founding System Architect & Technical QA Lead",
+    company: "Stealth Hardware-Software Startup",
+    location: "Remote / Stealth",
+    duration: "Sep 2025 - Present",
+    desc: "Concept to MVP: Spearheading the '0-to-1' architecture and validation of a Unified Sensor Integration IDE, automating the integration of OEM dependencies and standardizing sensor-level code extensions.",
+    highlights: [
+      "Architectural Innovation: Engineered a pre-validated compatibility layer for industry-standard chips (ARM, ESP32) and sensors (LiDAR/Radar), reducing manual bring-up cycles by an estimated 70%.",
+      "Advanced Simulation: Built a containerized (Docker/QEMU) testing ecosystem enabling high-fidelity A/B validation and system-level performance engineering before physical hardware deployment.",
+      "Technical Leadership: Conducted comprehensive cost-benefit and computing ability analysis for massive-scale sensor deployments, ensuring alignment with Industry 4.0 safety and reliability standards.",
+    ],
+    file: "/logos/samsara.png",
+    faang: false,
+    invertLogo: true,
+    isStealth: true,
+  },
+  {
+    role: "Senior Firmware Quality Lead",
+    company: "Samsara Inc",
     location: "San Francisco, CA",
-    duration: "Dec 2023 - Present",
+    duration: "Dec 2023 - Jul 2025",
     desc: "Spearheading E2E system test strategies for IoT Dash Cam product series within an AI/ML video-based safety ecosystem.",
     highlights: [
-      "Developing and implementing automated testing pipelines focusing on video quality, AI/ML algorithm accuracy, and workload performance.",
+      "Developed automated testing pipelines focusing on video quality, AI/ML algorithm accuracy, and workload performance.",
       "Reduced regression cycles by 50% and significantly improved release cadence through network reliability and connectivity automation.",
-      "Collaborating with cross-functional teams to address validation gaps and influence project scope and resource allocation.",
+      "Collaborated with cross-functional teams to address validation gaps and influence project scope and resource allocation.",
     ],
     file: "/logos/samsara.png",
     faang: false,
     invertLogo: true,
   },
   {
-    role: "Test Automation Lead — Systems & Integration",
-    company: "Cruise",
+    role: "Senior Automation Engineer II",
+    company: "Cruise LLC",
     location: "San Francisco, CA",
     duration: "Oct 2022 - Jun 2023",
-    desc: "Owned test delivery for core CPU/GPU systems computing and performance, overseeing successful releases of multiple firmware versions.",
+    desc: "Owned test delivery for vehicle computational systems, overseeing successful releases of safety-critical firmware versions.",
     highlights: [
-      "Conceptualized and developed an automation test framework for Sanity, Integration, and Stress testing, achieving 75% test coverage.",
-      "Led design for fault tolerance, redundancy, and network reliability testing, including Vehicle-to-Everything (V2X) and PCAP replay.",
+      "Developed an automation test framework for Sanity, Integration, and Stress testing, achieving 75% test coverage.",
+      "Led design for fault tolerance, redundancy, and network reliability testing (V2X and PCAP replay).",
       "Aligned test strategies with business requirements through cross-functional coordination and stakeholder management.",
     ],
     file: "/logos/cruise.png",
@@ -35,29 +51,29 @@ export const experienceData = [
     invertLogo: false,
   },
   {
-    role: "Infotainment Test Lead / Senior QA Engineer",
-    company: "Rivian Automotive",
+    role: "Infotainment Test Lead",
+    company: "Rivian Automotive LLC",
     location: "Palo Alto, CA",
     duration: "Jun 2021 - Sep 2022",
     desc: "Directed technical testing strategy and E2E test delivery for in-car Infotainment Systems in R1T, R1S, and Fleet models.",
     highlights: [
-      "Designed and developed an automation test framework for QNX and Android platforms, covering OTA updates, UI/UX, and navigation.",
-      "Ensured comprehensive coverage for integration testing with vehicle systems, system performance, and stability during continuous release cycles.",
-      "Achieved critical KPI goals including effectiveness and productivity metrics from Out-of-Box Experience to full user flow life cycle.",
+      "Designed an automation test framework for QNX and Android platforms covering OTA updates, UI/UX, and navigation.",
+      "Ensured comprehensive coverage for integration testing with vehicle systems, performance, and stability during continuous releases.",
+      "Achieved critical KPI goals from Out-of-Box Experience to full user flow life cycle.",
     ],
     file: "/logos/rivian.png",
     faang: false,
     invertLogo: false,
   },
   {
-    role: "Senior QA Engineer II & Technical Lead",
+    role: "Senior QA Engineer II, Test Lead",
     company: "Amazon Lab126",
     location: "Sunnyvale, CA",
     duration: "Jun 2018 - Jun 2021",
-    desc: "Managed QA for Alexa Voice Service (AVS)-enabled IoT products including Echo Buds (1st & 2nd Gen), Echo Auto, and Dash Button.",
+    desc: "Managed the QA process for Alexa Voice Service (AVS)-enabled products including Echo Buds (1st & 2nd Gen), Echo Auto, and Dash Button.",
     highlights: [
-      "Introduced Android OS testing capability by automating Snippet API library, reducing manual testing costs by $3M.",
-      "Setup test labs and CI/CD pipelines for continuous execution using 50+ Android/iOS phones, achieving 30% fewer post-launch issues.",
+      "Automated Snippet API library, reducing manual testing costs by $3M.",
+      "Setup test labs and CI/CD pipelines for continuous execution using 50+ devices, achieving 30% fewer post-launch issues.",
       "Created live dashboards using Splunk to highlight trends and metrics, improving test efficiency to 80%.",
     ],
     file: "/logos/amazon.png",
@@ -65,8 +81,8 @@ export const experienceData = [
     invertLogo: false,
   },
   {
-    role: "Software Test Engineer (Virtual Reality / Daydream)",
-    company: "Google (via Tech Mahindra)",
+    role: "Senior Test Engineer",
+    company: "Tech Mahindra / Google Inc",
     location: "Mountain View, CA",
     duration: "Jan 2016 - Jun 2018",
     desc: "Led system testing for Google's VR Controller, successfully releasing 1st & 2nd Gen controllers and the Daydream View headset.",
@@ -80,14 +96,13 @@ export const experienceData = [
     invertLogo: false,
   },
   {
-    role: "Test Engineer (Automation)",
-    company: "Cisco (via Cognizant)",
+    role: "Product Validation Engineer",
+    company: "Cognizant Technology / Cisco",
     location: "Boston, MA",
     duration: "Sep 2015 - Jan 2016",
-    desc: "Developed a Python-based test automation framework for Set-top-Box (STB) video streaming applications.",
+    desc: "Developed a Python-based test automation framework for Set-top-Box (STB) video streaming applications by simulating handheld remote key events.",
     highlights: [
       "Enhanced test scope by 40% and reduced execution time by half through modular architecture and programmable actions.",
-      "Simulated handheld remote key events to automate real-world user interaction patterns for streaming validation.",
     ],
     file: "/logos/cisco.png",
     faang: false,
@@ -95,22 +110,21 @@ export const experienceData = [
   },
   {
     role: "Radio Validation Engineer",
-    company: "Wistron Mobile Solutions",
+    company: "Wistron Mobile Solutions Corp",
     location: "Rolling Meadows, IL",
     duration: "Dec 2014 - Sep 2015",
-    desc: "Led validation for Wi-Fi Alliance (WFA) compliance on Android and BlackBerry handsets.",
+    desc: "Led validation for Wi-Fi Alliance (WFA) compliance on Android and BlackBerry handsets, executing pre-certification and interoperability testing.",
     highlights: [
       "Re-architected WLAN IOT test automation framework to integrate Android OS support, creating savings of $1.3M.",
       "Designed internal dashboards to monitor automation test activity and alert engineers to high-priority issues.",
-      "Executed pre-certification and interoperability testing across multiple chipset vendors and operator profiles.",
     ],
     file: "/logos/wistron.svg",
     faang: false,
     invertLogo: true,
   },
   {
-    role: "Senior Software Engineer in Test",
-    company: "Motorola Mobility (via L&T Infotech)",
+    role: "Senior Software Engineer, Test Automation Lead",
+    company: "L&T Infotech / Motorola Mobility",
     location: "Chicago, IL",
     duration: "Oct 2009 - Dec 2014",
     desc: "Pioneered a test automation framework for Bluetooth qualification testing on Motorola handsets, generating $2.1M in revenue.",
@@ -124,21 +138,19 @@ export const experienceData = [
     invertLogo: true,
   },
   {
-    role: "Test Engineer",
+    role: "Software Developer",
     company: "Luminous Infoways",
     location: "Bhubaneswar, India",
     duration: "Oct 2008 - Sep 2009",
-    desc: "Led functional and integration testing for web portal applications, ensuring robust performance.",
+    desc: "Led functional and integration testing for web portal applications, ensuring robust performance and seamless user experience.",
     highlights: [
       "Worked in web application deployment module, feature integration, and client liaison.",
-      "Ensured robust performance and seamless user experience across multiple deployment environments.",
     ],
     file: "/logos/luminous.png",
     faang: false,
     invertLogo: false,
   },
 ];
-
 
 export const skills = [
   { name: "Python", icon: Code2, color: "text-blue-600 dark:text-blue-400" },
@@ -162,10 +174,10 @@ export const skills = [
 export const certs = [
   "Software Testing Foundations: Integrating AI into Quality Process (2026)",
   "AI Coding Agents with GitHub Copilot and Cursor (2025)",
+  "ISTQB Certified Tester Foundation Level (CTFL)",
   "How to Master Your Executive Presence (2023)",
   "Project Management Foundations (2023)",
   "Scrum: Advanced (2021)",
-  "ISTQB Foundation Level"
 ];
 
 export const recommendations = [
@@ -192,8 +204,11 @@ export const projectsData = [
     gradient: "from-blue-600/20 via-blue-500/10 to-transparent",
     accent: "blue",
     blogSlug: "california-warn-story",
+    // iframe embed of live dashboard
+    previewType: "iframe" as const,
+    previewSrc: "https://bilalahamad0.github.io/warn/",
     thumbnail: "https://bilalahamad0.github.io/warn/charts/top_companies.png",
-    thumbnailAlt: "California WARN layoff dashboard — top companies by layoffs",
+    thumbnailAlt: "California WARN layoff dashboard — interactive charts",
     thumbnailType: "screenshot" as const,
   },
   {
@@ -212,6 +227,9 @@ export const projectsData = [
     gradient: "from-emerald-600/20 via-emerald-500/10 to-transparent",
     accent: "emerald",
     blogSlug: "adhan-caster-story",
+    // animated system flow from GitHub README
+    previewType: "gif" as const,
+    previewSrc: "https://raw.githubusercontent.com/bilalahamad0/adhan-api/main/images/system_flow/flow_animation.webp",
     thumbnail: "https://raw.githubusercontent.com/bilalahamad0/adhan-api/main/images/system_flow/flow_animation.webp",
     thumbnailAlt: "Adhan Audio Caster system flow animation",
     thumbnailType: "animation" as const,
@@ -232,11 +250,12 @@ export const projectsData = [
     gradient: "from-pink-600/20 via-rose-500/10 to-transparent",
     accent: "pink",
     blogSlug: null,
+    previewType: "image" as const,
+    previewSrc: "https://opengraph.githubassets.com/1/bilalahamad0/tmo",
     thumbnail: "https://opengraph.githubassets.com/1/bilalahamad0/tmo",
     thumbnailAlt: "T-Mobile Bill Automation repository",
     thumbnailType: "screenshot" as const,
   },
-
   {
     id: "profile",
     name: "Portfolio: bilalahamad.com",
@@ -253,12 +272,13 @@ export const projectsData = [
     gradient: "from-violet-600/20 via-purple-500/10 to-transparent",
     accent: "violet",
     blogSlug: null,
+    previewType: "iframe" as const,
+    previewSrc: "https://bilalahamad.com",
     thumbnail: "https://opengraph.githubassets.com/1/bilalahamad0/profile",
     thumbnailAlt: "Portfolio: bilalahamad.com website",
     thumbnailType: "screenshot" as const,
   },
 ];
-
 
 
 export type LinkedInPost = {
@@ -283,11 +303,9 @@ export const linkedInPosts: LinkedInPost[] = [
     category: "LinkedIn",
     thumbnail: "/blog-thumbs/adhan-iot.png",
   },
-
   {
     id: "li-2",
     title: "AI Testing: Why Your QA Team Can't Afford to Ignore It",
-
     excerpt: "AI-native testing pipelines aren't just faster — they surface systemic defects that humans consistently miss. Here's how I'm integrating AI testing into every new project.",
     tags: ["#qualityassurance", "#ai", "#aitesting"],
     date: "August 13, 2025",
@@ -326,4 +344,3 @@ export const linkedInPosts: LinkedInPost[] = [
     thumbnail: "/blog-thumbs/ai-native-dev.png",
   },
 ];
-

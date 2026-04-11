@@ -177,27 +177,52 @@ export default function ProjectsPage() {
                     {/* Gradient BG */}
                     <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`} />
 
-                    {/* Thumbnail — project artifact preview */}
-                    {"thumbnail" in project && project.thumbnail && (
-                      <div className="relative w-full h-44 overflow-hidden bg-black/30 border-b border-white/5">
-                        <img
-                          src={(project as any).thumbnail}
-                          alt={(project as any).thumbnailAlt ?? project.name}
-                          className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
-                          loading="lazy"
-                        />
-                        {/* Overlay gradient fading into card */}
-                        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/60" />
-                        {(project as any).thumbnailType === "animation" && (
-                          <div className="absolute top-2 right-2 px-2 py-1 rounded-full bg-black/60 border border-white/10 text-[9px] font-black uppercase tracking-widest text-white/70">
-                            Live Preview
-                          </div>
+                    {/* Visual Artifact Window — type-aware preview */}
+                    {"previewType" in project && project.previewSrc && (
+                      <div className="relative w-full overflow-hidden bg-black/40 border-b border-white/5" style={{ height: "220px" }}>
+                        {(project as any).previewType === "iframe" ? (
+                          <>
+                            <iframe
+                              src={(project as any).previewSrc}
+                              className="w-full h-full border-0 scale-[0.85] origin-top-left"
+                              style={{ width: "117%", height: "280px", pointerEvents: "auto" }}
+                              loading="lazy"
+                              title={`${project.name} live preview`}
+                              sandbox="allow-scripts allow-same-origin"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/50 pointer-events-none" />
+                            <div className="absolute top-2 right-2 px-2 py-1 rounded-full bg-emerald-600/80 border border-emerald-500/40 text-[9px] font-black uppercase tracking-widest text-white flex items-center gap-1 pointer-events-none">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                              Live
+                            </div>
+                          </>
+                        ) : (project as any).previewType === "gif" ? (
+                          <>
+                            <img
+                              src={(project as any).previewSrc}
+                              alt={`${project.name} system flow`}
+                              className="w-full h-full object-contain object-center transition-transform duration-700 group-hover:scale-105"
+                              loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/50 pointer-events-none" />
+                            <div className="absolute top-2 right-2 px-2 py-1 rounded-full bg-black/60 border border-white/10 text-[9px] font-black uppercase tracking-widest text-white/70 pointer-events-none">System Flow</div>
+                          </>
+                        ) : (
+                          <>
+                            <img
+                              src={(project as any).previewSrc}
+                              alt={(project as any).thumbnailAlt ?? project.name}
+                              className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                              loading="lazy"
+                              onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/50 pointer-events-none" />
+                          </>
                         )}
                       </div>
                     )}
 
-                    <div className="relative z-10 p-8 flex flex-col h-full">
+                    <div className="relative z-10 p-8 flex flex-col">
                       {/* Header */}
                       <div className="flex items-start justify-between mb-6">
                         <div className="flex-1">
@@ -233,9 +258,9 @@ export default function ProjectsPage() {
                       </div>
 
                       {/* Description */}
-                      <p className="text-sm text-zinc-400 leading-relaxed mb-6 flex-grow">{project.description}</p>
+                      <p className="text-sm text-zinc-400 leading-relaxed mb-6">{project.description}</p>
 
-                      {/* Tech Tags */}
+                      {/* Tech Tags — all shown, no truncation */}
                       <div className="flex flex-wrap gap-2 mb-6">
                         {project.tech.map((t) => (
                           <span key={t} className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-zinc-400 uppercase tracking-widest">
@@ -248,6 +273,7 @@ export default function ProjectsPage() {
                       {project.isAI && (
                         <AIContributionBar pct={project.aiContribution} color={project.accent} />
                       )}
+
 
                       {/* Footer */}
                       <div className="mt-6 pt-6 border-t border-white/5 flex items-center justify-between">
