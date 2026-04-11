@@ -12,6 +12,6 @@
     "tailwindcss": "^3.4.4"
   },
   "dependencies": {
-    "nodemailer": "^6.9.11"
+    "nodemailer": "^8.0.5"
   }
 }
