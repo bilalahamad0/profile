@@ -202,6 +202,8 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                   )}
                 </button>
               )}
+            </motion.div>
+
             {/* RIGHT COLUMN - ARSENAL, CERTS, AWARDS, RECOMMS, GOOGLE PROFILE */}
             <div className="flex flex-col h-full">
               <div ref={rightColumnRef} className="flex flex-col gap-6">
