@@ -19,7 +19,7 @@ export function NavDock() {
 
     return (
         <div
-            className="fixed bottom-8 left-0 right-0 z-50 flex justify-center pointer-events-none"
+            className="fixed bottom-8 left-0 right-0 z-50 hidden md:flex justify-center pointer-events-none"
             onMouseMove={(e) => mouseX.set(e.pageX)}
             onMouseLeave={() => mouseX.set(10000)}
         >

@@ -105,7 +105,7 @@ export function HeroPortfolio() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-5xl md:text-7xl lg:text-8xl font-black text-zinc-100 leading-[1.1] mb-8 tracking-tighter"
+          className="text-4xl md:text-7xl lg:text-8xl font-black text-zinc-100 leading-[1.1] mb-8 tracking-tighter"
         >
           Engineering <span className="text-zinc-500 animate-pulse">Infrastructure</span> & <br />
           Automating <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Complexity</span>.

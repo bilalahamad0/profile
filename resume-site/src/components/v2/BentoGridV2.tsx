@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Terminal, ShieldCheck, Box, Activity, Cpu, Cloud, Settings, Layers, 
@@ -51,13 +51,36 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
   const [repos, setRepos] = useState<Repository[]>([]);
   const [showWarnCode, setShowWarnCode] = useState(false);
   const [warnDashboardExpanded, setWarnDashboardExpanded] = useState(false);
+  const [smartLimit, setSmartLimit] = useState(6);
+  const rightColumnRef = useRef<HTMLDivElement>(null);
   
-  // Dynamically calculate years of experience from 2008
-  const currentYear = new Date().getFullYear();
-  const yearsOfExperience = currentYear - 2008;
+  // Handle smart collapse based on right column height
+  useEffect(() => {
+    if (typeof window === 'undefined' || !rightColumnRef.current) return;
 
-  // Render 6 items initially
-  const visibleExperiences = isExpanded ? experienceData : experienceData.slice(0, 6);
+    const calculateLimit = () => {
+      if (window.innerWidth < 1024) {
+        setSmartLimit(6); // Default for mobile/stacked
+        return;
+      }
+
+      if (rightColumnRef.current) {
+        const height = rightColumnRef.current.offsetHeight;
+        // Estimated height per experience item is ~210px
+        const estimatedItems = Math.max(3, Math.ceil(height / 210));
+        setSmartLimit(estimatedItems);
+      }
+    };
+
+    const observer = new ResizeObserver(calculateLimit);
+    observer.observe(rightColumnRef.current);
+    calculateLimit();
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Update visible experiences based on smart limit
+  const visibleExperiences = isExpanded ? experienceData : experienceData.slice(0, smartLimit);
 
   const [badgeCount, setBadgeCount] = useState<number | string>("8+");
 
@@ -167,7 +190,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                 </AnimatePresence>
               </div>
               
-              {experienceData.length > 6 && (
+              {experienceData.length > smartLimit && (
                 <button 
                   onClick={() => setIsExpanded(!isExpanded)}
                   className="mt-6 flex items-center justify-center w-full py-3 rounded-xl border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:bg-white/10 text-zinc-700 dark:text-zinc-300 transition-colors gap-2 text-sm font-medium z-20 relative"
@@ -181,9 +204,10 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
               )}
             </motion.div>
 
-            {/* RIGHT COLUMN - ARSENAL, CERTS, RECOMMS */}
-            <div className="flex flex-col gap-6 h-full">
-              {/* Technical Arsenal */}
+            {/* RIGHT COLUMN - ARSENAL, CERTS, RECOMMS, AWARDS */}
+            <div className="flex flex-col h-full">
+              <div ref={rightColumnRef} className="flex flex-col gap-6">
+                {/* Technical Arsenal */}
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}

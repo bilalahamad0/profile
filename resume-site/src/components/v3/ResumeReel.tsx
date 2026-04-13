@@ -209,8 +209,8 @@ export function ResumeReel() {
 
       {/* Phone Frame */}
       <div
-        className="relative w-[300px] rounded-[40px] overflow-hidden shadow-2xl border-[6px] border-zinc-800 bg-black"
-        style={{ aspectRatio: "9/16", touchAction: "pan-y" }}
+        className="relative w-full max-w-[320px] rounded-[40px] overflow-hidden shadow-2xl border-[6px] border-zinc-800 bg-black mx-auto"
+        style={{ height: "calc(min(75vh, 600px))", touchAction: "pan-y" }}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
@@ -231,7 +231,7 @@ export function ResumeReel() {
         </div>
 
         {/* Slide content */}
-        <AnimatePresence custom={direction} mode="wait">
+        <AnimatePresence custom={direction} mode="popLayout">
           <motion.div
             key={slide.id}
             custom={direction}

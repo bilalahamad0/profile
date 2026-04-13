@@ -80,7 +80,7 @@ export default function HomePage() {
   const featuredProjects = projectsData.slice(0, 3);
 
   return (
-    <div className="flex flex-col gap-0 pb-24 dark md:overflow-x-hidden" id="top">
+    <div className="flex flex-col gap-0 pb-24 dark overflow-x-hidden" id="top">
       <NavbarV2 />
 
       {/* Hero — keep as-is */}
