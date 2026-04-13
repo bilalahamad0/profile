@@ -276,7 +276,9 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                         <div className={`w-12 h-12 rounded-xl flex shrink-0 items-center justify-center transition-colors border overflow-hidden p-2.5
                           ${exp.faang 
                             ? 'bg-amber-500/10 border-amber-500/30 shadow-[0_0_15px_rgba(249,115,22,0.15)]' 
-                            : 'bg-black/5 dark:bg-white/5 border-black/10 dark:border-white/10 group-hover:bg-blue-500/20 group-hover:border-blue-500/50'
+                            : (exp as any).isStealth
+                              ? 'bg-violet-500/10 border-violet-500/40 shadow-[0_0_20px_rgba(139,92,246,0.2)]'
+                              : 'bg-black/5 dark:bg-white/5 border-black/10 dark:border-white/10 group-hover:bg-blue-500/20 group-hover:border-blue-500/50'
                           }`}
                         >
                           <img 
@@ -291,8 +293,8 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                       </div>
                       <div className="pb-4 pt-1">
                         <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
-                          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white leading-tight">{exp.role}</h3>
-                          <span className={`font-medium tracking-tight ${exp.faang ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
+                          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white leading-tight whitespace-pre-line">{exp.role}</h3>
+                          <span className={`font-medium tracking-tight whitespace-pre-line ${exp.faang ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
                             {exp.company}
                           </span>
                         </div>

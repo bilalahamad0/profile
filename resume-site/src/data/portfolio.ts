@@ -5,8 +5,8 @@ import {
 
 export const experienceData = [
   {
-    role: "Founding System Architect & Technical QA Lead",
-    company: "Stealth Startup",
+    role: "Founding System Architect &\nTechnical QA Lead",
+    company: "Stealth Mode",
     location: "Remote / Stealth",
     duration: "Sep 2025 - Present",
     desc: "Concept to MVP: Spearheading the '0-to-1' architecture and validation of a Unified Sensor Integration IDE, automating the integration of OEM dependencies and standardizing sensor-level code extensions.",
@@ -15,9 +15,9 @@ export const experienceData = [
       "Advanced Simulation: Built a containerized (Docker/QEMU) testing ecosystem enabling high-fidelity A/B validation and system-level performance engineering before physical hardware deployment.",
       "Technical Leadership: Conducted comprehensive cost-benefit and computing ability analysis for massive-scale sensor deployments, ensuring alignment with Industry 4.0 safety and reliability standards.",
     ],
-    file: "/logos/samsara.png",
+    file: "/logos/stealth.png",
     faang: false,
-    invertLogo: true,
+    invertLogo: false,
     isStealth: true,
   },
   {
@@ -66,7 +66,7 @@ export const experienceData = [
     invertLogo: false,
   },
   {
-    role: "Senior QA Engineer II, Test Lead",
+    role: "Senior QA Engineer II & Test Lead",
     company: "Amazon Lab126",
     location: "Sunnyvale, CA",
     duration: "Jun 2018 - Jun 2021",
@@ -123,8 +123,8 @@ export const experienceData = [
     invertLogo: true,
   },
   {
-    role: "Senior Software Engineer, Test Automation Lead",
-    company: "L&T Infotech / Motorola Mobility",
+    role: "Senior Software Engineer &\nTest Automation Lead",
+    company: "L&T Infotech /\nMotorola Mobility",
     location: "Chicago, IL",
     duration: "Oct 2009 - Dec 2014",
     desc: "Pioneered a test automation framework for Bluetooth qualification testing on Motorola handsets, generating $2.1M in revenue.",
