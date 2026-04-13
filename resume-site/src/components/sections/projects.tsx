@@ -7,7 +7,7 @@ const PROJECTS = [
     {
         title: "Resume Portfolio",
         category: "Web Development",
-        description: "A premium, interactive portfolio built with Next.js, Tailwind CSS, and Framer Motion. Features liquid-glass aesthetics and smooth scroll animations.",
+        description: "A premium, interactive portfolio built using AI with Next.js, Tailwind CSS, and Framer Motion. Features liquid-glass aesthetics and smooth scroll animations.",
         gradient: "from-blue-500 to-cyan-500",
         link: "#",
     },
