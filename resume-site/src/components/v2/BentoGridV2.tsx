@@ -202,12 +202,11 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                   )}
                 </button>
               )}
-            </motion.div>
-
-            {/* RIGHT COLUMN - ARSENAL, CERTS, RECOMMS, AWARDS */}
+            {/* RIGHT COLUMN - ARSENAL, CERTS, AWARDS, RECOMMS, GOOGLE PROFILE */}
             <div className="flex flex-col h-full">
               <div ref={rightColumnRef} className="flex flex-col gap-6">
-                {/* Technical Arsenal */}
+                
+                {/* 1. Technical Arsenal */}
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -229,7 +228,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                 </div>
               </motion.div>
 
-              {/* Certifications — now categorized */}
+              {/* 2. Certifications */}
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -265,7 +264,6 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                   </ul>
                 </div>
 
-
                 {/* Testing & Standards */}
                 <div className="mb-4">
                   <span className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-500 dark:text-amber-400 mb-2 flex items-center gap-1.5">
@@ -282,7 +280,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                     ))}
                   </ul>
                 </div>
-                {/* Leadership & Management */}
+
                 <div className="mb-4">
                   <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 dark:text-blue-400 mb-2 flex items-center gap-1.5">
                     <Box className="w-3 h-3" /> Leadership & Management
@@ -300,12 +298,90 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                 </div>
               </motion.div>
 
-              {/* LinkedIn Recommendations */}
-              <motion.div 
+              {/* 3. Awards — L&T Infotech */}
+              {awardLightbox && (
+                <div
+                  className="fixed inset-0 z-[999] bg-black/90 flex items-center justify-center p-4 cursor-zoom-out"
+                  onClick={() => setAwardLightbox(null)}
+                >
+                  <img src={awardLightbox} alt="Award expanded view" className="max-w-full max-h-full rounded-2xl shadow-2xl object-contain" />
+                  <button className="absolute top-4 right-4 text-white/60 hover:text-white text-3xl leading-none" onClick={(e) => { e.stopPropagation(); setAwardLightbox(null); }}>&times;</button>
+                </div>
+              )}
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.3 }}
+                className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col"
+              >
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2 flex items-center gap-2 relative z-10">
+                  <span className="text-2xl">🏆</span>
+                  Awards &amp; Recognition
+                </h2>
+                <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6 relative z-10">L&amp;T Infotech (2010–2011)</p>
+
+                <div className="relative mb-6 rounded-2xl overflow-hidden border border-white/10 cursor-zoom-in group" onClick={() => setAwardLightbox("/awards/award_stage.jpg")}>
+                  <img
+                    src="/awards/award_stage.jpg"
+                    alt="Bilal Ahamad receiving Excellent Performance Award on stage at L&T Infotech"
+                    className="w-full h-52 object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute bottom-0 left-0 p-4">
+                    <span className="text-white font-bold text-sm">Annual Best Performer · 2010–11</span>
+                    <span className="block text-zinc-300 text-xs mt-0.5">L&amp;T Infotech · Receiving Award on Stage</span>
+                  </div>
+                  <span className="absolute top-2 right-2 px-2 py-1 rounded-full bg-black/50 border border-white/20 text-[9px] font-bold text-white/70 uppercase tracking-wider">Click to expand</span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="group relative rounded-2xl overflow-hidden border border-emerald-500/20 hover:border-emerald-500/40 transition-all cursor-zoom-in" onClick={() => setAwardLightbox("/awards/performance_award.jpeg")}>
+                    <img src="/awards/performance_award.jpeg" alt="Excellent Performance Award Certificate" className="w-full h-52 object-cover object-top group-hover:scale-105 transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                    <div className="absolute bottom-0 left-0 p-3">
+                      <span className="text-white text-[11px] font-black uppercase tracking-wider block">Annual Best Performer</span>
+                      <span className="text-emerald-400 text-[10px] font-semibold">Excellent Performance Award</span>
+                    </div>
+                  </div>
+                  <div className="group relative rounded-2xl overflow-hidden border border-blue-500/20 hover:border-blue-500/40 transition-all cursor-zoom-in" onClick={() => setAwardLightbox("/awards/eagle_award.jpeg")}>
+                    <img src="/awards/eagle_award.jpeg" alt="Eagle Award for Best Managed Project" className="w-full h-52 object-cover object-top group-hover:scale-105 transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                    <div className="absolute bottom-0 left-0 p-3">
+                      <span className="text-white text-[11px] font-black uppercase tracking-wider block">Annual Best Managed Project</span>
+                      <span className="text-blue-400 text-[10px] font-semibold">Eagle Award</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-3 relative z-10">
+                  <div className="p-4 rounded-2xl bg-yellow-500/5 border border-yellow-500/20">
+                    <div className="flex items-start gap-3">
+                      <span className="text-yellow-400 text-lg shrink-0">⭐</span>
+                      <div>
+                        <p className="text-sm font-bold text-zinc-800 dark:text-zinc-200">Annual Best Performer · Excellent Performance Award · L&amp;T Infotech 2010–11</p>
+                        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">Architected test automation infrastructure for Motorola ODC, validating multiple mobile platforms. Reduced man-hours by 25% through innovative automation of cumbersome stability testing procedures.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-4 rounded-2xl bg-blue-500/5 border border-blue-500/20">
+                    <div className="flex items-start gap-3">
+                      <span className="text-blue-400 text-lg shrink-0">⭐</span>
+                      <div>
+                        <p className="text-sm font-bold text-zinc-800 dark:text-zinc-200">Annual Best Managed Project · Eagle Award · L&amp;T Infotech 2010–11</p>
+                        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">Led the Development project for Motorola Mobility System Testing, achieving remarkable productivity growth.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* 4. LinkedIn Recommendations */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.4 }}
                 className="glass-card rounded-3xl p-8 relative flex flex-col flex-grow"
               >
                 <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none">
@@ -337,82 +413,56 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                 </div>
               </motion.div>
 
-              {/* Awards — L&T Infotech */}
-              {awardLightbox && (
-                <div
-                  className="fixed inset-0 z-[999] bg-black/90 flex items-center justify-center p-4 cursor-zoom-out"
-                  onClick={() => setAwardLightbox(null)}
-                >
-                  <img src={awardLightbox} alt="Award expanded view" className="max-w-full max-h-full rounded-2xl shadow-2xl object-contain" />
-                  <button className="absolute top-4 right-4 text-white/60 hover:text-white text-3xl leading-none" onClick={(e) => { e.stopPropagation(); setAwardLightbox(null); }}>&times;</button>
-                </div>
-              )}
-              <motion.div
+              {/* 5. Google Developer Profile */}
+              <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col"
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="glass-card rounded-3xl p-8 relative flex flex-col gap-8 overflow-hidden"
               >
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2 flex items-center gap-2 relative z-10">
-                  <span className="text-2xl">🏆</span>
-                  Awards &amp; Recognition
-                </h2>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6 relative z-10">L&amp;T Infotech (2010–2011)</p>
-
-                {/* Ceremony Stage Photo — correct photo, clickable */}
-                <div className="relative mb-6 rounded-2xl overflow-hidden border border-white/10 cursor-zoom-in group" onClick={() => setAwardLightbox("/awards/award_stage.jpg")}>
-                  <img
-                    src="/awards/award_stage.jpg"
-                    alt="Bilal Ahamad receiving Excellent Performance Award on stage at L&T Infotech"
-                    className="w-full h-52 object-cover object-center group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 p-4">
-                    <span className="text-white font-bold text-sm">Annual Best Performer · 2010–11</span>
-                    <span className="block text-zinc-300 text-xs mt-0.5">L&amp;T Infotech · Receiving Award on Stage</span>
-                  </div>
-                  <span className="absolute top-2 right-2 px-2 py-1 rounded-full bg-black/50 border border-white/20 text-[9px] font-bold text-white/70 uppercase tracking-wider">Click to expand</span>
+                <div className="absolute -left-6 -bottom-6 pointer-events-none opacity-[0.03] z-0">
+                  <img src="/logos/google.png" alt="" className="w-64 h-64 grayscale" />
                 </div>
-
-                {/* Two Award Certificates — clickable */}
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="group relative rounded-2xl overflow-hidden border border-emerald-500/20 hover:border-emerald-500/40 transition-all cursor-zoom-in" onClick={() => setAwardLightbox("/awards/performance_award.jpeg")}>
-                    <img src="/awards/performance_award.jpeg" alt="Excellent Performance Award Certificate" className="w-full h-52 object-cover object-top group-hover:scale-105 transition-transform duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-                    <div className="absolute bottom-0 left-0 p-3">
-                      <span className="text-white text-[11px] font-black uppercase tracking-wider block">Annual Best Performer</span>
-                      <span className="text-emerald-400 text-[10px] font-semibold">Excellent Performance Award</span>
+                <div className="absolute top-1/2 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px] pointer-events-none -translate-y-1/2" />
+                <div className="flex flex-col z-10 w-full relative">
+                  <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2 flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0">
+                      <img src="/logos/google.png" alt="Google" className="w-5 h-5 object-contain" />
                     </div>
+                    Google Developer Profile
+                  </h2>
+                  <a href="https://developers.google.com/profile/u/bahamad" target="_blank" rel="noreferrer" className="text-zinc-600 dark:text-zinc-400 hover:text-blue-600 dark:text-blue-400 font-medium mb-6 font-mono text-sm underline underline-offset-4 decoration-zinc-700 inline-block w-fit transition-colors">
+                    g.dev/bahamad
+                  </a>
+                  <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed mb-8">
+                    Recognized participant in the Google Developer Ecosystem. Attended multiple flagship events in Mountain View, earning badges for technical integrations and Platform mastery.
+                  </p>
+                  <h3 className="text-[10px] font-bold text-zinc-500 dark:text-zinc-500 uppercase tracking-widest mb-4">I/O Attendance & Badges</h3>
+                  <div className="flex flex-wrap gap-2.5 mb-8">
+                    <span className="px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-[10px] font-medium text-zinc-700 dark:text-zinc-300">I/O 2023-25 Attendee</span>
+                    <span className="px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">{badgeCount} Badges</span>
                   </div>
-                  <div className="group relative rounded-2xl overflow-hidden border border-blue-500/20 hover:border-blue-500/40 transition-all cursor-zoom-in" onClick={() => setAwardLightbox("/awards/eagle_award.jpeg")}>
-                    <img src="/awards/eagle_award.jpeg" alt="Eagle Award for Best Managed Project" className="w-full h-52 object-cover object-top group-hover:scale-105 transition-transform duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-                    <div className="absolute bottom-0 left-0 p-3">
-                      <span className="text-white text-[11px] font-black uppercase tracking-wider block">Annual Best Managed Project</span>
-                      <span className="text-blue-400 text-[10px] font-semibold">Eagle Award</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Impact detail */}
-                <div className="space-y-3 relative z-10">
-                  <div className="p-4 rounded-2xl bg-yellow-500/5 border border-yellow-500/20">
-                    <div className="flex items-start gap-3">
-                      <span className="text-yellow-400 text-lg shrink-0">⭐</span>
-                      <div>
-                        <p className="text-sm font-bold text-zinc-800 dark:text-zinc-200">Annual Best Performer · Excellent Performance Award · L&amp;T Infotech 2010–11</p>
-                        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">Architected test automation infrastructure for Motorola ODC, validating multiple mobile platforms. Reduced man-hours by 25% through innovative automation of cumbersome stability testing procedures. Recognised as Annual Best Performer by EVP HR Sudhir Warde.</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-4 rounded-2xl bg-blue-500/5 border border-blue-500/20">
-                    <div className="flex items-start gap-3">
-                      <span className="text-blue-400 text-lg shrink-0">⭐</span>
-                      <div>
-                        <p className="text-sm font-bold text-zinc-800 dark:text-zinc-200">Annual Best Managed Project · Eagle Award · L&amp;T Infotech 2010–11</p>
-                        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">Led the Development project for Motorola Mobility System Testing, achieving remarkable productivity growth and significant business benefit.</p>
-                      </div>
+                  <div className="w-full relative overflow-hidden rounded-2xl">
+                    <div className="flex flex-row overflow-x-auto gap-4 snap-x snap-mandatory py-2 custom-scrollbar items-center">
+                      {[
+                        { yr: '2025', img: '/io/1.jpg', badge: 'badge_2025.svg', href: 'io/2025/registered' },
+                        { yr: '2024', img: '/io/2.jpg', badge: 'badge_2024.svg', href: 'io/2024/registered' },
+                        { yr: '2023', img: '/io/3.jpg', badge: 'badge_2023.svg', href: 'io/2023/attendee' }
+                      ].map((item, i) => (
+                        <a key={i} href={`https://developers.google.com/profile/badges/events/${item.href}`} target="_blank" rel="noreferrer" className="relative w-40 h-52 min-w-[10rem] flex-shrink-0 rounded-xl border-2 border-zinc-800 bg-zinc-900 snap-center group shadow-lg overflow-hidden">
+                          <img src={item.img} alt={`I/O ${item.yr}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent pointer-events-none" />
+                          <div className="absolute top-2 left-3 text-[9px] font-black text-white/90 uppercase tracking-widest">{item.yr}</div>
+                          <div className="absolute -bottom-1 -right-1 w-12 h-12 z-20">
+                            <img src={`/io/${item.badge}`} alt="" className="w-full h-full object-contain" />
+                          </div>
+                        </a>
+                      ))}
+                      <a href="https://developers.google.com/profile/badges/events/io/2022/attendee" target="_blank" rel="noreferrer" className="relative w-40 h-52 min-w-[10rem] flex-shrink-0 rounded-xl border border-white/5 bg-[#141416] snap-center group flex flex-col items-center justify-center overflow-hidden shadow-lg">
+                        <div className="absolute top-2 left-3 text-[9px] font-black text-zinc-500 uppercase tracking-widest">2022</div>
+                        <img src="/io/badge_2022.svg" alt="" className="w-20 h-20 object-contain opacity-70 group-hover:opacity-100 transition-opacity" />
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -683,114 +733,6 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
 
 
 
-        {/* RESUME PAGE ONLY - GOOGLE PROFILE */}
-        {showOnlyResume && (
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.8 }}
-            className="lg:col-span-4 glass-card rounded-3xl p-8 lg:p-12 relative flex flex-col xl:flex-row gap-12 items-center justify-between overflow-hidden"
-          >
-            {/* Watermark Logo */}
-            <div className="absolute -left-10 -bottom-10 pointer-events-none opacity-[0.03] z-0">
-              <img src="/logos/google.png" alt="" className="w-96 h-96 grayscale" />
-            </div>
-
-            {/* Subtle Blue Glow specific to Google section */}
-            <div className="absolute top-1/2 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none -translate-y-1/2" />
-            
-            {/* LEFT COLUMN: Text Info & Badge Pills */}
-            <div className="flex flex-col z-10 w-full xl:w-[35%] shrink-0">
-              {/* 1. Header in one line */}
-              <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2 flex items-center gap-3 whitespace-nowrap">
-                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0">
-                  <img src="/logos/google.png" alt="Google" className="w-5 h-5 object-contain" />
-                </div>
-                Google Developer Profile
-              </h2>
-              
-              {/* 2. Link under */}
-              <a href="https://developers.google.com/profile/u/bahamad" target="_blank" rel="noreferrer" className="text-zinc-600 dark:text-zinc-400 hover:text-blue-600 dark:text-blue-400 font-medium mb-6 font-mono text-sm underline underline-offset-4 decoration-zinc-700 inline-block w-fit transition-colors">
-                g.dev/bahamad
-              </a>
-              
-              {/* 3. Paragraph under */}
-              <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed mb-8">
-                A recognized participant in the Google Developer Ecosystem. Attended multiple Google I/O flagship events in Mountain View, California, earning exclusive badges for technical integrations, Codelabs completions, and Android Platform Tool mastery.
-              </p>
-
-              {/* 4. I/O Attendance & Badges segment */}
-              <h3 className="text-[10px] font-bold text-zinc-500 dark:text-zinc-500 uppercase tracking-widest mb-4">I/O Attendance & Badges</h3>
-              <div className="flex flex-wrap gap-2.5">
-                {/* <span className="px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-semibold text-blue-600 dark:text-blue-400">I/O 2026 Registered</span> */}
-                <span className="px-4 py-2 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-medium text-zinc-700 dark:text-zinc-300">I/O 2025</span>
-                <span className="px-4 py-2 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-medium text-zinc-700 dark:text-zinc-300">I/O 2024</span>
-                <span className="px-4 py-2 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-medium text-zinc-700 dark:text-zinc-300">I/O 2023 Attendee</span>
-                <span className="px-4 py-2 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-medium text-zinc-700 dark:text-zinc-300">I/O 2022 Attendee</span>
-                <span className="px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-semibold text-emerald-600 dark:text-emerald-400">{badgeCount} Developer Badges</span>
-              </div>
-            </div>
-
-            {/* RIGHT COLUMN: Horizontal Reel */}
-            <div className="w-full xl:w-[65%] z-10 box-border overflow-hidden rounded-2xl relative">
-              {/* Fade gradient overlays for edge scrolling effect */}
-              <div className="absolute top-0 bottom-0 right-0 w-12 bg-gradient-to-l from-white dark:from-[#09090b] to-transparent pointer-events-none z-30 hidden xl:block" />
-              
-              <div className="flex flex-row overflow-x-auto gap-4 snap-x snap-mandatory py-4 px-1 custom-scrollbar items-center">
-                
-                {/* 2026 (Archived for future use) */}
-                {/* 
-                <a href="https://developers.google.com/profile/badges/events/io/2026/registered" target="_blank" rel="noreferrer" className="relative w-48 h-64 min-w-[12rem] flex-shrink-0 rounded-2xl border border-blue-500/20 bg-[#0c1017] snap-center group hover:bg-[#121822] transition-colors flex flex-col items-center justify-center overflow-hidden shadow-lg">
-                  <div className="absolute top-4 left-4 text-[10px] font-black text-blue-600 dark:text-blue-400/80 drop-shadow-md uppercase tracking-[0.2em] group-hover:text-blue-600 dark:text-blue-400 transition-colors z-20">2026</div>
-                  <img src="/io/badge_2026.svg" alt="I/O 2026 Badge" className="w-28 h-28 object-contain group-hover:scale-110 transition-transform drop-shadow-xl" />
-                  <span className="absolute bottom-4 inset-x-0 text-center text-[10px] font-bold text-blue-600 dark:text-blue-400/50 uppercase tracking-widest leading-snug px-2">Yet to Attend<br/>(Registered)</span>
-                </a>
-                */}
-
-                {/* 2025 (Black T-shirt) */}
-                <a href="https://developers.google.com/profile/badges/events/io/2025/registered" target="_blank" rel="noreferrer" className="relative w-48 h-64 min-w-[12rem] flex-shrink-0 rounded-2xl border-4 border-[#1c1c1f] bg-zinc-100 dark:bg-zinc-900 snap-center group shadow-xl overflow-hidden">
-                  <img src="/io/1.jpg" alt="I/O 2025 Photo" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-black/10 to-transparent pointer-events-none"></div>
-                  <div className="absolute top-4 left-4 text-[10px] font-black text-zinc-900 dark:text-white/90 drop-shadow-md uppercase tracking-[0.2em] group-hover:text-emerald-600 dark:text-emerald-400 z-20">2025 Live</div>
-                  {/* SVG Overlap */}
-                  <div className="absolute -bottom-2 -right-2 w-20 h-20 z-20 group-hover:scale-110 transition-transform drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">
-                    <img src="/io/badge_2025.svg" alt="2025 Badge" className="w-full h-full object-contain" />
-                  </div>
-                </a>
-
-                {/* 2024 (Brown Jacket) */}
-                <a href="https://developers.google.com/profile/badges/events/io/2024/registered" target="_blank" rel="noreferrer" className="relative w-48 h-64 min-w-[12rem] flex-shrink-0 rounded-2xl border-4 border-[#1c1c1f] bg-zinc-100 dark:bg-zinc-900 snap-center group shadow-xl overflow-hidden">
-                  <img src="/io/2.jpg" alt="I/O 2024 Photo" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-black/10 to-transparent pointer-events-none"></div>
-                  <div className="absolute top-4 left-4 text-[10px] font-black text-zinc-900 dark:text-white/90 drop-shadow-md uppercase tracking-[0.2em] group-hover:text-amber-600 dark:text-amber-400 z-20">2024 Live</div>
-                  {/* SVG Overlap */}
-                  <div className="absolute -bottom-2 -right-2 w-20 h-20 z-20 group-hover:scale-110 transition-transform drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">
-                    <img src="/io/badge_2024.svg" alt="2024 Badge" className="w-full h-full object-contain" />
-                  </div>
-                </a>
-
-                {/* 2023 (Google Glass) */}
-                <a href="https://developers.google.com/profile/badges/events/io/2023/attendee" target="_blank" rel="noreferrer" className="relative w-48 h-64 min-w-[12rem] flex-shrink-0 rounded-2xl border-4 border-[#1c1c1f] bg-zinc-100 dark:bg-zinc-900 snap-center group shadow-xl overflow-hidden">
-                  <img src="/io/3.jpg" alt="I/O 2023 Photo" className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-black/10 to-transparent pointer-events-none"></div>
-                  <div className="absolute top-4 left-4 text-[10px] font-black text-zinc-900 dark:text-white/90 drop-shadow-md uppercase tracking-[0.2em] group-hover:text-pink-600 dark:text-pink-400 z-20">2023 Live</div>
-                  {/* SVG Overlap */}
-                  <div className="absolute -bottom-2 -right-2 w-20 h-20 z-20 group-hover:scale-110 transition-transform drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">
-                    <img src="/io/badge_2023.svg" alt="2023 Badge" className="w-full h-full object-contain" />
-                  </div>
-                </a>
-
-                {/* 2022 */}
-                <a href="https://developers.google.com/profile/badges/events/io/2022/attendee" target="_blank" rel="noreferrer" className="relative w-48 h-64 min-w-[12rem] flex-shrink-0 rounded-2xl border border-black/5 dark:border-white/5 bg-[#141416] snap-center group hover:bg-[#1a1a1c] transition-colors flex flex-col items-center justify-center overflow-hidden shadow-lg">
-                  <div className="absolute top-4 left-4 text-[10px] font-black text-zinc-500 dark:text-zinc-500 drop-shadow-md uppercase tracking-[0.2em] group-hover:text-zinc-700 dark:text-zinc-300 transition-colors z-20">2022</div>
-                  <img src="/io/badge_2022.svg" alt="I/O 2022 Badge" className="w-28 h-28 object-contain group-hover:scale-110 transition-transform drop-shadow-xl opacity-90 group-hover:opacity-100" />
-                </a>
-
-              </div>
-            </div>
-          </motion.div>
-        )}
 
       </div>
     </section>
