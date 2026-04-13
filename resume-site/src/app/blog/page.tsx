@@ -148,7 +148,7 @@ export default function BlogPage() {
       )}
 
       {/* Filter Tabs */}
-      <section className="py-6 px-6 lg:px-24 border-b border-white/5 sticky top-[72px] z-30 bg-[#09090b]/90 backdrop-blur-xl transform translate-z-0">
+      <section className="py-6 px-6 lg:px-24 border-b border-white/5 sticky top-[72px] z-30 bg-[#09090b]/90 backdrop-blur-xl transform translate-z-0 relative before:content-[''] before:absolute before:-top-[72px] before:left-0 before:right-0 before:h-[72px] before:bg-[#09090b]/90 before:backdrop-blur-xl">
         <div className="max-w-7xl mx-auto flex items-center gap-3 flex-wrap">
           <Filter className="w-4 h-4 text-zinc-600 shrink-0" />
           {FILTERS.map((f) => (
