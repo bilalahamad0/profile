@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Terminal, ShieldCheck, Box, Activity, Cpu, Cloud, Settings, Layers, 
-  ChevronDown, ChevronUp, Code2, Database, Wrench, Smartphone, Server, Github, GitFork, Star,
+  ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Code2, Database, Wrench, Smartphone, Server, Github, GitFork, Star,
   MessageSquareQuote, Linkedin, ExternalLink, Monitor, Layout, Eye, FileCode, Check, MapPin, Sparkles
 } from "lucide-react";
 
@@ -54,6 +54,37 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
   const [warnDashboardExpanded, setWarnDashboardExpanded] = useState(false);
   const [smartLimit, setSmartLimit] = useState(6);
   const rightColumnRef = useRef<HTMLDivElement>(null);
+  const reelRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = () => {
+    if (reelRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = reelRef.current;
+      setCanScrollLeft(scrollLeft > 10);
+      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 10);
+    }
+  };
+
+  useEffect(() => {
+    const reel = reelRef.current;
+    if (reel) {
+      reel.addEventListener('scroll', checkScroll);
+      // Initial check with a small delay to ensure content is rendered
+      const timeout = setTimeout(checkScroll, 500);
+      return () => {
+        reel.removeEventListener('scroll', checkScroll);
+        clearTimeout(timeout);
+      };
+    }
+  }, []);
+
+  const scrollReel = (direction: 'left' | 'right') => {
+    if (reelRef.current) {
+      const scrollAmount = direction === 'left' ? -200 : 200;
+      reelRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
+  };
   
   // Mobile-first expansion logic: 
   // Collapse on mobile by default to show 5 jobs, but expand on Desktop Roadmap page
@@ -543,8 +574,37 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                     <span className="px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-[10px] font-medium text-zinc-700 dark:text-zinc-300">I/O 2023-25 Attendee</span>
                     <span className="px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">{badgeCount} Badges</span>
                   </div>
-                  <div className="w-full relative overflow-hidden rounded-2xl">
-                    <div className="flex flex-row overflow-x-auto gap-4 snap-x snap-mandatory py-2 custom-scrollbar items-center">
+                  <div className="w-full relative group/reel">
+                    {/* Navigation Arrows */}
+                    <AnimatePresence>
+                      {canScrollLeft && (
+                        <motion.button
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -10 }}
+                          onClick={() => scrollReel('left')}
+                          className="absolute left-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-blue-600/80 transition-all shadow-xl"
+                        >
+                          <ChevronLeft className="w-6 h-6" />
+                        </motion.button>
+                      )}
+                      {canScrollRight && (
+                        <motion.button
+                          initial={{ opacity: 0, x: 10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: 10 }}
+                          onClick={() => scrollReel('right')}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-blue-600/80 transition-all shadow-xl"
+                        >
+                          <ChevronRight className="w-6 h-6" />
+                        </motion.button>
+                      )}
+                    </AnimatePresence>
+
+                    <div 
+                      ref={reelRef}
+                      className="flex flex-row overflow-x-auto gap-4 snap-x snap-mandatory py-2 custom-scrollbar items-center scroll-smooth"
+                    >
                       {[
                         { yr: '2025', img: '/io/1.jpg', badge: 'badge_2025.svg', href: 'io/2025/registered' },
                         { yr: '2024', img: '/io/2.jpg', badge: 'badge_2024.svg', href: 'io/2024/registered' },
