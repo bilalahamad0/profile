@@ -137,20 +137,21 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-4 cursor-zoom-out backdrop-blur-sm"
+            className="fixed inset-0 z-[10000] bg-black/95 flex items-center justify-center p-4 cursor-zoom-out backdrop-blur-sm touch-none"
             onClick={() => setAwardLightbox(null)}
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="relative max-w-5xl max-h-[90vh] flex items-center justify-center"
+              className="relative w-full max-w-5xl max-h-[90vh] flex items-center justify-center p-2"
               onClick={(e) => e.stopPropagation()}
             >
               <img 
+                key={awardLightbox}
                 src={awardLightbox} 
                 alt="Award expanded view" 
-                className="max-w-full max-h-full rounded-2xl shadow-2xl object-contain border border-white/10" 
+                className="w-full h-auto max-w-full max-h-[85vh] rounded-2xl shadow-2xl object-contain border border-white/10" 
               />
               <button 
                 className="absolute -top-12 right-0 text-white/60 hover:text-white transition-colors bg-white/10 hover:bg-white/20 p-2 rounded-full"

@@ -6,7 +6,7 @@ import {
 export const experienceData = [
   {
     role: "Founding System Architect & Technical QA Lead",
-    company: "Stealth Hardware-Software Startup",
+    company: "Stealth Startup",
     location: "Remote / Stealth",
     duration: "Sep 2025 - Present",
     desc: "Concept to MVP: Spearheading the '0-to-1' architecture and validation of a Unified Sensor Integration IDE, automating the integration of OEM dependencies and standardizing sensor-level code extensions.",
