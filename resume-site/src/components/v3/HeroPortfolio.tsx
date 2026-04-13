@@ -6,7 +6,7 @@ import Link from "next/link";
 
 function InfographicBackground() {
   return (
-    <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+    <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0" style={{ transform: 'translateZ(0)', willChange: 'transform' }}>
       {/* Dynamic Mesh Gradients */}
       <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-[100%] bg-blue-600/10 blur-[120px] mix-blend-screen" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-[100%] bg-emerald-600/10 blur-[100px] mix-blend-screen" />
