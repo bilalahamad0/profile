@@ -62,11 +62,7 @@
     overflow-x: hidden;
   }
 
-  /* GPU-Accelerate Scroll Containers */
-  main {
-    will-change: transform;
-    backface-visibility: hidden;
-  }
+
 
   ::selection {
     background-color: rgba(99, 102, 241, 0.3);
