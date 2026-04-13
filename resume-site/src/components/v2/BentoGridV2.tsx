@@ -55,8 +55,27 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
   const [smartLimit, setSmartLimit] = useState(6);
   const rightColumnRef = useRef<HTMLDivElement>(null);
   const reelRef = useRef<HTMLDivElement>(null);
+  const timelineRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const handleToggleExpand = () => {
+    if (isExpanded) {
+      // If expanding -> collapsing
+      if (typeof window !== 'undefined' && timelineRef.current) {
+        const topOffset = timelineRef.current.getBoundingClientRect().top + window.scrollY - 100;
+        setIsExpanded(false);
+        // Minimal delay to let the state change settle, then scroll smoothly
+        setTimeout(() => {
+          window.scrollTo({ top: topOffset, behavior: "smooth" });
+        }, 10);
+      } else {
+        setIsExpanded(false);
+      }
+    } else {
+      setIsExpanded(true);
+    }
+  };
 
   const checkScroll = () => {
     if (reelRef.current) {
@@ -249,6 +268,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
           <div className="lg:col-span-4 grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* LEFT COLUMN - EXPERIENCE TIMELINE */}
             <motion.div 
+              ref={timelineRef}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -325,7 +345,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
               
               {experienceData.length > smartLimit && (
                 <button 
-                  onClick={() => setIsExpanded(!isExpanded)}
+                  onClick={handleToggleExpand}
                   className="mt-6 flex items-center justify-center w-full py-3 rounded-xl border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:bg-white/10 text-zinc-700 dark:text-zinc-300 transition-colors gap-2 text-sm font-medium z-20 relative"
                 >
                   {isExpanded ? (
