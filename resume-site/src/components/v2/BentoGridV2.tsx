@@ -60,7 +60,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
 
     const calculateLimit = () => {
       if (window.innerWidth < 1024) {
-        setSmartLimit(6); // Default for mobile/stacked
+        setSmartLimit(5); // Default for mobile/stacked (User requested 5)
         return;
       }
 
