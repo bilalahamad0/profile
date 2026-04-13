@@ -46,7 +46,7 @@ const WARN_SNIPPET = `def download_xlsx(force: bool = False):
     return True, str(LOCAL_XLSX)`;
 
 export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boolean }) {
-  const [isExpanded, setIsExpanded] = useState(showOnlyResume);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [awardLightbox, setAwardLightbox] = useState<string | null>(null);
   const [repos, setRepos] = useState<Repository[]>([]);
   const [showWarnCode, setShowWarnCode] = useState(false);
@@ -54,6 +54,14 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
   const [smartLimit, setSmartLimit] = useState(6);
   const rightColumnRef = useRef<HTMLDivElement>(null);
   
+  // Mobile-first expansion logic: 
+  // Collapse on mobile by default to show 5 jobs, but expand on Desktop Roadmap page
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth >= 1024 && showOnlyResume) {
+      setIsExpanded(true);
+    }
+  }, [showOnlyResume]);
+
   // Handle smart collapse based on right column height
   useEffect(() => {
     if (typeof window === 'undefined' || !rightColumnRef.current) return;
