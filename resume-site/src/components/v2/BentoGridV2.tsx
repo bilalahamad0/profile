@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Terminal, ShieldCheck, Box, Activity, Cpu, Cloud, Settings, Layers, 
@@ -122,47 +123,92 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
   useEffect(() => {
     if (awardLightbox) {
       document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
     }
-    return () => { document.body.style.overflow = 'unset'; };
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    };
   }, [awardLightbox]);
+
+  // Portal-based lightbox: renders directly into document.body,
+  // escaping ALL parent transforms, stacking contexts, and overflow.
+  const lightboxPortal = awardLightbox && typeof document !== 'undefined'
+    ? createPortal(
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 99999,
+            backgroundColor: 'rgba(0,0,0,0.95)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '16px',
+            backdropFilter: 'blur(4px)',
+            WebkitBackdropFilter: 'blur(4px)',
+            touchAction: 'none',
+          }}
+          onClick={() => setAwardLightbox(null)}
+        >
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              maxWidth: '900px',
+              maxHeight: '90vh',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              key={awardLightbox}
+              src={awardLightbox}
+              alt="Award expanded view"
+              style={{
+                width: '100%',
+                height: 'auto',
+                maxHeight: '85vh',
+                objectFit: 'contain',
+                borderRadius: '16px',
+                boxShadow: '0 25px 50px rgba(0,0,0,0.5)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                display: 'block',
+              }}
+            />
+            <button
+              style={{
+                position: 'absolute',
+                top: '-48px',
+                right: 0,
+                background: 'rgba(255,255,255,0.1)',
+                border: 'none',
+                borderRadius: '50%',
+                padding: '8px',
+                cursor: 'pointer',
+                color: 'rgba(255,255,255,0.7)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              onClick={() => setAwardLightbox(null)}
+            >
+              <ChevronUp style={{ width: 24, height: 24, transform: 'rotate(180deg)' }} />
+            </button>
+          </div>
+        </div>,
+        document.body
+      )
+    : null;
 
   return (
     <>
-      {/* GLOBAL LIGHTBOX - Viewport Level (Outside all transforms) */}
-      <AnimatePresence>
-        {awardLightbox && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[10000] bg-black/95 flex items-center justify-center p-4 cursor-zoom-out backdrop-blur-sm touch-none"
-            onClick={() => setAwardLightbox(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="relative w-full max-w-5xl max-h-[90vh] flex items-center justify-center p-2"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <img 
-                key={awardLightbox}
-                src={awardLightbox} 
-                alt="Award expanded view" 
-                className="w-full h-auto max-w-full max-h-[85vh] rounded-2xl shadow-2xl object-contain border border-white/10" 
-              />
-              <button 
-                className="absolute -top-12 right-0 text-white/60 hover:text-white transition-colors bg-white/10 hover:bg-white/20 p-2 rounded-full"
-                onClick={() => setAwardLightbox(null)}
-              >
-                <ChevronUp className="w-6 h-6 rotate-180" />
-              </button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {lightboxPortal}
 
       <section id="experience" className={`w-full max-w-7xl mx-auto px-4 sm:px-6 ${showOnlyResume ? 'py-10' : 'pt-24 pb-10'}`}>
 
