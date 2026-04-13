@@ -56,19 +56,37 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
   const rightColumnRef = useRef<HTMLDivElement>(null);
   const reelRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
   const handleToggleExpand = () => {
     if (isExpanded) {
-      // If expanding -> collapsing
-      if (typeof window !== 'undefined' && timelineRef.current) {
-        const topOffset = timelineRef.current.getBoundingClientRect().top + window.scrollY - 100;
+      // Anchoring logic: Keep the button at the same visual position in the viewport
+      if (typeof window !== 'undefined' && buttonRef.current) {
+        const initialButtonTop = buttonRef.current.getBoundingClientRect().top;
         setIsExpanded(false);
-        // Minimal delay to let the state change settle, then scroll smoothly
-        setTimeout(() => {
-          window.scrollTo({ top: topOffset, behavior: "smooth" });
-        }, 10);
+
+        // Track and compensate scroll position during the height transition
+        let animationFrame: number;
+        const startTime = performance.now();
+        const duration = 700; // Cover the 500ms CSS transition + framer-motion exit
+
+        const maintainPosition = (currentTime: number) => {
+          if (!buttonRef.current) return;
+          const currentButtonTop = buttonRef.current.getBoundingClientRect().top;
+          const delta = currentButtonTop - initialButtonTop;
+
+          if (Math.abs(delta) > 0.5) {
+            window.scrollBy(0, delta);
+          }
+
+          if (currentTime - startTime < duration) {
+            animationFrame = requestAnimationFrame(maintainPosition);
+          }
+        };
+
+        animationFrame = requestAnimationFrame(maintainPosition);
       } else {
         setIsExpanded(false);
       }
@@ -345,13 +363,14 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
               
               {experienceData.length > smartLimit && (
                 <button 
+                  ref={buttonRef}
                   onClick={handleToggleExpand}
                   className="mt-6 flex items-center justify-center w-full py-3 rounded-xl border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:bg-white/10 text-zinc-700 dark:text-zinc-300 transition-colors gap-2 text-sm font-medium z-20 relative"
                 >
                   {isExpanded ? (
                     <><ChevronUp className="w-4 h-4" /> Collapse Timeline</>
                   ) : (
-                    <><ChevronDown className="w-4 h-4" /> View Full Journey</>
+                    <><ChevronDown className="w-4 h-4" /> View Full Summary</>
                   )}
                 </button>
               )}
