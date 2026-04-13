@@ -421,7 +421,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.5 }}
-                className="glass-card rounded-3xl p-8 relative flex flex-col gap-8 overflow-hidden"
+                className="glass-card rounded-3xl p-8 relative flex flex-col gap-8 overflow-hidden flex-grow"
               >
                 <div className="absolute -left-6 -bottom-6 pointer-events-none opacity-[0.03] z-0">
                   <img src="/logos/google.png" alt="" className="w-64 h-64 grayscale" />
