@@ -77,7 +77,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
           const currentButtonTop = buttonRef.current.getBoundingClientRect().top;
           const delta = currentButtonTop - initialButtonTop;
 
-          if (Math.abs(delta) > 0.5) {
+          if (Math.abs(delta) > 0) {
             window.scrollBy(0, delta);
           }
 
@@ -291,7 +291,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="glass-card rounded-3xl p-8 relative flex flex-col transition-all duration-500 h-full"
+              className="glass-card rounded-3xl p-8 relative flex flex-col h-full"
             >
               <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
                 <Activity className="w-32 h-32" />
@@ -304,9 +304,11 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                 <AnimatePresence>
                   {visibleExperiences.map((exp, idx) => (
                     <motion.div 
+                      layout
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
                       key={exp.company + idx} 
                       className="flex gap-4 group overflow-hidden"
                     >
