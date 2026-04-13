@@ -144,6 +144,9 @@ export default function BlogPage() {
         </section>
       )}
 
+      {/* Top Mask Overlay — darkens content (0% opacity) behind filter bar and navbar */}
+      <div className="mask-top-dark" aria-hidden="true" />
+
       {/* Filter Tabs */}
       <section
         className="filter-bar py-5 px-6 lg:px-24 sticky z-30"

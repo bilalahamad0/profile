@@ -269,4 +269,16 @@
     border-radius: 99px;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.22); }
+
+  .mask-top-dark {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 180px;
+    background: linear-gradient(to bottom, rgb(9 9 11) 0%, rgb(9 9 11 / 0.8) 60%, transparent 100%);
+    z-index: 20;
+    pointer-events: none;
+    margin-bottom: -180px;
+  }
 }
