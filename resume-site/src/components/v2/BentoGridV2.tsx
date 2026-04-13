@@ -110,30 +110,52 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
       .catch(console.error);
   }, []);
 
+  // Scroll Lock for Lightbox
+  useEffect(() => {
+    if (awardLightbox) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [awardLightbox]);
+
   return (
-    <section id="experience" className={`w-full max-w-7xl mx-auto px-4 sm:px-6 ${showOnlyResume ? 'py-10' : 'pt-24 pb-10'}`}>
-      
-      {/* GLOBAL LIGHTBOX - Viewport Level */}
+    <>
+      {/* GLOBAL LIGHTBOX - Viewport Level (Outside all transforms) */}
       <AnimatePresence>
         {awardLightbox && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[999] bg-black/90 flex items-center justify-center p-4 cursor-zoom-out"
+            className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-4 cursor-zoom-out backdrop-blur-sm"
             onClick={() => setAwardLightbox(null)}
           >
-            <motion.img 
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              src={awardLightbox} 
-              alt="Award expanded view" 
-              className="max-w-full max-h-full rounded-2xl shadow-2xl object-contain" 
-            />
-            <button className="absolute top-4 right-4 text-white/60 hover:text-white text-3xl leading-none" onClick={(e) => { e.stopPropagation(); setAwardLightbox(null); }}>&times;</button>
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="relative max-w-5xl max-h-[90vh] flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img 
+                src={awardLightbox} 
+                alt="Award expanded view" 
+                className="max-w-full max-h-full rounded-2xl shadow-2xl object-contain border border-white/10" 
+              />
+              <button 
+                className="absolute -top-12 right-0 text-white/60 hover:text-white transition-colors bg-white/10 hover:bg-white/20 p-2 rounded-full"
+                onClick={() => setAwardLightbox(null)}
+              >
+                <ChevronUp className="w-6 h-6 rotate-180" />
+              </button>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      <section id="experience" className={`w-full max-w-7xl mx-auto px-4 sm:px-6 ${showOnlyResume ? 'py-10' : 'pt-24 pb-10'}`}>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         
@@ -749,7 +771,8 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
 
 
       </div>
-    </section>
+      </section>
+    </>
   );
 }
 
