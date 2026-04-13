@@ -26,6 +26,7 @@ export async function GET() {
     const repos = results
       .filter((r) => r && r.id)
       .map((r) => ({
+        id: r.id as number,
         name: r.name as string,
         description: r.description as string,
         html_url: r.html_url as string,
