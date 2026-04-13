@@ -365,37 +365,46 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                 </h2>
                 <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6 relative z-10">L&amp;T Infotech (2010–2011)</p>
 
-                <div className="relative mb-6 rounded-2xl overflow-hidden border border-white/10 cursor-zoom-in group" onClick={() => setAwardLightbox("/awards/award_stage.jpg")}>
+                <button 
+                  className="relative w-full mb-6 rounded-2xl overflow-hidden border border-white/10 cursor-zoom-in group text-left block" 
+                  onClick={() => setAwardLightbox("/awards/award_stage.jpg")}
+                >
                   <img
                     src="/awards/award_stage.jpg"
                     alt="Bilal Ahamad receiving Excellent Performance Award on stage at L&T Infotech"
                     className="w-full h-52 object-cover object-top group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 p-4">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+                  <div className="absolute bottom-0 left-0 p-4 pointer-events-none">
                     <span className="text-white font-bold text-sm">Annual Best Performer · 2010–11</span>
                     <span className="block text-zinc-300 text-xs mt-0.5">L&amp;T Infotech · Receiving Award on Stage</span>
                   </div>
-                  <span className="absolute top-2 right-2 px-2 py-1 rounded-full bg-black/50 border border-white/20 text-[9px] font-bold text-white/70 uppercase tracking-wider">Click to expand</span>
-                </div>
+                  <span className="absolute top-2 right-2 px-2 py-1 rounded-full bg-black/50 border border-white/20 text-[9px] font-bold text-white/70 uppercase tracking-wider pointer-events-none">Click to expand</span>
+                </button>
 
                 <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="group relative rounded-2xl overflow-hidden border border-emerald-500/20 hover:border-emerald-500/40 transition-all cursor-zoom-in" onClick={() => setAwardLightbox("/awards/performance_award.jpeg")}>
+                  <button 
+                    className="group relative rounded-2xl overflow-hidden border border-emerald-500/20 hover:border-emerald-500/40 transition-all cursor-zoom-in text-left" 
+                    onClick={() => setAwardLightbox("/awards/performance_award.jpeg")}
+                  >
                     <img src="/awards/performance_award.jpeg" alt="Excellent Performance Award Certificate" className="w-full h-52 object-cover object-top group-hover:scale-105 transition-transform duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-                    <div className="absolute bottom-0 left-0 p-3">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
+                    <div className="absolute bottom-0 left-0 p-3 pointer-events-none">
                       <span className="text-white text-[11px] font-black uppercase tracking-wider block">Annual Best Performer</span>
                       <span className="text-emerald-400 text-[10px] font-semibold">Excellent Performance Award</span>
                     </div>
-                  </div>
-                  <div className="group relative rounded-2xl overflow-hidden border border-blue-500/20 hover:border-blue-500/40 transition-all cursor-zoom-in" onClick={() => setAwardLightbox("/awards/eagle_award.jpeg")}>
+                  </button>
+                  <button 
+                    className="group relative rounded-2xl overflow-hidden border border-blue-500/20 hover:border-blue-500/40 transition-all cursor-zoom-in text-left" 
+                    onClick={() => setAwardLightbox("/awards/eagle_award.jpeg")}
+                  >
                     <img src="/awards/eagle_award.jpeg" alt="Eagle Award for Best Managed Project" className="w-full h-52 object-cover object-top group-hover:scale-105 transition-transform duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-                    <div className="absolute bottom-0 left-0 p-3">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
+                    <div className="absolute bottom-0 left-0 p-3 pointer-events-none">
                       <span className="text-white text-[11px] font-black uppercase tracking-wider block">Annual Best Managed Project</span>
                       <span className="text-blue-400 text-[10px] font-semibold">Eagle Award</span>
                     </div>
-                  </div>
+                  </button>
                 </div>
 
                 <div className="space-y-3 relative z-10">
