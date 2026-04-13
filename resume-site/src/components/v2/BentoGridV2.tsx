@@ -298,11 +298,11 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                             {exp.company}
                           </span>
                         </div>
-                        <p className="text-xs text-zinc-500 dark:text-zinc-500 mb-2 mt-1 flex items-center gap-2">
-                          {exp.duration}
-                          <span className="opacity-30">•</span>
+                        <p className="text-xs sm:text-xs text-zinc-500 dark:text-zinc-500 mb-2 mt-1 flex items-center gap-2 whitespace-nowrap">
+                          <span className="shrink-0">{exp.duration}</span>
+                          <span className="opacity-30 shrink-0">•</span>
                           {/* @ts-ignore */}
-                          <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {exp.location}</span>
+                          <span className="flex items-center gap-1 truncate"><MapPin className="w-3 h-3 shrink-0" /> {exp.location}</span>
                         </p>
                         <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-md mb-3">{exp.desc}</p>
                         {/* Achievement bullets */}

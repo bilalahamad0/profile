@@ -66,7 +66,7 @@ export const experienceData = [
     invertLogo: false,
   },
   {
-    role: "Senior QA Engineer II & Test Lead",
+    role: "Senior QA Engineer II &\nTest Lead",
     company: "Amazon Lab126",
     location: "Sunnyvale, CA",
     duration: "Jun 2018 - Jun 2021",
@@ -124,7 +124,7 @@ export const experienceData = [
   },
   {
     role: "Senior Software Engineer &\nTest Automation Lead",
-    company: "L&T Infotech /\nMotorola Mobility",
+    company: "L&T Infotech / Motorola Mobility",
     location: "Chicago, IL",
     duration: "Oct 2009 - Dec 2014",
     desc: "Pioneered a test automation framework for Bluetooth qualification testing on Motorola handsets, generating $2.1M in revenue.",
