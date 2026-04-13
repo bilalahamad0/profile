@@ -112,6 +112,29 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
 
   return (
     <section id="experience" className={`w-full max-w-7xl mx-auto px-4 sm:px-6 ${showOnlyResume ? 'py-10' : 'pt-24 pb-10'}`}>
+      
+      {/* GLOBAL LIGHTBOX - Viewport Level */}
+      <AnimatePresence>
+        {awardLightbox && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[999] bg-black/90 flex items-center justify-center p-4 cursor-zoom-out"
+            onClick={() => setAwardLightbox(null)}
+          >
+            <motion.img 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              src={awardLightbox} 
+              alt="Award expanded view" 
+              className="max-w-full max-h-full rounded-2xl shadow-2xl object-contain" 
+            />
+            <button className="absolute top-4 right-4 text-white/60 hover:text-white text-3xl leading-none" onClick={(e) => { e.stopPropagation(); setAwardLightbox(null); }}>&times;</button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         
         {showOnlyResume && (
@@ -299,17 +322,6 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                   </ul>
                 </div>
               </motion.div>
-
-              {/* 3. Awards — L&T Infotech */}
-              {awardLightbox && (
-                <div
-                  className="fixed inset-0 z-[999] bg-black/90 flex items-center justify-center p-4 cursor-zoom-out"
-                  onClick={() => setAwardLightbox(null)}
-                >
-                  <img src={awardLightbox} alt="Award expanded view" className="max-w-full max-h-full rounded-2xl shadow-2xl object-contain" />
-                  <button className="absolute top-4 right-4 text-white/60 hover:text-white text-3xl leading-none" onClick={(e) => { e.stopPropagation(); setAwardLightbox(null); }}>&times;</button>
-                </div>
-              )}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
