@@ -60,38 +60,34 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
+  // Stores the absolute page Y of the button at the moment collapse is triggered
+  const collapseScrollTarget = useRef<number | null>(null);
+
   const handleToggleExpand = () => {
     if (isExpanded) {
-      // Anchoring logic: Keep the button at the same visual position in the viewport
+      // Capture the button's absolute position in the document BEFORE the DOM changes
       if (typeof window !== 'undefined' && buttonRef.current) {
-        const initialButtonTop = buttonRef.current.getBoundingClientRect().top;
-        setIsExpanded(false);
-
-        // Track and compensate scroll position during the height transition
-        let animationFrame: number;
-        const startTime = performance.now();
-        const duration = 700; // Cover the 500ms CSS transition + framer-motion exit
-
-        const maintainPosition = (currentTime: number) => {
-          if (!buttonRef.current) return;
-          const currentButtonTop = buttonRef.current.getBoundingClientRect().top;
-          const delta = currentButtonTop - initialButtonTop;
-
-          if (Math.abs(delta) > 0) {
-            window.scrollBy(0, delta);
-          }
-
-          if (currentTime - startTime < duration) {
-            animationFrame = requestAnimationFrame(maintainPosition);
-          }
-        };
-
-        animationFrame = requestAnimationFrame(maintainPosition);
-      } else {
-        setIsExpanded(false);
+        const rect = buttonRef.current.getBoundingClientRect();
+        // The target scroll position that would keep the button at the same viewport Y
+        collapseScrollTarget.current = window.scrollY + rect.top;
       }
+      setIsExpanded(false);
     } else {
+      collapseScrollTarget.current = null;
       setIsExpanded(true);
+    }
+  };
+
+  const handleExitComplete = () => {
+    // After ALL exit animations finish, do one single scroll correction
+    if (collapseScrollTarget.current !== null && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const currentAbsY = window.scrollY + rect.top;
+      const diff = currentAbsY - collapseScrollTarget.current;
+      if (Math.abs(diff) > 1) {
+        window.scrollBy({ top: diff, behavior: 'smooth' });
+      }
+      collapseScrollTarget.current = null;
     }
   };
 
@@ -301,7 +297,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                 Professional Career Timeline
               </h2>
               <div className="space-y-6 relative z-10 flex-grow">
-                <AnimatePresence>
+                <AnimatePresence onExitComplete={handleExitComplete}>
                   {visibleExperiences.map((exp, idx) => (
                     <motion.div 
                       layout
