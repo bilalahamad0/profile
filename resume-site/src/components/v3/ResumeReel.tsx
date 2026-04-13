@@ -211,8 +211,6 @@ export function ResumeReel() {
       <div
         className="relative w-full max-w-[320px] rounded-[40px] overflow-hidden shadow-2xl border-[6px] border-zinc-800 bg-black mx-auto"
         style={{ height: "calc(min(75vh, 600px))", touchAction: "pan-y" }}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
       >
         {/* Progress bars at top */}
         <div className="absolute top-4 left-3 right-3 z-50 flex gap-1">
@@ -239,6 +237,18 @@ export function ResumeReel() {
             initial="enter"
             animate="center"
             exit="exit"
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.2}
+            onDragEnd={(_, info) => {
+              const offsetX = info.offset.x;
+              const velocityX = info.velocity.x;
+              if (offsetX < -100 || velocityX < -500) {
+                advance(1);
+              } else if (offsetX > 100 || velocityX > 500) {
+                advance(-1);
+              }
+            }}
             transition={{ type: "tween", duration: 0.35, ease: "easeInOut" }}
             className={`absolute inset-0 bg-gradient-to-b ${slide.bg} flex flex-col pt-16 pb-40 px-7`}
           >

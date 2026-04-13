@@ -85,15 +85,17 @@ const logos = [
 
 export function HeroPortfolio() {
   return (
-    <section className="relative min-h-[95vh] flex flex-col justify-center items-start px-6 lg:px-24 py-20 overflow-hidden">
-      <InfographicBackground />
+    <section className="relative min-h-[90vh] flex flex-col justify-center items-start px-6 lg:px-24 py-20 overflow-hidden">
+      <div className="hidden lg:block">
+        <InfographicBackground />
+      </div>
 
       <div className="w-full max-w-5xl z-10">
         {/* Intro Tag */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.4 }}
           className="flex items-center gap-2 mb-8"
         >
           <div className="h-px w-8 bg-blue-500/50" />
@@ -104,7 +106,7 @@ export function HeroPortfolio() {
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 0.5 }}
           className="text-4xl md:text-7xl lg:text-8xl font-black text-zinc-100 leading-[1.1] mb-8 tracking-tighter"
         >
           Engineering <span className="text-zinc-500 animate-pulse">Infrastructure</span> & <br />
@@ -115,7 +117,7 @@ export function HeroPortfolio() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 0.5 }}
           className="max-w-2xl"
         >
           <p className="text-xl md:text-2xl text-zinc-400 font-light leading-relaxed mb-10">
