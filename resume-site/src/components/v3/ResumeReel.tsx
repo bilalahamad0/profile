@@ -363,7 +363,7 @@ export function ResumeReel() {
 
 
         {/* Slide counter */}
-        <p className="absolute bottom-3 left-0 right-0 z-20 text-center text-[9px] font-bold text-white/20 uppercase tracking-widest pointer-events-none">
+        <p className="absolute bottom-3 left-0 right-0 z-20 text-center text-xs font-semibold text-white/50 uppercase tracking-widest pointer-events-none">
           {index + 1} / {slides.length} · tap to navigate
         </p>
       </div>

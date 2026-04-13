@@ -13,10 +13,8 @@ import {
   Sparkles,
   ShieldCheck,
   Calendar,
-  Building2,
   ArrowRight
 } from "lucide-react";
-import { NavbarV2 } from "@/components/v2/NavbarV2";
 import { cn } from "@/lib/utils";
 import { trackEvent } from "@/components/analytics/google-analytics";
 
@@ -183,7 +181,7 @@ const CertificateCard = ({ cert, isAI = false, onClick }: { cert: any, isAI?: bo
           {cert.title}
         </h3>
         
-        <p className="text-sm text-white/40 line-clamp-2 leading-relaxed mb-4">
+        <p className="text-sm text-zinc-400 line-clamp-2 leading-relaxed mb-4">
           {cert.description}
         </p>
 
@@ -208,9 +206,8 @@ export default function CertificationsPage() {
   const [selectedCert, setSelectedCert] = useState<any>(null);
 
   return (
-    <div className="min-h-screen bg-background aurora-gradient relative overflow-x-hidden">
-      <NavbarV2 />
-      <div className="bg-noise" />
+    <div className="min-h-screen bg-[#09090b] aurora-gradient relative overflow-x-hidden">
+      <div className="bg-noise" aria-hidden="true" />
       
       {/* Scroll to Top helper for SmoothScroll compatibility */}
       <div id="top" />
@@ -231,7 +228,7 @@ export default function CertificationsPage() {
             Knowledge <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400">Album.</span>
           </h1>
           
-          <p className="text-lg text-white/40 max-w-2xl leading-relaxed">
+          <p className="text-lg text-zinc-400 max-w-2xl leading-relaxed">
             A curated collection of my professional certifications, specialized training, 
             and continuous education in QA, Development, and Artificial Intelligence.
           </p>

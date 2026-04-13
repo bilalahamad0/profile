@@ -4,9 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft, BookOpen, Linkedin, Sparkles, Clock, ArrowRight, Filter, FileText, Tag } from "lucide-react";
-import { NavbarV2 } from "@/components/v2/NavbarV2";
 import { linkedInPosts } from "@/data/portfolio";
-import { getAllPosts } from "@/lib/blog";
 
 const categoryColors: Record<string, { text: string; bg: string; border: string }> = {
   "Project Story": { text: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/20" },
@@ -82,7 +80,6 @@ export default function BlogPage() {
 
   return (
     <main className="min-h-screen bg-[#09090b] text-white">
-      <NavbarV2 />
 
       {/* Header */}
       <section className="pt-32 pb-16 px-6 lg:px-24 border-b border-white/5 relative overflow-hidden">
@@ -101,7 +98,7 @@ export default function BlogPage() {
             <h1 className="text-5xl md:text-7xl font-black tracking-tighter uppercase mb-6">
               The <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-400">Lab Notes</span>
             </h1>
-            <p className="text-xl text-zinc-400 font-light max-w-2xl">
+            <p className="text-lg text-zinc-400 font-light max-w-2xl leading-relaxed">
               Project stories, technical whitepapers, and thoughts on AI-native engineering. Published posts from LinkedIn and original deep-dives.
             </p>
           </motion.div>
@@ -148,7 +145,11 @@ export default function BlogPage() {
       )}
 
       {/* Filter Tabs */}
-      <section className="py-6 px-6 lg:px-24 border-b border-white/5 sticky top-[72px] z-30 bg-[#09090b] transform translate-z-0 relative before:content-[''] before:absolute before:-top-[72px] before:left-0 before:right-0 before:h-[72px] before:bg-[#09090b]">
+      <section
+        className="filter-bar py-5 px-6 lg:px-24 sticky z-30"
+        style={{ top: "var(--navbar-h, 68px)" }}
+        aria-label="Filter posts"
+      >
         <div className="max-w-7xl mx-auto flex items-center gap-3 flex-wrap">
           <Filter className="w-4 h-4 text-zinc-600 shrink-0" />
           {FILTERS.map((f) => (

@@ -158,21 +158,16 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
   const [badgeCount, setBadgeCount] = useState<number | string>("8+");
 
   useEffect(() => {
-    // Fetch specific repositories in order
-    // Fetch specific repositories in order - explicitly fetching warn and adhan-api first
-    const targetRepos = ['warn', 'adhan-api', 'profile', 'tmo'];
-    Promise.all(
-      targetRepos.map(repo => 
-        fetch(`https://api.github.com/repos/bilalahamad0/${repo}`).then(res => res.json())
-      )
-    )
-      .then(data => {
-        const validRepos = data.filter(repo => repo && repo.id);
-        setRepos(validRepos);
+    // Use the cached /api/repos route — avoids direct GitHub API calls & rate limiting
+    fetch('/api/repos')
+      .then(res => res.json())
+      .then((data: Array<{ name: string; stargazers_count: number; forks_count: number; description: string; html_url: string; language: string | null }>) => {
+        const validRepos = data.filter(r => r && r.name);
+        setRepos(validRepos as any);
       })
       .catch(console.error);
 
-    // Fetch dynamic badge count from our internal API route
+    // Fetch dynamic badge count
     fetch('/api/badges')
       .then(res => res.json())
       .then(data => {
@@ -286,7 +281,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.4 }}
               className="glass-card rounded-3xl p-8 relative flex flex-col h-full"
             >
               <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
@@ -383,7 +378,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 }}
+                transition={{ duration: 0.4, delay: 0 }}
                 className="glass-card rounded-3xl p-8 flex flex-col transition-all duration-500"
               >
                 <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2">
@@ -405,7 +400,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.2 }}
+                transition={{ duration: 0.4, delay: 0.04 }}
                 className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col h-fit"
               >
                 <Settings className="absolute -right-8 -bottom-8 w-48 h-48 text-zinc-500 dark:text-zinc-500/5 pointer-events-none" />
@@ -473,7 +468,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.3 }}
+                transition={{ duration: 0.4, delay: 0.08 }}
                 className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col"
               >
                 <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2 flex items-center gap-2 relative z-10">
@@ -551,7 +546,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.4 }}
+                transition={{ duration: 0.4, delay: 0.1 }}
                 className="glass-card rounded-3xl p-8 relative flex flex-col flex-grow"
               >
                 <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none">
@@ -588,7 +583,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.5 }}
+                transition={{ duration: 0.4, delay: 0.12 }}
                 className="glass-card rounded-3xl p-8 relative flex flex-col gap-8 overflow-hidden flex-grow"
               >
                 <div className="absolute -left-6 -bottom-6 pointer-events-none opacity-[0.03] z-0">

@@ -1,7 +1,6 @@
 "use client";
 
 import { ContactSection } from "@/components/sections/contact";
-import { NavbarV2 } from "@/components/v2/NavbarV2";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -9,7 +8,6 @@ import Link from "next/link";
 export default function ContactPage() {
   return (
     <main className="min-h-screen bg-[#09090b] text-white">
-      <NavbarV2 />
       
       {/* Header Section */}
       <section className="pt-32 pb-12 px-6 lg:px-24 border-b border-white/5">
