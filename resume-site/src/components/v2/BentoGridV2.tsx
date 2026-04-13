@@ -419,7 +419,8 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
               </motion.div>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
 
 
