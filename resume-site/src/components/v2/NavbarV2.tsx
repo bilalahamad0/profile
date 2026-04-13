@@ -45,7 +45,7 @@ export function NavbarV2() {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className="fixed top-0 left-0 right-0 z-40 px-3 sm:px-6 pt-3 sm:pt-4 pb-2 flex justify-center pointer-events-none"
+      className="fixed top-0 left-0 right-0 z-[100] px-3 sm:px-6 pt-3 sm:pt-4 pb-2 flex justify-center pointer-events-none"
     >
       <nav className="glass border border-white/10 rounded-full px-4 sm:px-6 py-2.5 sm:py-3 flex items-center gap-3 sm:gap-5 pointer-events-auto min-w-0 max-w-[calc(100vw-1.5rem)]">
 

@@ -213,7 +213,7 @@ export function ResumeReel() {
         style={{ height: "calc(min(75vh, 600px))", touchAction: "pan-y" }}
       >
         {/* Progress bars at top */}
-        <div className="absolute top-4 left-3 right-3 z-50 flex gap-1">
+        <div className="absolute top-4 left-3 right-3 z-20 flex gap-1">
           {slides.map((_, i) => (
             <div key={i} className="h-[3px] flex-1 rounded-full bg-white/15 overflow-hidden">
               <motion.div
@@ -338,13 +338,13 @@ export function ResumeReel() {
         </AnimatePresence>
 
         {/* Tap zone overlay — left/right halves, below controls */}
-        <div className="absolute inset-0 z-40 flex pointer-events-auto" style={{ bottom: "80px" }}>
+        <div className="absolute inset-0 z-10 flex pointer-events-auto" style={{ bottom: "80px" }}>
           <div className="w-1/2 h-full cursor-pointer" onClick={() => advance(-1)} />
           <div className="w-1/2 h-full cursor-pointer" onClick={() => advance(1)} />
         </div>
 
         {/* Controls — positioned to avoid overlap with body text */}
-        <div className="absolute bottom-14 left-0 right-0 z-50 flex justify-center gap-8">
+        <div className="absolute bottom-14 left-0 right-0 z-20 flex justify-center gap-8">
           <button
             onClick={(e) => { e.stopPropagation(); setPlaying((p) => !p); }}
             className="p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white active:scale-95 transition-transform"
@@ -363,7 +363,7 @@ export function ResumeReel() {
 
 
         {/* Slide counter */}
-        <p className="absolute bottom-3 left-0 right-0 z-50 text-center text-[9px] font-bold text-white/20 uppercase tracking-widest pointer-events-none">
+        <p className="absolute bottom-3 left-0 right-0 z-20 text-center text-[9px] font-bold text-white/20 uppercase tracking-widest pointer-events-none">
           {index + 1} / {slides.length} · tap to navigate
         </p>
       </div>
