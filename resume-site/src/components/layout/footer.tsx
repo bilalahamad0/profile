@@ -2,12 +2,12 @@ import Link from "next/link";
 import { Github, Linkedin, Mail, Download, MapPin, ArrowUpRight } from "lucide-react";
 
 const navLinks = [
-  { href: "/experience",     label: "Experience"     },
+  { href: "/experience", label: "Experience" },
   { href: "/certifications", label: "Certifications" },
-  { href: "/projects",       label: "Projects"       },
-  { href: "/ai",             label: "AI Lab"         },
-  { href: "/blog",           label: "Blog"           },
-  { href: "/contact",        label: "Contact"        },
+  { href: "/projects", label: "Projects" },
+  { href: "/ai", label: "AI Lab" },
+  { href: "/blog", label: "Blog" },
+  { href: "/contact", label: "Contact" },
 ];
 
 const socialLinks = [
@@ -56,7 +56,6 @@ export function Footer() {
 
             <p className="text-sm text-zinc-500 leading-relaxed max-w-xs">
               18+ years engineering quality at Amazon, Google, Rivian, Cruise, and Samsara.
-              Based in Sunnyvale, CA.
             </p>
 
             <div className="flex items-center gap-1.5 text-xs text-zinc-600">

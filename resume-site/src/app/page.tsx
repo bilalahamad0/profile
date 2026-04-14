@@ -11,20 +11,20 @@ import { projectsData } from "@/data/portfolio";
 export const metadata: Metadata = {
   title: "Home",
   description:
-    "Bilal Ahamad — Technical QA Lead & IoT Engineer. 18+ years at Amazon, Google, Rivian, Cruise, Samsara. Portfolio of production-grade automation, IoT, and AI systems.",
+    "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer. 18+ years at Amazon, Google, Rivian, Cruise, Samsara. Portfolio of production-grade automation, IoT, and AI systems.",
 };
 
 const ACCENT_BORDER: Record<string, string> = {
-  blue:    "group-hover:border-blue-500/30",
+  blue: "group-hover:border-blue-500/30",
   emerald: "group-hover:border-emerald-500/30",
-  pink:    "group-hover:border-pink-500/30",
-  violet:  "group-hover:border-violet-500/30",
+  pink: "group-hover:border-pink-500/30",
+  violet: "group-hover:border-violet-500/30",
 };
 const ACCENT_TEXT: Record<string, string> = {
-  blue:    "text-blue-400",
+  blue: "text-blue-400",
   emerald: "text-emerald-400",
-  pink:    "text-pink-400",
-  violet:  "text-violet-400",
+  pink: "text-pink-400",
+  violet: "text-violet-400",
 };
 
 function FeaturedProjectCard({ project }: { project: typeof projectsData[0] }) {
