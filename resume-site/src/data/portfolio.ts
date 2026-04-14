@@ -23,7 +23,7 @@ export const experienceData = [
   {
     role: "Senior Firmware Quality Lead",
     company: "Samsara Inc",
-    location: "San Francisco, CA",
+    location: "Remote / San Francisco, CA",
     duration: "Dec 2023 - Jul 2025",
     desc: "Spearheading E2E system test strategies for IoT Dash Cam product series within an AI/ML video-based safety ecosystem.",
     highlights: [

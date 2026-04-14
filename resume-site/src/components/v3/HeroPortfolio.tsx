@@ -173,14 +173,15 @@ function CoreSpecCards() {
 /* ─── Specialization Bento (Vibrant) ────────────────── */
 const specializations = [
   "Technical Leadership & Innovation",
-  "Firmware Quality Engineering Lead",
-  "Automation Architect",
-  "End-to-End Product QA Ownership",
-  "Strategic Planning & Execution",
-  "Firmware Test & Release Management",
-  "Cross-Functional Leadership",
-  "AI/ML Validation",
-  "Mentorship & Team Building",
+  "Full-Stack Product Quality Ownership",
+  "Autonomous Systems & Safety-Critical Validation",
+  "Fleet-Scale IoT Observability & Reliability",
+  "AI-Augmented Test Automation Frameworks",
+  "Test Automation Frameworks Architecture",
+  "SDLC Transformation & CI/CD for Hardware",
+  "Firmware Quality Strategy & Governance",
+  "Cross-Functional Engineering Orchestration",
+  "Technical Mentorship & Organizational Growth",
 ];
 
 function SpecializationBento() {
@@ -201,14 +202,21 @@ function SpecializationBento() {
       <div className="h-px w-full sm:h-5 sm:w-px bg-blue-500/30" aria-hidden="true" />
 
       <div className="flex flex-wrap gap-2">
-        {specializations.map((s) => (
-          <span
-            key={s}
-            className="px-3 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-[0.1em] bg-blue-500/15 border border-blue-500/30 text-blue-100 hover:text-white hover:bg-blue-500/30 transition-all duration-300 shadow-[0_0_10px_rgba(59,130,246,0.15)] cursor-default"
-          >
-            {s}
-          </span>
-        ))}
+        {specializations.map((s, idx) => {
+          let styles = "bg-blue-500/15 border-blue-500/30 text-blue-100 hover:bg-blue-500/30 shadow-blue-500/10";
+          if (idx >= 2 && idx < 5) styles = "bg-emerald-500/15 border-emerald-500/30 text-emerald-100 hover:bg-emerald-500/30 shadow-emerald-500/10";
+          else if (idx >= 5 && idx < 7) styles = "bg-violet-500/15 border-violet-500/30 text-violet-100 hover:bg-violet-500/30 shadow-violet-500/10";
+          else if (idx >= 7) styles = "bg-amber-500/15 border-amber-500/30 text-amber-100 hover:bg-amber-500/30 shadow-amber-500/10";
+
+          return (
+            <span
+              key={s}
+              className={`px-3 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-[0.1em] border transition-all duration-300 cursor-default shadow-[0_0_10px_rgba(0,0,0,0.1)] ${styles}`}
+            >
+              {s}
+            </span>
+          );
+        })}
       </div>
     </motion.div>
   );
