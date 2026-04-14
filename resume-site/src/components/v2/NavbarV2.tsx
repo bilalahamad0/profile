@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 const navLinks = [
   { href: "/",              label: "Home",           icon: Home         },
   { href: "/experience",    label: "Experience",     icon: Briefcase    },
-  { href: "/certifications",label: "Certifications", icon: Award        },
+  { href: "/certificates",  label: "Certificates",   icon: Award        },
   { href: "/projects",      label: "Projects",       icon: FolderKanban },
   { href: "/ai",            label: "AI Lab",         icon: Sparkles     },
   { href: "/blog",          label: "Blog",           icon: BookOpen     },
@@ -37,7 +37,7 @@ export function NavbarV2() {
       <nav
         aria-label="Main navigation"
         className={cn(
-          "glass rounded-full px-1 sm:px-5 py-2.5 flex items-center justify-evenly sm:justify-start gap-0 sm:gap-1 pointer-events-auto",
+          "glass rounded-full px-1 sm:px-5 py-2.5 flex items-center justify-between sm:justify-start gap-0 sm:gap-1 pointer-events-auto",
           "w-full max-w-7xl sm:w-auto transition-all duration-300",
           scrolled
             ? "shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
@@ -70,8 +70,8 @@ export function NavbarV2() {
               aria-current={isActive ? "page" : undefined}
               className={cn(
                 "flex flex-col items-center justify-center gap-0.5",
-                "px-1 sm:px-3 py-1.5 rounded-xl transition-all duration-200",
-                "group whitespace-nowrap shrink-0 flex-none",
+                "px-0.5 sm:px-3 py-1.5 rounded-xl transition-all duration-200",
+                "group whitespace-nowrap shrink-0 flex-1 sm:flex-none",
                 isActive
                   ? "bg-white/10 text-white"
                   : "text-zinc-400 hover:text-white hover:bg-white/5"
@@ -84,7 +84,7 @@ export function NavbarV2() {
                 )}
                 aria-hidden="true"
               />
-              <span className="text-[7.5px] sm:text-[10px] font-semibold leading-none tracking-tighter sm:tracking-normal">
+              <span className="text-[8px] sm:text-[10px] font-semibold leading-none tracking-tighter sm:tracking-normal">
                 {label}
               </span>
             </Link>
