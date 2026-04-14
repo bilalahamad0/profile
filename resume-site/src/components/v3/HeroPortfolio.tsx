@@ -39,25 +39,25 @@ function HeroBackground() {
       <div className="absolute inset-0 hidden lg:block opacity-100">
         <motion.div
           animate={{ y: [0, -25, 0], x: [0, 15, 0], rotate: [0, 8, 0] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[4%] left-[15%] text-violet-400/40"
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute top-[24%] right-[24%] text-cyan-400/40"
         >
           <Shield size={72} aria-hidden="true" />
-          <span className="block text-[9px] mt-2 font-mono opacity-80 uppercase tracking-[0.2em] text-violet-300">Safety Critical</span>
+          <span className="block text-[9px] mt-2 font-mono opacity-80 uppercase tracking-[0.2em] text-cyan-300">Safety Critical</span>
         </motion.div>
 
         <motion.div
           animate={{ y: [0, 25, 0], x: [0, -15, 0], rotate: [0, -5, 0] }}
           transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="absolute bottom-[2%] left-[4%] text-cyan-400/40"
+          className="absolute bottom-[24%] right-[16%] text-violet-400/40"
         >
           <Cpu size={64} aria-hidden="true" />
-          <span className="block text-[9px] mt-1 font-mono opacity-80 uppercase tracking-[0.2em] text-cyan-300">Firmware</span>
+          <span className="block text-[9px] mt-1 font-mono opacity-80 uppercase tracking-[0.2em] text-violet-300">Firmware</span>
         </motion.div>
 
         <motion.div
           animate={{ y: [0, -30, 0], x: [0, 20, 0], rotate: [0, -10, 0] }}
-          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-[18%] right-[8%] text-amber-400/40"
         >
           <Car size={72} aria-hidden="true" />
@@ -66,7 +66,7 @@ function HeroBackground() {
 
         <motion.div
           animate={{ y: [0, -25, 0], x: [0, -10, 0], rotate: [0, 5, 0] }}
-          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           className="absolute bottom-[10%] right-[8%] text-emerald-400/40"
         >
           <Network size={64} aria-hidden="true" />
