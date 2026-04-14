@@ -26,7 +26,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "Bilal Ahamad — Lead Embedded Firmware & System QA Lead",
+    default: "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer",
     template: "%s | Bilal Ahamad",
   },
   description:
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://bilalahamad.dev",
     siteName: "Bilal Ahamad Portfolio",
-    title: "Bilal Ahamad — Lead Embedded Firmware & System QA Lead",
+    title: "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer",
     description:
       "18+ years engineering quality for Amazon, Google, Rivian, Cruise & Samsara. Specializing in IoT automation, test architecture, and AI-native development.",
     images: [
@@ -51,13 +51,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Bilal Ahamad — Lead Embedded Firmware & System QA Lead",
+        alt: "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bilal Ahamad — Lead Embedded Firmware & System QA Lead",
+    title: "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer",
     description:
       "18+ years engineering quality for Amazon, Google, Rivian, Cruise & Samsara.",
     images: ["/og-image.png"],

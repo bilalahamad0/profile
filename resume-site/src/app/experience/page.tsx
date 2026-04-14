@@ -28,7 +28,7 @@ export default function ExperiencePage() {
 
   const handleShare = async () => {
     const shareData = {
-      title: "Bilal Ahamad | Lead Embedded Firmware & System QA Lead",
+      title: "Bilal Ahamad | Lead Embedded Firmware & Systems QA Engineer",
       text: "Check out Bilal Ahamad's professional technical roadmap and career timeline.",
       url: window.location.href,
     };
@@ -85,11 +85,10 @@ export default function ExperiencePage() {
             <button
               onClick={handleShare}
               aria-label="Share this page"
-              className={`flex items-center gap-2 px-6 py-3 rounded-xl border transition-all ${
-                isCopied
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl border transition-all ${isCopied
                   ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-400"
                   : "bg-white/5 border-white/10 text-white hover:bg-white/10"
-              }`}
+                }`}
             >
               {isCopied ? (
                 <><Check className="w-5 h-5" aria-hidden="true" /> Copied!</>

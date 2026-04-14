@@ -248,7 +248,7 @@ export function HeroPortfolio() {
             <div className="h-px w-6 bg-violet-500/60" aria-hidden="true" />
           </div>
           <span className="text-violet-300 font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em]">
-            Lead Embedded Firmware &amp; <br className="sm:hidden" /> System QA Engineer
+            Lead Embedded Firmware &amp; <br className="sm:hidden" /> Systems QA Engineer
           </span>
         </motion.div>
 

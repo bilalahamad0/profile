@@ -11,7 +11,7 @@ import { projectsData } from "@/data/portfolio";
 export const metadata: Metadata = {
   title: "Home",
   description:
-    "Bilal Ahamad — Lead Embedded Firmware & System QA Lead. 18+ years at Amazon, Google, Rivian, Cruise, Samsara. Portfolio of production-grade automation, IoT, and AI systems.",
+    "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer. 18+ years at Amazon, Google, Rivian, Cruise, Samsara. Portfolio of production-grade automation, IoT, and AI systems.",
 };
 
 const ACCENT_BORDER: Record<string, string> = {
