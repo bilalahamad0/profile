@@ -38,7 +38,7 @@ export function ContactSection() {
     return (
         <section id="contact" className="pt-2 pb-10 px-4 max-w-4xl mx-auto">
             <div className="text-center mb-10">
-                <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">Get in Touch</h2>
+                <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">Contact Protocol</h2>
                 <p className="text-muted-foreground max-w-xl mx-auto">
                     Interested in discussing a project or opportunity? Send me a message and let&apos;s create something amazing together.
                 </p>

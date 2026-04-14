@@ -22,7 +22,7 @@ export default function ContactPage() {
             transition={{ duration: 0.5 }}
             className="text-5xl md:text-6xl font-black tracking-tighter uppercase"
           >
-            Get in <span className="text-blue-500">Touch</span>
+            Initiate <span className="text-blue-500">Sync</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
