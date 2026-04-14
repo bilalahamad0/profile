@@ -40,7 +40,7 @@ function HeroBackground() {
         <motion.div
           animate={{ y: [0, -25, 0], x: [0, 15, 0], rotate: [0, 8, 0] }}
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="absolute top-[24%] right-[24%] text-cyan-400/40"
+          className="absolute top-[32%] right-[32%] text-cyan-400/40"
         >
           <Shield size={72} aria-hidden="true" />
           <span className="block text-[9px] mt-2 font-mono opacity-80 uppercase tracking-[0.2em] text-cyan-300">Safety Critical</span>
@@ -49,7 +49,7 @@ function HeroBackground() {
         <motion.div
           animate={{ y: [0, 25, 0], x: [0, -15, 0], rotate: [0, -5, 0] }}
           transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="absolute bottom-[24%] right-[16%] text-violet-400/40"
+          className="absolute bottom-[42%] right-[36%] text-violet-400/40"
         >
           <Cpu size={64} aria-hidden="true" />
           <span className="block text-[9px] mt-1 font-mono opacity-80 uppercase tracking-[0.2em] text-violet-300">Firmware</span>
