@@ -75,17 +75,17 @@ function HeroBackground() {
 
         <motion.div
           animate={{ y: [0, -20, 0], x: [0, 10, 0], rotate: [0, -12, 0] }}
-          transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-          className="absolute top-[12%] left-[24%] text-blue-400/40"
+          transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute bottom-[10%] right-[14%] text-blue-400/40"
         >
           <CheckSquare size={64} aria-hidden="true" />
-          <span className="block text-[9px] mt-2 font-mono opacity-80 uppercase tracking-[0.2em] text-blue-300">Elite Quality</span>
+          <span className="block text-[9px] mt-2 font-mono opacity-80 uppercase tracking-[0.2em] text-blue-300">Quality</span>
         </motion.div>
 
         <motion.div
-          animate={{ scale: [1, 1.1, 1], opacity: [0.08, 0.2, 0.08] }}
+          animate={{ scale: [1, 1.1, 1], opacity: [0.5, 2, 0.5] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-          className="absolute top-[45%] left-[1.5%] text-zinc-500/30"
+          className="absolute top-[40%] left-[1.5%] text-zinc-500/30"
         >
           <GitBranch size={88} aria-hidden="true" />
         </motion.div>
@@ -181,16 +181,15 @@ function CoreSpecCards() {
 
 /* ─── Specialization Bento (Vibrant) ────────────────── */
 const specializations = [
-  "Technical Leadership + Innovation",
-  "Full-Stack Product Quality",
-  "Autonomous | Safety-Critical Systems",
-  "Fleet-Scale IoT Reliability",
-  "AI-Augmented Test Frameworks",
-  "Test Automation Architecture",
-  "CI/CD for Hardware",
-  "Firmware Quality Strategy",
-  "Cross-Functional Orchestration",
-  "Engineering Mentorship",
+  "FIRMWARE QUALITY STRATEGY",
+  "AUTONOMOUS | SAFETY-CRITICAL SYSTEMS",
+  "TEST AUTOMATION ARCHITECTURE",
+  "FLEET-SCALE IOT RELIABILITY",
+  "AI-AUGMENTED TEST FRAMEWORKS",
+  "CROSS-FUNCTIONAL ORCHESTRATION",
+  "HIL SIMULATION & VALIDATION",
+  "SDLC TRANSFORMATION",
+  "ENGINEERING MENTORSHIP",
 ];
 
 function SpecializationBento() {
@@ -213,9 +212,8 @@ function SpecializationBento() {
       <div className="flex flex-wrap gap-2">
         {specializations.map((s, idx) => {
           let styles = "bg-blue-500/15 border-blue-500/30 text-blue-100 hover:bg-blue-500/30 shadow-blue-500/10";
-          if (idx >= 2 && idx < 5) styles = "bg-emerald-500/15 border-emerald-500/30 text-emerald-100 hover:bg-emerald-500/30 shadow-emerald-500/10";
-          else if (idx >= 5 && idx < 7) styles = "bg-violet-500/15 border-violet-500/30 text-violet-100 hover:bg-violet-500/30 shadow-violet-500/10";
-          else if (idx >= 7) styles = "bg-amber-500/15 border-amber-500/30 text-amber-100 hover:bg-amber-500/30 shadow-amber-500/10";
+          if (idx >= 3 && idx < 6) styles = "bg-emerald-500/15 border-emerald-500/30 text-emerald-100 hover:bg-emerald-500/30 shadow-emerald-500/10";
+          else if (idx >= 6) styles = "bg-violet-500/15 border-violet-500/30 text-violet-100 hover:bg-violet-500/30 shadow-violet-500/10";
 
           return (
             <span
