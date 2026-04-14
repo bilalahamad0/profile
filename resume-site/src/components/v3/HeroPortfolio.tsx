@@ -181,7 +181,6 @@ const specializations = [
   "Cross-Functional Leadership",
   "Stakeholder Management",
   "Mentorship & Team Building",
-  "Lab Setup & Management",
 ];
 
 function SpecializationBento() {
