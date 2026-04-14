@@ -174,6 +174,7 @@ export const skills = [
 export const certs = [
   "Software Testing Foundations: Integrating AI into Quality Process (2026)",
   "AI Coding Agents with GitHub Copilot and Cursor (2025)",
+  "AI for App building (2026)",
   "ISTQB Certified Tester Foundation Level (CTFL)",
   "How to Master Your Executive Presence (2023)",
   "Project Management Foundations (2023)",
