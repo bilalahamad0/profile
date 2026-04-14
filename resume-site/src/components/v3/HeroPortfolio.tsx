@@ -172,16 +172,16 @@ function CoreSpecCards() {
 
 /* ─── Specialization Bento (Vibrant) ────────────────── */
 const specializations = [
-  "Technical Leadership & Innovation",
-  "Full-Stack Product Quality Ownership",
-  "Autonomous Systems & Safety-Critical Validation",
-  "Fleet-Scale IoT Observability & Reliability",
-  "AI-Augmented Test Automation Frameworks",
-  "Test Automation Frameworks Architecture",
-  "SDLC Transformation & CI/CD for Hardware",
-  "Firmware Quality Strategy & Governance",
-  "Cross-Functional Engineering Orchestration",
-  "Technical Mentorship & Organizational Growth",
+  "Technical Leadership + Innovation",
+  "Full-Stack Product Quality",
+  "Autonomous | Safety-Critical Systems",
+  "Fleet-Scale IoT Reliability",
+  "AI-Augmented Test Frameworks",
+  "Test Automation Architecture",
+  "CI/CD for Hardware",
+  "Firmware Quality Strategy",
+  "Cross-Functional Orchestration",
+  "Engineering Mentorship",
 ];
 
 function SpecializationBento() {
