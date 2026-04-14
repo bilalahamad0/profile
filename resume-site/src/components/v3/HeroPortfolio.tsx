@@ -248,7 +248,7 @@ export function HeroPortfolio() {
             <div className="h-px w-6 bg-violet-500/60" aria-hidden="true" />
           </div>
           <span className="text-violet-300 font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em]">
-            Lead Embedded Firmware &amp; Systems QA Engineer
+            Lead Embedded Firmware &amp; <br className="sm:hidden" /> System QA Engineer
           </span>
         </motion.div>
 
@@ -260,8 +260,8 @@ export function HeroPortfolio() {
             transition={{ duration: 0.55 }}
             className="text-[clamp(2.5rem,6vw,5rem)] font-black text-white leading-[1.05] tracking-tight"
           >
-            Architecting <span className="text-shimmer">Quality</span> &amp; <br />
-            Automating <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-cyan-400 to-blue-400">Complexity.</span>
+            Architecting <br className="sm:hidden" /> <span className="text-shimmer">Quality</span> &amp; <br />
+            Automating <br className="sm:hidden" /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-cyan-400 to-blue-400">Complexity.</span>
           </motion.h1>
 
           <motion.div
