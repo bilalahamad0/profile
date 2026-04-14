@@ -97,31 +97,6 @@ export default function ExperiencePage() {
               )}
             </button>
           </div>
-
-          {/* Social Caching Tip */}
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="mt-8 p-4 rounded-2xl bg-blue-500/5 border border-blue-500/10 flex items-start gap-3 max-w-md group hover:bg-blue-500/10 transition-colors"
-          >
-            <div className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0 border border-blue-500/20">
-              <span className="text-blue-400 text-xs font-bold italic">PRO TIP</span>
-            </div>
-            <div>
-              <p className="text-[11px] leading-relaxed text-zinc-400 group-hover:text-zinc-300 transition-colors">
-                <span className="text-blue-400 font-bold">Social Media Caching:</span> Platforms like LinkedIn and Twitter often cache site metadata. If you share your link and still see the old title, you can force an update using the 
-                <a 
-                  href="https://www.linkedin.com/post-inspector/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="mx-1 text-blue-400 hover:text-blue-300 underline underline-offset-4 decoration-blue-500/30 font-medium"
-                >
-                  LinkedIn Post Inspector
-                </a>.
-              </p>
-            </div>
-          </motion.div>
         </div>
       </section>
 
