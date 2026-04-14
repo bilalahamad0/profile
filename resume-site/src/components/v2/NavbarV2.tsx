@@ -37,7 +37,7 @@ export function NavbarV2() {
       <nav
         aria-label="Main navigation"
         className={cn(
-          "glass rounded-full px-1.5 sm:px-5 py-2.5 flex items-center justify-between sm:justify-start gap-0 sm:gap-1 pointer-events-auto",
+          "glass rounded-full px-1 sm:px-5 py-2.5 flex items-center justify-evenly sm:justify-start gap-0 sm:gap-1 pointer-events-auto",
           "w-full max-w-7xl sm:w-auto transition-all duration-300",
           scrolled
             ? "shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
@@ -70,8 +70,8 @@ export function NavbarV2() {
               aria-current={isActive ? "page" : undefined}
               className={cn(
                 "flex flex-col items-center justify-center gap-0.5",
-                "px-0.5 sm:px-3 py-1.5 rounded-xl transition-all duration-200",
-                "group whitespace-nowrap shrink-0 flex-1 sm:flex-none",
+                "px-1 sm:px-3 py-1.5 rounded-xl transition-all duration-200",
+                "group whitespace-nowrap shrink-0 flex-none",
                 isActive
                   ? "bg-white/10 text-white"
                   : "text-zinc-400 hover:text-white hover:bg-white/5"
