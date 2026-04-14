@@ -173,13 +173,13 @@ function CoreSpecCards() {
 /* ─── Specialization Bento (Vibrant) ────────────────── */
 const specializations = [
   "Technical Leadership & Innovation",
+  "Firmware Quality Engineering Lead",
   "Automation Architect",
   "End-to-End Product QA Ownership",
-  "Firmware Test & Release Management",
   "Strategic Planning & Execution",
-  "AI/ML Validation",
+  "Firmware Test & Release Management",
   "Cross-Functional Leadership",
-  "Stakeholder Management",
+  "AI/ML Validation",
   "Mentorship & Team Building",
 ];
 
