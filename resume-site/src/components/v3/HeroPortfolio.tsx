@@ -155,7 +155,7 @@ function CoreSpecCards() {
           >
             {/* Ambient Background Glow on Hover */}
             <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full blur-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 ${card.bgAccent} pointer-events-none`} />
-            
+
             <div className={`relative z-10 p-2.5 rounded-xl border border-white/[0.06] group-hover:border-white/[0.15] bg-white/[0.03] group-hover:bg-white/[0.08] transition-all duration-500`}>
               <Icon className={`w-5 h-5 ${card.iconColor} filter drop-shadow-[0_0_8px_currentColor]`} aria-hidden="true" />
             </div>
@@ -193,9 +193,9 @@ function SpecializationBento() {
           Core Focus
         </span>
       </div>
-      
+
       <div className="h-px w-full sm:h-5 sm:w-px bg-blue-500/30" aria-hidden="true" />
-      
+
       <div className="flex flex-wrap gap-2">
         {specializations.map((s) => (
           <span
@@ -232,7 +232,7 @@ export function HeroPortfolio() {
       </div>
 
       <div className="w-full max-w-5xl z-10 space-y-12">
-        
+
         {/* ── Top Header ── */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -245,7 +245,7 @@ export function HeroPortfolio() {
             <div className="h-1.5 w-1.5 rounded-full bg-violet-500 shadow-[0_0_8px_rgba(139,92,246,0.8)]" />
           </div>
           <span className="text-violet-300 font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em]">
-            Lead QA &amp; Systems Engineer · San Francisco Bay Area
+            Lead Embedded Firmware &amp; Systems QA Engineer
           </span>
         </motion.div>
 
@@ -257,7 +257,7 @@ export function HeroPortfolio() {
             transition={{ duration: 0.55 }}
             className="text-[clamp(2.5rem,6vw,5rem)] font-black text-white leading-[1.05] tracking-tight"
           >
-            Architecting <span className="text-shimmer">Quality.</span><br />
+            Architecting <span className="text-shimmer">Quality</span> &amp; <br />
             Automating <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-cyan-400 to-blue-400">Complexity.</span>
           </motion.h1>
 
@@ -268,8 +268,8 @@ export function HeroPortfolio() {
           >
             <p className="text-lg sm:text-xl text-zinc-300 font-light leading-relaxed max-w-3xl">
               Building specialized test architectures and firmware validation frameworks for
-              <Highlight color="violet">global industry leaders</Highlight>.
-              Currently focusing on hardware-in-the-loop and <Highlight color="cyan">mission-critical</Highlight> automation systems.
+              <Highlight>global industry leaders</Highlight>.
+              Currently focusing on hardware-in-the-loop and automation systems.
             </p>
           </motion.div>
         </div>
@@ -288,19 +288,19 @@ export function HeroPortfolio() {
           className="flex flex-wrap gap-4 items-center pt-4"
         >
           <Link
-            href="#featured-projects"
+            href="/experience"
             className="group flex items-center gap-3 px-8 py-3.5 rounded-full bg-white text-zinc-900 font-bold hover:bg-zinc-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:scale-105 active:scale-95"
           >
-            View Featured Work
-            <MoveRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+            Full Career Roadmap
+            <Terminal className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
           </Link>
 
           <Link
-            href="/experience"
+            href="/projects"
             className="group flex items-center gap-3 px-8 py-3.5 rounded-full bg-zinc-900/50 backdrop-blur-md border border-white/10 text-white font-bold hover:bg-zinc-800 transition-all hover:border-white/20"
           >
-            Full Career Roadmap
-            <Terminal className="w-4 h-4 text-zinc-400" aria-hidden="true" />
+            View Featured Work
+            <MoveRight className=" w-4 h-4 text-zinc-400" aria-hidden="true" />
           </Link>
 
           <a
@@ -337,8 +337,8 @@ export function HeroPortfolio() {
                 width={logo.w}
                 height={logo.h}
                 className={`h-7 w-auto object-contain transition-all duration-500 grayscale hover:grayscale-0 ${logo.invert
-                    ? `opacity-50 invert ${logo.brightness} hover:opacity-100 hover:scale-105`
-                    : "opacity-40 hover:opacity-100 hover:scale-105"
+                  ? `opacity-50 invert ${logo.brightness} hover:opacity-100 hover:scale-105`
+                  : "opacity-40 hover:opacity-100 hover:scale-105"
                   }`}
                 loading="lazy"
               />
