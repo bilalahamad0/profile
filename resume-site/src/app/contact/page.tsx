@@ -8,7 +8,7 @@ import Link from "next/link";
 export default function ContactPage() {
   return (
     <main className="min-h-screen bg-[#09090b] text-white">
-      
+
       {/* Header Section */}
       <section className="pt-32 pb-12 px-6 lg:px-24 border-b border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col items-start gap-4">
@@ -16,15 +16,15 @@ export default function ContactPage() {
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             Back to Portfolio
           </Link>
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className="text-5xl md:text-6xl font-black tracking-tighter uppercase"
           >
-            Initiate <span className="text-blue-500">Sync</span>
+            Get in <span className="text-blue-500">Touch</span>
           </motion.h1>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
@@ -38,9 +38,9 @@ export default function ContactPage() {
       {/* Contact Form Section */}
       <section className="relative py-20 px-6">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full -z-10">
-           <div className="absolute top-0 left-0 w-full h-[500px] bg-blue-500/5 blur-[120px] rounded-full opacity-50" />
+          <div className="absolute top-0 left-0 w-full h-[500px] bg-blue-500/5 blur-[120px] rounded-full opacity-50" />
         </div>
-        
+
         <div className="max-w-7xl mx-auto">
           <ContactSection />
         </div>
@@ -51,7 +51,7 @@ export default function ContactPage() {
         <div className="max-w-3xl mx-auto space-y-6">
           <h2 className="text-2xl font-bold">Based in Sunnyvale, CA</h2>
           <p className="text-zinc-400">
-            Available for remote roles or local opportunities in the San Francisco Bay Area. 
+            Available for remote roles or local opportunities in the San Francisco Bay Area.
             I typically respond to inquiries within 24-48 business hours.
           </p>
         </div>
