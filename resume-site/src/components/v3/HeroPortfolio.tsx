@@ -172,11 +172,16 @@ function CoreSpecCards() {
 
 /* ─── Specialization Bento (Vibrant) ────────────────── */
 const specializations = [
-  "Lead QA / SDET",
+  "Technical Leadership & Innovation",
   "Automation Architect",
+  "End-to-End Product QA Ownership",
+  "Firmware Test & Release Management",
+  "Strategic Planning & Execution",
   "AI/ML Validation",
-  "Mobile OS Handsets",
-  "Test Strategy & Lab Setup"
+  "Cross-Functional Leadership",
+  "Stakeholder Management",
+  "Mentorship & Team Building",
+  "Lab Setup & Management",
 ];
 
 function SpecializationBento() {
@@ -242,7 +247,6 @@ export function HeroPortfolio() {
         >
           <div className="flex items-center gap-1.5">
             <div className="h-px w-6 bg-violet-500/60" aria-hidden="true" />
-            <div className="h-1.5 w-1.5 rounded-full bg-violet-500 shadow-[0_0_8px_rgba(139,92,246,0.8)]" />
           </div>
           <span className="text-violet-300 font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em]">
             Lead Embedded Firmware &amp; Systems QA Engineer
