@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import {
   MoveRight, Car, Cpu, Shield, Zap, Terminal,
-  ChevronRight, LayoutGrid, Network, GitBranch
+  ChevronRight, LayoutGrid, Network, GitBranch, CheckSquare
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -71,6 +71,15 @@ function HeroBackground() {
         >
           <Network size={64} aria-hidden="true" />
           <span className="block text-[9px] mt-1 font-mono opacity-80 uppercase tracking-[0.2em] text-emerald-300">IoT Systems</span>
+        </motion.div>
+
+        <motion.div
+          animate={{ y: [0, -20, 0], x: [0, 10, 0], rotate: [0, -12, 0] }}
+          transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+          className="absolute top-[12%] left-[24%] text-blue-400/40"
+        >
+          <CheckSquare size={64} aria-hidden="true" />
+          <span className="block text-[9px] mt-2 font-mono opacity-80 uppercase tracking-[0.2em] text-blue-300">Elite Quality</span>
         </motion.div>
 
         <motion.div
