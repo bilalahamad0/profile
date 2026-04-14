@@ -28,7 +28,7 @@ export default function ExperiencePage() {
 
   const handleShare = async () => {
     const shareData = {
-      title: "Bilal Ahamad | Engineering Manager & Technical Lead",
+      title: "Bilal Ahamad | Lead Embedded Firmware & System QA Lead",
       text: "Check out Bilal Ahamad's professional technical roadmap and career timeline.",
       url: window.location.href,
     };
