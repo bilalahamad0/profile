@@ -67,7 +67,7 @@ function HeroBackground() {
         <motion.div
           animate={{ y: [0, -25, 0], x: [0, -10, 0], rotate: [0, 5, 0] }}
           transition={{ duration: 16, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute bottom-[10%] right-[40%] text-emerald-400/40"
+          className="absolute bottom-[11%] right-[36%] text-emerald-400/40"
         >
           <Network size={64} aria-hidden="true" />
           <span className="block text-[9px] mt-1 font-mono opacity-80 uppercase tracking-[0.2em] text-emerald-300">IoT Systems</span>

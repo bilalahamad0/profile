@@ -140,7 +140,7 @@ export function Footer() {
             &copy; {year} Bilal Ahamad · All rights reserved
           </p>
           <p className="flex items-center gap-1.5">
-            Built with Next.js · Deployed on Vercel
+            Built using AI
           </p>
         </div>
       </div>
