@@ -1,8 +1,6 @@
 const nodemailer = require('nodemailer');
-const dotenv = require('dotenv');
 
-// Load environment variables from .env.local when running locally
-dotenv.config();
+try { require('dotenv').config(); } catch { /* dotenv optional in production */ }
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
@@ -81,13 +79,14 @@ module.exports = async (req, res) => {
     console.log('Verifying SMTP connection...');
     await transporter.verify();
     console.log('SMTP connection verified, sending mail');
+    const esc = (s) => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     await transporter.sendMail({
       from: SMTP_FROM,
       to: SMTP_TO || SMTP_FROM,
       replyTo: email,
-      subject: `Contact from ${name}`,
+      subject: `Contact from ${esc(name)}`,
       text: message,
-      html: `<p>${message}</p><p>From: ${name} (${email})</p>`
+      html: `<p>${esc(message)}</p><p>From: ${esc(name)} (${esc(email)})</p>`
     });
     console.log('Mail sent successfully');
     res.status(200).json({ message: 'Message sent' });

@@ -8,7 +8,6 @@ import {
   Filter, ArrowRight, BookOpen, Zap,
 } from "lucide-react";
 import { projectsData, type ProjectCategory } from "@/data/portfolio";
-import type { Metadata } from "next";
 
 const CATEGORIES: ProjectCategory[] = ["All", "IoT & Automation", "Data & Analytics", "AI-Powered", "Web & DevOps"];
 

@@ -1,6 +1,15 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export async function POST(req: Request) {
   try {
     const { name, email, message } = await req.json();
@@ -24,19 +33,23 @@ export async function POST(req: Request) {
 
     await transporter.verify();
 
+    const safeName = escapeHtml(name);
+    const safeEmail = escapeHtml(email);
+    const safeMessage = escapeHtml(message);
+
     await transporter.sendMail({
       from: process.env.SMTP_FROM,
       to: process.env.SMTP_TO || process.env.SMTP_FROM,
       replyTo: email,
-      subject: `New Lead [bilalahamad.com] - ${name}`,
+      subject: `New Lead [bilalahamad.com] - ${safeName}`,
       text: `New submission from bilalahamad.com\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
       html: `
         <h3>New Contact Form Submission from bilalahamad.com</h3>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Name:</strong> ${safeName}</p>
+        <p><strong>Email:</strong> ${safeEmail}</p>
         <hr />
         <p><strong>Message:</strong></p>
-        <p>${message}</p>
+        <p>${safeMessage}</p>
       `,
     });
 

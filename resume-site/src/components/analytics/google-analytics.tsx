@@ -2,10 +2,8 @@
 
 import Script from "next/script";
 
-// Use the ID from your dashboard as a fallback to ensure it works immediately
-export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID || "G-T9RMSTDGCT";
+export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID ?? "";
 
-// Track page views
 export const pageview = (url: string) => {
   if (typeof window !== "undefined" && (window as any).gtag) {
     (window as any).gtag("config", GA_TRACKING_ID, {
@@ -14,7 +12,6 @@ export const pageview = (url: string) => {
   }
 };
 
-// Track specific events
 export const trackEvent = (action: string, params: Record<string, any>) => {
   if (typeof window !== "undefined" && (window as any).gtag) {
     (window as any).gtag("event", action, params);
@@ -22,6 +19,8 @@ export const trackEvent = (action: string, params: Record<string, any>) => {
 };
 
 export const GoogleAnalytics = () => {
+  if (!GA_TRACKING_ID) return null;
+
   return (
     <>
       <Script

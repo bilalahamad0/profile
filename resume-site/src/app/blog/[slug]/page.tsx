@@ -3,15 +3,15 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
 import { ArrowLeft, Clock, Tag, Calendar, BookOpen, Github } from "lucide-react";
-import { NavbarV2 } from "@/components/v2/NavbarV2";
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
   return posts.map((p) => ({ slug: p.slug }));
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const post = getPostBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
   if (!post) return {};
   return {
     title: `${post.title} — Bilal Ahamad`,
@@ -57,15 +57,15 @@ const categoryColors: Record<string, string> = {
   "Tutorial": "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
 };
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = getPostBySlug(params.slug);
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
   if (!post) notFound();
 
   const colors = categoryColors[post.category] ?? categoryColors["Project Story"];
 
   return (
     <main className="min-h-screen bg-[#09090b] text-white">
-      <NavbarV2 />
 
       {/* Header */}
       <section className="pt-32 pb-16 px-6 lg:px-24 border-b border-white/5 relative overflow-hidden">
