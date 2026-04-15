@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion";
 import {
-  MoveRight, Car, Cpu, Shield, Zap, Terminal,
-  ChevronRight, LayoutGrid, Network, GitBranch, CheckSquare
+  Car, Cpu, Shield, Zap, Terminal,
+  ChevronRight, Network, GitBranch, CheckSquare
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -179,56 +179,6 @@ function CoreSpecCards() {
   );
 }
 
-/* ─── Specialization Bento (Vibrant) ────────────────── */
-const specializations = [
-  "FIRMWARE QUALITY GOVERNANCE",
-  "TEST AUTOMATION ARCHITECTURE",
-  "SDLC TRANSFORMATION",
-  "AI-AUGMENTED TEST FRAMEWORKS",
-  "CROSS-FUNCTIONAL ORCHESTRATION",
-  "PRODUCT SECURITY & INTEGRITY",
-  "SCALABLE VALIDATION SYSTEMS",
-  "CONTINUOUS HARDWARE INTEGRATION",
-  "ENGINEERING MENTORSHIP",
-];
-
-function SpecializationBento() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.4 }}
-      className="flex flex-col sm:flex-row sm:items-center gap-4 p-5 rounded-2xl bg-gradient-to-r from-blue-950/40 to-violet-950/40 border border-blue-500/20 backdrop-blur-md shadow-[0_0_30px_rgba(59,130,246,0.08)]"
-    >
-      <div className="flex items-center gap-2 shrink-0">
-        <LayoutGrid className="w-4 h-4 text-blue-400" aria-hidden="true" />
-        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-300">
-          Core Focus
-        </span>
-      </div>
-
-      <div className="h-px w-full sm:h-5 sm:w-px bg-blue-500/30" aria-hidden="true" />
-
-      <div className="flex flex-wrap gap-2">
-        {specializations.map((s, idx) => {
-          let styles = "bg-blue-500/15 border-blue-500/30 text-blue-100 hover:bg-blue-500/30 shadow-blue-500/10";
-          if (idx >= 3 && idx < 6) styles = "bg-emerald-500/15 border-emerald-500/30 text-emerald-100 hover:bg-emerald-500/30 shadow-emerald-500/10";
-          else if (idx >= 6) styles = "bg-violet-500/15 border-violet-500/30 text-violet-100 hover:bg-violet-500/30 shadow-violet-500/10";
-
-          return (
-            <span
-              key={s}
-              className={`px-3 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-[0.1em] border transition-all duration-300 cursor-default shadow-[0_0_10px_rgba(0,0,0,0.1)] ${styles}`}
-            >
-              {s}
-            </span>
-          );
-        })}
-      </div>
-    </motion.div>
-  );
-}
-
 /* ─── Company Logos ─────────────────────────────────── */
 const logos = [
   { name: "Amazon", path: "/logos/amazon.png", w: 80, h: 28, invert: false, brightness: "" },
@@ -295,7 +245,6 @@ export function HeroPortfolio() {
         {/* ── Capabilities Sub-grid ── */}
         <div className="space-y-6">
           <CoreSpecCards />
-          <SpecializationBento />
         </div>
 
         {/* ── CTA Buttons ── */}
@@ -311,14 +260,6 @@ export function HeroPortfolio() {
           >
             Full Career Roadmap
             <Terminal className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-          </Link>
-
-          <Link
-            href="/projects"
-            className="group flex items-center gap-3 px-8 py-3.5 rounded-full bg-zinc-900/50 backdrop-blur-md border border-white/10 text-white font-bold hover:bg-zinc-800 transition-all hover:border-white/20"
-          >
-            View Featured Work
-            <MoveRight className=" w-4 h-4 text-zinc-400" aria-hidden="true" />
           </Link>
 
           <a

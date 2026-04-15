@@ -311,24 +311,6 @@ export default async function AILabPage() {
         </div>
       </section>
 
-      {/* Philosophy Strip */}
-      <section className="py-12 px-6 border-y border-white/5 bg-purple-500/[0.03]">
-        <div className="max-w-5xl mx-auto">
-          <blockquote className="text-center">
-            <p className="text-lg md:text-2xl font-light text-zinc-300 leading-relaxed italic max-w-4xl mx-auto">
-              &ldquo;AI doesn&apos;t replace engineering judgment. It accelerates the parts that are research-heavy and
-              repetitive, freeing you to focus on the judgment calls that actually matter:{" "}
-              <span className="text-white font-medium not-italic">
-                system design, edge case handling, and knowing when something is &apos;good enough for production.&apos;
-              </span>&rdquo;
-            </p>
-            <cite className="block mt-6 text-sm text-zinc-500 not-italic">
-              — Bilal Ahamad, from the AI-Driven Development Whitepaper
-            </cite>
-          </blockquote>
-        </div>
-      </section>
-
       {/* AI Projects */}
       <section className="py-20 px-6 lg:px-24 relative z-10" aria-labelledby="systems-heading">
         <div className="max-w-7xl mx-auto">

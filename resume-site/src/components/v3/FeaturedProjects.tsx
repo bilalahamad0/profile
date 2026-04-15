@@ -44,8 +44,20 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
         className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`}
       />
 
-      {/* Thumbnail */}
-      {project.thumbnail && (
+      {/* Thumbnail / live dashboard preview */}
+      {project.id === "warn" ? (
+        <div className={`relative w-full h-40 overflow-hidden ${ACCENT_BG[project.accent]}`}>
+          <iframe
+            src={project.previewSrc}
+            className="w-full h-full border-0 scale-[0.85] origin-top-left"
+            style={{ width: "117%", height: "220px", pointerEvents: "none" }}
+            loading="lazy"
+            title={`${project.name} live preview`}
+            sandbox="allow-scripts allow-same-origin"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/60 to-transparent pointer-events-none" />
+        </div>
+      ) : project.thumbnail ? (
         <div className={`relative w-full h-40 overflow-hidden ${ACCENT_BG[project.accent]}`}>
           <Image
             src={project.thumbnail}
@@ -57,10 +69,10 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/60 to-transparent" />
         </div>
-      )}
+      ) : null}
 
       <div className="relative z-10 p-6">
-        {/* Badges */}
+        {/* Badge */}
         <div className="flex items-center gap-2 mb-4 flex-wrap">
           {project.isAI && (
             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-violet-500/10 border border-violet-500/20">
@@ -68,10 +80,6 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
               <span className="text-xs font-bold uppercase tracking-wider text-violet-300">AI-Built</span>
             </div>
           )}
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-            <span className="pulse-dot" />
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-300">Live</span>
-          </div>
         </div>
 
         <h3 className="text-base font-bold text-white mb-1">{project.name}</h3>
@@ -121,10 +129,6 @@ export function FeaturedProjectsSection() {
           <motion.div variants={fadeUp} transition={{ duration: 0.5 }}>
             <div className="flex items-end justify-between mb-12">
               <div>
-                <div className="flex items-center gap-2 text-blue-500 font-mono text-xs uppercase tracking-widest mb-3">
-                  <div className="h-px w-6 bg-blue-500/50" />
-                  Open Source
-                </div>
                 <h2 id="proj-heading" className="text-3xl md:text-5xl font-black tracking-tight text-white">
                   Featured{" "}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Projects</span>

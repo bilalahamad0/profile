@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
-import { Github, Linkedin, Mail, Download, MapPin, ArrowUpRight } from "lucide-react";
+import { Github, Linkedin, Mail, Download, ArrowUpRight, MapPin } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 const navLinks = [
   { href: "/experience", label: "Experience" },
@@ -30,6 +33,8 @@ const socialLinks = [
 
 export function Footer() {
   const year = new Date().getFullYear();
+  const pathname = usePathname();
+  const isHome = pathname === "/";
 
   return (
     <footer
@@ -58,20 +63,22 @@ export function Footer() {
               18+ years engineering quality at Amazon, Google, Rivian, Cruise, and Samsara.
             </p>
 
-            <div className="flex items-center gap-1.5 text-xs text-zinc-600">
-              <MapPin className="w-3.5 h-3.5 shrink-0" />
-              Sunnyvale, CA · Open to Remote &amp; Bay Area
-            </div>
-
-            {/* Resume CTA */}
-            <a
-              href="/Bilal_Ahamad_Resume.pdf"
-              download
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm font-semibold text-zinc-300 hover:bg-white/10 hover:text-white transition-all mt-2"
-            >
-              <Download className="w-4 h-4" />
-              Download Resume
-            </a>
+            {!isHome && (
+              <>
+                <p className="text-xs text-zinc-600 flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-zinc-700" />
+                  Sunnyvale, CA · Open to Remote & Bay Area
+                </p>
+                <a
+                  href="/Bilal_Ahamad_Resume.pdf"
+                  download
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm font-semibold text-zinc-300 hover:bg-white/10 hover:text-white transition-all mt-2"
+                >
+                  <Download className="w-4 h-4" />
+                  Download Resume
+                </a>
+              </>
+            )}
           </div>
 
           {/* Navigation column */}
@@ -116,18 +123,19 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-
-            <div className="mt-8 p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/15">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">
-                  Available
-                </span>
+            {!isHome && (
+              <div className="mt-8 p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/15">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">
+                    Available
+                  </span>
+                </div>
+                <p className="text-xs text-emerald-200/70 leading-relaxed">
+                  Open to senior engineering & QA leadership roles.
+                </p>
               </div>
-              <p className="text-xs text-zinc-500">
-                Open to senior engineering &amp; QA leadership roles.
-              </p>
-            </div>
+            )}
           </div>
         </div>
 

@@ -208,7 +208,7 @@ export const projectsData = [
     // iframe embed of live dashboard
     previewType: "iframe" as const,
     previewSrc: "https://bilalahamad0.github.io/warn/",
-    thumbnail: "https://bilalahamad0.github.io/warn/charts/top_companies.png",
+    thumbnail: "https://opengraph.githubassets.com/1/bilalahamad0/warn",
     thumbnailAlt: "California WARN layoff dashboard — interactive charts",
     thumbnailType: "screenshot" as const,
   },

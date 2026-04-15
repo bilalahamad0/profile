@@ -4,15 +4,15 @@ import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Terminal, ShieldCheck, Box, Activity, Cpu, Cloud, Settings, Layers,
+  Terminal, ShieldCheck, Box, Activity, Cpu, Cloud, Settings, Layers, Briefcase,
   ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Code2, Database, Wrench, Smartphone, Server, Github, GitFork, Star,
-  MessageSquareQuote, Linkedin, ExternalLink, Monitor, Layout, Eye, FileCode, Check, MapPin, Sparkles
+  ExternalLink, Monitor, Layout, Eye, FileCode, Check, MapPin, Sparkles
 } from "lucide-react";
 
 import Link from "next/link";
 
 
-import { experienceData, skills, certs, recommendations } from "@/data/portfolio";
+import { experienceData, skills, certs } from "@/data/portfolio";
 
 export interface Repository {
   id: number;
@@ -45,6 +45,19 @@ const WARN_SNIPPET = `def download_xlsx(force: bool = False):
     })
     _save_meta(meta)
     return True, str(LOCAL_XLSX)`;
+
+const CORE_FOCUS_TAGS = [
+  "FIRMWARE QUALITY GOVERNANCE",
+  "TEST AUTOMATION ARCHITECTURE",
+  "TOTAL COST OF QUALITY (CoQ) OPTIMIZATION",
+  "SDLC TRANSFORMATION",
+  "AI-AUGMENTED TEST FRAMEWORKS",
+  "CROSS-FUNCTIONAL ORCHESTRATION",
+  "SCALABLE VALIDATION SYSTEMS",
+  "CONTINUOUS HARDWARE INTEGRATION",
+  "PRODUCT SECURITY & INTEGRITY",
+  "TECHNICAL MENTORSHIP",
+];
 
 export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boolean }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -151,6 +164,67 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
 
     return () => observer.disconnect();
   }, []);
+
+  // Match right-column baseline to left column by inflating card internals (not outer gaps).
+  // We preserve each card's natural proportion and only add extra top/bottom padding.
+  useEffect(() => {
+    if (typeof window === "undefined" || !showOnlyResume) return;
+    if (!timelineRef.current || !rightColumnRef.current) return;
+
+    const BASE_PAD = 32; // p-8 in px
+    const INTER_CARD_GAP = 24; // gap-6
+
+    const syncInternalSpacing = () => {
+      if (!timelineRef.current || !rightColumnRef.current) return;
+      const cards = Array.from(rightColumnRef.current.children) as HTMLElement[];
+      if (cards.length === 0) return;
+
+      // Mobile/stacked layout: reset to default padding.
+      if (window.innerWidth < 1024) {
+        cards.forEach((card) => {
+          card.style.paddingTop = "";
+          card.style.paddingBottom = "";
+        });
+        return;
+      }
+
+      // Reset to baseline before measuring natural heights.
+      cards.forEach((card) => {
+        card.style.paddingTop = "";
+        card.style.paddingBottom = "";
+      });
+
+      const leftHeight = timelineRef.current.offsetHeight;
+      const naturalHeights = cards.map((card) => card.offsetHeight);
+      const naturalTotal = naturalHeights.reduce((sum, h) => sum + h, 0);
+      const totalGaps = INTER_CARD_GAP * Math.max(0, cards.length - 1);
+      const extraSpace = leftHeight - (naturalTotal + totalGaps);
+
+      // If right side is already taller/equal, keep natural card spacing.
+      if (extraSpace <= 0) return;
+
+      const totalWeight = naturalHeights.reduce((sum, h) => sum + h, 0) || 1;
+      cards.forEach((card, idx) => {
+        const proportionalExtra = (extraSpace * naturalHeights[idx]) / totalWeight;
+        const halfExtra = proportionalExtra / 2;
+        card.style.paddingTop = `${BASE_PAD + halfExtra}px`;
+        card.style.paddingBottom = `${BASE_PAD + halfExtra}px`;
+      });
+    };
+
+    const observer = new ResizeObserver(syncInternalSpacing);
+    observer.observe(timelineRef.current);
+    observer.observe(rightColumnRef.current);
+    Array.from(rightColumnRef.current.children).forEach((child) => observer.observe(child));
+
+    syncInternalSpacing();
+    window.addEventListener("resize", syncInternalSpacing);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", syncInternalSpacing);
+    };
+  }, [showOnlyResume, isExpanded, smartLimit]);
 
   // Update visible experiences based on smart limit
   const visibleExperiences = isExpanded ? experienceData : experienceData.slice(0, smartLimit);
@@ -282,13 +356,13 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4 }}
-                className="glass-card rounded-3xl p-8 relative flex flex-col h-full"
+                className="glass-card rounded-3xl p-8 relative flex flex-col"
               >
                 <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
                   <Activity className="w-32 h-32" />
                 </div>
                 <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-8 flex items-center gap-2">
-                  <Layers className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                  <Briefcase className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                   Professional Career Timeline
                 </h2>
                 <div className="space-y-6 relative z-10 flex-grow">
@@ -325,7 +399,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                         <div className="pb-4 pt-1">
                           <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
                             <h3 className="text-lg font-semibold text-zinc-900 dark:text-white leading-tight whitespace-pre-line">{exp.role}</h3>
-                            <span className={`font-medium tracking-tight whitespace-pre-line ${exp.faang ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
+                            <span className="font-medium tracking-tight whitespace-pre-line text-emerald-600 dark:text-emerald-400">
                               {exp.company}
                             </span>
                           </div>
@@ -371,14 +445,42 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
 
               {/* RIGHT COLUMN - ARSENAL, CERTS, AWARDS, RECOMMS, GOOGLE PROFILE */}
               <div className="flex flex-col h-full">
-                <div ref={rightColumnRef} className="flex flex-col gap-6 flex-grow">
-
-                  {/* 1. Technical Arsenal */}
+                <div ref={rightColumnRef} className="flex flex-col gap-6 h-full">
+                  {/* 1. Core Focus */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: 0 }}
+                    className="glass-card rounded-3xl p-8 flex flex-col"
+                  >
+                    <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2">
+                      <Layers className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                      Core Focus
+                    </h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      {CORE_FOCUS_TAGS.map((tag, idx) => {
+                        let tone = "bg-blue-500/10 border-blue-500/20 text-blue-300";
+                        if (idx >= 3 && idx < 6) tone = "bg-emerald-500/10 border-emerald-500/20 text-emerald-300";
+                        if (idx >= 6) tone = "bg-violet-500/10 border-violet-500/20 text-violet-300";
+                        return (
+                          <span
+                            key={tag}
+                            className={`px-3 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-[0.08em] border ${tone}`}
+                          >
+                            {tag}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+
+                  {/* 2. Technical Arsenal */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.03 }}
                     className="glass-card rounded-3xl p-8 flex flex-col transition-all duration-500"
                   >
                     <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2">
@@ -395,13 +497,13 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                     </div>
                   </motion.div>
 
-                  {/* 2. Certifications */}
+                  {/* 3. Certifications */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: 0.04 }}
-                    className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col h-fit"
+                    transition={{ duration: 0.4, delay: 0.06 }}
+                    className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col"
                   >
                     <Settings className="absolute -right-8 -bottom-8 w-48 h-48 text-zinc-500 dark:text-zinc-500/5 pointer-events-none" />
                     <div className="flex items-center justify-between mb-5 relative z-10">
@@ -468,7 +570,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: 0.08 }}
+                    transition={{ duration: 0.4, delay: 0.09 }}
                     className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col"
                   >
                     <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2 flex items-center gap-2 relative z-10">
@@ -541,50 +643,13 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                     </div>
                   </motion.div>
 
-                  {/* 4. LinkedIn Recommendations */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: 0.1 }}
-                    className="glass-card rounded-3xl p-8 relative flex flex-col flex-grow"
-                  >
-                    <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none">
-                      <MessageSquareQuote className="w-24 h-24" />
-                    </div>
-                    <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-1 flex items-center gap-2 relative z-10">
-                      <MessageSquareQuote className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
-                      LinkedIn Recommendations
-                    </h2>
-                    <a href="https://www.linkedin.com/in/bilalahamad/" target="_blank" rel="noreferrer" className="text-[11px] font-bold text-sky-500 hover:text-sky-400 mb-5 flex items-center gap-1.5 relative z-10 transition-colors">
-                      <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>
-                      View on LinkedIn
-                    </a>
-                    <div className="flex flex-col gap-4 relative z-10">
-                      {recommendations.map((rec, i) => (
-                        <div key={i} className="p-5 rounded-xl border border-emerald-500/20 bg-emerald-500/10 dark:bg-emerald-500/5">
-                          <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed italic mb-4 font-light">&ldquo;{rec.review}&rdquo;</p>
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400/30 to-blue-400/30 flex items-center justify-center shrink-0 border border-emerald-500/30">
-                              <UserIconPlaceholder />
-                            </div>
-                            <div className="flex flex-col">
-                              <span className="text-sm font-bold text-zinc-800 dark:text-zinc-200">{rec.name}</span>
-                              <span className="text-xs text-emerald-600 dark:text-emerald-400/70">{rec.title}</span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </motion.div>
-
                   {/* 5. Google Developer Profile */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: 0.12 }}
-                    className="glass-card rounded-3xl p-8 relative flex flex-col gap-8 overflow-hidden flex-grow"
+                    className="glass-card rounded-3xl p-8 relative flex flex-col gap-8 overflow-hidden"
                   >
                     <div className="absolute -left-6 -bottom-6 pointer-events-none opacity-[0.03] z-0">
                       <img src="/logos/google.png" alt="" className="w-64 h-64 grayscale" />
@@ -647,14 +712,18 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                             <a key={i} href={`https://developers.google.com/profile/badges/events/${item.href}`} target="_blank" rel="noreferrer" className="relative w-40 h-52 min-w-[10rem] flex-shrink-0 rounded-xl border-2 border-zinc-800 bg-zinc-900 snap-center group shadow-lg overflow-hidden">
                               <img src={item.img} alt={`I/O ${item.yr}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent pointer-events-none" />
-                              <div className="absolute top-2 left-3 text-[9px] font-black text-white/90 uppercase tracking-widest">{item.yr}</div>
+                              <div className="absolute top-2 left-3 px-1.5 py-0.5 rounded-md bg-black/80 text-[9px] font-black text-white uppercase tracking-widest shadow-sm">
+                                {item.yr}
+                              </div>
                               <div className="absolute -bottom-1 -right-1 w-12 h-12 z-20">
                                 <img src={`/io/${item.badge}`} alt="" className="w-full h-full object-contain" />
                               </div>
                             </a>
                           ))}
                           <a href="https://developers.google.com/profile/badges/events/io/2022/attendee" target="_blank" rel="noreferrer" className="relative w-40 h-52 min-w-[10rem] flex-shrink-0 rounded-xl border border-white/5 bg-[#141416] snap-center group flex flex-col items-center justify-center overflow-hidden shadow-lg">
-                            <div className="absolute top-2 left-3 text-[9px] font-black text-zinc-500 uppercase tracking-widest">2022</div>
+                            <div className="absolute top-2 left-3 px-1.5 py-0.5 rounded-md bg-black/80 text-[9px] font-black text-white uppercase tracking-widest shadow-sm">
+                              2022
+                            </div>
                             <img src="/io/badge_2022.svg" alt="" className="w-20 h-20 object-contain opacity-70 group-hover:opacity-100 transition-opacity" />
                           </a>
                         </div>
@@ -931,11 +1000,5 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
         </div>
       </section>
     </>
-  );
-}
-
-function UserIconPlaceholder() {
-  return (
-    <svg className="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" /></svg>
   );
 }

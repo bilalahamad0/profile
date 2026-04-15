@@ -5,8 +5,6 @@ import type { Metadata } from "next";
 import { HeroPortfolio } from "@/components/v3/HeroPortfolio";
 import { ResumeReelClient } from "@/components/v3/ResumeReelClient";
 import {
-  ExperiencePreview,
-  ImpactStats,
   AILabPreview,
   BlogPreview,
   ContactCTA,
@@ -38,14 +36,6 @@ export default function HomePage() {
 
       {/* ── Mobile Career Reel — lazy, SSR disabled ──── */}
       <ResumeReelClient />
-
-      {/* ── Experience Timeline Preview ─────────────── */}
-      <div className="section-divider" />
-      <ExperiencePreview />
-
-      {/* ── By The Numbers ──────────────────────────── */}
-      <div className="section-divider" />
-      <ImpactStats />
 
       {/* ── Featured Projects ──────────────────────── */}
       <div className="section-divider" />
