@@ -47,6 +47,7 @@ function AIContributionBar({ pct, color }: { pct: number; color: string }) {
 export default function ProjectsPage() {
   const [active, setActive] = useState<ProjectCategory>("All");
   const [repos, setRepos] = useState<Record<string, RepoData>>({});
+  const [failedPreviews, setFailedPreviews] = useState<Record<string, boolean>>({});
 
   // Use the cached /api/repos route instead of direct GitHub API calls
   useEffect(() => {
@@ -165,6 +166,7 @@ export default function ProjectsPage() {
               {filtered.map((project) => {
                 const rKey = repoKey[project.id] ?? project.id;
                 const repoData = repos[rKey];
+                const previewFailed = !!failedPreviews[project.id];
 
                 return (
                   <motion.article
@@ -227,10 +229,9 @@ export default function ProjectsPage() {
                       {/* Preview */}
                       {"previewType" in project && project.previewSrc && (
                         <div
-                          className="relative w-full overflow-hidden bg-black/40 rounded-2xl border border-white/5 mb-6 hidden sm:block"
-                          style={{ height: "200px" }}
+                          className="relative w-full overflow-hidden bg-black/40 rounded-2xl border border-white/5 mb-6 h-[180px] sm:h-[200px]"
                         >
-                          {(project as any).previewType === "iframe" ? (
+                          {!previewFailed && (project as any).previewType === "iframe" ? (
                             <>
                               <iframe
                                 src={(project as any).previewSrc}
@@ -239,24 +240,35 @@ export default function ProjectsPage() {
                                 loading="lazy"
                                 title={`${project.name} live preview`}
                                 sandbox="allow-scripts allow-same-origin"
-                                onError={(e) => { (e.currentTarget as HTMLIFrameElement).style.display = "none"; }}
+                                onError={() => {
+                                  setFailedPreviews((prev) => ({ ...prev, [project.id]: true }));
+                                }}
                               />
                               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
                               <div className="absolute top-2 right-2 flex items-center gap-1 px-2 py-1 rounded-full bg-emerald-600/80 border border-emerald-500/40 text-xs font-bold text-white pointer-events-none">
                                 <span className="pulse-dot" aria-hidden="true" /> Live
                               </div>
                             </>
-                          ) : (
+                          ) : !previewFailed ? (
                             <>
                               <img
                                 src={(project as any).previewSrc}
                                 alt={(project as any).thumbnailAlt ?? `${project.name} preview`}
                                 className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                                 loading="lazy"
-                                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                                onError={() => {
+                                  setFailedPreviews((prev) => ({ ...prev, [project.id]: true }));
+                                }}
                               />
                               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
                             </>
+                          ) : (
+                            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-zinc-900 via-zinc-900/90 to-zinc-800">
+                              <div className="text-center px-4">
+                                <p className="text-sm font-bold text-zinc-200">{project.name}</p>
+                                <p className="text-xs text-zinc-500 mt-1">Preview unavailable - open repo for details</p>
+                              </div>
+                            </div>
                           )}
                         </div>
                       )}
