@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
-import { Download, ArrowLeft, Share2, Check } from "lucide-react";
+import { Download, Share2, Check, ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 import { trackEvent } from "@/components/analytics/google-analytics";
@@ -56,13 +56,6 @@ export default function ExperiencePage() {
       <section className="pt-32 pb-12 px-6 lg:px-24 border-b border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div className="space-y-4">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors group mb-4"
-            >
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" aria-hidden="true" />
-              Back to Portfolio
-            </Link>
             <h1 className="text-5xl md:text-6xl font-black tracking-tighter">
               Technical <span className="text-blue-400">Roadmap</span>
             </h1>

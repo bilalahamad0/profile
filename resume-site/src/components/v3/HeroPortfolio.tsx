@@ -207,13 +207,11 @@ export function HeroPortfolio() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.4 }}
-          className="flex items-center gap-3"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-500/10 border border-violet-500/20"
         >
-          <div className="flex items-center gap-1.5">
-            <div className="h-px w-6 bg-violet-500/60" aria-hidden="true" />
-          </div>
-          <span className="text-violet-300 font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em]">
-            Lead Embedded Firmware &amp; <br className="sm:hidden" /> Systems QA Engineer
+          <Terminal className="w-4 h-4 text-violet-400" aria-hidden="true" />
+          <span className="text-violet-300 text-[10px] sm:text-xs font-black uppercase tracking-[0.2em]">
+            Lead Embedded Firmware &amp; Systems QA Engineer
           </span>
         </motion.div>
 

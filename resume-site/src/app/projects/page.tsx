@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {
-  ArrowLeft, Github, ExternalLink, Sparkles, Star, GitFork,
+  Github, ExternalLink, Sparkles, Star, GitFork,
   Filter, ArrowRight, BookOpen, Zap,
 } from "lucide-react";
 import { projectsData, type ProjectCategory } from "@/data/portfolio";
@@ -86,15 +86,10 @@ export default function ProjectsPage() {
       <section className="pt-32 pb-16 px-6 lg:px-24 border-b border-white/5 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[600px] h-[400px] bg-blue-500/5 blur-[120px] rounded-full pointer-events-none" aria-hidden="true" />
         <div className="max-w-7xl mx-auto relative">
-          <Link href="/" className="inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors group mb-8">
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" aria-hidden="true" />
-            Back to Portfolio
-          </Link>
-
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-px w-8 bg-blue-500/50" aria-hidden="true" />
-              <span className="text-blue-400 font-mono text-xs uppercase tracking-widest">Open Source</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 mb-6">
+              <Github className="w-4 h-4 text-blue-400" aria-hidden="true" />
+              <span className="text-xs font-black uppercase tracking-[0.2em] text-blue-300">Open Source</span>
             </div>
             <h1 className="text-5xl md:text-6xl font-black tracking-tighter mb-6">
               Featured{" "}

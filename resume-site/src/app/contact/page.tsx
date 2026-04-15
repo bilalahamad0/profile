@@ -2,8 +2,6 @@
 
 import { ContactSection } from "@/components/sections/contact";
 import { motion } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
 
 export default function ContactPage() {
   return (
@@ -12,10 +10,6 @@ export default function ContactPage() {
       {/* Header Section */}
       <section className="pt-32 pb-12 px-6 lg:px-24 border-b border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col items-start gap-4">
-          <Link href="/" className="inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors group mb-4">
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            Back to Portfolio
-          </Link>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

@@ -3,7 +3,7 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, Clock, FileText, ArrowRight } from "lucide-react";
+import { Clock, FileText, ArrowRight, BookOpen } from "lucide-react";
 import { linkedInPosts } from "@/data/portfolio";
 import { BlogGridClient } from "@/components/blog/BlogGridClient";
 
@@ -59,14 +59,9 @@ export default function BlogPage() {
       <section className="pt-32 pb-16 px-6 lg:px-24 border-b border-white/5 relative overflow-hidden" aria-labelledby="blog-heading">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/5 blur-[150px] rounded-full pointer-events-none" aria-hidden="true" />
         <div className="max-w-7xl mx-auto relative">
-          <Link href="/" className="inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors group mb-8">
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            Back to Portfolio
-          </Link>
-
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-8 bg-indigo-500/50" />
-            <span className="text-indigo-400 font-mono text-xs uppercase tracking-widest">Writing &amp; Insights</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-6">
+            <BookOpen className="w-4 h-4 text-indigo-400" aria-hidden="true" />
+            <span className="text-xs font-black uppercase tracking-[0.2em] text-indigo-300">Writing &amp; Insights</span>
           </div>
           <h1 id="blog-heading" className="text-5xl md:text-6xl font-black tracking-tighter mb-6 leading-none">
             The{" "}
