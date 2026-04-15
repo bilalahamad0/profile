@@ -1,0 +1,32 @@
+{
+  "projectId": "profile",
+  "lastUpdated": "2026-04-14",
+  "aiContribution": 85,
+  "agents": [
+    {
+      "name": "Antigravity",
+      "provider": "Google DeepMind",
+      "period": "Jul 2025",
+      "models": ["Gemini 2.5 Flash", "Gemini 2.5 Pro"],
+      "tokens": 300000,
+      "role": "Foundation & MVP architecture"
+    },
+    {
+      "name": "Cursor",
+      "provider": "Anthropic",
+      "period": "Apr 2026 – Present",
+      "models": ["Claude Opus 4.6", "Claude Sonnet 4"],
+      "tokens": 200000,
+      "role": "Modernization, hardening & code review"
+    }
+  ],
+  "totalTokens": 500000,
+  "totalCommits": 274,
+  "linesOfCode": 5600,
+  "devCycleDays": 19,
+  "manualEstimateDays": 25,
+  "impact": "Full-stack portfolio deployed to production",
+  "cycle": "19 active days",
+  "beforeAI": "Static HTML/CSS resume site",
+  "afterAI": "AI-native Next.js portfolio with analytics"
+}

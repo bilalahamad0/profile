@@ -1,34 +1,51 @@
-// Server Component — no "use client" needed.
-// Layout already provides NavbarV2 globally.
-
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Sparkles, Github, ExternalLink, BookOpen,
-  ChevronRight, Cpu, Zap, Clock, TrendingUp, ArrowRight
+  ChevronRight, Cpu, Zap, Clock, TrendingUp, ArrowRight,
+  Bot, Coins, GitCommit, FileCode2
 } from "lucide-react";
 import { projectsData } from "@/data/portfolio";
+import type { AIMetrics } from "@/app/api/ai-metrics/route";
 
 export const metadata: Metadata = {
   title: "AI Lab",
   description: "Production systems built through AI pair programming — AI-native from architecture to deployment.",
 };
 
-// ─── Static decorative background — CSS only, no Framer Motion ──────────────
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://bilalahamad.com";
+
+async function getDynamicMetrics(): Promise<Record<string, AIMetrics>> {
+  try {
+    const res = await fetch(`${SITE_URL}/api/ai-metrics`, {
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) return {};
+    return (await res.json()) as Record<string, AIMetrics>;
+  } catch {
+    return {};
+  }
+}
+
+function formatTokens(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `${Math.round(n / 1_000)}k`;
+  return String(n);
+}
+
 function NeuralBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
-      {/* Ambient glows — CSS only, no JS */}
       <div className="absolute top-[-20%] left-[20%] w-[600px] h-[600px] rounded-full bg-purple-600/8 blur-[120px]" />
       <div className="absolute bottom-[-10%] right-[10%] w-[500px] h-[500px] rounded-full bg-indigo-600/6 blur-[100px]" />
-      {/* Pulsing rings via CSS animation — GPU-composited, no main thread */}
       <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full border border-purple-500/15 animate-[ping_8s_ease-in-out_infinite]" style={{ animationDuration: '8s' }} />
     </div>
   );
 }
 
-// ─── Project card — pure HTML + CSS, zero Framer Motion ─────────────────────
-function AIProjectCard({ project, index }: { project: typeof projectsData[0]; index: number }) {
+type ProjectWithMetrics = typeof projectsData[0] & { dynamic?: AIMetrics };
+
+function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index: number }) {
   const accentColors: Record<string, { text: string; bg: string; border: string; bar: string }> = {
     emerald: { text: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20", bar: "bg-emerald-500" },
     blue:    { text: "text-blue-400",    bg: "bg-blue-500/10",    border: "border-blue-500/20",    bar: "bg-blue-500"    },
@@ -36,20 +53,31 @@ function AIProjectCard({ project, index }: { project: typeof projectsData[0]; in
     violet:  { text: "text-violet-400",  bg: "bg-violet-500/10",  border: "border-violet-500/20",  bar: "bg-violet-500"  },
   };
   const colors = accentColors[project.accent] ?? accentColors.blue;
+  const dm = project.dynamic;
 
-  const beforeAfter: Record<string, { before: string; after: string }> = {
+  const contribution = dm?.aiContribution ?? project.aiContribution;
+  const impactText = dm?.impact ?? project.impact;
+  const toolsText = dm
+    ? dm.agents.map(a => a.name).join(", ")
+    : project.aiTools.join(", ");
+  const cycleText = dm?.cycle
+    ?? (project.id === "adhan" ? "4 days" : project.id === "warn" ? "2 days" : "~3 days");
+
+  const beforeAfterFallback: Record<string, { before: string; after: string }> = {
     warn:    { before: "Manual Excel download, no monitoring",  after: "Fully automated pipeline, runs twice daily"   },
     adhan:   { before: "No automation, manual device control",  after: "Zero-touch IoT orchestration system"           },
     tmo:     { before: "Manual Python script, ran per request", after: "Event-driven E2E billing automation"           },
     profile: { before: "Static HTML/CSS resume site",           after: "AI-native Next.js portfolio with analytics"    },
   };
-  const timeline = beforeAfter[project.id];
+  const timeline = dm
+    ? { before: dm.beforeAI, after: dm.afterAI }
+    : beforeAfterFallback[project.id];
 
   const metrics = [
-    { icon: Cpu,        label: "AI Tools",  value: project.aiTools.join(", ")    },
-    { icon: Zap,        label: "Impact",    value: project.impact                },
-    { icon: TrendingUp, label: "AI Code %", value: `${project.aiContribution}%`  },
-    { icon: Clock,      label: "Cycle",     value: project.id === "adhan" ? "4 days" : project.id === "warn" ? "2 days" : "~3 days" },
+    { icon: Cpu,        label: "AI Tools",  value: toolsText },
+    { icon: Zap,        label: "Impact",    value: impactText },
+    { icon: TrendingUp, label: "AI Code %", value: `${contribution}%` },
+    { icon: Clock,      label: "Cycle",     value: cycleText },
   ];
 
   return (
@@ -57,7 +85,6 @@ function AIProjectCard({ project, index }: { project: typeof projectsData[0]; in
       className={`relative rounded-3xl border ${colors.border} bg-white/[0.02] overflow-hidden group transition-all duration-300 hover:bg-white/[0.04]`}
       style={{ animationDelay: `${index * 0.1}s` }}
     >
-      {/* Glow accent */}
       <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-50 pointer-events-none`} />
 
       <div className="relative z-10 p-6 md:p-8">
@@ -67,7 +94,7 @@ function AIProjectCard({ project, index }: { project: typeof projectsData[0]; in
             <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full ${colors.bg} border ${colors.border} mb-3`}>
               <Sparkles className={`w-3.5 h-3.5 ${colors.text}`} />
               <span className={`text-[10px] font-black uppercase tracking-widest ${colors.text}`}>
-                {project.aiContribution}% AI-Contributed
+                {contribution}% AI-Contributed
               </span>
             </div>
             <h2 className="text-xl md:text-2xl font-black text-white tracking-tight">{project.name}</h2>
@@ -98,16 +125,72 @@ function AIProjectCard({ project, index }: { project: typeof projectsData[0]; in
           ))}
         </div>
 
-        {/* AI Contribution Bar — CSS width, no JS animation */}
+        {/* Dynamic stats row — only when sidecar data is available */}
+        {dm && (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+            <div className={`p-3 rounded-2xl ${colors.bg} border ${colors.border}`}>
+              <Coins className={`w-4 h-4 ${colors.text} mb-1.5`} />
+              <span className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Tokens</span>
+              <span className="block text-xs font-semibold text-zinc-300 mt-0.5">{formatTokens(dm.totalTokens)}</span>
+            </div>
+            <div className={`p-3 rounded-2xl ${colors.bg} border ${colors.border}`}>
+              <GitCommit className={`w-4 h-4 ${colors.text} mb-1.5`} />
+              <span className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Commits</span>
+              <span className="block text-xs font-semibold text-zinc-300 mt-0.5">{dm.totalCommits}</span>
+            </div>
+            <div className={`p-3 rounded-2xl ${colors.bg} border ${colors.border}`}>
+              <FileCode2 className={`w-4 h-4 ${colors.text} mb-1.5`} />
+              <span className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Lines of Code</span>
+              <span className="block text-xs font-semibold text-zinc-300 mt-0.5">{dm.linesOfCode.toLocaleString()}</span>
+            </div>
+            <div className={`p-3 rounded-2xl ${colors.bg} border ${colors.border}`}>
+              <Clock className={`w-4 h-4 ${colors.text} mb-1.5`} />
+              <span className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Saved</span>
+              <span className="block text-xs font-semibold text-zinc-300 mt-0.5">{dm.manualEstimateDays - dm.devCycleDays} days</span>
+            </div>
+          </div>
+        )}
+
+        {/* Agent Cards — only when sidecar data is available */}
+        {dm && dm.agents.length > 0 && (
+          <div className="mb-6">
+            <span className="block text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-3">AI Agents</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {dm.agents.map((agent) => (
+                <div key={agent.name} className={`p-4 rounded-2xl ${colors.bg} border ${colors.border}`}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Bot className={`w-4 h-4 ${colors.text}`} />
+                    <span className="text-sm font-bold text-white">{agent.name}</span>
+                    <span className="text-[9px] text-zinc-500 ml-auto">{agent.period}</span>
+                  </div>
+                  <p className="text-[10px] text-zinc-400 mb-1">{agent.provider}</p>
+                  <div className="flex flex-wrap gap-1.5 mb-2">
+                    {agent.models.map((m) => (
+                      <span key={m} className={`px-2 py-0.5 rounded-md text-[9px] font-bold ${colors.text} bg-white/5`}>
+                        {m}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex items-center justify-between text-[10px] text-zinc-500">
+                    <span>{formatTokens(agent.tokens)} tokens</span>
+                    <span>{agent.role}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* AI Contribution Bar */}
         <div className="mb-6">
           <div className="flex justify-between mb-2">
             <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500">AI Contribution</span>
-            <span className="text-[10px] font-black text-zinc-400">{project.aiContribution}% generated or AI-assisted</span>
+            <span className="text-[10px] font-black text-zinc-400">{contribution}% generated or AI-assisted</span>
           </div>
           <div className="h-2 rounded-full bg-white/5">
             <div
               className={`h-full rounded-full ${colors.bar} transition-all duration-1000`}
-              style={{ width: `${project.aiContribution}%` }}
+              style={{ width: `${contribution}%` }}
             />
           </div>
           <div className="flex justify-between mt-1.5">
@@ -157,13 +240,39 @@ function AIProjectCard({ project, index }: { project: typeof projectsData[0]; in
             </a>
           </div>
         </div>
+
+        {/* Last updated badge from sidecar */}
+        {dm && (
+          <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between">
+            <span className="text-[9px] text-zinc-600">
+              Dynamic data from <code className="text-zinc-500">ai-metrics.json</code>
+            </span>
+            <span className="text-[9px] text-zinc-600">Updated {dm.lastUpdated}</span>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-export default function AILabPage() {
+export default async function AILabPage() {
+  const dynamicMetrics = await getDynamicMetrics();
   const aiProjects = projectsData.filter((p) => p.isAI);
+
+  const enriched: ProjectWithMetrics[] = aiProjects.map((p) => ({
+    ...p,
+    dynamic: dynamicMetrics[p.id] ?? undefined,
+  }));
+
+  const totalTokens = Object.values(dynamicMetrics).reduce((sum, m) => sum + m.totalTokens, 0);
+  const totalCommits = Object.values(dynamicMetrics).reduce((sum, m) => sum + m.totalCommits, 0);
+
+  const heroStats = [
+    { label: "Dev Cycle Reduction", value: "75%+" },
+    { label: "Production Systems",  value: String(aiProjects.length) },
+    { label: "AI Tokens Processed", value: totalTokens > 0 ? `${formatTokens(totalTokens)}+` : "500k+" },
+    { label: "Total Commits",       value: totalCommits > 0 ? String(totalCommits) : "400+" },
+  ];
 
   return (
     <main className="min-h-screen bg-[#09090b] text-white relative" id="top">
@@ -190,14 +299,9 @@ export default function AILabPage() {
             <span className="text-white font-medium">AI-native from architecture to deployment</span>.
           </p>
 
-          {/* Hero Stats — static HTML, instant paint */}
+          {/* Hero Stats — dynamic from sidecar aggregation */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-3xl mx-auto">
-            {[
-              { label: "Dev Cycle Reduction", value: "75%+" },
-              { label: "Production Systems",  value: "4"    },
-              { label: "AI Tokens Processed", value: "255k+" },
-              { label: "Uptime Achieved",     value: "99.9%" },
-            ].map(({ label, value }) => (
+            {heroStats.map(({ label, value }) => (
               <div key={label} className="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
                 <span className="block text-2xl md:text-3xl font-black text-white mb-1">{value}</span>
                 <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{label}</span>
@@ -243,7 +347,7 @@ export default function AILabPage() {
           </div>
 
           <div className="space-y-8">
-            {aiProjects.map((project, i) => (
+            {enriched.map((project, i) => (
               <AIProjectCard key={project.id} project={project} index={i} />
             ))}
           </div>
