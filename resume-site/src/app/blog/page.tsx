@@ -68,7 +68,7 @@ export default function BlogPage() {
             <div className="h-px w-8 bg-indigo-500/50" />
             <span className="text-indigo-400 font-mono text-xs uppercase tracking-widest">Writing &amp; Insights</span>
           </div>
-          <h1 id="blog-heading" className="text-5xl md:text-7xl font-black tracking-tighter uppercase mb-6 leading-none">
+          <h1 id="blog-heading" className="text-5xl md:text-6xl font-black tracking-tighter mb-6 leading-none">
             The{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-400">
               Lab Notes

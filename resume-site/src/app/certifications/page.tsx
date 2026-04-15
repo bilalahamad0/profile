@@ -224,7 +224,7 @@ export default function CertificationsPage() {
              <span className="text-xs font-bold uppercase tracking-[0.2em] text-white/70">Professional Credentials</span>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white leading-tight">
+          <h1 className="text-5xl md:text-6xl font-black tracking-tighter text-white leading-tight">
             Knowledge <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400">Album.</span>
           </h1>
           

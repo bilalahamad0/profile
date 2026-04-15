@@ -20,7 +20,7 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-5xl md:text-6xl font-black tracking-tighter uppercase"
+            className="text-5xl md:text-6xl font-black tracking-tighter"
           >
             Get in <span className="text-blue-500">Touch</span>
           </motion.h1>

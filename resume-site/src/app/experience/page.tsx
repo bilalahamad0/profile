@@ -63,7 +63,7 @@ export default function ExperiencePage() {
               <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" aria-hidden="true" />
               Back to Portfolio
             </Link>
-            <h1 className="text-5xl md:text-6xl font-black tracking-tighter uppercase">
+            <h1 className="text-5xl md:text-6xl font-black tracking-tighter">
               Technical <span className="text-blue-400">Roadmap</span>
             </h1>
             <p className="text-lg text-zinc-400 font-light max-w-2xl leading-relaxed">

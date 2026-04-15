@@ -96,7 +96,7 @@ export default function ProjectsPage() {
               <div className="h-px w-8 bg-blue-500/50" aria-hidden="true" />
               <span className="text-blue-400 font-mono text-xs uppercase tracking-widest">Open Source</span>
             </div>
-            <h1 className="text-5xl md:text-7xl font-black tracking-tighter uppercase mb-6">
+            <h1 className="text-5xl md:text-6xl font-black tracking-tighter mb-6">
               Featured{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-400">
                 Projects
@@ -113,7 +113,7 @@ export default function ProjectsPage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="mt-12 flex flex-wrap gap-8"
+            className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-3xl"
           >
             {[
               { label: "Public Repos",  value: "4+" },
@@ -121,9 +121,9 @@ export default function ProjectsPage() {
               { label: "Languages",     value: "5+" },
               { label: "Deployed Live", value: "3" },
             ].map(({ label, value }) => (
-              <div key={label}>
-                <span className="text-2xl md:text-3xl font-black text-white">{value}</span>
-                <span className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mt-0.5">{label}</span>
+              <div key={label} className="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
+                <span className="block text-2xl md:text-3xl font-black text-white mb-1">{value}</span>
+                <span className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{label}</span>
               </div>
             ))}
           </motion.div>
