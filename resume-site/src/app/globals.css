@@ -279,4 +279,23 @@
     pointer-events: none;
     margin-bottom: -120px;
   }
+
+  /* Subtle gradient divider between homepage sections */
+  .section-divider {
+    width: 100%;
+    max-width: 80rem;
+    height: 1px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.06) 20%,
+      rgba(255, 255, 255, 0.06) 80%,
+      transparent 100%
+    );
+  }
+  @media (min-width: 1024px) {
+    .section-divider { padding: 0 6rem; }
+  }
 }

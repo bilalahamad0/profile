@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [390, 640, 750, 828, 1080, 1200, 1920],
     minimumCacheTTL: 3600,
+    remotePatterns: [
+      { protocol: "https", hostname: "bilalahamad0.github.io" },
+      { protocol: "https", hostname: "opengraph.githubassets.com" },
+      { protocol: "https", hostname: "raw.githubusercontent.com" },
+    ],
   },
 
   // Static asset + API caching headers
