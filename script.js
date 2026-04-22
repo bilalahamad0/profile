@@ -80,6 +80,35 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 reveals.forEach(el => observer.observe(el));
 
+// Dynamic page title updates based on current section
+const sections = document.querySelectorAll('section[id]');
+const titleMap = {
+  'about': 'Home | Bilal Ahamad',
+  'skills': 'Skills | Bilal Ahamad',
+  'experience': 'Experience | Bilal Ahamad',
+  'ai-projects': 'AI Innovation | Bilal Ahamad',
+  'projects': 'Projects | Bilal Ahamad',
+  'education': 'Education | Bilal Ahamad',
+  'testimonials': 'Testimonials | Bilal Ahamad',
+  'contact': 'Contact | Bilal Ahamad'
+};
+
+const titleObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const sectionId = entry.target.id;
+      if (titleMap[sectionId]) {
+        document.title = titleMap[sectionId];
+      }
+    }
+  });
+}, { 
+  threshold: 0.5, // Section needs to be at least 50% visible
+  rootMargin: '-20% 0px -20% 0px' // Adjust when title changes
+});
+
+sections.forEach(section => titleObserver.observe(section));
+
 // Contact form submission via serverless function
 const contactForm = document.getElementById('contact-form');
 const formMsg = document.getElementById('form-msg');
