@@ -211,7 +211,11 @@ export function HeroPortfolio() {
         >
           <Terminal className="w-4 h-4 text-violet-400" aria-hidden="true" />
           <span className="text-violet-300 text-[10px] sm:text-xs font-black uppercase tracking-[0.2em]">
-            Lead Embedded Firmware &amp; Systems QA Engineer
+            <span className="hidden sm:inline">Lead Embedded Firmware &amp; Systems QA Engineer</span>
+            <span className="sm:hidden">
+              Lead Embedded Firmware<br />
+              &amp; Systems QA Engineer
+            </span>
           </span>
         </motion.div>
 
