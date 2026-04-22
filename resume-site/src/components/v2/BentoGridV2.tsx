@@ -777,7 +777,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                           <Monitor className="w-6 h-6 text-blue-500" />
                         </div>
                         <div>
-                          <h3 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tight">California WARN Pipeline: Live Layoff Intelligence</h3>
+                          <h3 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tight">California Live Layoff Monitoring Dashboard</h3>
                           <div className="flex gap-3 mt-1">
                             {repos.find(r => r.name === 'warn') && (
                               <div className="flex gap-3 text-xs text-zinc-500 font-bold uppercase tracking-widest">
@@ -872,7 +872,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                               transform: !warnDashboardExpanded ? 'translateY(-260px)' : 'translateY(0)',
                               height: !warnDashboardExpanded ? 'calc(100% + 260px)' : '100%'
                             }}
-                            title="California WARN Pipeline"
+                            title="California Live Layoff Monitoring Dashboard"
                             loading="lazy"
                           />
                           {!warnDashboardExpanded && (
@@ -899,7 +899,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                           <Smartphone className="w-6 h-6 text-emerald-500" />
                         </div>
                         <div>
-                          <h3 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tight">Adhan Audio Caster</h3>
+                          <h3 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tight">Smart-Home IoT Audio Caster</h3>
                           <div className="flex gap-3 mt-1">
                             {repos.find(r => r.name === 'adhan-api') && (
                               <div className="flex gap-3 text-xs text-zinc-500 font-bold uppercase tracking-widest">

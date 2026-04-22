@@ -27,7 +27,7 @@ export const mdxPosts = [
   },
   {
     slug: "california-warn-story",
-    title: "Building California WARN Pipeline: Live Layoff Intelligence from Scratch",
+    title: "Building California Live Layoff Monitoring Dashboard: Live Layoff Intelligence from Scratch",
     date: "August 20, 2025",
     description:
       "How I built a fully automated data pipeline that transforms raw California WARN Act filings into live, actionable layoff intelligence — running twice daily with zero human intervention.",
@@ -38,7 +38,7 @@ export const mdxPosts = [
   },
   {
     slug: "adhan-caster-story",
-    title: "Adhan Audio Caster: Engineering IoT Automation with AI",
+    title: "Smart-Home IoT Audio Caster: Engineering IoT Automation with AI",
     date: "August 12, 2025",
     description:
       "A deep dive into building a prayer-time IoT orchestration system with Raspberry Pi, ADB, and Sony Android TV — compressed from 3 weeks to 4 days using AI pair programming.",

@@ -191,7 +191,7 @@ export type ProjectCategory = "All" | "IoT & Automation" | "Data & Analytics" | 
 export const projectsData = [
   {
     id: "warn",
-    name: "California WARN Pipeline",
+    name: "California Live Layoff Monitoring Dashboard",
     tagline: "Live layoff intelligence from raw government filings",
     description: "A fully automated data pipeline for the California WARN Act. Engineered for surgical precision, it transforms raw government filings into live actionable intelligence using ETag caching, MD5 verification, and GitHub Actions CI/CD — running twice daily with zero human intervention.",
     category: "Data & Analytics" as ProjectCategory,
@@ -214,7 +214,7 @@ export const projectsData = [
   },
   {
     id: "adhan",
-    name: "Adhan Audio Caster",
+    name: "Smart-Home IoT Audio Caster",
     tagline: "AI-orchestrated IoT prayer time automation",
     description: "An advanced IoT orchestration layer for automated prayer-time notifications. Integrates Raspberry Pi with Sony Android TV via ADB, managing media states and low-level system commands. Built from scratch using AI pair programming—compressing a 3-week engineering cycle into 4 days.",
     category: "IoT & Automation" as ProjectCategory,
@@ -232,7 +232,7 @@ export const projectsData = [
     previewType: "gif" as const,
     previewSrc: "https://raw.githubusercontent.com/bilalahamad0/adhan-api/main/images/system_flow/flow_animation.webp",
     thumbnail: "https://raw.githubusercontent.com/bilalahamad0/adhan-api/main/images/system_flow/flow_animation.webp",
-    thumbnailAlt: "Adhan Audio Caster system flow animation",
+    thumbnailAlt: "Smart-Home IoT Audio Caster system flow animation",
     thumbnailType: "animation" as const,
   },
   {
