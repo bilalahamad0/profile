@@ -209,7 +209,7 @@ export const projectsData = [
     previewType: "iframe" as const,
     previewSrc: "https://bilalahamad0.github.io/warn/",
     thumbnail: "https://opengraph.githubassets.com/1/bilalahamad0/warn",
-    thumbnailAlt: "California WARN layoff dashboard — interactive charts",
+    thumbnailAlt: "California Live Layoff Monitoring Dashboard — interactive charts",
     thumbnailType: "screenshot" as const,
   },
   {
