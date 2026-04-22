@@ -26,7 +26,7 @@ const AI_CERTIFICATES = [
     title: "AI Coding Agents with GitHub Copilot and Cursor",
     issuer: "LinkedIn Learning",
     date: "2024",
-    image: "/certificates/ai_coding_agents.png",
+    image: "/certificates/ai_coding_agents_thumb.jpg",
     url: "https://www.linkedin.com/learning/certificates/fa26c3fb8c3d86ba367271e666d1f5e54e0752eb73aff59ffb4e22a1c6b4d879",
     logo: "/logos/linkedin.png",
     description: "Deep dive into leveraging AI agents, GitHub Copilot, and Cursor for accelerated software development.",
@@ -37,7 +37,7 @@ const AI_CERTIFICATES = [
     title: "Software Testing Foundations: Integrating AI into the Quality Process",
     issuer: "LinkedIn Learning",
     date: "2024",
-    image: "/certificates/software_testing_ai.png",
+    image: "/certificates/software_testing_ai_thumb.jpg",
     url: "https://www.linkedin.com/learning/certificates/2a2a9abe336c54ff022075ad5887ac814192edc56dca798f9a7a5374be40a447",
     logo: "/logos/linkedin.png",
     description: "Modernizing QA workflows by integrating Generative AI into test planning, execution, and reporting.",
@@ -48,7 +48,7 @@ const AI_CERTIFICATES = [
     title: "AI for App Building",
     issuer: "Coursera",
     date: "2024",
-    image: "/certificates/ai_app_building.png",
+    image: "/certificates/ai_app_building_thumb.jpg",
     url: "https://www.coursera.org/account/accomplishments/verify/86O6XPQIM9WM",
     logo: "/logos/coursera.png",
     description: "Building intelligent applications powered by large language models and AI frameworks.",
@@ -73,7 +73,7 @@ const GENERAL_CERTIFICATES = [
     title: "Scrum: Advanced",
     issuer: "LinkedIn Learning",
     date: "2024",
-    image: "/certificates/scrum_advanced.png",
+    image: "/certificates/scrum_advanced_ratio_fit.jpg",
     url: "https://www.linkedin.com/learning/certificates/9c6281ac20a7adf9e92714bff845ad8c95f08c0adea75b5ffbc7cadeaab9a357",
     logo: "/logos/linkedin.png",
     description: "Advanced Agile methodologies and Scrum framework for high-performing development teams.",
@@ -84,7 +84,7 @@ const GENERAL_CERTIFICATES = [
     title: "iOS App Development: Essential Courses",
     issuer: "LinkedIn Learning",
     date: "2023",
-    image: "/certificates/ios_app_dev.png",
+    image: "/certificates/ios_app_dev_thumb.jpg",
     url: "https://www.linkedin.com/learning/certificates/48129ec1213ef12a50ad1ef36e933e1ff1d47102c6a02910cbbfbd2459ebe81b",
     logo: "/logos/linkedin.png",
     description: "Comprehensive training in Swift, Xcode, and iOS development principles.",
@@ -95,7 +95,7 @@ const GENERAL_CERTIFICATES = [
     title: "Javascript Essential Training",
     issuer: "LinkedIn Learning",
     date: "2023",
-    image: "/certificates/javascript_essential.png",
+    image: "/certificates/javascript_essential_thumb.jpg",
     url: "https://www.linkedin.com/learning/certificates/e4aa03cd2c7d8ecd88c685ad02ae81ed93511e2eaf7a8713b9d71229443cdf87",
     logo: "/logos/linkedin.png",
     description: "Deep dive into core JavaScript concepts, DOM manipulation, and asynchronous programming.",
@@ -106,7 +106,7 @@ const GENERAL_CERTIFICATES = [
     title: "Project Management Foundations",
     issuer: "LinkedIn Learning",
     date: "2023",
-    image: "/certificates/pm_foundations.png",
+    image: "/certificates/pm_foundations_thumb.jpg",
     url: "https://www.linkedin.com/learning/certificates/40f20e0a52eb64a04a875e3539cc0e0808b59c34059bc3738f87065ef29dc85c",
     logo: "/logos/linkedin.png",
     description: "Essential project management skills including planning, execution, and risk management.",
@@ -117,7 +117,7 @@ const GENERAL_CERTIFICATES = [
     title: "How to Master Your Executive Presence",
     issuer: "LinkedIn Learning",
     date: "2024",
-    image: "/certificates/executive_presence.png",
+    image: "/certificates/executive_presence_thumb.jpg",
     url: "https://www.linkedin.com/learning/certificates/5df27e588af83322ebbb6cd0394d68155e9ca37642fa24f523ec0f804079a1af",
     logo: "/logos/linkedin.png",
     description: "Developing leadership communication, confidence, and professional impact.",
@@ -159,7 +159,7 @@ const CertificateCard = ({ cert, isAI = false, onClick }: { cert: any, isAI?: bo
           src={cert.image}
           alt={cert.title}
           fill
-          className="object-cover group-hover:scale-105 transition-transform duration-700"
+          className={`${cert.id === 'g-2' ? 'object-contain bg-white' : 'object-cover'} group-hover:scale-105 transition-transform duration-700`}
         />
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
           <div className="p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
@@ -204,6 +204,18 @@ const CertificateCard = ({ cert, isAI = false, onClick }: { cert: any, isAI?: bo
 
 export default function CertificationsPage() {
   const [selectedCert, setSelectedCert] = useState<any>(null);
+  const handleCertificateClick = (cert: any) => {
+    if (cert.url) {
+      trackEvent("verify_certificate", {
+        title: cert.title,
+        issuer: cert.issuer
+      });
+      window.open(cert.url, "_blank", "noopener,noreferrer");
+      return;
+    }
+
+    setSelectedCert(cert);
+  };
 
   return (
     <div className="min-h-screen bg-[#09090b] aurora-gradient relative overflow-x-hidden">
@@ -262,7 +274,7 @@ export default function CertificationsPage() {
                 key={cert.id} 
                 cert={cert} 
                 isAI={true} 
-                onClick={setSelectedCert} 
+                onClick={handleCertificateClick} 
               />
             ))}
           </div>
@@ -291,7 +303,7 @@ export default function CertificationsPage() {
               <CertificateCard 
                 key={cert.id} 
                 cert={cert} 
-                onClick={setSelectedCert} 
+                onClick={handleCertificateClick} 
               />
             ))}
           </div>
