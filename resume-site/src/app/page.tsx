@@ -13,7 +13,7 @@ import { FeaturedProjectsSection } from "@/components/v3/FeaturedProjects";
 import { getAllPosts } from "@/lib/blog";
 
 export const metadata: Metadata = {
-  title: "Home",
+  title: "Home | Bilal Ahamad",
   description:
     "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer. 18+ years at Amazon, Google, Rivian, Cruise, Samsara. Portfolio of production-grade automation, IoT, and AI systems.",
 };
