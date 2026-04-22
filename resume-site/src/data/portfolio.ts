@@ -237,7 +237,7 @@ export const projectsData = [
   },
   {
     id: "tmo",
-    name: "T-Mobile Bill Automation",
+    name: "Monthly Phone Bill Split & Auto-Pay E2E Automation",
     tagline: "From manual PDF parsing to fully automated billing pipeline",
     description: "Originally a manual Python script to parse T-Mobile family plan PDFs and split costs, it was transformed into a fully automated, event-driven E2E system. The Mac Folder Action watches ~/Downloads and instantly processes new bills, calculates splits, and sends Zelle-ready summaries via email.",
     category: "AI-Powered" as ProjectCategory,
@@ -254,7 +254,7 @@ export const projectsData = [
     previewType: "image" as const,
     previewSrc: "https://opengraph.githubassets.com/1/bilalahamad0/tmo",
     thumbnail: "https://opengraph.githubassets.com/1/bilalahamad0/tmo",
-    thumbnailAlt: "T-Mobile Bill Automation repository",
+    thumbnailAlt: "Monthly Phone Bill Split & Auto-Pay E2E Automation repository",
     thumbnailType: "screenshot" as const,
   },
   {
