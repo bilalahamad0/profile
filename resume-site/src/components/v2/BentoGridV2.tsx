@@ -748,11 +748,15 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                               </div>
                             </a>
                           ))}
-                          <a href="https://developers.google.com/profile/badges/events/io/2022/attendee" target="_blank" rel="noreferrer" className="relative w-40 h-52 min-w-[10rem] flex-shrink-0 rounded-xl border border-white/5 bg-[#141416] snap-center group flex flex-col items-center justify-center overflow-hidden shadow-lg">
+                          <a href="https://developers.google.com/profile/badges/events/io/2022/attendee" target="_blank" rel="noreferrer" className="relative w-40 h-52 min-w-[10rem] flex-shrink-0 rounded-xl border-2 border-zinc-800 bg-zinc-900 snap-center group shadow-lg overflow-hidden">
+                            <img src="/io/google-2022.png" alt="I/O 2022" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent pointer-events-none" />
                             <div className="absolute top-2 left-3 px-1.5 py-0.5 rounded-md bg-black/80 text-[9px] font-black text-white uppercase tracking-widest shadow-sm">
                               2022
                             </div>
-                            <img src="/io/badge_2022.svg" alt="" className="w-20 h-20 object-contain opacity-70 group-hover:opacity-100 transition-opacity" />
+                            <div className="absolute -bottom-1 -right-1 w-12 h-12 z-20">
+                              <img src="/io/badge_2022.svg" alt="" className="w-full h-full object-contain" />
+                            </div>
                           </a>
                         </div>
                       </div>
