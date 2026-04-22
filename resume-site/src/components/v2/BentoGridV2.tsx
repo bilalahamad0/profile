@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Terminal, ShieldCheck, Box, Activity, Cpu, Cloud, Settings, Layers, Briefcase,
   ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Code2, Database, Wrench, Smartphone, Server, Github, GitFork, Star,
-  ExternalLink, Monitor, Layout, Eye, FileCode, Check, MapPin, Sparkles
+  ExternalLink, Monitor, Layout, Eye, FileCode, Check, MapPin, Sparkles, GraduationCap
 } from "lucide-react";
 
 import Link from "next/link";
@@ -497,12 +497,40 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                     </div>
                   </motion.div>
 
-                  {/* 3. Certifications */}
+                  {/* 3. Education */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: 0.06 }}
+                    className="glass-card rounded-3xl p-8 flex flex-col"
+                  >
+                    <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2">
+                      <GraduationCap className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+                      Education
+                    </h2>
+                    <div className="space-y-2.5 rounded-xl border border-indigo-500/20 bg-indigo-500/5 p-4">
+                      <p className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+                        Bachelor of Technology
+                      </p>
+                      <p className="text-sm text-zinc-700 dark:text-zinc-300">
+                        Electronics and Telecommunications Engineering
+                      </p>
+                      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                        Biju Patnaik University of Technology
+                      </p>
+                      <p className="text-xs font-medium uppercase tracking-wider text-indigo-700 dark:text-indigo-300">
+                        2004 - 2008
+                      </p>
+                    </div>
+                  </motion.div>
+
+                  {/* 4. Certifications */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.09 }}
                     className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col"
                   >
                     <Settings className="absolute -right-8 -bottom-8 w-48 h-48 text-zinc-500 dark:text-zinc-500/5 pointer-events-none" />
@@ -570,7 +598,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: 0.09 }}
+                    transition={{ duration: 0.4, delay: 0.12 }}
                     className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col"
                   >
                     <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2 flex items-center gap-2 relative z-10">
@@ -643,12 +671,12 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                     </div>
                   </motion.div>
 
-                  {/* 5. Google Developer Profile */}
+                  {/* 6. Google Developer Profile */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: 0.12 }}
+                    transition={{ duration: 0.4, delay: 0.15 }}
                     className="glass-card rounded-3xl p-8 relative flex flex-col gap-8 overflow-hidden"
                   >
                     <div className="absolute -left-6 -bottom-6 pointer-events-none opacity-[0.03] z-0">
