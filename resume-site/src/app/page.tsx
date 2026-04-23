@@ -18,6 +18,48 @@ export const metadata: Metadata = {
     "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer. 18+ years at Amazon, Google, Rivian, Cruise, Samsara. Portfolio of production-grade automation, IoT, and AI systems.",
 };
 
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Bilal Ahamad",
+  jobTitle: "Lead Embedded Firmware & Systems QA Engineer",
+  email: "bilal.ahamad@gmail.com",
+  url: "https://bilalahamad.com",
+  image: "https://bilalahamad.com/og-image.png",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Sunnyvale",
+    addressRegion: "CA",
+    addressCountry: "US",
+  },
+  sameAs: [
+    "https://linkedin.com/in/bilalahamad",
+    "https://github.com/bilalahamad0",
+  ],
+  alumniOf: [
+    { "@type": "Organization", name: "Samsara Inc" },
+    { "@type": "Organization", name: "Cruise LLC" },
+    { "@type": "Organization", name: "Rivian Automotive LLC" },
+    { "@type": "Organization", name: "Amazon Lab126" },
+    { "@type": "Organization", name: "Google" },
+    { "@type": "Organization", name: "Motorola Mobility" },
+  ],
+  knowsAbout: [
+    "firmware validation",
+    "test automation",
+    "hardware-in-the-loop testing",
+    "software-in-the-loop testing",
+    "functional safety",
+    "ISO 26262",
+    "AI/ML product quality",
+    "V2X",
+    "IoT",
+    "NPI bringup",
+    "ASIL-D",
+    "cross-functional program leadership",
+  ],
+};
+
 export default function HomePage() {
   const posts = getAllPosts().map((p) => ({
     slug: p.slug,
@@ -30,7 +72,12 @@ export default function HomePage() {
   }));
 
   return (
-    <div className="flex flex-col overflow-x-hidden dark" id="top">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
+      <div className="flex flex-col overflow-x-hidden dark" id="top">
       {/* ── Hero ───────────────────────────────────────── */}
       <HeroPortfolio />
 
@@ -53,5 +100,6 @@ export default function HomePage() {
       <div className="section-divider" />
       <ContactCTA />
     </div>
+    </>
   );
 }
