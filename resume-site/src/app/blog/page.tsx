@@ -9,7 +9,22 @@ import { BlogGridClient } from "@/components/blog/BlogGridClient";
 
 export const metadata: Metadata = {
   title: "Blog",
-  description: "Project stories, technical whitepapers, and thoughts on AI-native engineering.",
+  description: "Project stories, technical whitepapers, and thoughts on AI-native engineering by Bilal Ahamad — firmware quality lead and agentic developer.",
+  openGraph: {
+    type: "website",
+    title: "Blog | Bilal Ahamad",
+    description:
+      "Project stories, technical whitepapers, and thoughts on AI-native engineering by Bilal Ahamad.",
+    url: "https://bilalahamad.com/blog",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Bilal Ahamad — Blog" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blog | Bilal Ahamad",
+    description:
+      "Project stories, technical whitepapers, and thoughts on AI-native engineering by Bilal Ahamad.",
+    images: ["/og-image.png"],
+  },
 };
 
 const breadcrumb = {

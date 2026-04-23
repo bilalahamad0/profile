@@ -10,7 +10,22 @@ import type { AIMetrics } from "@/app/api/ai-metrics/route";
 
 export const metadata: Metadata = {
   title: "AI Lab",
-  description: "Production systems built through AI pair programming — AI-native from architecture to deployment.",
+  description: "Production systems built through AI pair programming — AI-native from architecture to deployment. Bilal Ahamad's showcase of agentic engineering.",
+  openGraph: {
+    type: "website",
+    title: "AI Lab | Bilal Ahamad",
+    description:
+      "Production systems built through AI pair programming — AI-native from architecture to deployment.",
+    url: "https://bilalahamad.com/ai",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Bilal Ahamad — AI Lab" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AI Lab | Bilal Ahamad",
+    description:
+      "Production systems built through AI pair programming — AI-native from architecture to deployment.",
+    images: ["/og-image.png"],
+  },
 };
 
 const breadcrumb = {

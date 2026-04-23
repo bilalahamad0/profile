@@ -2,6 +2,23 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Certifications",
+  description:
+    "Professional certifications of Bilal Ahamad — ISTQB CTFL, AI/ML testing, leadership, and Scrum. 18+ years of continuous learning in firmware quality and test automation.",
+  openGraph: {
+    type: "website",
+    title: "Certifications | Bilal Ahamad",
+    description:
+      "Professional certifications of Bilal Ahamad — ISTQB CTFL, AI/ML testing, leadership, and Scrum.",
+    url: "https://bilalahamad.com/certifications",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Bilal Ahamad — Certifications" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Certifications | Bilal Ahamad",
+    description:
+      "Professional certifications of Bilal Ahamad — ISTQB CTFL, AI/ML testing, leadership, and Scrum.",
+    images: ["/og-image.png"],
+  },
 };
 
 const breadcrumb = {

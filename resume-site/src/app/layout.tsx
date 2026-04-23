@@ -25,6 +25,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://bilalahamad.com"),
   title: {
     default: "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer",
     template: "%s | Bilal Ahamad",
@@ -36,12 +37,12 @@ export const metadata: Metadata = {
     "Rivian", "Cruise", "Samsara", "QA Manager", "Software Engineer", "AI",
     "Bilal Ahamad", "portfolio",
   ],
-  authors: [{ name: "Bilal Ahamad", url: "https://bilalahamad.dev" }],
+  authors: [{ name: "Bilal Ahamad", url: "https://bilalahamad.com" }],
   creator: "Bilal Ahamad",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://bilalahamad.dev",
+    url: "https://bilalahamad.com",
     siteName: "Bilal Ahamad Portfolio",
     title: "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer",
     description:

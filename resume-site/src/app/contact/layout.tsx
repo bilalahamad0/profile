@@ -2,6 +2,23 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Contact",
+  description:
+    "Get in touch with Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer. Open to senior engineering, QA leadership, and AI consulting opportunities.",
+  openGraph: {
+    type: "website",
+    title: "Contact | Bilal Ahamad",
+    description:
+      "Get in touch with Bilal Ahamad — open to senior engineering, QA leadership, and AI consulting opportunities.",
+    url: "https://bilalahamad.com/contact",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Contact Bilal Ahamad" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact | Bilal Ahamad",
+    description:
+      "Get in touch with Bilal Ahamad — open to senior engineering, QA leadership, and AI consulting opportunities.",
+    images: ["/og-image.png"],
+  },
 };
 
 const breadcrumb = {

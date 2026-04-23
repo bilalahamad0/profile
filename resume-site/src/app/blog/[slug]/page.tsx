@@ -9,13 +9,33 @@ export async function generateStaticParams() {
   return posts.map((p) => ({ slug: p.slug }));
 }
 
+const slugToThumb: Record<string, string> = {
+  "ai-driven-development": "/blog-thumbs/ai-native-dev.png",
+  "california-warn-story": "/blog-thumbs/california-warn.png",
+  "adhan-caster-story":    "/blog-thumbs/adhan-iot.png",
+};
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) return {};
+  const image = slugToThumb[slug] ?? "/og-image.png";
   return {
-    title: `${post.title} — Bilal Ahamad`,
+    title: post.title,
     description: post.description,
+    openGraph: {
+      type: "article",
+      title: `${post.title} | Bilal Ahamad`,
+      description: post.description,
+      url: `https://bilalahamad.com/blog/${slug}`,
+      images: [{ url: image, width: 1200, height: 630, alt: post.title }],
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: `${post.title} | Bilal Ahamad`,
+      description: post.description,
+      images: [image],
+    },
   };
 }
 

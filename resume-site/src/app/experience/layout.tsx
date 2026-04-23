@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Experience & Career Timeline",
+  title: "Experience",
   description:
     "18+ years of firmware quality, test automation, and IoT engineering at Amazon, Google, Rivian, Cruise, and Samsara. Full career timeline of Bilal Ahamad.",
   keywords: [
@@ -69,10 +69,19 @@ export const metadata: Metadata = {
     "regression cycle time reduction", "operational savings QA",
   ],
   openGraph: {
-    title: "Experience & Career Timeline | Bilal Ahamad",
+    type: "profile",
+    title: "Experience | Bilal Ahamad",
+    description:
+      "18+ years of firmware quality, test automation, and IoT engineering at Amazon, Google, Rivian, Cruise, and Samsara. Full career timeline of Bilal Ahamad.",
+    url: "https://bilalahamad.com/experience",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Bilal Ahamad — Career Timeline" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Experience | Bilal Ahamad",
     description:
       "18+ years of firmware quality, test automation, and IoT engineering at Amazon, Google, Rivian, Cruise, and Samsara.",
-    url: "https://bilalahamad.com/experience",
+    images: ["/og-image.png"],
   },
 };
 
