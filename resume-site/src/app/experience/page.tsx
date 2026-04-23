@@ -1,55 +1,11 @@
-"use client";
-
-import dynamic from "next/dynamic";
-import { motion } from "framer-motion";
-import { Download, Share2, Check, ArrowLeft } from "lucide-react";
-import { useState } from "react";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { trackEvent } from "@/components/analytics/google-analytics";
-
-// Lazy-load BentoGridV2 — 53 KB monolithic component.
-// SSR disabled: depends heavily on DOM measurements (ResizeObserver, getBoundingClientRect).
-const BentoGridV2 = dynamic(
-  () => import("@/components/v2/BentoGridV2").then((m) => ({ default: m.BentoGridV2 })),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-6">
-        {[...Array(3)].map((_, i) => (
-          <div key={i} className="skeleton h-48 rounded-3xl" />
-        ))}
-      </div>
-    ),
-  }
-);
+import { ExperienceTimeline } from "@/components/experience/ExperienceTimeline";
+import { ExperienceRightColumn } from "@/components/experience/ExperienceRightColumn";
+import { ShareButton } from "@/components/experience/ShareButton";
+import { DownloadButton } from "@/components/experience/DownloadButton";
 
 export default function ExperiencePage() {
-  const [isCopied, setIsCopied] = useState(false);
-
-  const handleShare = async () => {
-    const shareData = {
-      title: "Bilal Ahamad | Lead Embedded Firmware & Systems QA Engineer",
-      text: "Check out Bilal Ahamad's professional technical roadmap and career timeline.",
-      url: window.location.href,
-    };
-
-    if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
-      try {
-        await navigator.share(shareData);
-      } catch (err) {
-        console.error("Error sharing:", err);
-      }
-    } else {
-      try {
-        await navigator.clipboard.writeText(window.location.href);
-        setIsCopied(true);
-        setTimeout(() => setIsCopied(false), 2000);
-      } catch (err) {
-        console.error("Clipboard error:", err);
-      }
-    }
-  };
-
   return (
     <main className="min-h-screen bg-[#09090b] text-white">
       {/* Header */}
@@ -66,39 +22,25 @@ export default function ExperiencePage() {
           </div>
 
           <div className="flex flex-wrap gap-4">
-            <a
-              href="/Bilal_Ahamad_Resume.pdf"
-              download
-              onClick={() => trackEvent("resume_download", { location: "ExperiencePage" })}
-              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-black font-bold hover:bg-zinc-200 transition-all active:scale-95"
-            >
-              <Download className="w-5 h-5" aria-hidden="true" />
-              Download PDF
-            </a>
-            <button
-              onClick={handleShare}
-              aria-label="Share this page"
-              className={`flex items-center gap-2 px-6 py-3 rounded-xl border transition-all ${isCopied
-                  ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-400"
-                  : "bg-white/5 border-white/10 text-white hover:bg-white/10"
-                }`}
-            >
-              {isCopied ? (
-                <><Check className="w-5 h-5" aria-hidden="true" /> Copied!</>
-              ) : (
-                <><Share2 className="w-5 h-5" aria-hidden="true" /> Share Profile</>
-              )}
-            </button>
+            <DownloadButton />
+            <ShareButton />
           </div>
         </div>
       </section>
 
-      {/* Bento grid — lazy loaded */}
-      <section className="relative py-12" aria-label="Professional dashboard">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full -z-10" aria-hidden="true">
+      {/* Career content — fully SSR'd */}
+      <section className="relative py-12 px-4 sm:px-6" aria-label="Professional dashboard">
+        <div
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full -z-10"
+          aria-hidden="true"
+        >
           <div className="absolute top-0 left-0 w-full h-[500px] bg-blue-500/5 blur-[120px] rounded-full opacity-50" />
         </div>
-        <BentoGridV2 showOnlyResume={true} />
+
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <ExperienceTimeline />
+          <ExperienceRightColumn />
+        </div>
       </section>
 
       {/* CTA */}
