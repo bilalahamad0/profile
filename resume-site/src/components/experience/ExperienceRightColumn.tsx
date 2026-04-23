@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { GoogleDevCarousel } from "@/components/experience/GoogleDevCarousel";
 import {
   Terminal, ShieldCheck, Box, Layers, Settings, GraduationCap, Sparkles,
 } from "lucide-react";
@@ -307,37 +308,7 @@ export function ExperienceRightColumn() {
             </span>
           </div>
 
-          <div className="flex flex-wrap gap-4">
-            {[
-              { yr: "2025", img: "/io/1.jpg",          badge: "/io/badge_2025.svg", href: "https://developers.google.com/profile/badges/events/io/2025/registered" },
-              { yr: "2024", img: "/io/2.jpg",          badge: "/io/badge_2024.svg", href: "https://developers.google.com/profile/badges/events/io/2024/registered" },
-              { yr: "2023", img: "/io/3.jpg",          badge: "/io/badge_2023.svg", href: "https://developers.google.com/profile/badges/events/io/2023/attendee"   },
-              { yr: "2022", img: "/io/google-2022.png", badge: "/io/badge_2022.svg", href: "https://developers.google.com/profile/badges/events/io/2022/attendee"   },
-            ].map((item) => (
-              <a
-                key={item.yr}
-                href={item.href}
-                target="_blank"
-                rel="noreferrer"
-                className="relative w-36 h-48 flex-shrink-0 rounded-xl border-2 border-zinc-800 bg-zinc-900 shadow-lg overflow-hidden"
-              >
-                <Image
-                  src={item.img}
-                  alt={`Google I/O ${item.yr}`}
-                  fill
-                  className="object-cover"
-                  sizes="144px"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent pointer-events-none" />
-                <div className="absolute top-2 left-3 px-1.5 py-0.5 rounded-md bg-black/80 text-[9px] font-black text-white uppercase tracking-widest shadow-sm">
-                  {item.yr}
-                </div>
-                <div className="absolute -bottom-1 -right-1 w-12 h-12 z-20">
-                  <Image src={item.badge} alt={`I/O ${item.yr} badge`} width={48} height={48} className="object-contain" />
-                </div>
-              </a>
-            ))}
-          </div>
+          <GoogleDevCarousel />
         </div>
       </section>
     </div>
