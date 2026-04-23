@@ -24,10 +24,11 @@ export const mdxPosts = [
     category: "Whitepaper" as const,
     readingTime: 8,
     featured: true,
+    thumbnail: "/blog-thumbs/ai-native-dev.png",
   },
   {
     slug: "california-warn-story",
-    title: "Building California Live Layoff Monitoring Dashboard: Live Layoff Intelligence from Scratch",
+    title: "California Live Layoff Monitoring Dashboard: Live Layoff Intelligence from Scratch",
     date: "August 20, 2025",
     description:
       "How I built a fully automated data pipeline that transforms raw California WARN Act filings into live, actionable layoff intelligence — running twice daily with zero human intervention.",
@@ -35,6 +36,7 @@ export const mdxPosts = [
     category: "Project Story" as const,
     readingTime: 6,
     featured: false,
+    thumbnail: "/blog-thumbs/california-warn.png",
   },
   {
     slug: "adhan-caster-story",
@@ -46,6 +48,7 @@ export const mdxPosts = [
     category: "Project Story" as const,
     readingTime: 5,
     featured: false,
+    thumbnail: "/blog-thumbs/adhan-iot.png",
   },
 ];
 

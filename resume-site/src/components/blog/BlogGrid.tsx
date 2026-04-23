@@ -28,7 +28,7 @@ export function BlogGrid({ mdxPosts, linkedInPosts }: BlogGridProps) {
   const [active, setActive] = useState<FilterType>("All");
 
   const allItems = [
-    ...mdxPosts.map((p) => ({ ...p, type: "mdx" as const, url: undefined as string | undefined, thumbnail: undefined as string | undefined })),
+    ...mdxPosts.map((p) => ({ ...p, type: "mdx" as const, url: undefined as string | undefined })),
     ...linkedInPosts.map((p) => ({
       slug: p.id,
       title: p.title,

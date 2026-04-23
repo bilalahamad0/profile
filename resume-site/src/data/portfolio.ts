@@ -302,7 +302,8 @@ export const linkedInPosts: LinkedInPost[] = [
     date: "August 12, 2025",
     url: "https://www.linkedin.com/posts/bilalahamad_ai-qualityassurance-predictiveanalytics-activity-7360870999065546753-zmX-",
     category: "LinkedIn",
-    thumbnail: "/blog-thumbs/adhan-iot.png",
+    thumbnail:
+      "https://media.licdn.com/dms/image/v2/D5610AQEvP6gOVBgnLw/image-shrink_1280/B56ZicRKazHcAQ-/0/1754968404005?e=2147483647&v=beta&t=1oDtLO4S_y9pKz0rGSp2LyzvyZaOroAT0jqRxw9LYIE",
   },
   {
     id: "li-2",
@@ -312,7 +313,8 @@ export const linkedInPosts: LinkedInPost[] = [
     date: "August 13, 2025",
     url: "https://www.linkedin.com/posts/bilalahamad_qualityassurance-ai-aitesting-activity-7361425761225883648-16H9",
     category: "LinkedIn",
-    thumbnail: "/blog-thumbs/adhan-iot.png",
+    thumbnail:
+      "https://media.licdn.com/dms/image/v2/D5610AQGsP4KNBG6ZoA/image-shrink_1280/B56ZikJtUKHQAQ-/0/1755100669525?e=2147483647&v=beta&t=JAFkY7MnnMjd8nNu8g-hDeM9ONlwDRL0zqdLiEML-2E",
   },
   {
     id: "li-3",
@@ -322,7 +324,8 @@ export const linkedInPosts: LinkedInPost[] = [
     date: "August 20, 2025",
     url: "https://www.linkedin.com/posts/bilalahamad_ai-qualityassurance-factchecking-activity-7363724206255063048-4C7i",
     category: "LinkedIn",
-    thumbnail: "/blog-thumbs/california-warn.png",
+    thumbnail:
+      "https://media.licdn.com/dms/image/v2/D5610AQF73lpVq-UPxQ/image-shrink_1280/B56ZjE0IuUG0AM-/0/1755648661128?e=2147483647&v=beta&t=Ns3XxxLPk1KWGjsbcaamilvLRLu0-T27cyJO9IY223M",
   },
   {
     id: "li-4",
@@ -332,7 +335,8 @@ export const linkedInPosts: LinkedInPost[] = [
     date: "August 23, 2025",
     url: "https://www.linkedin.com/posts/bilalahamad_aiforbusiness-solopreneur-qualityassurance-activity-7364945849866465280-2c8r",
     category: "LinkedIn",
-    thumbnail: "/blog-thumbs/ai-native-dev.png",
+    thumbnail:
+      "https://media.licdn.com/dms/image/v2/D5610AQFiAFbkg47Ctg/image-shrink_1280/B56ZjWLN5pG0AM-/0/1755939924103?e=2147483647&v=beta&t=TblJlxiUA6uKsrCCaSsZp41bVyEIn620L60FPtgRxOo",
   },
   {
     id: "li-5",
@@ -342,6 +346,7 @@ export const linkedInPosts: LinkedInPost[] = [
     date: "August 26, 2025",
     url: "https://www.linkedin.com/posts/bilalahamad_marketingautomation-ai-qualityassurance-activity-7366209393358471168-qUAE",
     category: "LinkedIn",
-    thumbnail: "/blog-thumbs/ai-native-dev.png",
+    thumbnail:
+      "https://media.licdn.com/dms/image/v2/D5610AQG35d5IUimEIQ/image-shrink_1280/B56ZjoIZ2CHkAQ-/0/1756241176239?e=2147483647&v=beta&t=sx6wMLRe0F56ERjknl2-RZgQ9ZnMMNok883Y3_SnEkY",
   },
 ];
