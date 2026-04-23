@@ -261,8 +261,8 @@ export function ExperienceRightColumn() {
           className="glass-card rounded-3xl p-8 relative flex flex-col gap-8 overflow-hidden hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
         >
           {/* Google logo watermark */}
-          <div className="absolute top-4 right-4 pointer-events-none opacity-[0.03] z-0" aria-hidden="true">
-            <Image src="/logos/google.png" alt="" width={256} height={256} className="grayscale" />
+          <div className="absolute top-4 right-4 pointer-events-none opacity-[0.035] z-0" aria-hidden="true">
+            <Image src="/logos/google.png" alt="" width={96} height={96} className="grayscale" />
           </div>
           <div className="absolute top-1/2 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px] pointer-events-none -translate-y-1/2" aria-hidden="true" />
 
