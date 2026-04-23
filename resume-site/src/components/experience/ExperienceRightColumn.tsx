@@ -5,7 +5,8 @@ import { AnimatedSection } from "@/components/experience/AnimatedSection";
 import { AwardsGallery } from "@/components/experience/AwardsGallery";
 import { BadgeCount } from "@/components/experience/BadgeCount";
 import {
-  Terminal, ShieldCheck, Box, Layers, Settings, GraduationCap, Sparkles, ExternalLink,
+  Terminal, ShieldCheck, Box, Layers, Settings, GraduationCap, Sparkles,
+  ExternalLink, Target, Cpu, Trophy, BadgeCheck, ArrowRight,
 } from "lucide-react";
 import { skills } from "@/data/portfolio";
 
@@ -39,17 +40,19 @@ const LEADERSHIP_CERTS = [
 export function ExperienceRightColumn() {
   return (
     <div className="flex flex-col gap-6">
+
       {/* Core Focus */}
       <AnimatedSection delay={0}>
         <section
           aria-label="Core Focus Areas"
-          className="glass-card rounded-3xl p-8 flex flex-col"
+          className="glass-card rounded-3xl p-8 flex flex-col relative hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
         >
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2">
+          <Target className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-zinc-400 pointer-events-none z-0" aria-hidden="true" />
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
             <Layers className="w-6 h-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />
             Core Focus
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 relative z-10">
             {CORE_FOCUS_TAGS.map((tag, idx) => {
               let tone = "bg-blue-500/10 border-blue-500/20 text-blue-300";
               if (idx >= 3 && idx < 6) tone = "bg-emerald-500/10 border-emerald-500/20 text-emerald-300";
@@ -71,17 +74,18 @@ export function ExperienceRightColumn() {
       <AnimatedSection delay={0.05}>
         <section
           aria-label="Technical Arsenal"
-          className="glass-card rounded-3xl p-8 flex flex-col"
+          className="glass-card rounded-3xl p-8 flex flex-col relative hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
         >
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2">
+          <Cpu className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-zinc-400 pointer-events-none z-0" aria-hidden="true" />
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
             <Terminal className="w-6 h-6 text-purple-600 dark:text-purple-400" aria-hidden="true" />
             Technical Arsenal
           </h2>
-          <ul className="flex flex-wrap gap-2.5 list-none">
+          <ul className="flex flex-wrap gap-2.5 list-none relative z-10">
             {skills.map((skill) => (
               <li
                 key={skill.name}
-                className="group px-3.5 py-1.5 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 hover:bg-black/10 dark:hover:bg-white/10 hover:border-white/20 text-sm font-medium text-zinc-800 dark:text-zinc-200 flex items-center gap-2 cursor-default transition-all"
+                className="group px-3.5 py-1.5 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 hover:bg-white/10 hover:border-white/20 hover:scale-105 text-sm font-medium text-zinc-800 dark:text-zinc-200 flex items-center gap-2 cursor-default transition-all duration-200"
               >
                 <skill.icon
                   className={`w-4 h-4 ${skill.color} group-hover:scale-110 transition-transform`}
@@ -98,13 +102,14 @@ export function ExperienceRightColumn() {
       <AnimatedSection delay={0.1}>
         <section
           aria-label="Education"
-          className="glass-card rounded-3xl p-8 flex flex-col"
+          className="glass-card rounded-3xl p-8 flex flex-col relative hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
         >
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2">
+          <GraduationCap className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-zinc-400 pointer-events-none z-0" aria-hidden="true" />
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
             <GraduationCap className="w-6 h-6 text-indigo-600 dark:text-indigo-400" aria-hidden="true" />
             Education
           </h2>
-          <div className="space-y-2.5 rounded-xl border border-indigo-500/20 bg-indigo-500/5 p-4">
+          <div className="space-y-2.5 rounded-xl border border-indigo-500/20 bg-indigo-500/5 p-4 relative z-10">
             <p className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
               Bachelor of Technology
             </p>
@@ -125,12 +130,9 @@ export function ExperienceRightColumn() {
       <AnimatedSection delay={0.15}>
         <section
           aria-label="Certifications"
-          className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col"
+          className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
         >
-          <Settings
-            className="absolute -right-8 -bottom-8 w-48 h-48 text-zinc-500/5 pointer-events-none"
-            aria-hidden="true"
-          />
+          <BadgeCheck className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-zinc-400 pointer-events-none z-0" aria-hidden="true" />
           <div className="flex items-center justify-between mb-5 relative z-10">
             <h2 className="text-2xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
               <Settings className="w-6 h-6 text-zinc-600 dark:text-zinc-400" aria-hidden="true" />
@@ -145,13 +147,13 @@ export function ExperienceRightColumn() {
           </div>
 
           {/* AI & ML */}
-          <div className="mb-4">
+          <div className="mb-4 relative z-10">
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-purple-500 dark:text-purple-400 mb-2 flex items-center gap-1.5">
               <Sparkles className="w-3 h-3" aria-hidden="true" /> AI &amp; Machine Learning
             </p>
             <ul className="space-y-2 mt-2">
               {AI_CERTS.map((cert) => (
-                <li key={cert} className="flex items-start gap-3">
+                <li key={cert} className="flex items-start gap-3 hover:text-white/90 hover:translate-x-1 transition-all duration-200">
                   <div className="flex-shrink-0 mt-0.5 w-5 h-5 rounded-md bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
                     <Box className="w-3 h-3 text-purple-400" aria-hidden="true" />
                   </div>
@@ -162,13 +164,13 @@ export function ExperienceRightColumn() {
           </div>
 
           {/* Testing & Standards */}
-          <div className="mb-4">
+          <div className="mb-4 relative z-10">
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-500 dark:text-amber-400 mb-2 flex items-center gap-1.5">
               <ShieldCheck className="w-3 h-3" aria-hidden="true" /> Testing &amp; Standards
             </p>
             <ul className="space-y-2 mt-2">
               {TESTING_CERTS.map((cert) => (
-                <li key={cert} className="flex items-start gap-3">
+                <li key={cert} className="flex items-start gap-3 hover:text-white/90 hover:translate-x-1 transition-all duration-200">
                   <div className="flex-shrink-0 mt-0.5 w-5 h-5 rounded-md bg-amber-500/10 flex items-center justify-center border border-amber-500/20">
                     <Box className="w-3 h-3 text-amber-400" aria-hidden="true" />
                   </div>
@@ -179,13 +181,13 @@ export function ExperienceRightColumn() {
           </div>
 
           {/* Leadership */}
-          <div>
+          <div className="relative z-10">
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 dark:text-blue-400 mb-2 flex items-center gap-1.5">
               <Box className="w-3 h-3" aria-hidden="true" /> Leadership &amp; Management
             </p>
             <ul className="space-y-2 mt-2">
               {LEADERSHIP_CERTS.map((cert) => (
-                <li key={cert} className="flex items-start gap-3">
+                <li key={cert} className="flex items-start gap-3 hover:text-white/90 hover:translate-x-1 transition-all duration-200">
                   <div className="flex-shrink-0 mt-0.5 w-5 h-5 rounded-md bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
                     <Box className="w-3 h-3 text-blue-400" aria-hidden="true" />
                   </div>
@@ -201,8 +203,9 @@ export function ExperienceRightColumn() {
       <AnimatedSection delay={0.2}>
         <section
           aria-label="Awards and Recognition"
-          className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col"
+          className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
         >
+          <Trophy className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-zinc-400 pointer-events-none z-0" aria-hidden="true" />
           <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2 flex items-center gap-2 relative z-10">
             <span className="text-2xl" aria-hidden="true">🏆</span>
             Awards &amp; Recognition
@@ -210,7 +213,9 @@ export function ExperienceRightColumn() {
           <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6 relative z-10">
             L&amp;T Infotech (2010–2011)
           </p>
-          <AwardsGallery />
+          <div className="relative z-10">
+            <AwardsGallery />
+          </div>
         </section>
       </AnimatedSection>
 
@@ -218,7 +223,7 @@ export function ExperienceRightColumn() {
       <AnimatedSection delay={0.25}>
         <section
           aria-label="Google Developer Profile"
-          className="glass-card rounded-3xl p-8 relative flex flex-col gap-8 overflow-hidden"
+          className="glass-card rounded-3xl p-8 relative flex flex-col gap-8 overflow-hidden hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
         >
           {/* Google logo watermark */}
           <div className="absolute top-4 right-4 pointer-events-none opacity-[0.03] z-0" aria-hidden="true">
@@ -255,14 +260,32 @@ export function ExperienceRightColumn() {
                 <BadgeCount /> Badges
               </span>
             </div>
-
             <GoogleDevCarousel />
           </div>
         </section>
       </AnimatedSection>
 
-      {/* Column height balancer */}
-      <div className="flex-1 min-h-[2rem]" aria-hidden="true" />
+      {/* CTA card — balances column height with meaningful content */}
+      <AnimatedSection delay={0.3}>
+        <section
+          aria-label="Contact call to action"
+          className="glass-card rounded-3xl p-8 relative flex flex-col gap-4 hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
+        >
+          <h2 className="text-xl font-bold text-zinc-900 dark:text-white">
+            Ready to build something together?
+          </h2>
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+            Open to senior engineering &amp; QA leadership roles
+          </p>
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-all w-fit text-sm"
+          >
+            Get in Touch <ArrowRight className="w-4 h-4" aria-hidden="true" />
+          </Link>
+        </section>
+      </AnimatedSection>
+
     </div>
   );
 }

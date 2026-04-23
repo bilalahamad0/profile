@@ -21,7 +21,7 @@ export function ExperienceTimeline() {
 
       <ol className="space-y-6 relative z-10">
         {experienceData.map((exp, idx) => (
-          <li key={exp.company + idx} className="flex gap-4 group">
+          <li key={exp.company + idx} className="flex gap-4 group border border-transparent rounded-xl hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300 pr-2">
             {/* Logo + timeline connector */}
             <div className="flex flex-col items-center">
               <div
@@ -53,7 +53,7 @@ export function ExperienceTimeline() {
                 <h3 className="text-lg font-semibold text-zinc-900 dark:text-white leading-tight whitespace-pre-line">
                   {exp.role}
                 </h3>
-                <span className="font-medium tracking-tight text-emerald-600 dark:text-emerald-400">
+                <span className="font-medium tracking-tight text-emerald-600 dark:text-emerald-400 hover:opacity-80 transition-opacity duration-200">
                   {exp.company}
                 </span>
               </div>
@@ -75,7 +75,7 @@ export function ExperienceTimeline() {
                 (exp as { highlights?: string[] }).highlights!.length > 0 && (
                   <ul className="space-y-1.5 max-w-md">
                     {(exp as { highlights: string[] }).highlights.map((h, hi) => (
-                      <li key={hi} className="flex items-start gap-2 text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                      <li key={hi} className="flex items-start gap-2 text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed hover:text-white/90 transition-colors duration-200">
                         <Check className="w-3 h-3 text-emerald-500 shrink-0 mt-0.5" aria-hidden="true" />
                         <span>{h}</span>
                       </li>
