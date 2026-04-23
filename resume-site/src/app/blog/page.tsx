@@ -12,6 +12,15 @@ export const metadata: Metadata = {
   description: "Project stories, technical whitepapers, and thoughts on AI-native engineering.",
 };
 
+const breadcrumb = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://bilalahamad.com" },
+    { "@type": "ListItem", position: 2, name: "Blog", item: "https://bilalahamad.com/blog" },
+  ],
+};
+
 // Static post metadata — defined at module level, not inside a client component
 export const mdxPosts = [
   {
@@ -56,6 +65,11 @@ const featured = mdxPosts.find((p) => p.featured);
 
 export default function BlogPage() {
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
     <main className="min-h-screen bg-[#09090b] text-white" id="top">
 
       {/* Header — static, server-rendered, paints instantly */}
@@ -120,5 +134,6 @@ export default function BlogPage() {
       <BlogGridClient mdxPosts={mdxPosts} linkedInPosts={linkedInPosts} />
 
     </main>
+    </>
   );
 }

@@ -13,6 +13,15 @@ export const metadata: Metadata = {
   description: "Production systems built through AI pair programming — AI-native from architecture to deployment.",
 };
 
+const breadcrumb = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://bilalahamad.com" },
+    { "@type": "ListItem", position: 2, name: "AI Lab", item: "https://bilalahamad.com/ai" },
+  ],
+};
+
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://bilalahamad.com";
 
 async function getDynamicMetrics(): Promise<Record<string, AIMetrics>> {
@@ -275,6 +284,11 @@ export default async function AILabPage() {
   ];
 
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
     <main className="min-h-screen bg-[#09090b] text-white relative" id="top">
       <NeuralBackground />
 
@@ -366,5 +380,6 @@ export default async function AILabPage() {
         </div>
       </section>
     </main>
+    </>
   );
 }
