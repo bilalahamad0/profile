@@ -51,7 +51,7 @@ export const experienceData = [
     invertLogo: false,
   },
   {
-    role: "Infotainment Test Lead",
+    role: "Infotainment & V2X Firmware Test Lead",
     company: "Rivian Automotive LLC",
     location: "Palo Alto, CA",
     duration: "Jun 2021 - Sep 2022",
