@@ -57,7 +57,7 @@ export function ExperienceRightColumn() {
               return (
                 <span
                   key={tag}
-                  className={`px-3 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-[0.08em] border ${tone}`}
+                  className={`px-3 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-[0.08em] border hover:bg-white/5 hover:border-white/20 transition-all duration-200 cursor-default ${tone}`}
                 >
                   {tag}
                 </span>
@@ -221,7 +221,7 @@ export function ExperienceRightColumn() {
           className="glass-card rounded-3xl p-8 relative flex flex-col gap-8 overflow-hidden"
         >
           {/* Google logo watermark */}
-          <div className="absolute -left-6 -bottom-6 pointer-events-none opacity-[0.03] z-0" aria-hidden="true">
+          <div className="absolute top-4 right-4 pointer-events-none opacity-[0.03] z-0" aria-hidden="true">
             <Image src="/logos/google.png" alt="" width={256} height={256} className="grayscale" />
           </div>
           <div className="absolute top-1/2 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px] pointer-events-none -translate-y-1/2" aria-hidden="true" />
@@ -260,6 +260,9 @@ export function ExperienceRightColumn() {
           </div>
         </section>
       </AnimatedSection>
+
+      {/* Column height balancer */}
+      <div className="flex-1 min-h-[2rem]" aria-hidden="true" />
     </div>
   );
 }

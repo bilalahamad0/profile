@@ -28,12 +28,14 @@ const AWARDS = [
 const DESCRIPTIONS = [
   {
     bg: "bg-yellow-500/5 border-yellow-500/20",
+    hover: "hover:border-yellow-500/40 hover:bg-white/5",
     iconColor: "text-yellow-400",
     title: "Annual Best Performer · Excellent Performance Award · L&T Infotech 2010–11",
     body: "Architected test automation infrastructure for Motorola ODC, validating multiple mobile platforms. Reduced man-hours by 25% through innovative automation of cumbersome stability testing procedures.",
   },
   {
     bg: "bg-blue-500/5 border-blue-500/20",
+    hover: "hover:border-blue-500/40 hover:bg-white/5",
     iconColor: "text-blue-400",
     title: "Annual Best Managed Project · Eagle Award · L&T Infotech 2010–11",
     body: "Led the Development project for Motorola Mobility System Testing, achieving remarkable productivity growth.",
@@ -60,6 +62,16 @@ export function AwardsGallery() {
       document.body.style.overflow = "";
       document.body.style.touchAction = "";
     };
+  }, [lightbox]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLightbox(null);
+    };
+    if (lightbox) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [lightbox]);
 
   const lightboxPortal =
@@ -185,7 +197,7 @@ export function AwardsGallery() {
       {/* Descriptions */}
       <div className="space-y-3">
         {DESCRIPTIONS.map((d) => (
-          <div key={d.title} className={`p-4 rounded-2xl ${d.bg} border`}>
+          <div key={d.title} className={`p-4 rounded-2xl ${d.bg} ${d.hover} border transition-all duration-200 cursor-default`}>
             <div className="flex items-start gap-3">
               <span className={`${d.iconColor} text-lg shrink-0`} aria-hidden="true">⭐</span>
               <div>
