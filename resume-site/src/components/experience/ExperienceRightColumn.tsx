@@ -6,9 +6,9 @@ import { AwardsGallery } from "@/components/experience/AwardsGallery";
 import { BadgeCount } from "@/components/experience/BadgeCount";
 import {
   Terminal, ShieldCheck, Box, Layers, Settings, GraduationCap, Sparkles,
-  ExternalLink, Target, Cpu, Trophy, BadgeCheck, ArrowRight,
+  ExternalLink, Target, Cpu, Trophy, BadgeCheck, MessageSquareQuote, User,
 } from "lucide-react";
-import { skills } from "@/data/portfolio";
+import { skills, recommendations } from "@/data/portfolio";
 
 const CORE_FOCUS_TAGS = [
   "FIRMWARE QUALITY GOVERNANCE",
@@ -109,7 +109,7 @@ export function ExperienceRightColumn() {
             <GraduationCap className="w-6 h-6 text-indigo-600 dark:text-indigo-400" aria-hidden="true" />
             Education
           </h2>
-          <div className="space-y-2.5 rounded-xl border border-indigo-500/20 bg-indigo-500/5 p-4 relative z-10">
+          <div className="space-y-2.5 rounded-xl border border-indigo-500/20 bg-indigo-500/5 p-4 relative z-10 hover:border-white/20 hover:bg-white/[0.03] transition-all duration-300 cursor-default">
             <p className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
               Bachelor of Technology
             </p>
@@ -132,7 +132,7 @@ export function ExperienceRightColumn() {
           aria-label="Certifications"
           className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
         >
-          <BadgeCheck className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-zinc-400 pointer-events-none z-0" aria-hidden="true" />
+          <BadgeCheck className="absolute bottom-4 right-4 w-20 h-20 opacity-[0.04] text-zinc-400 pointer-events-none z-0" aria-hidden="true" />
           <div className="flex items-center justify-between mb-5 relative z-10">
             <h2 className="text-2xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
               <Settings className="w-6 h-6 text-zinc-600 dark:text-zinc-400" aria-hidden="true" />
@@ -199,8 +199,43 @@ export function ExperienceRightColumn() {
         </section>
       </AnimatedSection>
 
-      {/* Awards & Recognition */}
+      {/* LinkedIn Recommendations */}
       <AnimatedSection delay={0.2}>
+        <section
+          aria-label="LinkedIn Recommendations"
+          className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
+        >
+          <MessageSquareQuote className="absolute bottom-4 right-4 w-20 h-20 opacity-[0.04] text-zinc-400 pointer-events-none z-0" aria-hidden="true" />
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
+            <MessageSquareQuote className="w-6 h-6 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+            Recommendations
+          </h2>
+          <div className="flex flex-col gap-4 relative z-10">
+            {recommendations.map((rec) => (
+              <div
+                key={rec.name}
+                className="p-5 rounded-xl border border-emerald-500/10 bg-emerald-500/5 hover:border-emerald-500/30 hover:bg-emerald-500/10 transition-all duration-200 cursor-default"
+              >
+                <p className="text-sm text-zinc-300 leading-relaxed italic mb-4 font-light">
+                  &ldquo;{rec.review}&rdquo;
+                </p>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400/30 to-blue-400/30 flex items-center justify-center shrink-0 border border-emerald-500/30">
+                    <User className="w-4 h-4 text-emerald-400" aria-hidden="true" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-bold text-zinc-200">{rec.name}</span>
+                    <span className="text-xs text-emerald-400/70">{rec.title}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </AnimatedSection>
+
+      {/* Awards & Recognition */}
+      <AnimatedSection delay={0.25}>
         <section
           aria-label="Awards and Recognition"
           className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
@@ -220,7 +255,7 @@ export function ExperienceRightColumn() {
       </AnimatedSection>
 
       {/* Google Developer Profile */}
-      <AnimatedSection delay={0.25}>
+      <AnimatedSection delay={0.3}>
         <section
           aria-label="Google Developer Profile"
           className="glass-card rounded-3xl p-8 relative flex flex-col gap-8 overflow-hidden hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
@@ -262,27 +297,6 @@ export function ExperienceRightColumn() {
             </div>
             <GoogleDevCarousel />
           </div>
-        </section>
-      </AnimatedSection>
-
-      {/* CTA card — balances column height with meaningful content */}
-      <AnimatedSection delay={0.3}>
-        <section
-          aria-label="Contact call to action"
-          className="glass-card rounded-3xl p-8 relative flex flex-col gap-4 hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
-        >
-          <h2 className="text-xl font-bold text-zinc-900 dark:text-white">
-            Ready to build something together?
-          </h2>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
-            Open to senior engineering &amp; QA leadership roles
-          </p>
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-all w-fit text-sm"
-          >
-            Get in Touch <ArrowRight className="w-4 h-4" aria-hidden="true" />
-          </Link>
         </section>
       </AnimatedSection>
 
