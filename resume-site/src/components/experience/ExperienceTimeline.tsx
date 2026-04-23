@@ -1,9 +1,11 @@
 import Image from "next/image";
 import { Briefcase, Check, MapPin } from "lucide-react";
 import { experienceData } from "@/data/portfolio";
+import { AnimatedSection } from "@/components/experience/AnimatedSection";
 
 export function ExperienceTimeline() {
   return (
+    <AnimatedSection delay={0}>
     <section
       aria-label="Professional Career Timeline"
       className="glass-card rounded-3xl p-8 relative flex flex-col"
@@ -85,5 +87,6 @@ export function ExperienceTimeline() {
         ))}
       </ol>
     </section>
+    </AnimatedSection>
   );
 }
