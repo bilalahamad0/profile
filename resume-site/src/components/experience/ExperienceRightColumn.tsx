@@ -39,7 +39,7 @@ const LEADERSHIP_CERTS = [
 
 export function ExperienceRightColumn() {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col justify-between h-full">
 
       {/* Core Focus */}
       <AnimatedSection delay={0}>

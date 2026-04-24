@@ -5,10 +5,10 @@ import { AnimatedSection } from "@/components/experience/AnimatedSection";
 
 export function ExperienceTimeline() {
   return (
-    <AnimatedSection delay={0}>
+    <AnimatedSection delay={0} className="flex flex-col h-full">
     <section
       aria-label="Professional Career Timeline"
-      className="glass-card rounded-3xl p-8 relative flex flex-col"
+      className="glass-card rounded-3xl p-8 relative flex flex-col h-full"
     >
       <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none" aria-hidden="true">
         <Briefcase className="w-32 h-32" />
