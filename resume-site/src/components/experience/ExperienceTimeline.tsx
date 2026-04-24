@@ -19,7 +19,7 @@ export function ExperienceTimeline() {
         Professional Career Timeline
       </h2>
 
-      <ol className="space-y-6 relative z-10">
+      <ol className="flex flex-col justify-between flex-1 gap-6 relative z-10">
         {experienceData.map((exp, idx) => (
           <li key={exp.company + idx} className="flex gap-4 group border border-transparent rounded-xl hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300 pr-2">
             {/* Logo + timeline connector */}

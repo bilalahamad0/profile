@@ -39,13 +39,13 @@ const LEADERSHIP_CERTS = [
 
 export function ExperienceRightColumn() {
   return (
-    <div className="flex flex-col justify-between h-full">
+    <div className="flex flex-col h-full">
 
       {/* Core Focus */}
-      <AnimatedSection delay={0}>
+      <AnimatedSection delay={0} className="flex-auto flex flex-col">
         <section
           aria-label="Core Focus Areas"
-          className="glass-card rounded-3xl p-8 flex flex-col relative hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
+          className="glass-card rounded-3xl p-8 flex flex-col justify-between h-full relative hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
         >
           <Target className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-zinc-400 pointer-events-none z-0" aria-hidden="true" />
           <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
@@ -71,10 +71,10 @@ export function ExperienceRightColumn() {
       </AnimatedSection>
 
       {/* Technical Arsenal */}
-      <AnimatedSection delay={0.05}>
+      <AnimatedSection delay={0.05} className="flex-auto flex flex-col">
         <section
           aria-label="Technical Arsenal"
-          className="glass-card rounded-3xl p-8 flex flex-col relative hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
+          className="glass-card rounded-3xl p-8 flex flex-col justify-between h-full relative hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
         >
           <Cpu className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-zinc-400 pointer-events-none z-0" aria-hidden="true" />
           <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
@@ -99,10 +99,10 @@ export function ExperienceRightColumn() {
       </AnimatedSection>
 
       {/* Education */}
-      <AnimatedSection delay={0.1}>
+      <AnimatedSection delay={0.1} className="flex-auto flex flex-col">
         <section
           aria-label="Education"
-          className="glass-card rounded-3xl p-8 flex flex-col relative hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
+          className="glass-card rounded-3xl p-8 flex flex-col h-full relative hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
         >
           <GraduationCap className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-zinc-400 pointer-events-none z-0" aria-hidden="true" />
           <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
@@ -127,10 +127,10 @@ export function ExperienceRightColumn() {
       </AnimatedSection>
 
       {/* Certifications */}
-      <AnimatedSection delay={0.15}>
+      <AnimatedSection delay={0.15} className="flex-auto flex flex-col">
         <section
           aria-label="Certifications"
-          className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
+          className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col justify-between h-full hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
         >
           <BadgeCheck className="absolute bottom-4 right-4 w-20 h-20 opacity-[0.04] text-zinc-400 pointer-events-none z-0" aria-hidden="true" />
           <div className="flex items-center justify-between mb-5 relative z-10">
@@ -200,17 +200,17 @@ export function ExperienceRightColumn() {
       </AnimatedSection>
 
       {/* LinkedIn Recommendations */}
-      <AnimatedSection delay={0.2}>
+      <AnimatedSection delay={0.2} className="flex-auto flex flex-col">
         <section
           aria-label="LinkedIn Recommendations"
-          className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
+          className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col h-full hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
         >
           <MessageSquareQuote className="absolute bottom-4 right-4 w-20 h-20 opacity-[0.04] text-zinc-400 pointer-events-none z-0" aria-hidden="true" />
           <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
             <MessageSquareQuote className="w-6 h-6 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
             Recommendations
           </h2>
-          <div className="flex flex-col gap-4 relative z-10">
+          <div className="flex flex-col justify-between flex-1 gap-4 relative z-10">
             {recommendations.map((rec) => (
               <div
                 key={rec.name}
@@ -235,10 +235,10 @@ export function ExperienceRightColumn() {
       </AnimatedSection>
 
       {/* Awards & Recognition */}
-      <AnimatedSection delay={0.25}>
+      <AnimatedSection delay={0.25} className="flex-auto flex flex-col">
         <section
           aria-label="Awards and Recognition"
-          className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
+          className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col justify-between h-full hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
         >
           <Trophy className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-zinc-400 pointer-events-none z-0" aria-hidden="true" />
           <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2 flex items-center gap-2 relative z-10">
@@ -255,10 +255,10 @@ export function ExperienceRightColumn() {
       </AnimatedSection>
 
       {/* Google Developer Profile */}
-      <AnimatedSection delay={0.3}>
+      <AnimatedSection delay={0.3} className="flex-auto flex flex-col">
         <section
           aria-label="Google Developer Profile"
-          className="glass-card rounded-3xl p-8 relative flex flex-col gap-8 overflow-hidden hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
+          className="glass-card rounded-3xl p-8 relative flex flex-col gap-8 h-full overflow-hidden hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
         >
           {/* Google logo watermark */}
           <div className="absolute top-4 right-4 pointer-events-none opacity-[0.035] z-0" aria-hidden="true">
@@ -266,7 +266,7 @@ export function ExperienceRightColumn() {
           </div>
           <div className="absolute top-1/2 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px] pointer-events-none -translate-y-1/2" aria-hidden="true" />
 
-          <div className="flex flex-col z-10 w-full relative">
+          <div className="flex flex-col justify-between flex-1 z-10 w-full relative">
             <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2 flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0">
                 <Image src="/logos/google.png" alt="Google" width={20} height={20} className="object-contain" />
