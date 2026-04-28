@@ -49,7 +49,6 @@ export default function ProjectsPage() {
   const [repos, setRepos] = useState<Record<string, RepoData>>({});
   const [failedPreviews, setFailedPreviews] = useState<Record<string, boolean>>({});
 
-  // Use the cached /api/repos route instead of direct GitHub API calls
   useEffect(() => {
     fetch("/api/repos")
       .then((r) => r.json())
@@ -61,6 +60,16 @@ export default function ProjectsPage() {
         setRepos(map);
       })
       .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
+    const raf = requestAnimationFrame(() => {
+      const el = document.getElementById(hash);
+      el?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   const filtered =
@@ -279,7 +288,7 @@ export default function ProjectsPage() {
                       )}
 
                       {/* Tech tags */}
-                      <div className="flex flex-wrap gap-2 mb-6 flex-grow" role="list" aria-label="Technologies used">
+                      <div className="flex flex-wrap gap-2 mb-6" role="list" aria-label="Technologies used">
                         {project.tech.map((t) => (
                           <span
                             key={t}
