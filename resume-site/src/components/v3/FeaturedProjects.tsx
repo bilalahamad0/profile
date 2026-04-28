@@ -36,10 +36,19 @@ const ACCENT_BG: Record<string, string> = {
 };
 
 function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] }) {
+  const imgPosition = project.id === "adhan" ? "object-top" : "object-center";
+
   return (
     <div
-      className={`group relative rounded-3xl border border-white/5 bg-white/[0.02] overflow-hidden hover:bg-white/[0.04] transition-all duration-500 ${ACCENT_BORDER[project.accent]}`}
+      className={`group relative h-full flex flex-col rounded-3xl border border-white/5 bg-white/[0.02] overflow-hidden hover:bg-white/[0.04] transition-all duration-500 ${ACCENT_BORDER[project.accent]}`}
     >
+      {/* Stretched link for card-level navigation */}
+      <Link
+        href={`/projects#${project.id}`}
+        className="absolute inset-0 z-[1]"
+        aria-label={`View ${project.name} details`}
+      />
+
       <div
         className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`}
       />
@@ -63,7 +72,7 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
             src={project.thumbnail}
             alt={project.thumbnailAlt || project.name}
             fill
-            className="object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700"
+            className={`${imgPosition} object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700`}
             sizes="(max-width: 768px) 100vw, 33vw"
             loading="lazy"
           />
@@ -71,7 +80,7 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
         </div>
       ) : null}
 
-      <div className="relative z-10 p-6">
+      <div className="relative z-10 p-6 flex flex-col flex-1">
         {/* Badge */}
         <div className="flex items-center gap-2 mb-4 flex-wrap">
           {project.isAI && (
@@ -86,9 +95,9 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
         <p className={`text-sm font-medium ${ACCENT_TEXT[project.accent]} mb-3`}>{project.tagline}</p>
         <p className="text-sm text-zinc-400 leading-relaxed mb-4 line-clamp-2">{project.description}</p>
 
-        <div className="flex items-center justify-between pt-3 border-t border-white/5">
+        <div className="flex items-center justify-between pt-3 border-t border-white/5 mt-auto">
           <span className="text-xs text-zinc-500">{project.tech.slice(0, 2).join(" · ")}</span>
-          <div className="flex gap-3">
+          <div className="flex gap-3 relative z-[2]">
             {project.demo && (
               <a
                 href={project.demo}
@@ -96,7 +105,7 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
                 rel="noreferrer"
                 className={`text-xs font-bold ${ACCENT_TEXT[project.accent]} hover:opacity-80 transition-opacity flex items-center gap-1`}
               >
-                <ExternalLink className="w-3.5 h-3.5" /> Live
+                <ExternalLink className="w-3.5 h-3.5" /> {project.demoLabel || "Live"}
               </a>
             )}
             <a
@@ -149,6 +158,7 @@ export function FeaturedProjectsSection() {
                 key={p.id}
                 variants={fadeUp}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="h-full"
               >
                 <FeaturedProjectCard project={p} />
               </motion.div>
