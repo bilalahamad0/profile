@@ -159,12 +159,6 @@ export function FeaturedProjectsSection() {
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Projects</span>
                 </h2>
               </div>
-              <Link
-                href="/projects"
-                className="hidden md:flex items-center gap-1.5 text-sm font-semibold text-zinc-400 hover:text-white transition-colors"
-              >
-                All Projects <ArrowRight className="w-4 h-4" />
-              </Link>
             </div>
           </motion.div>
 
@@ -181,12 +175,14 @@ export function FeaturedProjectsSection() {
             ))}
           </div>
 
-          <motion.div variants={fadeUp} transition={{ duration: 0.5 }} className="mt-8 md:hidden">
+          <motion.div variants={fadeUp} transition={{ duration: 0.5 }} className="mt-8 flex justify-center">
             <Link
               href="/projects"
-              className="flex items-center justify-center gap-2 py-3 rounded-full bg-white/5 border border-white/10 text-sm font-semibold text-zinc-300 hover:bg-white/10 transition-all"
+              className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 border border-white/10 text-sm font-semibold text-zinc-300 hover:bg-white/10 hover:text-white transition-all"
             >
-              All Projects <ArrowRight className="w-4 h-4" />
+              <Sparkles className="w-4 h-4 text-blue-400" />
+              View All Projects
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </motion.div>
         </motion.div>
