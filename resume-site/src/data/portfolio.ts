@@ -226,7 +226,7 @@ export const projectsData = [
     isAI: true,
     aiTools: ["Antigravity", "Gemini 2.5 Flash/Pro", "Cursor", "Claude Sonnet 4 / Opus 4.6"],
     aiContribution: 92,
-    impact: "Compressed 3-week build to 4 days · 455k+ tokens · 10 microservices",
+    impact: "Zero-touch prayer-time audio notifications with automated media-state control (Raspberry Pi + Android TV via ADB) · 10 microservices",
     gradient: "from-emerald-600/20 via-emerald-500/10 to-transparent",
     accent: "emerald",
     blogSlug: "adhan-caster-story",

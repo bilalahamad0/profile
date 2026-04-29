@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Sparkles, Github, ExternalLink, BookOpen,
-  ChevronRight, Cpu, Zap, Clock, TrendingUp, ArrowRight,
+  ChevronRight, Zap, TrendingUp, ArrowRight,
   Bot, Coins, GitCommit, FileCode2, Server, FlaskConical
 } from "lucide-react";
 import { projectsData } from "@/data/portfolio";
@@ -101,13 +101,37 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
     linesOfCode: 7800,
     devCycleDays: 4,
     manualEstimateDays: 21,
-    impact: "Compressed 3-week build to 4 days · 455k+ tokens · 10 microservices",
+    impact: "Zero-touch prayer-time audio notifications with automated media-state control (Raspberry Pi + Android TV via ADB) · 10 microservices",
     cycle: "4 days",
     beforeAI: "No automation, manual device control",
     afterAI: "Zero-touch IoT orchestration system",
     microservices: 10,
     tests: 54,
     testSuites: 12,
+  },
+  tmo: {
+    projectId: "tmo",
+    lastUpdated: "2026-04-28",
+    aiContribution: 75,
+    agents: [
+      {
+        name: "Antigravity",
+        provider: "Google DeepMind",
+        period: "Apr 2026",
+        models: ["Gemini 2.5 Flash"],
+        tokens: 90000,
+        role: "Pipeline scaffolding & automation architecture",
+      },
+    ],
+    totalTokens: 90000,
+    totalCommits: 40,
+    linesOfCode: 2200,
+    devCycleDays: 3,
+    manualEstimateDays: 12,
+    impact: "Zero-touch monthly billing cycle",
+    cycle: "~3 days",
+    beforeAI: "Manual Python script, ran per request",
+    afterAI: "Event-driven E2E billing automation",
   },
 };
 
@@ -151,13 +175,12 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
   const colors = accentColors[project.accent] ?? accentColors.blue;
   const dm = project.dynamic;
 
-  const contribution = dm?.aiContribution ?? project.aiContribution;
-  const impactText = dm?.impact ?? project.impact;
-  const toolsText = dm
-    ? dm.agents.map(a => a.name).join(", ")
-    : project.aiTools.join(", ");
-  const cycleText = dm?.cycle
-    ?? (project.id === "adhan" ? "4 days" : project.id === "warn" ? "2 days" : "~3 days");
+  // Keep "Impact" outcome-focused (not proof-only like build time/tokens).
+  // Also override `dm.impact` so the card stays correct even when the sidecar has a legacy value.
+  const impactText =
+    project.id === "adhan" && dm
+      ? `Zero-touch prayer-time audio notifications with automated media-state control (Raspberry Pi + Android TV via ADB) · ${dm.microservices ?? 10} microservices`
+      : dm?.impact ?? project.impact;
 
   const beforeAfterFallback: Record<string, { before: string; after: string }> = {
     warn:    { before: "Manual Excel download, no monitoring",  after: "Fully automated pipeline, runs twice daily"   },
@@ -170,14 +193,12 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
     : beforeAfterFallback[project.id];
 
   const metrics = [
-    { icon: Cpu,        label: "AI Tools",  value: toolsText },
     { icon: Zap,        label: "Impact",    value: impactText },
-    { icon: TrendingUp, label: "AI Code %", value: `${contribution}%` },
-    { icon: Clock,      label: "Cycle",     value: cycleText },
   ];
 
   return (
     <div
+      id={project.id}
       className={`relative rounded-3xl border ${colors.border} bg-white/[0.02] overflow-hidden group transition-all duration-300 hover:bg-white/[0.04]`}
       style={{ animationDelay: `${index * 0.1}s` }}
     >
@@ -187,12 +208,6 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
         {/* Header */}
         <div className="flex items-start justify-between mb-6">
           <div>
-            <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full ${colors.bg} border ${colors.border} mb-3`}>
-              <Sparkles className={`w-3.5 h-3.5 ${colors.text}`} />
-              <span className={`text-[10px] font-black uppercase tracking-widest ${colors.text}`}>
-                {contribution}% AI-Contributed
-              </span>
-            </div>
             <h2 className="text-xl md:text-2xl font-black text-white tracking-tight">{project.name}</h2>
             <p className={`text-sm mt-1 ${colors.text}`}>{project.tagline}</p>
           </div>
@@ -211,7 +226,7 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
         </div>
 
         {/* Metrics Row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-1 gap-3 mb-6">
           {metrics.map(({ icon: Icon, label, value }) => (
             <div key={label} className={`p-3 rounded-2xl ${colors.bg} border ${colors.border}`}>
               <Icon className={`w-4 h-4 ${colors.text} mb-1.5`} />
@@ -221,37 +236,20 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
           ))}
         </div>
 
-        {/* Dynamic stats row — only when sidecar data is available */}
-        {dm && (() => {
-          const devStats: { icon: typeof Coins; label: string; value: string }[] = [
-            { icon: Coins, label: "Tokens", value: formatTokens(dm.totalTokens) },
-            { icon: GitCommit, label: "Commits", value: String(dm.totalCommits) },
-            { icon: FileCode2, label: "Lines of Code", value: dm.linesOfCode.toLocaleString() },
-            { icon: Clock, label: "Saved", value: `${dm.manualEstimateDays - dm.devCycleDays} days` },
-          ];
-          if (dm.microservices) {
-            devStats.push({ icon: Server, label: "Microservices", value: String(dm.microservices) });
-          }
-          if (dm.tests) {
-            devStats.push({
-              icon: FlaskConical,
-              label: "Tests",
-              value: dm.testSuites ? `${dm.tests} · ${dm.testSuites} suites` : String(dm.tests),
-            });
-          }
-          const gridCols = devStats.length > 4 ? "md:grid-cols-3" : "md:grid-cols-4";
-          return (
-            <div className={`grid grid-cols-2 ${gridCols} gap-3 mb-6`}>
-              {devStats.map(({ icon: Icon, label, value }) => (
-                <div key={label} className={`p-3 rounded-2xl ${colors.bg} border ${colors.border}`}>
-                  <Icon className={`w-4 h-4 ${colors.text} mb-1.5`} />
-                  <span className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{label}</span>
-                  <span className="block text-xs font-semibold text-zinc-300 mt-0.5">{value}</span>
-                </div>
-              ))}
+        {/* Non-matrix dev artifact highlights (Microservices) */}
+        {dm && typeof dm.microservices === "number" && project.id !== "adhan" && (
+          <div className="mb-6">
+            <div className={`p-3 rounded-2xl ${colors.bg} border ${colors.border}`}>
+              <Server className={`w-4 h-4 ${colors.text} mb-1.5`} />
+              <span className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
+                Microservices
+              </span>
+              <span className="block text-xs font-semibold text-zinc-300 mt-0.5">
+                {dm.microservices}
+              </span>
             </div>
-          );
-        })()}
+          </div>
+        )}
 
         {/* Agent Cards — only when sidecar data is available */}
         {dm && dm.agents.length > 0 && (
@@ -282,24 +280,6 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
             </div>
           </div>
         )}
-
-        {/* AI Contribution Bar */}
-        <div className="mb-6">
-          <div className="flex justify-between mb-2">
-            <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500">AI Contribution</span>
-            <span className="text-[10px] font-black text-zinc-400">{contribution}% generated or AI-assisted</span>
-          </div>
-          <div className="h-2 rounded-full bg-white/5">
-            <div
-              className={`h-full rounded-full ${colors.bar} transition-all duration-1000`}
-              style={{ width: `${contribution}%` }}
-            />
-          </div>
-          <div className="flex justify-between mt-1.5">
-            <span className="text-[9px] text-zinc-600">0%</span>
-            <span className="text-[9px] text-zinc-600">100%</span>
-          </div>
-        </div>
 
         {/* Before / After */}
         {timeline && (
@@ -354,6 +334,115 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
         )}
       </div>
     </div>
+  );
+}
+
+function MetricsAtAGlance({ projects }: { projects: ProjectWithMetrics[] }) {
+  const rows = projects.map((p) => {
+    const dm = p.dynamic;
+    return {
+      id: p.id,
+      name: p.name,
+      aiPct: dm?.aiContribution ?? p.aiContribution,
+      tokens: dm ? formatTokens(dm.totalTokens) : "—",
+      commits: dm ? String(dm.totalCommits) : "—",
+      loc: dm ? dm.linesOfCode.toLocaleString() : "—",
+      cycle: dm ? `${dm.devCycleDays}d` : "—",
+      saved: dm ? `${dm.manualEstimateDays - dm.devCycleDays}d` : "—",
+      tests: dm?.tests ? (dm.testSuites ? `${dm.tests} · ${dm.testSuites} suites` : String(dm.tests)) : "—",
+    };
+  });
+
+  return (
+    <section className="px-6 lg:px-24 pb-8 relative z-10" aria-labelledby="glance-heading">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex items-center gap-2 text-purple-400 font-bold text-xs uppercase tracking-widest mb-4">
+          <TrendingUp className="w-4 h-4" aria-hidden="true" />
+          Metrics at a Glance
+        </div>
+        <h2 id="glance-heading" className="sr-only">Metrics at a Glance</h2>
+
+        {/* Desktop table */}
+        <div className="hidden md:block overflow-x-auto rounded-2xl border border-white/[0.06] bg-white/[0.02]">
+          <table className="w-full text-left text-xs">
+            <thead>
+              <tr className="border-b border-white/[0.06]">
+                <th className="px-5 py-3">
+                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Project</div>
+                  <div className="text-[9px] text-zinc-600 mt-0.5">Jumps to card</div>
+                </th>
+                <th className="px-4 py-3">
+                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500">AI %</div>
+                  <div className="text-[9px] text-zinc-600 mt-0.5">AI Contribution</div>
+                </th>
+                <th className="px-4 py-3">
+                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Tokens</div>
+                  <div className="text-[9px] text-zinc-600 mt-0.5">Total processed</div>
+                </th>
+                <th className="px-4 py-3">
+                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Commits</div>
+                  <div className="text-[9px] text-zinc-600 mt-0.5">Total commits</div>
+                </th>
+                <th className="px-4 py-3">
+                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500">LOC</div>
+                  <div className="text-[9px] text-zinc-600 mt-0.5">Lines of code</div>
+                </th>
+                <th className="px-4 py-3">
+                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Cycle</div>
+                  <div className="text-[9px] text-zinc-600 mt-0.5">Dev cycle days</div>
+                </th>
+                <th className="px-4 py-3">
+                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Saved</div>
+                  <div className="text-[9px] text-zinc-600 mt-0.5">Estimated days saved</div>
+                </th>
+                <th className="px-4 py-3">
+                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Tests</div>
+                  <div className="text-[9px] text-zinc-600 mt-0.5">Counts (+ suites)</div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r) => (
+                <tr key={r.id} className="border-b border-white/[0.04] last:border-0 hover:bg-white/[0.03] transition-colors">
+                  <td className="px-5 py-3">
+                    <a href={`#${r.id}`} className="text-sm font-bold text-white hover:text-purple-300 transition-colors">
+                      {r.name}
+                    </a>
+                  </td>
+                  <td className="px-4 py-3 font-semibold text-zinc-300">{r.aiPct}%</td>
+                  <td className="px-4 py-3 text-zinc-400">{r.tokens}</td>
+                  <td className="px-4 py-3 text-zinc-400">{r.commits}</td>
+                  <td className="px-4 py-3 text-zinc-400">{r.loc}</td>
+                  <td className="px-4 py-3 text-zinc-400">{r.cycle}</td>
+                  <td className="px-4 py-3 text-zinc-400">{r.saved}</td>
+                  <td className="px-4 py-3 text-zinc-400">{r.tests}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Mobile stacked cards */}
+        <div className="md:hidden space-y-3">
+          {rows.map((r) => (
+            <a key={r.id} href={`#${r.id}`} className="block p-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04] transition-colors">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-sm font-bold text-white">{r.name}</span>
+                <span className="text-[10px] font-bold text-purple-400">{r.aiPct}% AI</span>
+              </div>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-[11px]">
+                <span className="text-zinc-500">Tokens</span><span className="text-zinc-300 text-right">{r.tokens}</span>
+                <span className="text-zinc-500">Commits</span><span className="text-zinc-300 text-right">{r.commits}</span>
+                <span className="text-zinc-500">LOC</span><span className="text-zinc-300 text-right">{r.loc}</span>
+                <span className="text-zinc-500">Cycle</span><span className="text-zinc-300 text-right">{r.cycle}</span>
+                <span className="text-zinc-500">Saved</span><span className="text-zinc-300 text-right">{r.saved}</span>
+                <span className="text-zinc-500">Tests</span><span className="text-zinc-300 text-right">{r.tests}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -418,6 +507,9 @@ export default async function AILabPage() {
           </div>
         </div>
       </section>
+
+      {/* Metrics at a Glance — comparison summary */}
+      <MetricsAtAGlance projects={enriched} />
 
       {/* AI Projects */}
       <section className="py-20 px-6 lg:px-24 relative z-10" aria-labelledby="systems-heading">
