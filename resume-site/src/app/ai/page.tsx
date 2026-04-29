@@ -3,7 +3,7 @@ import Link from "next/link";
 import {
   Sparkles, Github, ExternalLink, BookOpen,
   ChevronRight, Cpu, Zap, Clock, TrendingUp, ArrowRight,
-  Bot, Coins, GitCommit, FileCode2
+  Bot, Coins, GitCommit, FileCode2, Server, FlaskConical
 } from "lucide-react";
 import { projectsData } from "@/data/portfolio";
 import type { AIMetrics } from "@/app/api/ai-metrics/route";
@@ -38,6 +38,44 @@ const breadcrumb = {
 };
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://bilalahamad.com";
+
+const STATIC_FALLBACK: Record<string, AIMetrics> = {
+  adhan: {
+    projectId: "adhan",
+    lastUpdated: "2026-04-28",
+    aiContribution: 92,
+    agents: [
+      {
+        name: "Antigravity",
+        provider: "Google DeepMind",
+        period: "Feb – Apr 2026",
+        models: ["Gemini 2.5 Flash", "Gemini 2.5 Pro"],
+        tokens: 255000,
+        role: "v1–v2 architecture",
+      },
+      {
+        name: "Cursor",
+        provider: "Anthropic",
+        period: "Apr 2026 – Present",
+        models: ["Claude Sonnet 4", "Claude Opus 4.6"],
+        tokens: 200000,
+        role: "v3 pipeline, auto-updater & dashboard",
+      },
+    ],
+    totalTokens: 455000,
+    totalCommits: 182,
+    linesOfCode: 7800,
+    devCycleDays: 4,
+    manualEstimateDays: 21,
+    impact: "Compressed 3-week build to 4 days · 455k+ tokens · 10 microservices",
+    cycle: "4 days",
+    beforeAI: "No automation, manual device control",
+    afterAI: "Zero-touch IoT orchestration system",
+    microservices: 10,
+    tests: 54,
+    testSuites: 12,
+  },
+};
 
 async function getDynamicMetrics(): Promise<Record<string, AIMetrics>> {
   try {
@@ -150,30 +188,36 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
         </div>
 
         {/* Dynamic stats row — only when sidecar data is available */}
-        {dm && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-            <div className={`p-3 rounded-2xl ${colors.bg} border ${colors.border}`}>
-              <Coins className={`w-4 h-4 ${colors.text} mb-1.5`} />
-              <span className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Tokens</span>
-              <span className="block text-xs font-semibold text-zinc-300 mt-0.5">{formatTokens(dm.totalTokens)}</span>
+        {dm && (() => {
+          const devStats: { icon: typeof Coins; label: string; value: string }[] = [
+            { icon: Coins, label: "Tokens", value: formatTokens(dm.totalTokens) },
+            { icon: GitCommit, label: "Commits", value: String(dm.totalCommits) },
+            { icon: FileCode2, label: "Lines of Code", value: dm.linesOfCode.toLocaleString() },
+            { icon: Clock, label: "Saved", value: `${dm.manualEstimateDays - dm.devCycleDays} days` },
+          ];
+          if (dm.microservices) {
+            devStats.push({ icon: Server, label: "Microservices", value: String(dm.microservices) });
+          }
+          if (dm.tests) {
+            devStats.push({
+              icon: FlaskConical,
+              label: "Tests",
+              value: dm.testSuites ? `${dm.tests} · ${dm.testSuites} suites` : String(dm.tests),
+            });
+          }
+          const gridCols = devStats.length > 4 ? "md:grid-cols-3" : "md:grid-cols-4";
+          return (
+            <div className={`grid grid-cols-2 ${gridCols} gap-3 mb-6`}>
+              {devStats.map(({ icon: Icon, label, value }) => (
+                <div key={label} className={`p-3 rounded-2xl ${colors.bg} border ${colors.border}`}>
+                  <Icon className={`w-4 h-4 ${colors.text} mb-1.5`} />
+                  <span className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{label}</span>
+                  <span className="block text-xs font-semibold text-zinc-300 mt-0.5">{value}</span>
+                </div>
+              ))}
             </div>
-            <div className={`p-3 rounded-2xl ${colors.bg} border ${colors.border}`}>
-              <GitCommit className={`w-4 h-4 ${colors.text} mb-1.5`} />
-              <span className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Commits</span>
-              <span className="block text-xs font-semibold text-zinc-300 mt-0.5">{dm.totalCommits}</span>
-            </div>
-            <div className={`p-3 rounded-2xl ${colors.bg} border ${colors.border}`}>
-              <FileCode2 className={`w-4 h-4 ${colors.text} mb-1.5`} />
-              <span className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Lines of Code</span>
-              <span className="block text-xs font-semibold text-zinc-300 mt-0.5">{dm.linesOfCode.toLocaleString()}</span>
-            </div>
-            <div className={`p-3 rounded-2xl ${colors.bg} border ${colors.border}`}>
-              <Clock className={`w-4 h-4 ${colors.text} mb-1.5`} />
-              <span className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Saved</span>
-              <span className="block text-xs font-semibold text-zinc-300 mt-0.5">{dm.manualEstimateDays - dm.devCycleDays} days</span>
-            </div>
-          </div>
-        )}
+          );
+        })()}
 
         {/* Agent Cards — only when sidecar data is available */}
         {dm && dm.agents.length > 0 && (
@@ -265,7 +309,7 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
           </div>
         </div>
 
-        {/* Last updated badge from sidecar */}
+        {/* Last updated badge */}
         {dm && (
           <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between">
             <span className="text-[9px] text-zinc-600">
@@ -285,11 +329,12 @@ export default async function AILabPage() {
 
   const enriched: ProjectWithMetrics[] = aiProjects.map((p) => ({
     ...p,
-    dynamic: dynamicMetrics[p.id] ?? undefined,
+    dynamic: dynamicMetrics[p.id] ?? STATIC_FALLBACK[p.id] ?? undefined,
   }));
 
-  const totalTokens = Object.values(dynamicMetrics).reduce((sum, m) => sum + m.totalTokens, 0);
-  const totalCommits = Object.values(dynamicMetrics).reduce((sum, m) => sum + m.totalCommits, 0);
+  const allMetrics = { ...STATIC_FALLBACK, ...dynamicMetrics };
+  const totalTokens = Object.values(allMetrics).reduce((sum, m) => sum + m.totalTokens, 0);
+  const totalCommits = Object.values(allMetrics).reduce((sum, m) => sum + m.totalCommits, 0);
 
   const heroStats = [
     { label: "Dev Cycle Reduction", value: "75%+" },

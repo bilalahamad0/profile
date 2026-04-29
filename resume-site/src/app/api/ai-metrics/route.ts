@@ -23,6 +23,9 @@ export type AIMetrics = {
   cycle: string;
   beforeAI: string;
   afterAI: string;
+  microservices?: number;
+  tests?: number;
+  testSuites?: number;
 };
 
 const GITHUB_USER = "bilalahamad0";
