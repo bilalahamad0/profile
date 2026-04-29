@@ -428,7 +428,7 @@ export default function ProjectsPage() {
                                     style={{ 
                                       width: '133%', 
                                       height: '133%', 
-                                      transform: 'scale(0.75) translateY(-130px)',
+                                      transform: 'scale(0.75) translateY(-65px)',
                                       transformOrigin: 'top left',
                                       pointerEvents: 'auto',
                                       position: 'absolute',
@@ -458,7 +458,7 @@ export default function ProjectsPage() {
                                   }}
                                 />
                               )}
-                              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/20 pointer-events-none" />
+                              {project.id !== 'adhan' && <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/20 pointer-events-none" />}
                               {project.demo && (
                                 <a
                                   href={project.demo}
