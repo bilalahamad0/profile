@@ -66,6 +66,18 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/60 to-transparent pointer-events-none" />
         </div>
+      ) : (project as unknown as { thumbnailType?: string }).thumbnailType === "video" ? (
+        <div className={`relative w-full h-40 overflow-hidden ${ACCENT_BG[project.accent]}`}>
+          <video
+            src={project.thumbnail!}
+            className={`w-full h-full object-cover ${imgPosition} opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700`}
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/60 to-transparent pointer-events-none" />
+        </div>
       ) : project.thumbnail ? (
         <div className={`relative w-full h-40 overflow-hidden ${ACCENT_BG[project.accent]}`}>
           <Image

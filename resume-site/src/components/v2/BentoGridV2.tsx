@@ -963,10 +963,13 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                   </div>
 
                   <div className="relative w-full h-[500px] overflow-hidden rounded-3xl border border-white/5 bg-black/20 group/img shadow-2xl">
-                    <img
-                      src="https://raw.githubusercontent.com/bilalahamad0/adhan-api/main/images/system_flow/flow_animation.webp"
-                      alt="Adhan System Flow Animation"
+                    <video
+                      src="/videos/The_Architecture_of_Automation.mp4"
                       className="w-full h-full object-contain bg-zinc-950 group-hover:scale-105 transition-transform duration-1000 p-4"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
                       <p className="text-xs text-white/60 font-medium">System Flow: Automated orchestration showing data moving from Adhan API to end-node devices via ADB.</p>

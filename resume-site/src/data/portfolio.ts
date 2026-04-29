@@ -230,12 +230,12 @@ export const projectsData = [
     gradient: "from-emerald-600/20 via-emerald-500/10 to-transparent",
     accent: "emerald",
     blogSlug: "adhan-caster-story",
-    // animated system flow from GitHub README
-    previewType: "gif" as const,
-    previewSrc: "https://raw.githubusercontent.com/bilalahamad0/adhan-api/main/images/system_flow/flow_animation.webp",
-    thumbnail: "https://raw.githubusercontent.com/bilalahamad0/adhan-api/main/images/system_flow/flow_animation.webp",
+    // video demo
+    previewType: "video" as const,
+    previewSrc: "/videos/The_Architecture_of_Automation.mp4",
+    thumbnail: "/videos/The_Architecture_of_Automation.mp4",
     thumbnailAlt: "Smart-Home IoT Audio Caster system flow animation",
-    thumbnailType: "animation" as const,
+    thumbnailType: "video" as const,
   },
   {
     id: "tmo",
