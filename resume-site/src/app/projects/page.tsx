@@ -260,6 +260,7 @@ export default function ProjectsPage() {
                                 loop
                                 muted
                                 playsInline
+                                controls
                                 onError={() => {
                                   setFailedPreviews((prev) => ({ ...prev, [project.id]: true }));
                                 }}

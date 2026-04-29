@@ -970,8 +970,9 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                       loop
                       muted
                       playsInline
+                      controls
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8 pointer-events-none">
                       <p className="text-xs text-white/60 font-medium">System Flow: Automated orchestration showing data moving from Adhan API to end-node devices via ADB.</p>
                     </div>
                   </div>
