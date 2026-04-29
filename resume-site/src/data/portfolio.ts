@@ -233,9 +233,9 @@ export const projectsData = [
     // YouTube demo
     previewType: "youtube" as const,
     previewSrc: "https://www.youtube.com/embed/GETyDnvZWog",
-    thumbnail: "https://www.youtube.com/embed/GETyDnvZWog",
+    thumbnail: "/videos/The_Architecture_of_Automation.mp4",
     thumbnailAlt: "Smart-Home IoT Audio Caster system flow animation",
-    thumbnailType: "youtube" as const,
+    thumbnailType: "video" as const,
   },
   {
     id: "tmo",

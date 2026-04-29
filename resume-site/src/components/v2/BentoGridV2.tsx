@@ -62,6 +62,7 @@ const CORE_FOCUS_TAGS = [
 export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boolean }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [awardLightbox, setAwardLightbox] = useState<string | null>(null);
+  const [videoLightbox, setVideoLightbox] = useState<string | null>(null);
   const [repos, setRepos] = useState<Repository[]>([]);
   const [showWarnCode, setShowWarnCode] = useState(false);
   const [warnDashboardExpanded, setWarnDashboardExpanded] = useState(false);
@@ -254,7 +255,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
 
   // Scroll Lock for Lightbox
   useEffect(() => {
-    if (awardLightbox) {
+    if (awardLightbox || videoLightbox) {
       document.body.style.overflow = 'hidden';
       document.body.style.touchAction = 'none';
     } else {
@@ -265,7 +266,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
       document.body.style.overflow = '';
       document.body.style.touchAction = '';
     };
-  }, [awardLightbox]);
+  }, [awardLightbox, videoLightbox]);
 
   // Portal-based lightbox: renders directly into document.body,
   // escaping ALL parent transforms, stacking contexts, and overflow.
@@ -339,9 +340,78 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
     )
     : null;
 
+  const videoLightboxPortal = videoLightbox && typeof document !== 'undefined'
+    ? createPortal(
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 99999,
+          backgroundColor: 'rgba(0,0,0,0.95)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '16px',
+          backdropFilter: 'blur(4px)',
+          WebkitBackdropFilter: 'blur(4px)',
+          touchAction: 'none',
+        }}
+        onClick={() => setVideoLightbox(null)}
+      >
+        <div
+          style={{
+            position: 'relative',
+            width: '100%',
+            maxWidth: '1200px',
+            height: '90vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'black',
+            borderRadius: '16px',
+            overflow: 'hidden',
+            boxShadow: '0 25px 50px rgba(0,0,0,0.5)',
+            border: '1px solid rgba(255,255,255,0.1)',
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <iframe
+            src={`${videoLightbox}?autoplay=1&mute=0`}
+            className="w-full h-full border-0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            title="Video Preview"
+          />
+          <button
+            style={{
+              position: 'absolute',
+              top: '16px',
+              right: '16px',
+              background: 'rgba(255,255,255,0.1)',
+              border: 'none',
+              borderRadius: '50%',
+              padding: '8px',
+              cursor: 'pointer',
+              color: 'rgba(255,255,255,0.7)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 10,
+            }}
+            onClick={() => setVideoLightbox(null)}
+          >
+            <ChevronUp style={{ width: 24, height: 24, transform: 'rotate(180deg)' }} />
+          </button>
+        </div>
+      </div>,
+      document.body
+    )
+    : null;
+
   return (
     <>
       {lightboxPortal}
+      {videoLightboxPortal}
 
       <section id="experience" className={`w-full max-w-7xl mx-auto px-4 sm:px-6 ${showOnlyResume ? 'py-10' : 'pt-24 pb-10'}`}>
 
@@ -962,16 +1032,26 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                     </div>
                   </div>
 
-                  <div className="relative w-full h-[500px] overflow-hidden rounded-3xl border border-white/5 bg-black/20 group/img shadow-2xl">
-                    <iframe
-                      src="https://www.youtube.com/embed/GETyDnvZWog"
-                      className="w-full h-full border-0 rounded-3xl"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      title="Smart-Home IoT Audio Caster - System Flow"
+                  <div 
+                    className="relative w-full h-[500px] overflow-hidden rounded-3xl border border-white/5 bg-black/20 group/img shadow-2xl cursor-pointer"
+                    onClick={() => setVideoLightbox("https://www.youtube.com/embed/GETyDnvZWog")}
+                  >
+                    <video
+                      src="/videos/The_Architecture_of_Automation.mp4"
+                      className="w-full h-full object-contain bg-zinc-950 group-hover:scale-105 transition-transform duration-1000 p-4"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8 pointer-events-none">
                       <p className="text-xs text-white/60 font-medium">System Flow: Automated orchestration showing data moving from Adhan API to end-node devices via ADB.</p>
+                    </div>
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                       <div className="px-6 py-3 rounded-full bg-blue-500/80 backdrop-blur-md border border-white/20 font-black uppercase tracking-widest text-white shadow-xl flex items-center gap-2">
+                         <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                         Play Full Video
+                       </div>
                     </div>
                   </div>
                 </div>

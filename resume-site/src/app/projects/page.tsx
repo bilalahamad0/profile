@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {
   Github, ExternalLink, Sparkles, Star, GitFork,
-  Filter, ArrowRight, BookOpen, Zap,
+  Filter, ArrowRight, BookOpen, Zap, ChevronUp,
 } from "lucide-react";
 import { projectsData, type ProjectCategory } from "@/data/portfolio";
 
@@ -48,6 +49,21 @@ export default function ProjectsPage() {
   const [active, setActive] = useState<ProjectCategory>("All");
   const [repos, setRepos] = useState<Record<string, RepoData>>({});
   const [failedPreviews, setFailedPreviews] = useState<Record<string, boolean>>({});
+  const [videoLightbox, setVideoLightbox] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (videoLightbox) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    };
+  }, [videoLightbox]);
 
   useEffect(() => {
     fetch("/api/repos")
@@ -89,8 +105,77 @@ export default function ProjectsPage() {
     profile: "profile",
   };
 
+  const videoLightboxPortal = videoLightbox && typeof document !== 'undefined'
+    ? createPortal(
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 99999,
+          backgroundColor: 'rgba(0,0,0,0.95)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '16px',
+          backdropFilter: 'blur(4px)',
+          WebkitBackdropFilter: 'blur(4px)',
+          touchAction: 'none',
+        }}
+        onClick={() => setVideoLightbox(null)}
+      >
+        <div
+          style={{
+            position: 'relative',
+            width: '100%',
+            maxWidth: '1200px',
+            height: '90vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'black',
+            borderRadius: '16px',
+            overflow: 'hidden',
+            boxShadow: '0 25px 50px rgba(0,0,0,0.5)',
+            border: '1px solid rgba(255,255,255,0.1)',
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <iframe
+            src={`${videoLightbox}?autoplay=1&mute=0`}
+            className="w-full h-full border-0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            title="Video Preview"
+          />
+          <button
+            style={{
+              position: 'absolute',
+              top: '16px',
+              right: '16px',
+              background: 'rgba(255,255,255,0.1)',
+              border: 'none',
+              borderRadius: '50%',
+              padding: '8px',
+              cursor: 'pointer',
+              color: 'rgba(255,255,255,0.7)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 10,
+            }}
+            onClick={() => setVideoLightbox(null)}
+          >
+            <ChevronUp style={{ width: 24, height: 24, transform: 'rotate(180deg)' }} />
+          </button>
+        </div>
+      </div>,
+      document.body
+    )
+    : null;
+
   return (
     <main className="min-h-screen bg-[#09090b] text-white">
+      {videoLightboxPortal}
       {/* Header */}
       <section className="pt-32 pb-16 px-6 lg:px-24 border-b border-white/5 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[600px] h-[400px] bg-blue-500/5 blur-[120px] rounded-full pointer-events-none" aria-hidden="true" />
@@ -252,18 +337,26 @@ export default function ProjectsPage() {
                               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
                             </>
                           ) : !previewFailed && (project as unknown as { previewType: string }).previewType === "youtube" ? (
-                            <>
-                              <iframe
-                                src={(project as unknown as { previewSrc: string }).previewSrc}
-                                className="w-full h-full border-0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                                title={`${project.name} YouTube video preview`}
-                                onError={() => {
-                                  setFailedPreviews((prev) => ({ ...prev, [project.id]: true }));
-                                }}
+                            <div 
+                              className="relative w-full h-full cursor-pointer group/vid"
+                              onClick={() => setVideoLightbox((project as unknown as { previewSrc: string }).previewSrc)}
+                            >
+                              <video
+                                src={project.thumbnail!}
+                                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
                               />
-                            </>
+                              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
+                              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/vid:opacity-100 transition-opacity duration-500 pointer-events-none">
+                                 <div className="px-6 py-3 rounded-full bg-blue-500/80 backdrop-blur-md border border-white/20 font-black uppercase tracking-widest text-white shadow-xl flex items-center gap-2">
+                                   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                   Play Full Video
+                                 </div>
+                              </div>
+                            </div>
                           ) : !previewFailed ? (
                             <>
                               <img
