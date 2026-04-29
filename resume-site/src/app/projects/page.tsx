@@ -417,7 +417,9 @@ export default function ProjectsPage() {
 
                           {/* Dashboard Sub-card */}
                           {(project as any).dashboardSrc && (
-                            <div className={`relative w-full overflow-hidden bg-black/40 rounded-2xl border border-white/5 ${
+                            <div className={`relative w-full overflow-hidden ${
+                              project.id === 'adhan' ? 'bg-transparent' : 'bg-black/40'
+                            } rounded-2xl border border-white/5 ${
                               (project as any).previewType !== "none" ? "h-[200px] sm:h-[250px]" : "h-[416px] sm:h-[516px]"
                             }`}>
                               {project.id === 'adhan' ? (
@@ -427,7 +429,7 @@ export default function ProjectsPage() {
                                     className="border-0 origin-top-left"
                                     style={{ 
                                       width: '133%', 
-                                      height: '133%', 
+                                      height: '180%', 
                                       transform: 'scale(0.75) translateY(-65px)',
                                       transformOrigin: 'top left',
                                       pointerEvents: 'auto',
