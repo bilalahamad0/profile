@@ -57,8 +57,8 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
       {project.id === "warn" ? (
         <div className={`relative w-full h-40 overflow-hidden ${ACCENT_BG[project.accent]}`}>
           <iframe
-            src={project.previewSrc}
-            className="w-full h-full border-0 scale-[0.85] origin-top-left"
+            src={(project as any).dashboardSrc}
+            className="w-full border-0 origin-top-left scale-[0.85]"
             style={{ width: "117%", height: "220px", pointerEvents: "none" }}
             loading="lazy"
             title={`${project.name} live preview`}

@@ -420,19 +420,44 @@ export default function ProjectsPage() {
                             <div className={`relative w-full overflow-hidden bg-black/40 rounded-2xl border border-white/5 ${
                               (project as any).previewType !== "none" ? "h-[200px] sm:h-[250px]" : "h-[416px] sm:h-[516px]"
                             }`}>
-                              <iframe
-                                src={(project as any).dashboardSrc}
-                                className={`w-full h-full border-0 origin-top-left ${
-                                  project.id === 'warn' ? 'scale-[0.85]' : 'scale-[0.75] sm:scale-[0.80]'
-                                }`}
-                                style={project.id === 'warn' ? { width: "117%", height: "100%", minHeight: "600px", pointerEvents: "auto" } : { width: "133%", height: "133%", pointerEvents: "auto" }}
-                                loading="lazy"
-                                title={`${project.name} live dashboard`}
-                                sandbox="allow-scripts allow-same-origin"
-                                onError={() => {
-                                  setFailedPreviews((prev) => ({ ...prev, [`${project.id}-dash`]: true }));
-                                }}
-                              />
+                              {project.id === 'adhan' ? (
+                                <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+                                  <iframe
+                                    src={(project as any).dashboardSrc}
+                                    className="border-0 origin-top-left"
+                                    style={{ 
+                                      width: '133%', 
+                                      height: '133%', 
+                                      transform: 'scale(0.75) translateY(-130px)',
+                                      transformOrigin: 'top left',
+                                      pointerEvents: 'auto',
+                                      position: 'absolute',
+                                      top: 0,
+                                      left: 0,
+                                    }}
+                                    loading="lazy"
+                                    title={`${project.name} live dashboard`}
+                                    sandbox="allow-scripts allow-same-origin"
+                                    onError={() => {
+                                      setFailedPreviews((prev) => ({ ...prev, [`${project.id}-dash`]: true }));
+                                    }}
+                                  />
+                                </div>
+                              ) : (
+                                <iframe
+                                  src={(project as any).dashboardSrc}
+                                  className={`w-full h-full border-0 origin-top-left ${
+                                    project.id === 'warn' ? 'scale-[0.85]' : 'scale-[0.75] sm:scale-[0.80]'
+                                  }`}
+                                  style={project.id === 'warn' ? { width: "117%", height: "100%", minHeight: "600px", pointerEvents: "auto" } : { width: "133%", height: "133%", pointerEvents: "auto" }}
+                                  loading="lazy"
+                                  title={`${project.name} live dashboard`}
+                                  sandbox="allow-scripts allow-same-origin"
+                                  onError={() => {
+                                    setFailedPreviews((prev) => ({ ...prev, [`${project.id}-dash`]: true }));
+                                  }}
+                                />
+                              )}
                               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/20 pointer-events-none" />
                               {project.demo && (
                                 <a
