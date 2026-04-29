@@ -363,6 +363,21 @@ export default function ProjectsPage() {
                                      </div>
                                   </div>
                                 </div>
+                              ) : !previewFailed && (project as any).previewType === "iframe" ? (
+                                <>
+                                  <iframe
+                                    src={(project as any).previewSrc}
+                                    className="w-full h-full border-0 scale-[0.85] origin-top-left"
+                                    style={{ width: "117%", height: "117%", pointerEvents: "auto" }}
+                                    loading="lazy"
+                                    title={`${project.name} live preview`}
+                                    sandbox="allow-scripts allow-same-origin"
+                                    onError={() => {
+                                      setFailedPreviews((prev) => ({ ...prev, [project.id]: true }));
+                                    }}
+                                  />
+                                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
+                                </>
                               ) : !previewFailed ? (
                                 <>
                                   <img
@@ -407,10 +422,10 @@ export default function ProjectsPage() {
                             }`}>
                               <iframe
                                 src={(project as any).dashboardSrc}
-                                className={`w-full h-full border-0 ${
-                                  project.id === 'warn' ? 'scale-[0.85] origin-top-left' : ''
+                                className={`w-full h-full border-0 origin-top-left ${
+                                  project.id === 'warn' ? 'scale-[0.85]' : 'scale-[0.75] sm:scale-[0.80]'
                                 }`}
-                                style={project.id === 'warn' ? { width: "117%", height: "100%", minHeight: "600px", pointerEvents: "auto" } : { pointerEvents: "auto" }}
+                                style={project.id === 'warn' ? { width: "117%", height: "100%", minHeight: "600px", pointerEvents: "auto" } : { width: "133%", height: "133%", pointerEvents: "auto" }}
                                 loading="lazy"
                                 title={`${project.name} live dashboard`}
                                 sandbox="allow-scripts allow-same-origin"
