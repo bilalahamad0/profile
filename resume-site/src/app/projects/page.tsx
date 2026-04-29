@@ -251,21 +251,18 @@ export default function ProjectsPage() {
                               />
                               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
                             </>
-                          ) : !previewFailed && (project as unknown as { previewType: string }).previewType === "video" ? (
+                          ) : !previewFailed && (project as unknown as { previewType: string }).previewType === "youtube" ? (
                             <>
-                              <video
+                              <iframe
                                 src={(project as unknown as { previewSrc: string }).previewSrc}
-                                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                                autoPlay
-                                loop
-                                muted
-                                playsInline
-                                controls
+                                className="w-full h-full border-0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                                title={`${project.name} YouTube video preview`}
                                 onError={() => {
                                   setFailedPreviews((prev) => ({ ...prev, [project.id]: true }));
                                 }}
                               />
-                              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
                             </>
                           ) : !previewFailed ? (
                             <>

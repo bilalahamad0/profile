@@ -963,14 +963,12 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                   </div>
 
                   <div className="relative w-full h-[500px] overflow-hidden rounded-3xl border border-white/5 bg-black/20 group/img shadow-2xl">
-                    <video
-                      src="/videos/The_Architecture_of_Automation.mp4"
-                      className="w-full h-full object-contain bg-zinc-950 group-hover:scale-105 transition-transform duration-1000 p-4"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      controls
+                    <iframe
+                      src="https://www.youtube.com/embed/GETyDnvZWog"
+                      className="w-full h-full border-0 rounded-3xl"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      title="Smart-Home IoT Audio Caster - System Flow"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8 pointer-events-none">
                       <p className="text-xs text-white/60 font-medium">System Flow: Automated orchestration showing data moving from Adhan API to end-node devices via ADB.</p>
