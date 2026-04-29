@@ -1047,8 +1047,8 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8 pointer-events-none">
                       <p className="text-xs text-white/60 font-medium">System Flow: Automated orchestration showing data moving from Adhan API to end-node devices via ADB.</p>
                     </div>
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                       <div className="px-6 py-3 rounded-full bg-blue-500/80 backdrop-blur-md border border-white/20 font-black uppercase tracking-widest text-white shadow-xl flex items-center gap-2">
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                       <div className="px-6 py-3 rounded-full bg-blue-500/80 backdrop-blur-md border border-white/20 font-black uppercase tracking-widest text-white shadow-xl flex items-center gap-2 group-hover:scale-105 group-hover:bg-blue-500 transition-all">
                          <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                          Play Full Video
                        </div>

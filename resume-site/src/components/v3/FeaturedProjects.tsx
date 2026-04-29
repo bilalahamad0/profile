@@ -44,7 +44,7 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
     >
       {/* Stretched link for card-level navigation */}
       <Link
-        href={`/projects#${project.id}`}
+        href={`/projects${(project as unknown as { thumbnailType?: string }).thumbnailType === 'video' ? `?play=${project.id}` : ''}#${project.id}`}
         className="absolute inset-0 z-[1]"
         aria-label={`View ${project.name} details`}
       />
