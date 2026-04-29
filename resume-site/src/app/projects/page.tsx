@@ -334,79 +334,104 @@ export default function ProjectsPage() {
                       {/* Description */}
                       <p className="text-sm text-zinc-400 leading-relaxed mb-6">{project.description}</p>
 
-                      {/* Preview */}
-                      {"previewType" in project && project.previewSrc && (
-                        <div
-                          className="relative w-full overflow-hidden bg-black/40 rounded-2xl border border-white/5 mb-6 h-[180px] sm:h-[200px]"
-                        >
-                          {!previewFailed && (project as unknown as { previewType: string }).previewType === "iframe" ? (
-                            <>
-                              <iframe
-                                src={(project as unknown as { previewSrc: string }).previewSrc}
-                                className="w-full h-full border-0 scale-[0.85] origin-top-left"
-                                style={{ width: "117%", height: "260px", pointerEvents: "auto" }}
-                                loading="lazy"
-                                title={`${project.name} live preview`}
-                                sandbox="allow-scripts allow-same-origin"
-                                onError={() => {
-                                  setFailedPreviews((prev) => ({ ...prev, [project.id]: true }));
-                                }}
-                              />
-                              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
-                            </>
-                          ) : !previewFailed && (project as unknown as { previewType: string }).previewType === "youtube" ? (
-                            <div 
-                              className="relative w-full h-full cursor-pointer group/vid"
-                              onClick={() => setVideoLightbox((project as unknown as { previewSrc: string }).previewSrc)}
-                            >
-                              <video
-                                src={project.thumbnail!}
-                                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                                autoPlay
-                                loop
-                                muted
-                                playsInline
-                              />
-                              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
-                              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                 <div className="px-6 py-3 rounded-full bg-blue-500/80 backdrop-blur-md border border-white/20 font-black uppercase tracking-widest text-white shadow-xl flex items-center gap-2 group-hover/vid:scale-105 group-hover/vid:bg-blue-500 transition-all">
-                                   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                                   Play Full Video
-                                 </div>
-                              </div>
-                            </div>
-                          ) : !previewFailed ? (
-                            <>
-                              <img
-                                src={(project as unknown as { previewSrc: string }).previewSrc}
-                                alt={(project as unknown as { thumbnailAlt?: string }).thumbnailAlt ?? `${project.name} preview`}
-                                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                                loading="lazy"
-                                onError={() => {
-                                  setFailedPreviews((prev) => ({ ...prev, [project.id]: true }));
-                                }}
-                              />
-                              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
-                            </>
-                          ) : (
-                            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-zinc-900 via-zinc-900/90 to-zinc-800">
-                              <div className="text-center px-4">
-                                <p className="text-sm font-bold text-zinc-200">{project.name}</p>
-                                <p className="text-xs text-zinc-500 mt-1">Preview unavailable - open repo for details</p>
-                              </div>
+                      {/* Previews (Video & Dashboard Sub-cards) */}
+                      {((project as any).previewType !== "none" || (project as any).dashboardSrc) && (
+                        <div className="flex flex-col gap-4 mb-6">
+                          {/* Video Sub-card */}
+                          {(project as any).previewType !== "none" && (
+                            <div className={`relative w-full overflow-hidden bg-black/40 rounded-2xl border border-white/5 ${
+                              (project as any).dashboardSrc ? "h-[200px] sm:h-[250px]" : "h-[250px] sm:h-[300px]"
+                            }`}>
+                              {!previewFailed && (project as any).previewType === "youtube" ? (
+                                <div 
+                                  className="relative w-full h-full cursor-pointer group/vid"
+                                  onClick={() => setVideoLightbox((project as any).previewSrc)}
+                                >
+                                  <video
+                                    src={project.thumbnail!}
+                                    className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                  />
+                                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
+                                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                     <div className="px-6 py-3 rounded-full bg-blue-500/80 backdrop-blur-md border border-white/20 font-black uppercase tracking-widest text-white shadow-xl flex items-center gap-2 group-hover/vid:scale-105 group-hover/vid:bg-blue-500 transition-all">
+                                       <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                       Play Full Video
+                                     </div>
+                                  </div>
+                                </div>
+                              ) : !previewFailed ? (
+                                <>
+                                  <img
+                                    src={(project as any).previewSrc}
+                                    alt={(project as any).thumbnailAlt ?? `${project.name} preview`}
+                                    className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                                    loading="lazy"
+                                    onError={() => {
+                                      setFailedPreviews((prev) => ({ ...prev, [project.id]: true }));
+                                    }}
+                                  />
+                                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
+                                </>
+                              ) : (
+                                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-zinc-900 via-zinc-900/90 to-zinc-800">
+                                  <div className="text-center px-4">
+                                    <p className="text-sm font-bold text-zinc-200">{project.name}</p>
+                                    <p className="text-xs text-zinc-500 mt-1">Preview unavailable - open repo for details</p>
+                                  </div>
+                                </div>
+                              )}
+                              
+                              {project.demo && !(project as any).dashboardSrc && !previewFailed && (
+                                <a
+                                  href={project.demo}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="absolute top-2 right-2 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-600/80 border border-emerald-500/40 text-xs font-bold text-white hover:bg-emerald-500 transition-colors z-10"
+                                >
+                                  <span className="pulse-dot" aria-hidden="true" />
+                                  {project.demoLabel || "Live"}
+                                  <ExternalLink className="w-3 h-3" />
+                                </a>
+                              )}
                             </div>
                           )}
-                          {project.demo && !previewFailed && (
-                            <a
-                              href={project.demo}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="absolute top-2 right-2 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-600/80 border border-emerald-500/40 text-xs font-bold text-white hover:bg-emerald-500 transition-colors z-10"
-                            >
-                              <span className="pulse-dot" aria-hidden="true" />
-                              {project.demoLabel || "Live"}
-                              <ExternalLink className="w-3 h-3" />
-                            </a>
+
+                          {/* Dashboard Sub-card */}
+                          {(project as any).dashboardSrc && (
+                            <div className={`relative w-full overflow-hidden bg-black/40 rounded-2xl border border-white/5 ${
+                              (project as any).previewType !== "none" ? "h-[200px] sm:h-[250px]" : "h-[416px] sm:h-[516px]"
+                            }`}>
+                              <iframe
+                                src={(project as any).dashboardSrc}
+                                className={`w-full h-full border-0 ${
+                                  project.id === 'warn' ? 'scale-[0.85] origin-top-left' : ''
+                                }`}
+                                style={project.id === 'warn' ? { width: "117%", height: "100%", minHeight: "600px", pointerEvents: "auto" } : { pointerEvents: "auto" }}
+                                loading="lazy"
+                                title={`${project.name} live dashboard`}
+                                sandbox="allow-scripts allow-same-origin"
+                                onError={() => {
+                                  setFailedPreviews((prev) => ({ ...prev, [`${project.id}-dash`]: true }));
+                                }}
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/20 pointer-events-none" />
+                              {project.demo && (
+                                <a
+                                  href={project.demo}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="absolute top-2 right-2 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-600/80 border border-emerald-500/40 text-xs font-bold text-white hover:bg-emerald-500 transition-colors z-10 shadow-lg backdrop-blur-md"
+                                >
+                                  <span className="pulse-dot" aria-hidden="true" />
+                                  {project.demoLabel || "Live Dashboard"}
+                                  <ExternalLink className="w-3 h-3" />
+                                </a>
+                              )}
+                            </div>
                           )}
                         </div>
                       )}

@@ -207,8 +207,8 @@ export const projectsData = [
     accent: "blue",
     blogSlug: "california-warn-story",
     // iframe embed of live dashboard
-    previewType: "iframe" as const,
-    previewSrc: "https://bilalahamad0.github.io/warn/",
+    previewType: "none" as const,
+    dashboardSrc: "https://bilalahamad0.github.io/warn/",
     thumbnail: "https://opengraph.githubassets.com/1/bilalahamad0/warn",
     thumbnailAlt: "California Live Layoff Monitoring Dashboard — interactive charts",
     thumbnailType: "screenshot" as const,
@@ -233,6 +233,7 @@ export const projectsData = [
     // YouTube demo
     previewType: "youtube" as const,
     previewSrc: "https://www.youtube.com/embed/GETyDnvZWog",
+    dashboardSrc: "https://bilalahamad0.github.io/adhan-api/dashboard.html",
     thumbnail: "/videos/The_Architecture_of_Automation.mp4",
     thumbnailAlt: "Smart-Home IoT Audio Caster system flow animation",
     thumbnailType: "video" as const,
