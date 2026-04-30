@@ -207,12 +207,13 @@ export const projectsData = [
     gradient: "from-blue-600/20 via-blue-500/10 to-transparent",
     accent: "blue",
     blogSlug: "california-warn-story",
-    // iframe embed of live dashboard
-    previewType: "none" as const,
+    // YouTube demo + silent looping video thumbnail
+    previewType: "youtube" as const,
+    previewSrc: "https://www.youtube.com/embed/s5pSbdQyYM8",
     dashboardSrc: "https://bilalahamad0.github.io/warn/",
-    thumbnail: "https://opengraph.githubassets.com/1/bilalahamad0/warn",
+    thumbnail: "/videos/California_Live_Layoff_Monitoring_Dashboard.mp4",
     thumbnailAlt: "California Live Layoff Monitoring Dashboard — interactive charts",
-    thumbnailType: "screenshot" as const,
+    thumbnailType: "video" as const,
   },
   {
     id: "adhan",
