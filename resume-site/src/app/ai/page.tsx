@@ -172,7 +172,7 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
 async function getDynamicMetrics(): Promise<Record<string, AIMetrics>> {
   try {
     const res = await fetch(`${SITE_URL}/api/ai-metrics`, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 0 },
     });
     if (!res.ok) return {};
     return (await res.json()) as Record<string, AIMetrics>;

@@ -41,11 +41,11 @@ async function fetchMetrics(projectId: string): Promise<AIMetrics | null> {
   const repo = REPO_MAP[projectId];
   if (!repo) return null;
 
-  const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${repo}/main/ai-metrics.json`;
+  const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${repo}/main/ai-metrics.json?t=${Date.now()}`;
 
   try {
     const res = await fetch(url, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 0 },
       headers: { "User-Agent": "bilal-portfolio/1.0" },
     });
     if (!res.ok) return null;
@@ -59,7 +59,6 @@ async function fetchMetrics(projectId: string): Promise<AIMetrics | null> {
  * GET /api/ai-metrics
  * Fetches ai-metrics.json sidecar files from each repo's GitHub raw URL.
  * Returns only successfully fetched metrics — the client merges with static fallback data.
- * Cached for 1 hour at the edge.
  */
 export async function GET() {
   const projectIds = Object.keys(REPO_MAP);
@@ -78,7 +77,7 @@ export async function GET() {
 
   return NextResponse.json(metricsMap, {
     headers: {
-      "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=7200",
+      "Cache-Control": "no-store, max-age=0, must-revalidate",
     },
   });
 }
