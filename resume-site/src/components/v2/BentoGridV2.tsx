@@ -24,27 +24,6 @@ export interface Repository {
   language: string | null;
 }
 
-const WARN_SNIPPET = `def download_xlsx(force: bool = False):
-    """Download WARN XLSX with ETag caching."""
-    meta = _load_meta()
-    headers = {"User-Agent": "WARNMonitor/2.0"}
-    if not force and meta.get("etag"):
-        headers["If-None-Match"] = meta["etag"]
-    
-    resp = requests.get(WARN_XLSX_URL, headers=headers)
-    if resp.status_code == 304: 
-        return False, str(LOCAL_XLSX)
-
-    LOCAL_XLSX.write_bytes(resp.content)
-    new_hash = _file_hash(LOCAL_XLSX)
-    
-    meta.update({
-        "etag": resp.headers.get("ETag", ""),
-        "file_hash": new_hash,
-        "last_checked": datetime.utcnow().isoformat()
-    })
-    _save_meta(meta)
-    return True, str(LOCAL_XLSX)`;
 
 const CORE_FOCUS_TAGS = [
   "FIRMWARE QUALITY GOVERNANCE",
@@ -64,8 +43,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
   const [awardLightbox, setAwardLightbox] = useState<string | null>(null);
   const [videoLightbox, setVideoLightbox] = useState<string | null>(null);
   const [repos, setRepos] = useState<Repository[]>([]);
-  const [showWarnCode, setShowWarnCode] = useState(false);
-  const [warnDashboardExpanded, setWarnDashboardExpanded] = useState(false);
+
   const [smartLimit, setSmartLimit] = useState(6);
   const rightColumnRef = useRef<HTMLDivElement>(null);
   const reelRef = useRef<HTMLDivElement>(null);
@@ -905,86 +883,32 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                       ))}
                     </div>
 
-                    <div className="flex gap-4 pt-2">
-                      <button
-                        onClick={() => setWarnDashboardExpanded(!warnDashboardExpanded)}
-                        className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold uppercase tracking-widest transition-all ${warnDashboardExpanded ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25' : 'bg-white/5 text-zinc-400 hover:bg-white/10'}`}
-                      >
-                        <Eye className="w-4 h-4" />
-                        {warnDashboardExpanded ? 'Minimize Dashboard' : 'View Full Dashboard'}
-                      </button>
-                      <button
-                        onClick={() => setShowWarnCode(!showWarnCode)}
-                        className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold uppercase tracking-widest transition-all ${showWarnCode ? 'bg-zinc-800 text-emerald-400 border border-emerald-500/30' : 'bg-white/5 text-zinc-400 hover:bg-white/10'}`}
-                      >
-                        <FileCode className="w-4 h-4" />
-                        {showWarnCode ? 'Hide Snippet' : 'View Core Logic'}
-                      </button>
+                    <div className="pt-2 flex items-center gap-2 text-blue-500 font-black text-[10px] uppercase tracking-[0.2em]">
+                      <Monitor className="w-4 h-4" /> Production Ready Output
                     </div>
                   </div>
 
-                  {/* Interactive Multi-View Container */}
-                  <div className={`relative w-full overflow-hidden rounded-3xl border border-white/5 bg-black/40 backdrop-blur-xl transition-all duration-700 ease-in-out ${warnDashboardExpanded ? 'h-[800px]' : (showWarnCode ? 'h-[450px]' : 'h-[500px]')}`}>
-                    <AnimatePresence mode="wait">
-                      {showWarnCode ? (
-                        <motion.div
-                          key="code"
-                          initial={{ opacity: 0, x: 20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: -20 }}
-                          className="absolute inset-0 p-8 overflow-auto custom-scrollbar"
-                        >
-                          <div className="flex items-center justify-between mb-4 border-b border-white/10 pb-4">
-                            <span className="text-[10px] font-black text-emerald-500 uppercase tracking-[0.2em]">Robust Scraper Logic / Python</span>
-                            <div className="flex gap-1.5">
-                              <div className="w-2.5 h-2.5 rounded-full bg-red-500/50" />
-                              <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/50" />
-                              <div className="w-2.5 h-2.5 rounded-full bg-green-500/50" />
-                            </div>
-                          </div>
-                          <pre className="text-xs font-mono text-zinc-300 leading-relaxed">
-                            <code className="language-python">
-                              {WARN_SNIPPET.split('\n').map((line, i) => (
-                                <div key={i} className="flex gap-4 hover:bg-white/5 transition-colors group px-2 py-0.5">
-                                  <span className="text-zinc-700 w-4 select-none group-hover:text-zinc-500">{i + 1}</span>
-                                  <span dangerouslySetInnerHTML={{
-                                    __html: line
-                                      .replace(/def |if |return |import /g, '<span className="text-purple-400">$&</span>')
-                                      .replace(/""".*"""/g, '<span className="text-zinc-500">$&</span>')
-                                      .replace(/requests|meta|LOCAL_XLSX/g, '<span className="text-blue-400">$&</span>')
-                                      .replace(/'.*'/g, '<span className="text-emerald-400">$&</span>')
-                                  }} />
-                                </div>
-                              ))}
-                            </code>
-                          </pre>
-                        </motion.div>
-                      ) : (
-                        <motion.div
-                          key="dashboard"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          className="h-full w-full"
-                        >
-                          <iframe
-                            src="https://bilalahamad0.github.io/warn/"
-                            className="w-full h-full border-none transition-all duration-700"
-                            style={{
-                              transform: !warnDashboardExpanded ? 'translateY(-260px)' : 'translateY(0)',
-                              height: !warnDashboardExpanded ? 'calc(100% + 260px)' : '100%'
-                            }}
-                            title="California Live Layoff Monitoring Dashboard"
-                            loading="lazy"
-                          />
-                          {!warnDashboardExpanded && (
-                            <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black to-transparent pointer-events-none flex items-end justify-center pb-6">
-                              <span className="text-[10px] font-bold text-white/40 uppercase tracking-[0.3em]">Scroll to explore or expand for full view</span>
-                            </div>
-                          )}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                  <div 
+                    className="relative w-full h-[500px] overflow-hidden rounded-3xl border border-white/5 bg-black/20 group/img shadow-2xl cursor-pointer"
+                    onClick={() => setVideoLightbox("https://www.youtube.com/embed/s5pSbdQyYM8")}
+                  >
+                    <video
+                      src="/videos/California_Live_Layoff_Monitoring_Dashboard.mp4"
+                      className="w-full h-full object-contain bg-zinc-950 group-hover:scale-105 transition-transform duration-1000 p-4"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8 pointer-events-none">
+                      <p className="text-xs text-white/60 font-medium">Dashboard Flow: Exploring actionable data on California layoffs with full interactive capabilities.</p>
+                    </div>
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                       <div className="px-6 py-3 rounded-full bg-blue-500/80 backdrop-blur-md border border-white/20 font-black uppercase tracking-widest text-white shadow-xl flex items-center gap-2 group-hover:scale-105 group-hover:bg-blue-500 transition-all">
+                         <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                         Play Full Video
+                       </div>
+                    </div>
                   </div>
                 </div>
 

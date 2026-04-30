@@ -54,19 +54,7 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
       />
 
       {/* Thumbnail / live dashboard preview */}
-      {project.id === "warn" ? (
-        <div className={`relative w-full h-40 overflow-hidden ${ACCENT_BG[project.accent]}`}>
-          <iframe
-            src={(project as any).dashboardSrc}
-            className="w-full border-0 origin-top-left scale-[0.85]"
-            style={{ width: "117%", height: "220px", pointerEvents: "none" }}
-            loading="lazy"
-            title={`${project.name} live preview`}
-            sandbox="allow-scripts allow-same-origin"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/60 to-transparent pointer-events-none" />
-        </div>
-      ) : (project as unknown as { thumbnailType?: string }).thumbnailType === "video" ? (
+      {(project as unknown as { thumbnailType?: string }).thumbnailType === "video" ? (
         <div className={`relative w-full h-40 overflow-hidden ${ACCENT_BG[project.accent]}`}>
           <video
             src={project.thumbnail!}
