@@ -223,8 +223,8 @@ export default function ProjectsPage() {
             className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-3xl"
           >
             {[
-              { label: "Public Repos",  value: "4+" },
-              { label: "AI-Augmented",  value: "100%" },
+              { label: "Public Repos",  value: `${projectsData.length}+` },
+              { label: "AI-Augmented",  value: `${Math.round(projectsData.reduce((acc, p) => acc + (p.aiContribution || 0), 0) / projectsData.filter(p => p.aiContribution).length)}%` },
               { label: "Languages",     value: "5+" },
               { label: "Deployed Live", value: "3" },
             ].map(({ label, value }) => (
