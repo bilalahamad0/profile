@@ -164,8 +164,8 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
     cycle: "19 days",
     beforeAI: "Static HTML/CSS resume site",
     afterAI: "AI-native Next.js portfolio with Analytics & QA pipeline",
-    tests: 7,
-    testSuites: 3,
+    tests: 10,
+    testSuites: 5,
   },
 };
 
