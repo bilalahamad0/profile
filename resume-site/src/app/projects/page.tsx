@@ -429,7 +429,7 @@ export default function ProjectsPage() {
                                   className={`w-full h-full border-0 origin-top-left ${
                                     project.id === 'warn' ? '' : 'scale-[0.75] sm:scale-[0.80]'
                                   }`}
-                                  style={project.id === 'warn' ? { width: "117%", height: "100%", minHeight: "1200px", pointerEvents: "auto", transform: "scale(0.85) translateY(-530px)" } : { width: "133%", height: "133%", pointerEvents: "auto" }}
+                                  style={project.id === 'warn' ? { width: "117%", height: "100%", minHeight: "1200px", pointerEvents: "auto", transform: "scale(0.85) translateY(-570px)" } : { width: "133%", height: "133%", pointerEvents: "auto" }}
                                   loading="lazy"
                                   title={`${project.name} live dashboard`}
                                   sandbox="allow-scripts allow-same-origin"
