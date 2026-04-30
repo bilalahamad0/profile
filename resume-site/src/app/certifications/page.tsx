@@ -115,17 +115,6 @@ const SPECIALIZATION: SpecializationData = {
 
 const AI_CERTIFICATES: GalleryCertificate[] = [
   {
-    id: "ai-1",
-    title: "AI Coding Agents with GitHub Copilot and Cursor",
-    issuer: "LinkedIn Learning",
-    date: "2025",
-    image: "/certificates/ai_coding_agents_thumb.jpg",
-    url: "https://www.linkedin.com/learning/certificates/fa26c3fb8c3d86ba367271e666d1f5e54e0752eb73aff59ffb4e22a1c6b4d879",
-    logo: "/logos/linkedin.png",
-    description: "Deep dive into leveraging AI agents, GitHub Copilot, and Cursor for accelerated software development.",
-    gradient: "from-blue-600/20 to-purple-600/20"
-  },
-  {
     id: "ai-2",
     title: "Software Testing Foundations: Integrating AI into the Quality Process",
     issuer: "LinkedIn Learning",
@@ -135,6 +124,17 @@ const AI_CERTIFICATES: GalleryCertificate[] = [
     logo: "/logos/linkedin.png",
     description: "Modernizing QA workflows by integrating Generative AI into test planning, execution, and reporting.",
     gradient: "from-emerald-600/20 to-teal-600/20"
+  },
+  {
+    id: "ai-1",
+    title: "AI Coding Agents with GitHub Copilot and Cursor",
+    issuer: "LinkedIn Learning",
+    date: "2025",
+    image: "/certificates/ai_coding_agents_thumb.jpg",
+    url: "https://www.linkedin.com/learning/certificates/fa26c3fb8c3d86ba367271e666d1f5e54e0752eb73aff59ffb4e22a1c6b4d879",
+    logo: "/logos/linkedin.png",
+    description: "Deep dive into leveraging AI agents, GitHub Copilot, and Cursor for accelerated software development.",
+    gradient: "from-blue-600/20 to-purple-600/20"
   },
   {
     id: "ai-3",
