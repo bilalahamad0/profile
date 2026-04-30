@@ -172,6 +172,7 @@ export const skills = [
 ];
 
 export const certs = [
+  "Google AI Essentials Specialization — 5 Courses (Google · Coursera, 2026)",
   "Software Testing Foundations: Integrating AI into Quality Process (2026)",
   "AI Coding Agents with GitHub Copilot and Cursor (2025)",
   "AI for App building (2026)",
