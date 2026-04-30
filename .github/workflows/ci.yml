@@ -52,7 +52,11 @@ jobs:
       - name: Install Playwright Browsers
         working-directory: ./resume-site
         run: npx playwright install --with-deps
-        
+
+      - name: Build Next.js (required for `next start` webServer)
+        working-directory: ./resume-site
+        run: npm run build
+
       - name: Run Playwright Tests
         working-directory: ./resume-site
         run: npx playwright test
@@ -81,6 +85,13 @@ jobs:
         working-directory: ./resume-site
         run: npm ci
 
+      # lost-pixel bundles its own playwright-core (v1.47.2 → chromium build 1134)
+      # which is a different version from @playwright/test installed at the top level.
+      # Install via lost-pixel's bundled binary so the right Chromium revision is fetched.
+      - name: Install Playwright Chromium for lost-pixel
+        working-directory: ./resume-site
+        run: node ./node_modules/lost-pixel/node_modules/playwright-core/cli.js install --with-deps chromium
+
       - name: Build Next.js
         working-directory: ./resume-site
         run: npm run build
@@ -88,6 +99,6 @@ jobs:
       - name: Start Next.js server & Run Lost-Pixel
         working-directory: ./resume-site
         run: |
-          npm run start & 
+          npm run start &
           npx wait-on http://localhost:3000
           npx lost-pixel
