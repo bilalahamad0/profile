@@ -408,7 +408,7 @@ export default function ProjectsPage() {
                                     style={{ 
                                       width: '133%', 
                                       height: '180%', 
-                                      transform: 'scale(0.75) translateY(-65px)',
+                                      transform: 'scale(0.75) translateY(-80px)',
                                       transformOrigin: 'top left',
                                       pointerEvents: 'auto',
                                       position: 'absolute',
@@ -429,7 +429,7 @@ export default function ProjectsPage() {
                                   className={`w-full h-full border-0 origin-top-left ${
                                     project.id === 'warn' ? '' : 'scale-[0.75] sm:scale-[0.80]'
                                   }`}
-                                  style={project.id === 'warn' ? { width: "117%", height: "100%", minHeight: "1200px", pointerEvents: "auto", transform: "scale(0.85) translateY(-650px)" } : { width: "133%", height: "133%", pointerEvents: "auto" }}
+                                  style={project.id === 'warn' ? { width: "117%", height: "100%", minHeight: "1200px", pointerEvents: "auto", transform: "scale(0.85) translateY(-675px)" } : { width: "133%", height: "133%", pointerEvents: "auto" }}
                                   loading="lazy"
                                   title={`${project.name} live dashboard`}
                                   sandbox="allow-scripts allow-same-origin"
