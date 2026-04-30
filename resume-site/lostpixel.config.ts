@@ -5,9 +5,9 @@ export const config: CustomProjectConfig = {
     pages: [
       { path: '/', name: 'home-desktop' },
       { path: '/projects', name: 'projects-desktop' },
-      { path: '/blog', name: 'blog-desktop' }
+      { path: '/blog', name: 'blog-desktop' },
+      { path: '/certifications', name: 'certifications-desktop' },
     ],
-    pagesJsonUrl: 'http://localhost:3000',
     baseUrl: 'http://localhost:3000',
   },
   generateOnly: true,
