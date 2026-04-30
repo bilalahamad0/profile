@@ -16,6 +16,7 @@ import {
   ArrowRight,
   CheckCircle2,
   GitBranch,
+  ChevronDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trackEvent } from "@/components/analytics/google-analytics";
@@ -43,7 +44,6 @@ type SpecializationData = {
   date: string;
   url: string;
   logo: string;
-  coLogo: string;
   description: string;
   totalCourses: number;
   image: string | null;
@@ -80,11 +80,10 @@ const SPECIALIZATION: SpecializationData = {
   date: "2026",
   url: "https://www.coursera.org/account/accomplishments/specialization/0YNZJF3R5PJA",
   logo: "/logos/google.png",
-  coLogo: "/logos/coursera.png",
   description:
     "Google's flagship 5-course specialization on practical AI literacy: foundations, productivity, prompting, responsible use, and staying current.",
   totalCourses: 5,
-  image: null,
+  image: "/certificates/google_ai_essentials_thumb.jpg",
   gradient: "from-blue-600/25 via-indigo-500/15 to-purple-600/25",
   children: [
     {
@@ -309,6 +308,7 @@ export default function CertificationsPage() {
   const [selectedCert, setSelectedCert] = useState<GalleryCertificate | null>(
     null
   );
+  const [coursesExpanded, setCoursesExpanded] = useState(false);
   const handleCertificateClick = (cert: GalleryCertificate) => {
     if (cert.url) {
       trackEvent("verify_certificate", {
@@ -402,71 +402,80 @@ export default function CertificationsPage() {
                 aria-hidden
               />
               <div className="relative flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-                <div className="flex flex-wrap items-start gap-3">
-                  <div className="flex gap-2">
-                    <div className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/5 p-1.5">
-                      <Image
-                        src={SPECIALIZATION.logo}
-                        alt="Google"
-                        width={28}
-                        height={28}
-                        className="object-contain"
-                      />
-                    </div>
-                    <div className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/5 p-1.5">
-                      <Image
-                        src={SPECIALIZATION.coLogo}
-                        alt="Coursera"
-                        width={28}
-                        height={28}
-                        className="object-contain"
-                      />
-                    </div>
+                <div className="flex items-center gap-3">
+                  <div className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/5 p-1.5">
+                    <Image
+                      src={SPECIALIZATION.logo}
+                      alt="Google"
+                      width={28}
+                      height={28}
+                      className="object-contain"
+                    />
                   </div>
-                </div>
-                <div className="inline-flex md:hidden">
-                  <div className="flex items-center gap-1.5 rounded-full border border-purple-500/20 bg-purple-500/10 px-3 py-1 shadow-sm backdrop-blur-sm">
-                    <Sparkles className="h-3.5 w-3.5 fill-purple-400/20 text-purple-400" />
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-purple-300">
-                      5-Course Specialization · Complete
-                    </span>
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-widest text-blue-400">
+                      {SPECIALIZATION.issuer}
+                    </p>
+                    <p className="flex items-center gap-1.5 text-[11px] uppercase tracking-tighter text-white/30">
+                      <Calendar className="h-3 w-3" aria-hidden />
+                      {SPECIALIZATION.date}
+                    </p>
                   </div>
                 </div>
               </div>
 
-              <div className="relative mt-6 flex flex-col gap-4 md:mt-4">
+              <div className="relative mt-6 flex flex-col gap-5 md:mt-4">
                 {SPECIALIZATION.image ? (
-                  <div className="relative mb-2 aspect-[1.6/1] w-full max-w-lg overflow-hidden rounded-2xl border border-white/10 bg-black/20 ring-1 ring-white/5">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      openVerifyUrl(SPECIALIZATION.url, {
+                        title: SPECIALIZATION.title,
+                        issuer: SPECIALIZATION.issuer,
+                        specialization: SPECIALIZATION.title,
+                      })
+                    }
+                    aria-label={`View ${SPECIALIZATION.title} certificate on Coursera`}
+                    className="group/thumb relative mb-1 block aspect-[1.91/1] w-full max-w-2xl cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-black/20 ring-1 ring-white/5 transition-transform duration-300 hover:scale-[1.01]"
+                  >
                     <Image
                       src={SPECIALIZATION.image}
                       alt={`${SPECIALIZATION.title} certificate preview`}
                       fill
-                      className="object-contain"
-                      sizes="(max-width: 768px) 100vw, 32rem"
+                      className="object-contain transition-transform duration-700 group-hover/thumb:scale-105"
+                      sizes="(max-width: 768px) 100vw, 42rem"
                     />
-                  </div>
+                    {/* Ribbon: 🌟 AI Expert */}
+                    <div className="pointer-events-none absolute left-4 top-4 z-20 flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-gradient-to-r from-amber-500/95 via-yellow-400/95 to-amber-500/95 px-3 py-1.5 shadow-[0_4px_20px_-4px_rgba(251,191,36,0.6)] backdrop-blur-sm">
+                      <span className="text-sm leading-none" aria-hidden>🌟</span>
+                      <span className="text-[10px] font-black uppercase tracking-wider text-amber-950">
+                        AI Expert
+                      </span>
+                    </div>
+                    {/* Hover overlay: search icon, matches CertificateCard pattern */}
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover/thumb:opacity-100">
+                      <div className="flex translate-y-4 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2.5 backdrop-blur-md transition-transform duration-300 group-hover/thumb:translate-y-0">
+                        <ExternalLink className="h-4 w-4 text-white" aria-hidden />
+                        <span className="text-xs font-semibold uppercase tracking-wider text-white">
+                          View Certificate
+                        </span>
+                      </div>
+                    </div>
+                  </button>
                 ) : null}
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <h3 className="text-2xl font-bold leading-tight text-white md:text-3xl">
                     {SPECIALIZATION.title}
                   </h3>
-                  <div className="hidden md:inline-flex">
-                    <div className="flex items-center gap-1.5 rounded-full border border-purple-500/20 bg-purple-500/10 px-3 py-1 shadow-sm backdrop-blur-sm">
-                      <Sparkles className="h-3.5 w-3.5 fill-purple-400/20 text-purple-400" />
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-purple-300">
-                        5-Course Specialization · Complete
-                      </span>
-                    </div>
-                  </div>
                 </div>
                 <p className="max-w-2xl text-sm leading-relaxed text-zinc-400 md:text-base">
                   {SPECIALIZATION.description}
                 </p>
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="flex items-center gap-1.5 text-white/30">
-                    <Calendar className="h-3.5 w-3.5" aria-hidden />
-                    <span className="text-[11px] font-medium uppercase tracking-widest">
-                      {SPECIALIZATION.date}
+                  <div className="flex items-center gap-1.5 rounded-full border border-purple-500/20 bg-purple-500/10 px-3 py-1.5 shadow-sm backdrop-blur-sm">
+                    <Sparkles className="h-3.5 w-3.5 fill-purple-400/20 text-purple-400" />
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-purple-300">
+                      5-Course Specialization · Complete
                     </span>
                   </div>
                   <button
@@ -487,74 +496,108 @@ export default function CertificationsPage() {
               </div>
             </motion.div>
 
-            <div className="relative pl-1 md:pl-2">
-              <div
-                className="absolute bottom-12 left-[15px] top-2 w-px bg-gradient-to-b from-purple-500/50 via-blue-500/45 to-emerald-500/50 md:left-[19px]"
-                aria-hidden
-              />
-              <ul className="relative m-0 list-none space-y-8 p-0">
-                {SPECIALIZATION.children.map((child, index) => (
-                  <li key={child.step} className="relative">
-                    <motion.div
-                      initial={{ opacity: 0, x: -16 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.08 }}
-                      className="flex gap-4 md:gap-6"
-                    >
-                      <div className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-purple-500/40 bg-[#09090b] text-xs font-bold text-white shadow-[0_0_20px_-5px_rgba(168,85,247,0.35)] md:h-10 md:w-10 md:text-sm">
-                        {child.step}
-                      </div>
-                      <div className="min-w-0 flex-1 rounded-2xl border border-white/10 bg-white/[0.02] p-4 backdrop-blur-sm md:p-5">
-                        <div className="mb-2 flex flex-wrap items-start justify-between gap-3">
-                          <div className="min-w-0 flex-1">
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-white/35">
-                              Course {child.step} of {SPECIALIZATION.totalCourses}{" "}
-                              · Complete
-                            </p>
-                            <h4 className="mt-1 text-base font-semibold leading-snug text-white md:text-lg">
-                              {child.title}
-                            </h4>
-                          </div>
-                          <CheckCircle2
-                            className="h-5 w-5 shrink-0 text-emerald-400"
-                            aria-hidden
-                          />
-                        </div>
-                        <div className="flex flex-wrap items-center justify-end gap-2 border-t border-white/5 pt-3">
-                          <button
-                            type="button"
-                            onClick={() =>
-                              openVerifyUrl(child.url, {
-                                title: child.title,
-                                issuer: SPECIALIZATION.issuer,
-                                step: child.step,
-                                specialization: SPECIALIZATION.title,
-                              })
-                            }
-                            className="group/vc inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-blue-400 transition-colors hover:text-blue-300"
-                          >
-                            View certificate
-                            <ArrowRight className="h-3 w-3 transition-transform group-hover/vc:translate-x-0.5" />
-                          </button>
-                        </div>
-                      </div>
-                    </motion.div>
-                  </li>
-                ))}
-              </ul>
-
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="relative z-10 mt-2 flex items-center gap-2 pl-12 md:pl-14"
+            <div>
+              {/* Toggle row — always visible. Shows summary when collapsed, controls expansion. */}
+              <button
+                type="button"
+                onClick={() => {
+                  const next = !coursesExpanded;
+                  setCoursesExpanded(next);
+                  trackEvent("specialization_toggle_courses", {
+                    state: next ? "expanded" : "collapsed",
+                    specialization: SPECIALIZATION.title,
+                  });
+                }}
+                aria-expanded={coursesExpanded}
+                aria-controls="specialization-courses-list"
+                className="group/toggle flex w-full items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/[0.02] px-5 py-4 text-left backdrop-blur-sm transition-colors hover:border-white/20 hover:bg-white/[0.04]"
               >
-                <div className="flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-emerald-300">
-                  <CheckCircle2 className="h-3.5 w-3.5" aria-hidden />
-                  Specialization complete
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-emerald-300">
+                    <CheckCircle2 className="h-3.5 w-3.5" aria-hidden />
+                    All {SPECIALIZATION.totalCourses} courses complete
+                  </div>
+                  <span className="hidden text-xs font-medium text-white/50 sm:inline">
+                    {coursesExpanded
+                      ? "Hide individual course credentials"
+                      : "View individual course credentials"}
+                  </span>
                 </div>
-              </motion.div>
+                <ChevronDown
+                  className={cn(
+                    "h-5 w-5 shrink-0 text-white/60 transition-transform duration-300 group-hover/toggle:text-white",
+                    coursesExpanded && "rotate-180"
+                  )}
+                  aria-hidden
+                />
+              </button>
+
+              <AnimatePresence initial={false}>
+                {coursesExpanded && (
+                  <motion.div
+                    key="courses-list"
+                    id="specialization-courses-list"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <div className="relative mt-6 pl-1 md:pl-2">
+                      <div
+                        className="absolute bottom-2 left-[15px] top-2 w-px bg-gradient-to-b from-purple-500/50 via-blue-500/45 to-emerald-500/50 md:left-[19px]"
+                        aria-hidden
+                      />
+                      <ul className="relative m-0 list-none space-y-6 p-0">
+                        {SPECIALIZATION.children.map((child, index) => (
+                          <li key={child.step} className="relative">
+                            <motion.div
+                              initial={{ opacity: 0, x: -16 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: index * 0.06, duration: 0.3 }}
+                              className="flex gap-4 md:gap-6"
+                            >
+                              <div className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-purple-500/40 bg-[#09090b] text-xs font-bold text-white shadow-[0_0_20px_-5px_rgba(168,85,247,0.35)] md:h-10 md:w-10 md:text-sm">
+                                {child.step}
+                              </div>
+                              <div className="min-w-0 flex-1 rounded-2xl border border-white/10 bg-white/[0.02] p-4 backdrop-blur-sm md:p-5">
+                                <div className="flex flex-wrap items-center justify-between gap-3">
+                                  <div className="min-w-0 flex-1">
+                                    <h4 className="text-sm font-semibold leading-snug text-white md:text-base">
+                                      {child.title}
+                                    </h4>
+                                  </div>
+                                  <div className="flex items-center gap-3 shrink-0">
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        openVerifyUrl(child.url, {
+                                          title: child.title,
+                                          issuer: SPECIALIZATION.issuer,
+                                          step: child.step,
+                                          specialization: SPECIALIZATION.title,
+                                        })
+                                      }
+                                      className="group/vc inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-blue-400 transition-colors hover:text-blue-300"
+                                    >
+                                      Verify Certificate
+                                      <ExternalLink className="h-3 w-3 transition-transform group-hover/vc:translate-x-0.5" />
+                                    </button>
+                                    <CheckCircle2
+                                      className="h-4 w-4 shrink-0 text-emerald-400"
+                                      aria-hidden
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </motion.div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </section>
