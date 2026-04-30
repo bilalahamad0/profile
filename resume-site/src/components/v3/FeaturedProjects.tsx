@@ -54,7 +54,7 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
       />
 
       {/* Thumbnail / live dashboard preview */}
-      {(project as unknown as { thumbnailType?: string }).thumbnailType === "video" ? (
+      {(project as any).thumbnailType === "video" || project.thumbnail?.endsWith('.mp4') ? (
         <div className={`relative w-full h-40 overflow-hidden ${ACCENT_BG[project.accent]}`}>
           <video
             src={project.thumbnail!}

@@ -320,7 +320,7 @@ export default function ProjectsPage() {
                             <div className={`relative w-full overflow-hidden bg-black/40 rounded-2xl border border-white/5 ${
                               (project as any).dashboardSrc ? "h-[200px] sm:h-[250px]" : "h-[250px] sm:h-[300px]"
                             }`}>
-                              {!previewFailed && (project as any).previewType === "youtube" ? (
+                              {!previewFailed && ((project as any).previewType === "youtube" || (project as any).thumbnailType === "video" || project.thumbnail?.endsWith('.mp4')) ? (
                                 <div 
                                   className="relative w-full h-full cursor-pointer group/vid"
                                   onClick={() => setVideoLightbox((project as any).previewSrc)}
