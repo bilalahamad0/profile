@@ -162,6 +162,17 @@ const GENERAL_CERTIFICATES: GalleryCertificate[] = [
     gradient: "from-blue-600/10 to-blue-800/10"
   },
   {
+    id: "g-5",
+    title: "Project Management Foundations",
+    issuer: "LinkedIn Learning",
+    date: "2023",
+    image: "/certificates/pm_foundations_thumb.jpg",
+    url: "https://www.linkedin.com/learning/certificates/40f20e0a52eb64a04a875e3539cc0e0808b59c34059bc3738f87065ef29dc85c",
+    logo: "/logos/linkedin.png",
+    description: "Essential project management skills including planning, execution, and risk management.",
+    gradient: "from-indigo-600/10 to-violet-600/10"
+  },
+  {
     id: "g-2",
     title: "Scrum: Advanced",
     issuer: "LinkedIn Learning",
@@ -173,15 +184,15 @@ const GENERAL_CERTIFICATES: GalleryCertificate[] = [
     gradient: "from-orange-600/10 to-red-600/10"
   },
   {
-    id: "g-3",
-    title: "iOS App Development: Essential Courses",
+    id: "g-6",
+    title: "How to Master Your Executive Presence",
     issuer: "LinkedIn Learning",
-    date: "2023",
-    image: "/certificates/ios_app_dev_thumb.jpg",
-    url: "https://www.linkedin.com/learning/certificates/48129ec1213ef12a50ad1ef36e933e1ff1d47102c6a02910cbbfbd2459ebe81b",
+    date: "2024",
+    image: "/certificates/executive_presence_thumb.jpg",
+    url: "https://www.linkedin.com/learning/certificates/5df27e588af83322ebbb6cd0394d68155e9ca37642fa24f523ec0f804079a1af",
     logo: "/logos/linkedin.png",
-    description: "Comprehensive training in Swift, Xcode, and iOS development principles.",
-    gradient: "from-sky-600/10 to-blue-600/10"
+    description: "Developing leadership communication, confidence, and professional impact.",
+    gradient: "from-slate-600/10 to-zinc-600/10"
   },
   {
     id: "g-4",
@@ -195,26 +206,15 @@ const GENERAL_CERTIFICATES: GalleryCertificate[] = [
     gradient: "from-yellow-600/10 to-amber-600/10"
   },
   {
-    id: "g-5",
-    title: "Project Management Foundations",
+    id: "g-3",
+    title: "iOS App Development: Essential Courses",
     issuer: "LinkedIn Learning",
     date: "2023",
-    image: "/certificates/pm_foundations_thumb.jpg",
-    url: "https://www.linkedin.com/learning/certificates/40f20e0a52eb64a04a875e3539cc0e0808b59c34059bc3738f87065ef29dc85c",
+    image: "/certificates/ios_app_dev_thumb.jpg",
+    url: "https://www.linkedin.com/learning/certificates/48129ec1213ef12a50ad1ef36e933e1ff1d47102c6a02910cbbfbd2459ebe81b",
     logo: "/logos/linkedin.png",
-    description: "Essential project management skills including planning, execution, and risk management.",
-    gradient: "from-indigo-600/10 to-violet-600/10"
-  },
-  {
-    id: "g-6",
-    title: "How to Master Your Executive Presence",
-    issuer: "LinkedIn Learning",
-    date: "2024",
-    image: "/certificates/executive_presence_thumb.jpg",
-    url: "https://www.linkedin.com/learning/certificates/5df27e588af83322ebbb6cd0394d68155e9ca37642fa24f523ec0f804079a1af",
-    logo: "/logos/linkedin.png",
-    description: "Developing leadership communication, confidence, and professional impact.",
-    gradient: "from-slate-600/10 to-zinc-600/10"
+    description: "Comprehensive training in Swift, Xcode, and iOS development principles.",
+    gradient: "from-sky-600/10 to-blue-600/10"
   },
 ];
 
