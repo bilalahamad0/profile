@@ -475,50 +475,35 @@ export default function ProjectsPage() {
                       )}
 
                       {/* Footer */}
-                      <div className="mt-6 pt-6 border-t border-white/5 flex items-center justify-between">
-                        <div className="flex items-center gap-4 text-xs text-zinc-500">
-                          {repoData ? (
-                            <>
-                              <span className="flex items-center gap-1.5">
-                                <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500/80" aria-hidden="true" />
-                                {repoData.stars}
-                              </span>
-                              <span className="flex items-center gap-1.5">
-                                <GitFork className="w-3.5 h-3.5" aria-hidden="true" />
-                                {repoData.forks}
-                              </span>
-                            </>
-                          ) : (
-                            // Skeleton while loading
-                            <span className="skeleton h-4 w-20" />
-                          )}
-                          <span className="flex items-center gap-1.5">
-                            <Zap className="w-3.5 h-3.5 text-emerald-500" aria-hidden="true" />
-                            {project.impact}
+                      <div className="mt-6 pt-6 border-t border-white/5 flex items-start justify-between gap-4">
+                        <div className="flex items-start gap-4 text-xs text-zinc-500">
+                          <span className="flex items-start gap-1.5">
+                            <Zap className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" aria-hidden="true" />
+                            <span className="leading-relaxed">{project.impact}</span>
                           </span>
                         </div>
-                        <div className="flex gap-3">
+                        <div className="flex flex-wrap items-center justify-end gap-3 shrink-0">
                           <a
                             href={project.repo}
                             target="_blank"
                             rel="noreferrer"
-                            className="flex items-center gap-1.5 text-xs font-bold text-zinc-500 hover:text-white transition-colors"
+                            className="flex items-center gap-1.5 text-xs font-bold text-zinc-500 hover:text-white transition-colors whitespace-nowrap"
                           >
-                            <Github className="w-3.5 h-3.5" aria-hidden="true" /> GitHub
+                            <Github className="w-3.5 h-3.5 shrink-0" aria-hidden="true" /> GitHub
                           </a>
                           {project.blogSlug && (
                             <Link
                               href={`/blog/${project.blogSlug}`}
-                              className="flex items-center gap-1.5 text-xs font-bold text-zinc-500 hover:text-blue-400 transition-colors"
+                              className="flex items-center gap-1.5 text-xs font-bold text-zinc-500 hover:text-blue-400 transition-colors whitespace-nowrap"
                             >
-                              <BookOpen className="w-3.5 h-3.5" aria-hidden="true" /> Story
+                              <BookOpen className="w-3.5 h-3.5 shrink-0" aria-hidden="true" /> Story
                             </Link>
                           )}
                           <Link
                             href="/ai"
-                            className="flex items-center gap-1.5 text-xs font-bold text-zinc-500 hover:text-violet-400 transition-colors"
+                            className="flex items-center gap-1.5 text-xs font-bold text-zinc-500 hover:text-violet-400 transition-colors whitespace-nowrap"
                           >
-                            <Sparkles className="w-3.5 h-3.5" aria-hidden="true" /> AI Details
+                            <Sparkles className="w-3.5 h-3.5 shrink-0" aria-hidden="true" /> AI Details
                           </Link>
                         </div>
                       </div>
