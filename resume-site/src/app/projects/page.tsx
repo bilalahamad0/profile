@@ -307,28 +307,6 @@ export default function ProjectsPage() {
                           </h2>
                           <p className="text-sm text-zinc-400 mt-1">{project.tagline}</p>
                         </div>
-                        <div className="flex gap-2 ml-4">
-                          <a
-                            href={project.repo}
-                            target="_blank"
-                            rel="noreferrer"
-                            aria-label={`${project.name} GitHub repository`}
-                            className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-all"
-                          >
-                            <Github className="w-5 h-5" aria-hidden="true" />
-                          </a>
-                          {project.demo && (
-                            <a
-                              href={project.demo}
-                              target="_blank"
-                              rel="noreferrer"
-                              aria-label={`${project.name} — ${project.demoLabel || "Live"}`}
-                              className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-blue-500 hover:text-white transition-all"
-                            >
-                              <ExternalLink className="w-5 h-5" aria-hidden="true" />
-                            </a>
-                          )}
-                        </div>
                       </div>
 
                       {/* Description */}
@@ -520,6 +498,14 @@ export default function ProjectsPage() {
                           </span>
                         </div>
                         <div className="flex gap-3">
+                          <a
+                            href={project.repo}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="flex items-center gap-1.5 text-xs font-bold text-zinc-500 hover:text-white transition-colors"
+                          >
+                            <Github className="w-3.5 h-3.5" aria-hidden="true" /> GitHub
+                          </a>
                           {project.blogSlug && (
                             <Link
                               href={`/blog/${project.blogSlug}`}
