@@ -28,5 +28,7 @@
   "impact": "Full-stack portfolio deployed to production",
   "cycle": "19 active days",
   "beforeAI": "Static HTML/CSS resume site",
-  "afterAI": "AI-native Next.js portfolio with analytics"
+  "afterAI": "AI-native Next.js portfolio with analytics",
+  "tests": 7,
+  "testSuites": 3
 }
