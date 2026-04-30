@@ -203,7 +203,7 @@ export function ResumeReel() {
     <div ref={containerRef} className="md:hidden w-full flex flex-col items-center py-12 px-6 gap-6">
       {/* Label */}
       <div className="text-center">
-        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-600 mb-2">Career Reel</p>
+        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 mb-2">Career Reel</p>
         <h2 className="text-lg font-black text-white/80 tracking-tight">Tap sides · Auto-plays · Swipe</h2>
       </div>
 
@@ -370,7 +370,7 @@ export function ResumeReel() {
 
       {/* CTA below reel */}
       <div className="flex flex-col items-center gap-3 text-center">
-        <p className="text-xs text-zinc-600">Desktop view has the full interactive experience</p>
+        <p className="text-xs text-zinc-400">Desktop view has the full interactive experience</p>
         <Link href="/experience" className="flex items-center gap-1.5 text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors">
           Full Timeline <ChevronRight className="w-3.5 h-3.5" />
         </Link>

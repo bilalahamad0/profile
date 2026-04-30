@@ -133,6 +133,32 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
     beforeAI: "Manual Python script, ran per request",
     afterAI: "Event-driven E2E billing automation",
   },
+  profile: {
+    projectId: "profile",
+    lastUpdated: "2026-04-30",
+    aiContribution: 85,
+    agents: [
+      {
+        name: "Antigravity",
+        provider: "Google DeepMind",
+        period: "Apr 2026",
+        models: ["Gemini 3.1 Pro (High)"],
+        tokens: 300000,
+        role: "Full-Stack QA & Testing Suite Pipeline",
+      }
+    ],
+    totalTokens: 500000,
+    totalCommits: 250,
+    linesOfCode: 15000,
+    devCycleDays: 3,
+    manualEstimateDays: 14,
+    impact: "Full-stack portfolio deployed to production with full CI/CD QA Pipeline",
+    cycle: "3 days",
+    beforeAI: "Static HTML/CSS resume site",
+    afterAI: "AI-native Next.js portfolio with Analytics & QA pipeline",
+    tests: 7,
+    testSuites: 3,
+  },
 };
 
 async function getDynamicMetrics(): Promise<Record<string, AIMetrics>> {

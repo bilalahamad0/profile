@@ -285,7 +285,7 @@ export function HeroPortfolio() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="pt-10 mt-8 border-t border-white/[0.05]"
         >
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-6 relative inline-block">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 mb-6 relative inline-block">
             Engineering experience at
             <span className="absolute -bottom-2 left-0 w-8 h-px bg-violet-500/50" />
           </p>

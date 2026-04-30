@@ -54,18 +54,18 @@ export function Footer() {
               <span className="text-xl font-black tracking-tight text-white group-hover:text-blue-400 transition-colors">
                 Bilal Ahamad
               </span>
-              <span className="text-xs font-semibold tracking-[0.2em] uppercase text-zinc-500 mt-0.5">
+              <span className="text-xs font-semibold tracking-[0.2em] uppercase text-zinc-400 mt-0.5">
                 Technical QA Lead
               </span>
             </Link>
 
-            <p className="text-sm text-zinc-500 leading-relaxed max-w-xs">
+            <p className="text-sm text-zinc-400 leading-relaxed max-w-xs">
               18+ years engineering quality at Amazon, Google, Rivian, Cruise, and Samsara.
             </p>
 
             {!isHome && (
               <>
-                <p className="text-xs text-zinc-600 flex items-center gap-1.5">
+                <p className="text-xs text-zinc-400 flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5 text-zinc-700" />
                   Sunnyvale, CA · Open to Remote & Bay Area
                 </p>
@@ -83,7 +83,7 @@ export function Footer() {
 
           {/* Navigation column */}
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-zinc-600 mb-5">
+            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-zinc-400 mb-5">
               Navigation
             </p>
             <nav aria-label="Footer navigation">
@@ -105,7 +105,7 @@ export function Footer() {
 
           {/* Connect column */}
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-zinc-600 mb-5">
+            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-zinc-400 mb-5">
               Connect
             </p>
             <ul className="space-y-3">
@@ -117,7 +117,7 @@ export function Footer() {
                     rel={href.startsWith("mailto") ? undefined : "noreferrer noopener"}
                     className="flex items-center gap-2.5 text-sm font-medium text-zinc-400 hover:text-white transition-colors group"
                   >
-                    <Icon className="w-4 h-4 shrink-0 text-zinc-600 group-hover:text-blue-400 transition-colors" />
+                    <Icon className="w-4 h-4 shrink-0 text-zinc-400 group-hover:text-blue-400 transition-colors" />
                     {label}
                   </a>
                 </li>
@@ -143,7 +143,7 @@ export function Footer() {
         <div className="h-px w-full bg-white/5 mb-8" />
 
         {/* Bottom bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-600">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-400">
           <p>
             &copy; {year} Bilal Ahamad · All rights reserved
           </p>

@@ -53,7 +53,7 @@ export function NavbarV2() {
           <span className="text-[9.5px] sm:text-[13px] font-black tracking-widest uppercase text-white leading-none">
             BILAL
           </span>
-          <span className="text-[6.5px] sm:text-[9px] font-semibold tracking-[0.2em] uppercase text-zinc-500 leading-none mt-0.5">
+          <span className="text-[6.5px] sm:text-[9px] font-semibold tracking-[0.2em] uppercase text-zinc-400 leading-none mt-0.5">
             AHAMAD
           </span>
         </Link>
