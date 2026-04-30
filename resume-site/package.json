@@ -49,7 +49,7 @@
     "bundle-stats-webpack-plugin": "^4.0.7",
     "depcheck": "^1.4.7",
     "eslint": "^9",
-    "eslint-config-next": "^16.2.2",
+    "eslint-config-next": "^16.2.4",
     "happy-dom": "^20.9.0",
     "jsdom": "^27.0.1",
     "lost-pixel": "^3.22.0",
