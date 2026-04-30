@@ -154,7 +154,7 @@ const GENERAL_CERTIFICATES: GalleryCertificate[] = [
     id: "g-1",
     title: "ISTQB Foundation Level",
     issuer: "ISTQB® - International Software Testing Qualifications Board",
-    date: "2023",
+    date: "2011",
     image: "/certificates/istqb.jpg",
     url: null,
     logo: "/logos/istqb.png",
