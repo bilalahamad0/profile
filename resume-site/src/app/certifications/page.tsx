@@ -36,19 +36,30 @@ type GalleryCertificate = {
   officialBadge?: string;
 };
 
-type SpecializationChild = { step: number; title: string; url: string };
+type CredlyBadgeRef = { image: string; credlyUrl: string };
+
+type SpecializationChild = {
+  step: number;
+  title: string;
+  url: string;
+  badge: CredlyBadgeRef;
+};
 
 type SpecializationData = {
   id: string;
-  title: string;
+  headingId: string;
+  testId: string;
+  titleLines: [string, string]; // line 1 (name), line 2 (journey count)
   issuer: string;
   date: string;
   url: string;
   logo: string;
   description: string;
   totalCourses: number;
-  image: string | null;
+  image: string;
   gradient: string;
+  childrenLayout: "list" | "badges";
+  parentBadge: CredlyBadgeRef;
   children: SpecializationChild[];
 };
 
@@ -72,48 +83,190 @@ function openVerifyUrl(
   window.open(url, "_blank", "noopener,noreferrer");
 }
 
+function openBadgeUrl(
+  url: string,
+  meta: { title: string; specialization: string; step?: number }
+) {
+  trackEvent("verify_badge", {
+    title: meta.title,
+    provider: "Credly",
+    specialization: meta.specialization,
+    ...(meta.step !== undefined && { course_step: String(meta.step) }),
+  });
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
 // --- DATA ---
 
-const SPECIALIZATION: SpecializationData = {
-  id: "spec-google-ai-essentials",
-  title: "Google AI Essentials",
-  issuer: "Google · Coursera",
-  date: "2026",
-  url: "https://www.coursera.org/account/accomplishments/specialization/0YNZJF3R5PJA",
-  logo: "/logos/google.png",
-  description:
-    "Google's flagship 5-course specialization on practical AI literacy: foundations, productivity, prompting, responsible use, and staying current.",
-  totalCourses: 5,
-  image: "/certificates/google_ai_essentials_thumb.jpg",
-  gradient: "from-blue-600/25 via-indigo-500/15 to-purple-600/25",
-  children: [
-    {
-      step: 1,
-      title: "Introduction to AI",
-      url: "https://www.coursera.org/account/accomplishments/verify/IP7EYX7EZ8UK",
+const SPECIALIZATIONS: SpecializationData[] = [
+  // Reverse chronology — newer / more advanced first.
+  {
+    id: "spec-google-ai-professional",
+    headingId: "specialization-path-heading-professional",
+    testId: "specialization-courses-list-professional",
+    titleLines: ["Google AI Professional Certificate", "7-Course Journey"],
+    issuer: "Google · Coursera",
+    date: "2026",
+    url: "https://www.coursera.org/account/accomplishments/specialization/1B8PEYYE6E6R",
+    logo: "/logos/google.png",
+    description:
+      "Google's applied 7-course professional certificate built around real workplace use cases — a full progression from AI fundamentals through brainstorming, research, communication, content creation, data analysis, and app building, with each course backed by its own verified credential.",
+    totalCourses: 7,
+    image: "/certificates/google_ai_professional_certificate_thumb.jpg",
+    gradient: "from-emerald-600/25 via-teal-500/15 to-cyan-600/25",
+    childrenLayout: "badges",
+    parentBadge: {
+      image: "/badges/google-ai-professional-certificate.png",
+      credlyUrl:
+        "https://www.credly.com/badges/e8f05e71-435e-4a62-85fd-4df4f7c3d3fa/public_url",
     },
-    {
-      step: 2,
-      title: "Maximize Productivity With AI Tools",
-      url: "https://www.coursera.org/account/accomplishments/verify/FE9LE6HDIIZ7",
+    children: [
+      {
+        step: 1,
+        title: "AI Fundamentals",
+        url: "https://www.coursera.org/account/accomplishments/verify/M0X9KDJN1WFF",
+        badge: {
+          image: "/badges/google-ai-fundamentals.png",
+          credlyUrl:
+            "https://www.credly.com/badges/619780f5-f2e2-4940-b763-7a7cdd030b08/public_url",
+        },
+      },
+      {
+        step: 2,
+        title: "AI for Brainstorming and Planning",
+        url: "https://www.coursera.org/account/accomplishments/verify/Q4I2O6VG28G6",
+        badge: {
+          image: "/badges/google-ai-for-brainstorming-and-planning.png",
+          credlyUrl:
+            "https://www.credly.com/badges/da284132-9239-4a87-98fe-01084e9520ff/public_url",
+        },
+      },
+      {
+        step: 3,
+        title: "AI for Research and Insights",
+        url: "https://www.coursera.org/account/accomplishments/verify/H0XC4TW5TNG1",
+        badge: {
+          image: "/badges/google-ai-for-research-and-insights.png",
+          credlyUrl:
+            "https://www.credly.com/badges/2ff83a72-160e-4618-a78d-a685ee66b0d1/public_url",
+        },
+      },
+      {
+        step: 4,
+        title: "AI for Writing and Communicating",
+        url: "https://www.coursera.org/account/accomplishments/verify/8P1LT7PMQAWN",
+        badge: {
+          image: "/badges/google-ai-for-writing-and-communicating.png",
+          credlyUrl:
+            "https://www.credly.com/badges/45c84b15-6840-4f01-a414-8fcbc95680e1/public_url",
+        },
+      },
+      {
+        step: 5,
+        title: "AI for Content Creation",
+        url: "https://www.coursera.org/account/accomplishments/verify/CU6YQEIJKD8W",
+        badge: {
+          image: "/badges/google-ai-for-content-creation.png",
+          credlyUrl:
+            "https://www.credly.com/badges/18e200f5-80d3-45da-aaf1-b496f905786a/public_url",
+        },
+      },
+      {
+        step: 6,
+        title: "AI for Data Analysis",
+        url: "https://www.coursera.org/account/accomplishments/verify/GI0PVSF6FD8M",
+        badge: {
+          image: "/badges/google-ai-for-data-analysis.png",
+          credlyUrl:
+            "https://www.credly.com/badges/8ec33633-5436-4ca6-8ce2-dbe95277dc4d/public_url",
+        },
+      },
+      {
+        step: 7,
+        title: "AI for App Building",
+        url: "https://www.coursera.org/account/accomplishments/verify/86O6XPQIM9WM",
+        badge: {
+          image: "/badges/google-ai-for-app-building.png",
+          credlyUrl:
+            "https://www.credly.com/badges/01690309-193b-4055-8106-ecf82d5691fd/public_url",
+        },
+      },
+    ],
+  },
+  {
+    id: "spec-google-ai-essentials",
+    headingId: "specialization-path-heading",
+    testId: "specialization-courses-list",
+    titleLines: ["Google AI Essentials", "5-Course Journey"],
+    issuer: "Google · Coursera",
+    date: "2026",
+    url: "https://www.coursera.org/account/accomplishments/specialization/0YNZJF3R5PJA",
+    logo: "/logos/google.png",
+    description:
+      "Google's flagship 5-course specialization on practical AI literacy — a linear progression from AI fundamentals through productivity, prompting, responsible use, and staying current, each course backed by its own verified credential.",
+    totalCourses: 5,
+    image: "/certificates/google_ai_essentials_thumb.jpg",
+    gradient: "from-blue-600/25 via-indigo-500/15 to-purple-600/25",
+    childrenLayout: "list",
+    parentBadge: {
+      image: "/badges/google-ai-essentials.png",
+      credlyUrl:
+        "https://www.credly.com/badges/850423f1-fac1-4fe7-9c31-6c7c3185b177/public_url",
     },
-    {
-      step: 3,
-      title: "Discover the Art of Prompting",
-      url: "https://www.coursera.org/account/accomplishments/verify/EUDWX89YQYY0",
-    },
-    {
-      step: 4,
-      title: "Use AI Responsibly",
-      url: "https://www.coursera.org/account/accomplishments/verify/MOALJCD0LU7S",
-    },
-    {
-      step: 5,
-      title: "Stay Ahead of the AI Curve",
-      url: "https://www.coursera.org/account/accomplishments/verify/5QBPQ9VYATIG",
-    },
-  ],
-};
+    children: [
+      {
+        step: 1,
+        title: "Introduction to AI",
+        url: "https://www.coursera.org/account/accomplishments/verify/IP7EYX7EZ8UK",
+        badge: {
+          image: "/badges/google-ai-fundamentals.png",
+          credlyUrl:
+            "https://www.credly.com/badges/619780f5-f2e2-4940-b763-7a7cdd030b08/public_url",
+        },
+      },
+      {
+        step: 2,
+        title: "Maximize Productivity With AI Tools",
+        url: "https://www.coursera.org/account/accomplishments/verify/FE9LE6HDIIZ7",
+        badge: {
+          image: "/badges/google-ai-essentials.png",
+          credlyUrl:
+            "https://www.credly.com/badges/850423f1-fac1-4fe7-9c31-6c7c3185b177/public_url",
+        },
+      },
+      {
+        step: 3,
+        title: "Discover the Art of Prompting",
+        url: "https://www.coursera.org/account/accomplishments/verify/EUDWX89YQYY0",
+        badge: {
+          image: "/badges/google-ai-essentials.png",
+          credlyUrl:
+            "https://www.credly.com/badges/850423f1-fac1-4fe7-9c31-6c7c3185b177/public_url",
+        },
+      },
+      {
+        step: 4,
+        title: "Use AI Responsibly",
+        url: "https://www.coursera.org/account/accomplishments/verify/MOALJCD0LU7S",
+        badge: {
+          image: "/badges/google-ai-essentials.png",
+          credlyUrl:
+            "https://www.credly.com/badges/850423f1-fac1-4fe7-9c31-6c7c3185b177/public_url",
+        },
+      },
+      {
+        step: 5,
+        title: "Stay Ahead of the AI Curve",
+        url: "https://www.coursera.org/account/accomplishments/verify/5QBPQ9VYATIG",
+        badge: {
+          image: "/badges/google-ai-essentials.png",
+          credlyUrl:
+            "https://www.credly.com/badges/850423f1-fac1-4fe7-9c31-6c7c3185b177/public_url",
+        },
+      },
+    ],
+  },
+];
 
 const AI_CERTIFICATES: GalleryCertificate[] = [
   {
@@ -138,17 +291,8 @@ const AI_CERTIFICATES: GalleryCertificate[] = [
     description: "Deep dive into leveraging AI agents, GitHub Copilot, and Cursor for accelerated software development.",
     gradient: "from-blue-600/20 to-purple-600/20"
   },
-  {
-    id: "ai-3",
-    title: "AI for App Building",
-    issuer: "Coursera",
-    date: "2026",
-    image: "/certificates/ai_app_building_thumb.jpg",
-    url: "https://www.coursera.org/account/accomplishments/verify/86O6XPQIM9WM",
-    logo: "/logos/coursera.png",
-    description: "Building intelligent applications powered by large language models and AI frameworks.",
-    gradient: "from-indigo-600/20 to-blue-600/20"
-  },
+  // ai-3 (AI for App Building) intentionally removed — it's now child #7 of the
+  // Google AI Professional Certificate specialization above.
 ];
 
 const GENERAL_CERTIFICATES: GalleryCertificate[] = [
@@ -223,6 +367,310 @@ const GENERAL_CERTIFICATES: GalleryCertificate[] = [
 ];
 
 // --- COMPONENTS ---
+
+/**
+ * 2-3-2 staggered ("circular") grid of badge tiles for the Pro Cert.
+ *
+ * Layout (desktop, 7 items):
+ *
+ *     [B1]  [B2]
+ *   [B3] [B4] [B5]
+ *     [B6]  [B7]
+ *
+ * Implementation notes:
+ * - We render a single `<ol>` (one `<li>` per course) so screen readers and
+ *   tests that count children-as-list-items both keep working.
+ * - Visual 2-3-2 placement is done via a 6-col CSS grid with explicit
+ *   `col-start` / `col-end` classes per item index.
+ * - On mobile we drop the explicit positioning and let items flow into a
+ *   simple 3-up wrap, which never overflows the card.
+ */
+const PRO_CERT_GRID_POSITIONS = [
+  // index → desktop column placement on a 6-col track
+  "md:col-start-2 md:col-end-4", // 1 — row 1 left
+  "md:col-start-4 md:col-end-6", // 2 — row 1 right
+  "md:col-start-1 md:col-end-3", // 3 — row 2 left
+  "md:col-start-3 md:col-end-5", // 4 — row 2 center
+  "md:col-start-5 md:col-end-7", // 5 — row 2 right
+  "md:col-start-2 md:col-end-4", // 6 — row 3 left
+  "md:col-start-4 md:col-end-6", // 7 — row 3 right
+] as const;
+
+const ChildBadgesGrid = ({
+  spec,
+}: {
+  spec: SpecializationData;
+}) => {
+  return (
+    <ol
+      data-testid={spec.testId}
+      className="m-0 grid w-full list-none grid-cols-3 place-items-center gap-x-3 gap-y-5 p-0 md:grid-cols-6 md:gap-x-2 md:gap-y-6"
+    >
+      {spec.children.map((child, index) => (
+        <motion.li
+          key={child.step}
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: index * 0.04, duration: 0.3 }}
+          className={cn(
+            "flex flex-col items-center gap-2",
+            PRO_CERT_GRID_POSITIONS[index]
+          )}
+        >
+          <button
+            type="button"
+            onClick={() =>
+              openBadgeUrl(child.badge.credlyUrl, {
+                title: child.title,
+                specialization: spec.titleLines[0],
+                step: child.step,
+              })
+            }
+            aria-label={`View ${child.title} verified badge on Credly`}
+            className="group/badge relative h-20 w-20 shrink-0 rounded-full transition-transform duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70 md:h-[88px] md:w-[88px]"
+          >
+            <Image
+              src={child.badge.image}
+              alt={`${child.title} verified badge`}
+              fill
+              sizes="(max-width: 768px) 80px, 88px"
+              className="object-contain drop-shadow-[0_4px_16px_rgba(16,185,129,0.25)]"
+            />
+          </button>
+          <span
+            aria-hidden
+            className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-300"
+          >
+            Verify
+            <ExternalLink className="h-3 w-3" />
+          </span>
+        </motion.li>
+      ))}
+    </ol>
+  );
+};
+
+const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
+  const totalLabel = String(spec.totalCourses).padStart(2, "0");
+  return (
+    <section aria-labelledby={spec.headingId}>
+      {/* Section header — title is split into two lines (name / N-Course Journey).
+          Per the design brief, the descriptive paragraph lives ONLY inside the card,
+          not in the header. */}
+      <div className="mb-12 flex flex-col items-end justify-between gap-6 md:flex-row">
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-indigo-400">
+            <GitBranch className="h-4 w-4" aria-hidden />
+            Specialization path
+          </div>
+          <h2
+            id={spec.headingId}
+            className="text-3xl font-bold tracking-tight text-white md:text-4xl"
+          >
+            <span className="block">{spec.titleLines[0]}</span>
+            <span className="block text-2xl font-semibold text-white/70 md:text-3xl">
+              {spec.titleLines[1]}
+            </span>
+          </h2>
+        </div>
+        <div className="hidden flex-col items-end md:flex">
+          <span className="text-5xl font-black leading-none text-white/5">
+            {totalLabel}
+          </span>
+          <span className="mr-1 text-[10px] font-bold uppercase tracking-tighter text-white/20">
+            Courses · 1 Specialization
+          </span>
+        </div>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className={cn(
+          "group relative overflow-hidden rounded-3xl border border-purple-500/20 p-6 shadow-[0_0_40px_-10px_rgba(168,85,247,0.25)] md:p-8",
+          "glass-card"
+        )}
+      >
+        <div
+          className={cn(
+            "pointer-events-none absolute inset-0 bg-gradient-to-br opacity-50",
+            spec.gradient
+          )}
+          aria-hidden
+        />
+
+        <div className="relative">
+          <div className="grid items-stretch gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] md:gap-10">
+            {/* ─────────── LEFT COLUMN ───────────
+               Stacked, fills the card height so there is no empty space:
+                 1. Thumbnail (with AI Expert ribbon)
+                 2. Issuer + date
+                 3. Description text + parent badge (horizontal, side-by-side)
+            */}
+            <div className="flex flex-col gap-5">
+              <button
+                type="button"
+                onClick={() =>
+                  openVerifyUrl(spec.url, {
+                    title: spec.titleLines[0],
+                    issuer: spec.issuer,
+                    specialization: spec.titleLines[0],
+                  })
+                }
+                aria-label={`View ${spec.titleLines[0]} certificate on Coursera`}
+                className="group/thumb relative block aspect-[1.4/1] w-full cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-black/20 ring-1 ring-white/5 transition-transform duration-300 hover:scale-[1.01]"
+              >
+                <Image
+                  src={spec.image}
+                  alt={`${spec.titleLines[0]} certificate preview`}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover/thumb:scale-105"
+                  sizes="(max-width: 768px) 100vw, 32rem"
+                />
+                {/* AI Expert ribbon */}
+                <div className="pointer-events-none absolute right-4 top-4 z-20 flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-gradient-to-r from-amber-500/95 via-yellow-400/95 to-amber-500/95 px-3 py-1 shadow-[0_4px_20px_-4px_rgba(251,191,36,0.6)] backdrop-blur-sm">
+                  <span className="text-xs leading-none" aria-hidden>🌟</span>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-amber-950">
+                    AI Expert
+                  </span>
+                </div>
+                {/* Hover overlay */}
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover/thumb:opacity-100">
+                  <div className="flex translate-y-4 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2.5 backdrop-blur-md transition-transform duration-300 group-hover/thumb:translate-y-0">
+                    <ExternalLink className="h-4 w-4 text-white" aria-hidden />
+                    <span className="text-xs font-semibold uppercase tracking-wider text-white">
+                      View Certificate
+                    </span>
+                  </div>
+                </div>
+              </button>
+
+              {/* Logo + issuer + date */}
+              <div className="flex items-center gap-3">
+                <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/5 p-1.5">
+                  <Image
+                    src={spec.logo}
+                    alt="Google"
+                    width={24}
+                    height={24}
+                    className="object-contain"
+                  />
+                </div>
+                <div className="min-w-0">
+                  <p className="truncate text-xs font-bold uppercase tracking-widest text-blue-400">
+                    {spec.issuer}
+                  </p>
+                  <p className="flex items-center gap-1.5 text-[11px] uppercase tracking-tighter text-white/30">
+                    <Calendar className="h-3 w-3" aria-hidden />
+                    {spec.date}
+                  </p>
+                </div>
+              </div>
+
+              {/* Description text + parent badge — horizontally aligned.
+                  This row absorbs the empty space that used to sit under the
+                  issuer/date block. The parent badge is a self-contained
+                  hover-to-verify Credly link with no surrounding text. */}
+              <div className="mt-1 flex flex-1 items-center gap-5 rounded-2xl border border-white/5 bg-white/[0.015] p-4 md:gap-6 md:p-5">
+                <p className="min-w-0 flex-1 text-sm leading-relaxed text-zinc-300 md:text-[15px]">
+                  {spec.description}
+                </p>
+                <button
+                  type="button"
+                  onClick={() =>
+                    openBadgeUrl(spec.parentBadge.credlyUrl, {
+                      title: `${spec.titleLines[0]} (Parent)`,
+                      specialization: spec.titleLines[0],
+                    })
+                  }
+                  aria-label={`View ${spec.titleLines[0]} parent badge on Credly`}
+                  data-testid={`${spec.testId}-parent-badge`}
+                  className="group/parent relative h-24 w-24 shrink-0 rounded-full transition-transform duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70 md:h-28 md:w-28"
+                >
+                  <Image
+                    src={spec.parentBadge.image}
+                    alt={`${spec.titleLines[0]} verified parent badge`}
+                    fill
+                    sizes="(max-width: 768px) 96px, 112px"
+                    className="object-contain drop-shadow-[0_6px_22px_rgba(251,191,36,0.35)]"
+                  />
+                </button>
+              </div>
+            </div>
+
+            {/* ─────────── RIGHT COLUMN ───────────
+               Children of the specialization. Pro Cert (`badges` layout) is a
+               2-3-2 circular grid of clickable Credly badges with VERIFY
+               ribbons. Essentials (`list` layout) keeps the existing 5-course
+               numbered list because Coursera does not issue a unique badge
+               for each Essentials course — they all share the parent artwork.
+            */}
+            <div className="flex flex-col gap-5">
+              <div className="flex items-center gap-2 self-start rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-emerald-300">
+                <CheckCircle2 className="h-3.5 w-3.5" aria-hidden />
+                All {spec.totalCourses} course credentials
+              </div>
+
+              {spec.childrenLayout === "list" ? (
+                <ol
+                  data-testid={spec.testId}
+                  className="m-0 flex flex-1 list-none flex-col justify-between space-y-2.5 p-0"
+                >
+                  {spec.children.map((child, index) => (
+                    <motion.li
+                      key={child.step}
+                      initial={{ opacity: 0, x: -12 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.05, duration: 0.3 }}
+                      className="group/sub flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2.5 backdrop-blur-sm transition-colors hover:border-purple-500/30 hover:bg-white/[0.04] md:px-4 md:py-3"
+                    >
+                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-purple-500/40 bg-[#09090b] text-[11px] font-bold text-white shadow-[0_0_15px_-5px_rgba(168,85,247,0.35)] md:h-8 md:w-8 md:text-xs">
+                        {child.step}
+                      </div>
+
+                      <h4 className="min-w-0 flex-1 truncate text-sm font-semibold leading-snug text-white">
+                        {child.title}
+                      </h4>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          openVerifyUrl(child.url, {
+                            title: child.title,
+                            issuer: spec.issuer,
+                            step: child.step,
+                            specialization: spec.titleLines[0],
+                          })
+                        }
+                        aria-label={`Verify certificate for ${child.title}`}
+                        className="group/vc inline-flex shrink-0 items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-blue-400 transition-colors hover:text-blue-300"
+                      >
+                        <span className="hidden sm:inline">Verify</span>
+                        <ExternalLink className="h-3 w-3 transition-transform group-hover/vc:translate-x-0.5" />
+                      </button>
+
+                      <CheckCircle2
+                        className="h-4 w-4 shrink-0 text-emerald-400"
+                        aria-hidden
+                      />
+                    </motion.li>
+                  ))}
+                </ol>
+              ) : (
+                <div className="flex flex-1 items-center justify-center">
+                  <ChildBadgesGrid spec={spec} />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </section>
+  );
+};
 
 const CertificateCard = ({
   cert,
@@ -398,209 +846,10 @@ export default function CertificationsPage() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 pb-40 space-y-32">
-        {/* SPECIALIZATION PATH — Google AI Essentials */}
-        <section aria-labelledby="specialization-path-heading">
-          <div className="mb-12 flex flex-col items-end justify-between gap-6 md:flex-row">
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-indigo-400">
-                <GitBranch className="h-4 w-4" aria-hidden />
-                Specialization path
-              </div>
-              <h2
-                id="specialization-path-heading"
-                className="text-3xl font-bold tracking-tight text-white"
-              >
-                Google AI Essentials · 5-Course Journey
-              </h2>
-              <p className="max-w-md text-white/40">
-                A linear progression from AI fundamentals through productivity,
-                prompting, responsibility, and staying current — each course with
-                its own verified credential.
-              </p>
-            </div>
-            <div className="hidden flex-col items-end md:flex">
-              <span className="text-5xl font-black leading-none text-white/5">
-                05
-              </span>
-              <span className="mr-1 text-[10px] font-bold uppercase tracking-tighter text-white/20">
-                Courses · 1 Specialization
-              </span>
-            </div>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className={cn(
-              "group relative overflow-hidden rounded-3xl border border-purple-500/20 p-6 shadow-[0_0_40px_-10px_rgba(168,85,247,0.25)] md:p-8",
-              "glass-card"
-            )}
-          >
-            <div
-              className={cn(
-                "pointer-events-none absolute inset-0 bg-gradient-to-br opacity-50",
-                SPECIALIZATION.gradient
-              )}
-              aria-hidden
-            />
-
-            <div className="relative grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] md:gap-10">
-              {/* LEFT — Parent cert thumbnail card (matches CertificateCard aspect/style) */}
-              <div className="flex flex-col gap-5">
-                {SPECIALIZATION.image ? (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      openVerifyUrl(SPECIALIZATION.url, {
-                        title: SPECIALIZATION.title,
-                        issuer: SPECIALIZATION.issuer,
-                        specialization: SPECIALIZATION.title,
-                      })
-                    }
-                    aria-label={`View ${SPECIALIZATION.title} certificate on Coursera`}
-                    className="group/thumb relative block aspect-[1.4/1] w-full cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-black/20 ring-1 ring-white/5 transition-transform duration-300 hover:scale-[1.01]"
-                  >
-                    <Image
-                      src={SPECIALIZATION.image}
-                      alt={`${SPECIALIZATION.title} certificate preview`}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover/thumb:scale-105"
-                      sizes="(max-width: 768px) 100vw, 32rem"
-                    />
-                    {/* Ribbon: 🌟 AI Expert — top-right, matches existing AI Expert badge position */}
-                    <div className="pointer-events-none absolute right-4 top-4 z-20 flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-gradient-to-r from-amber-500/95 via-yellow-400/95 to-amber-500/95 px-3 py-1 shadow-[0_4px_20px_-4px_rgba(251,191,36,0.6)] backdrop-blur-sm">
-                      <span className="text-xs leading-none" aria-hidden>🌟</span>
-                      <span className="text-[10px] font-black uppercase tracking-wider text-amber-950">
-                        AI Expert
-                      </span>
-                    </div>
-                    {/* Hover overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover/thumb:opacity-100">
-                      <div className="flex translate-y-4 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2.5 backdrop-blur-md transition-transform duration-300 group-hover/thumb:translate-y-0">
-                        <ExternalLink className="h-4 w-4 text-white" aria-hidden />
-                        <span className="text-xs font-semibold uppercase tracking-wider text-white">
-                          View Certificate
-                        </span>
-                      </div>
-                    </div>
-                  </button>
-                ) : null}
-
-                {/* Logo + issuer + date — same row as cert card metadata */}
-                <div className="flex items-center gap-3">
-                  <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/5 p-1.5">
-                    <Image
-                      src={SPECIALIZATION.logo}
-                      alt="Google"
-                      width={24}
-                      height={24}
-                      className="object-contain"
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="truncate text-xs font-bold uppercase tracking-widest text-blue-400">
-                      {SPECIALIZATION.issuer}
-                    </p>
-                    <p className="flex items-center gap-1.5 text-[11px] uppercase tracking-tighter text-white/30">
-                      <Calendar className="h-3 w-3" aria-hidden />
-                      {SPECIALIZATION.date}
-                    </p>
-                  </div>
-                </div>
-
-                <h3 className="text-2xl font-bold leading-tight text-white md:text-3xl">
-                  {SPECIALIZATION.title}
-                </h3>
-
-                <p className="text-sm leading-relaxed text-zinc-400">
-                  {SPECIALIZATION.description}
-                </p>
-
-                <div className="mt-auto flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:gap-4">
-                  <div className="inline-flex items-center gap-1.5 self-start rounded-full border border-purple-500/20 bg-purple-500/10 px-3 py-1.5 shadow-sm backdrop-blur-sm">
-                    <Sparkles className="h-3.5 w-3.5 fill-purple-400/20 text-purple-400" />
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-purple-300">
-                      5-Course Specialization · Complete
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      openVerifyUrl(SPECIALIZATION.url, {
-                        title: SPECIALIZATION.title,
-                        issuer: SPECIALIZATION.issuer,
-                        specialization: SPECIALIZATION.title,
-                      })
-                    }
-                    className="group/btn inline-flex items-center justify-center gap-2 self-start rounded-2xl bg-white px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-black transition-all hover:scale-[1.02] active:scale-[0.98]"
-                  >
-                    <span>Verify Specialization</span>
-                    <ExternalLink className="h-3.5 w-3.5" aria-hidden />
-                  </button>
-                </div>
-              </div>
-
-              {/* RIGHT — Children sub-cards juxtaposed horizontally to parent on desktop */}
-              <div className="flex flex-col gap-3">
-                <div className="flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1.5 self-start text-[11px] font-bold uppercase tracking-wider text-emerald-300">
-                  <CheckCircle2 className="h-3.5 w-3.5" aria-hidden />
-                  All {SPECIALIZATION.totalCourses} course credentials
-                </div>
-
-                <ol
-                  data-testid="specialization-courses-list"
-                  className="m-0 list-none space-y-2.5 p-0"
-                >
-                  {SPECIALIZATION.children.map((child, index) => (
-                    <motion.li
-                      key={child.step}
-                      initial={{ opacity: 0, x: -12 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.05, duration: 0.3 }}
-                      className="group/sub flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2.5 backdrop-blur-sm transition-colors hover:border-purple-500/30 hover:bg-white/[0.04] md:px-4 md:py-3"
-                    >
-                      {/* Step number */}
-                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-purple-500/40 bg-[#09090b] text-[11px] font-bold text-white shadow-[0_0_15px_-5px_rgba(168,85,247,0.35)] md:h-8 md:w-8 md:text-xs">
-                        {child.step}
-                      </div>
-
-                      {/* Title — flex-1, truncate on overflow */}
-                      <h4 className="min-w-0 flex-1 truncate text-sm font-semibold leading-snug text-white">
-                        {child.title}
-                      </h4>
-
-                      {/* Verify link */}
-                      <button
-                        type="button"
-                        onClick={() =>
-                          openVerifyUrl(child.url, {
-                            title: child.title,
-                            issuer: SPECIALIZATION.issuer,
-                            step: child.step,
-                            specialization: SPECIALIZATION.title,
-                          })
-                        }
-                        aria-label={`Verify certificate for ${child.title}`}
-                        className="group/vc inline-flex shrink-0 items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-blue-400 transition-colors hover:text-blue-300"
-                      >
-                        <span className="hidden sm:inline">Verify</span>
-                        <ExternalLink className="h-3 w-3 transition-transform group-hover/vc:translate-x-0.5" />
-                      </button>
-
-                      {/* Completion check */}
-                      <CheckCircle2
-                        className="h-4 w-4 shrink-0 text-emerald-400"
-                        aria-hidden
-                      />
-                    </motion.li>
-                  ))}
-                </ol>
-              </div>
-            </div>
-          </motion.div>
-        </section>
+        {/* SPECIALIZATION PATHS — reverse chronology: Pro Certificate first, Essentials second */}
+        {SPECIALIZATIONS.map((spec) => (
+          <SpecializationSection key={spec.id} spec={spec} />
+        ))}
 
         {/* AI SECTION - HIGHLIGHTED */}
         <section>
@@ -615,7 +864,9 @@ export default function CertificationsPage() {
             </div>
             {/* Minimal counter */}
             <div className="hidden md:flex flex-col items-end">
-              <span className="text-5xl font-black text-white/5 leading-none">03</span>
+              <span className="text-5xl font-black text-white/5 leading-none">
+                {String(AI_CERTIFICATES.length).padStart(2, "0")}
+              </span>
               <span className="text-[10px] font-bold text-white/20 tracking-tighter uppercase mr-1">Certifications</span>
             </div>
           </div>
@@ -645,7 +896,9 @@ export default function CertificationsPage() {
             </div>
             {/* Minimal counter */}
             <div className="hidden md:flex flex-col items-end">
-              <span className="text-5xl font-black text-white/5 leading-none">06</span>
+              <span className="text-5xl font-black text-white/5 leading-none">
+                {String(GENERAL_CERTIFICATES.length).padStart(2, "0")}
+              </span>
               <span className="text-[10px] font-bold text-white/20 tracking-tighter uppercase mr-1">Certifications</span>
             </div>
           </div>
