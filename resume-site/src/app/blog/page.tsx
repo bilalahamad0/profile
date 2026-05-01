@@ -39,6 +39,18 @@ const breadcrumb = {
 // Static post metadata — defined at module level, not inside a client component
 export const mdxPosts = [
   {
+    slug: "resilient-iot-application",
+    title: "Engineering a Resilient Smart Home IoT Application: Lessons in Latency, mDNS, and Self-Healing Systems",
+    date: "April 30, 2026",
+    description:
+      "Building a highly reliable, zero-latency IoT system on a Raspberry Pi, tackling mDNS discovery, background compute windows, and self-healing multi-tier fallbacks.",
+    tags: ["IoT", "Raspberry Pi", "Networking", "Node.js", "System Design"],
+    category: "Whitepaper" as const,
+    readingTime: 6,
+    featured: false,
+    thumbnail: "/blog-thumbs/resilient-iot.png",
+  },
+  {
     slug: "ai-driven-development",
     title: "AI-Driven Development: Compressing 3 Weeks into 4 Days",
     date: "August 26, 2025",
