@@ -404,7 +404,7 @@ const ChildBadgesGrid = ({
   return (
     <ol
       data-testid={spec.testId}
-      className="m-0 grid w-full list-none grid-cols-3 place-items-center gap-x-3 gap-y-5 p-0 md:grid-cols-6 md:gap-x-2 md:gap-y-6"
+      className="m-0 grid w-full max-w-[440px] list-none grid-cols-3 place-items-center gap-x-2 gap-y-4 p-0 md:max-w-[460px] md:grid-cols-6 md:gap-x-0 md:gap-y-5"
     >
       {spec.children.map((child, index) => (
         <motion.li
@@ -428,23 +428,32 @@ const ChildBadgesGrid = ({
               })
             }
             aria-label={`View ${child.title} verified badge on Credly`}
-            className="group/badge relative h-20 w-20 shrink-0 rounded-full transition-transform duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70 md:h-[88px] md:w-[88px]"
+            className="group/badge relative h-24 w-24 shrink-0 rounded-full transition-transform duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70 md:h-[112px] md:w-[112px]"
           >
             <Image
               src={child.badge.image}
               alt={`${child.title} verified badge`}
               fill
-              sizes="(max-width: 768px) 80px, 88px"
+              sizes="(max-width: 768px) 96px, 112px"
               className="object-contain drop-shadow-[0_4px_16px_rgba(16,185,129,0.25)]"
             />
           </button>
-          <span
-            aria-hidden
-            className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-300"
+          <button
+            type="button"
+            onClick={() =>
+              openVerifyUrl(child.url, {
+                title: child.title,
+                issuer: spec.issuer,
+                step: child.step,
+                specialization: spec.titleLines[0],
+              })
+            }
+            aria-label={`Verify ${child.title} certificate on Coursera`}
+            className="group/verify inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-300 transition-colors hover:border-emerald-300/60 hover:bg-emerald-500/20 hover:text-emerald-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70"
           >
             Verify
-            <ExternalLink className="h-3 w-3" />
-          </span>
+            <ExternalLink className="h-3 w-3 transition-transform group-hover/verify:translate-x-0.5" />
+          </button>
         </motion.li>
       ))}
     </ol>
@@ -505,7 +514,7 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
           <div className="grid items-stretch gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] md:gap-10">
             {/* ─────────── LEFT COLUMN ───────────
                Stacked, fills the card height so there is no empty space:
-                 1. Thumbnail (with AI Expert ribbon)
+                 1. Thumbnail (with AI Skills ribbon)
                  2. Issuer + date
                  3. Description text + parent badge (horizontal, side-by-side)
             */}
@@ -529,11 +538,11 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
                   className="object-cover transition-transform duration-700 group-hover/thumb:scale-105"
                   sizes="(max-width: 768px) 100vw, 32rem"
                 />
-                {/* AI Expert ribbon */}
+                {/* AI Skills ribbon */}
                 <div className="pointer-events-none absolute right-4 top-4 z-20 flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-gradient-to-r from-amber-500/95 via-yellow-400/95 to-amber-500/95 px-3 py-1 shadow-[0_4px_20px_-4px_rgba(251,191,36,0.6)] backdrop-blur-sm">
                   <span className="text-xs leading-none" aria-hidden>🌟</span>
                   <span className="text-[10px] font-black uppercase tracking-wider text-amber-950">
-                    AI Expert
+                    AI Skills
                   </span>
                 </div>
                 {/* Hover overlay */}
@@ -587,14 +596,14 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
                   }
                   aria-label={`View ${spec.titleLines[0]} parent badge on Credly`}
                   data-testid={`${spec.testId}-parent-badge`}
-                  className="group/parent relative h-24 w-24 shrink-0 rounded-full transition-transform duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70 md:h-28 md:w-28"
+                  className="group/parent relative h-32 w-32 shrink-0 rounded-full transition-transform duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70 md:h-40 md:w-40"
                 >
                   <Image
                     src={spec.parentBadge.image}
                     alt={`${spec.titleLines[0]} verified parent badge`}
                     fill
-                    sizes="(max-width: 768px) 96px, 112px"
-                    className="object-contain drop-shadow-[0_6px_22px_rgba(251,191,36,0.35)]"
+                    sizes="(max-width: 768px) 128px, 160px"
+                    className="object-contain drop-shadow-[0_6px_22px_rgba(251,191,36,0.45)]"
                   />
                 </button>
               </div>
@@ -701,7 +710,7 @@ const CertificateCard = ({
         <div className="absolute top-4 right-4 z-10">
           <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 backdrop-blur-sm shadow-sm">
             <Sparkles className="w-3.5 h-3.5 text-purple-400 fill-purple-400/20" />
-            <span className="text-[10px] font-bold uppercase tracking-wider text-purple-300">AI Expert</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-purple-300">AI Skills</span>
           </div>
         </div>
       )}
@@ -719,7 +728,7 @@ const CertificateCard = ({
             {cert.url ? (
               <>
                 <ExternalLink className="w-4 h-4 text-white" />
-                <span className="text-[10px] font-bold uppercase tracking-wider text-white pr-1">Verify</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-white pr-1">View Certificate</span>
               </>
             ) : (
               <Search className="w-5 h-5 text-white" />
@@ -750,13 +759,19 @@ const CertificateCard = ({
               </p>
             </div>
 
-            {/* Right: Large Badge */}
-            <div className="relative w-32 h-32 shrink-0 drop-shadow-[0_0_30px_rgba(37,99,235,0.23)] hover:scale-107 transition-all duration-500">
+            {/* Right: Large Badge — matches the parent-badge glow used on the
+                Google AI specialization cards (offset drop-shadow + halo). */}
+            <div className="relative w-32 h-32 shrink-0 transition-all duration-500 hover:scale-[1.07]">
+              {/* Soft radial halo behind the badge */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 rounded-full bg-blue-500/30 blur-2xl"
+              />
               <Image
                 src={cert.officialBadge}
                 alt="Official Badge"
                 fill
-                className="object-contain"
+                className="relative object-contain drop-shadow-[0_6px_22px_rgba(37,99,235,0.55)]"
                 priority
               />
             </div>

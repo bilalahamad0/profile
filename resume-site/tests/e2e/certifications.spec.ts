@@ -83,15 +83,15 @@ test.describe('Certifications — Google AI Essentials specialization path', () 
     await expect(headerBlock.locator('p')).toHaveCount(0);
   });
 
-  test('card has thumbnail with AI Expert ribbon, no in-card title h3, no Verify Specialization button, no Specialization-Complete pill', async ({ page }) => {
+  test('card has thumbnail with AI Skills ribbon, no in-card title h3, no Verify Specialization button, no Specialization-Complete pill', async ({ page }) => {
     await page.goto('/certifications');
 
     const section = page.locator('section[aria-labelledby="specialization-path-heading"]');
 
-    // Single Google logo, no Coursera logo, AI Expert ribbon present.
+    // Single Google logo, no Coursera logo, AI Skills ribbon present.
     await expect(section.locator('img[alt="Google"]')).toHaveCount(1);
     await expect(section.locator('img[alt="Coursera"]')).toHaveCount(0);
-    await expect(section.getByText('AI Expert', { exact: true })).toBeVisible();
+    await expect(section.getByText('AI Skills', { exact: true })).toBeVisible();
 
     // Thumbnail click target is present (the user navigates via the thumbnail).
     await expect(
@@ -205,7 +205,7 @@ test.describe('Certifications — Google AI Professional Certificate specializat
     await expect(headerBlock.locator('p')).toHaveCount(0);
   });
 
-  test('card has thumbnail with AI Expert ribbon, no in-card title h3, no Verify Specialization button, no Specialization-Complete pill', async ({ page }) => {
+  test('card has thumbnail with AI Skills ribbon, no in-card title h3, no Verify Specialization button, no Specialization-Complete pill', async ({ page }) => {
     await page.goto('/certifications');
 
     const section = page.locator(
@@ -214,7 +214,7 @@ test.describe('Certifications — Google AI Professional Certificate specializat
 
     await expect(section.locator('img[alt="Google"]')).toHaveCount(1);
     await expect(section.locator('img[alt="Coursera"]')).toHaveCount(0);
-    await expect(section.getByText('AI Expert', { exact: true })).toBeVisible();
+    await expect(section.getByText('AI Skills', { exact: true })).toBeVisible();
 
     await expect(
       section.getByRole('button', {
@@ -233,7 +233,7 @@ test.describe('Certifications — Google AI Professional Certificate specializat
     ).toHaveCount(0);
   });
 
-  test('right column has 7 child badges in 2-3-2 formation; parent badge sits in the left column next to the description; each tile has a VERIFY ribbon', async ({ page }) => {
+  test('right column has 7 child badges in 2-3-2 formation; parent badge sits in the left column next to the description; each tile has a clickable VERIFY linker', async ({ page }) => {
     await page.goto('/certifications');
 
     const section = page.locator(
@@ -251,17 +251,40 @@ test.describe('Certifications — Google AI Professional Certificate specializat
     const items = list.locator('li');
     await expect(items).toHaveCount(7);
 
-    // Each list item exposes a clickable badge button → Credly URL.
+    // Each list item exposes BOTH (a) a clickable badge button → Credly URL,
+    // and (b) a clickable VERIFY linker → Coursera course-verification URL.
     for (const title of PRO_CERT_TITLES) {
-      const tile = list.getByRole('button', {
+      const badgeBtn = list.getByRole('button', {
         name: new RegExp(`view ${title} verified badge on credly`, 'i'),
       });
-      await expect(tile).toBeVisible();
-    }
+      await expect(badgeBtn).toBeVisible();
 
-    // 7 VERIFY ribbons total — one per badge tile (decorative, not buttons).
-    const verifyRibbons = list.getByText(/^verify$/i);
-    await expect(verifyRibbons).toHaveCount(7);
+      const verifyBtn = list.getByRole('button', {
+        name: new RegExp(`verify ${title} certificate on coursera`, 'i'),
+      });
+      await expect(verifyBtn).toBeVisible();
+    }
+  });
+
+  test('VERIFY linker on a child tile opens that course\'s Coursera verify URL', async ({ page }) => {
+    await page.goto('/certifications');
+
+    const list = page.getByTestId('specialization-courses-list-professional');
+    await list.scrollIntoViewIfNeeded();
+    const verifyBtn = list.getByRole('button', {
+      name: /verify ai fundamentals certificate on coursera/i,
+    });
+    await verifyBtn.scrollIntoViewIfNeeded();
+
+    await spyOnWindowOpen(page);
+    await verifyBtn.click();
+    const calls = await readOpenCalls(page);
+    expect(calls).toHaveLength(1);
+    // AI Fundamentals course verify URL.
+    expect(calls[0].url).toContain(
+      'coursera.org/account/accomplishments/verify/M0X9KDJN1WFF',
+    );
+    expect(calls[0].target).toBe('_blank');
   });
 
   test('thumbnail click opens the Coursera spec verification URL (1B8PEYYE6E6R)', async ({ page }) => {
