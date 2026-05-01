@@ -32,6 +32,8 @@ type GalleryCertificate = {
   logo: string;
   description: string;
   gradient: string;
+  isOfficial?: boolean;
+  officialBadge?: string;
 };
 
 type SpecializationChild = { step: number; title: string; url: string };
@@ -153,13 +155,15 @@ const GENERAL_CERTIFICATES: GalleryCertificate[] = [
   {
     id: "g-1",
     title: "ISTQB Foundation Level",
-    issuer: "ISTQB® - International Software Testing Qualifications Board",
+    issuer: "ISTQB®",
     date: "2011",
     image: "/certificates/istqb.jpg",
-    url: null,
+    url: "https://www.istqb.in/foundation/certified-tester2/40317-bilal-ahamad",
     logo: "/logos/istqb.png",
     description: "The gold standard in software testing certifications, covering fundamental testing principles and strategies.",
-    gradient: "from-blue-600/10 to-blue-800/10"
+    gradient: "from-blue-600/10 to-blue-800/10",
+    isOfficial: true,
+    officialBadge: "/badges/ISTQB-CTFL-badge.png"
   },
   {
     id: "g-5",
@@ -243,7 +247,7 @@ const CertificateCard = ({
     >
       {/* Background Gradient */}
       <div className={cn("absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500", cert.gradient)} />
-      
+
       {/* Badge for AI */}
       {isAI && (
         <div className="absolute top-4 right-4 z-10">
@@ -263,28 +267,70 @@ const CertificateCard = ({
           className={`${cert.id === 'g-2' ? 'object-contain bg-white' : 'object-cover'} group-hover:scale-105 transition-transform duration-700`}
         />
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <div className="p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-            <Search className="w-5 h-5 text-white" />
+          <div className={cn("rounded-full bg-white/10 backdrop-blur-md border border-white/20 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 flex items-center justify-center", cert.url ? "px-4 py-2.5 gap-2" : "p-3")}>
+            {cert.url ? (
+              <>
+                <ExternalLink className="w-4 h-4 text-white" />
+                <span className="text-[10px] font-bold uppercase tracking-wider text-white pr-1">Verify</span>
+              </>
+            ) : (
+              <Search className="w-5 h-5 text-white" />
+            )}
           </div>
         </div>
       </div>
 
       {/* Content */}
       <div className="flex-grow flex flex-col relative z-0">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="relative w-8 h-8 rounded-lg overflow-hidden shrink-0 bg-white/5 flex items-center justify-center p-1 border border-white/10">
-             <Image src={cert.logo} alt={cert.issuer} width={24} height={24} className="object-contain" />
-          </div>
-          <p className="text-xs font-medium text-white/50 truncate max-w-[150px]">{cert.issuer}</p>
-        </div>
+        {cert.officialBadge ? (
+          <div className="flex gap-6 items-center">
+            {/* Left: Text Elements */}
+            <div className="flex-1 flex flex-col min-w-0">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="relative w-8 h-8 rounded-lg overflow-hidden shrink-0 bg-white/5 flex items-center justify-center p-1 border border-white/10">
+                  <Image src={cert.logo} alt={cert.issuer} width={24} height={24} className="object-contain" />
+                </div>
+                <p className="text-xs font-medium text-white/50 truncate max-w-[150px]">{cert.issuer}</p>
+              </div>
 
-        <h3 className="text-lg font-semibold text-white/90 leading-tight mb-2 group-hover:text-white transition-colors">
-          {cert.title}
-        </h3>
-        
-        <p className="text-sm text-zinc-400 line-clamp-2 leading-relaxed mb-4">
-          {cert.description}
-        </p>
+              <h3 className="text-lg font-semibold text-white/90 leading-tight mb-3 group-hover:text-white transition-colors">
+                {cert.title}
+              </h3>
+
+              <p className="text-sm text-zinc-400 leading-relaxed">
+                {cert.description}
+              </p>
+            </div>
+
+            {/* Right: Large Badge */}
+            <div className="relative w-32 h-32 shrink-0 drop-shadow-[0_0_30px_rgba(37,99,235,0.23)] hover:scale-107 transition-all duration-500">
+              <Image
+                src={cert.officialBadge}
+                alt="Official Badge"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="relative w-8 h-8 rounded-lg overflow-hidden shrink-0 bg-white/5 flex items-center justify-center p-1 border border-white/10">
+                <Image src={cert.logo} alt={cert.issuer} width={24} height={24} className="object-contain" />
+              </div>
+              <p className="text-xs font-medium text-white/50 truncate max-w-[150px]">{cert.issuer}</p>
+            </div>
+
+            <h3 className="text-lg font-semibold text-white/90 leading-tight mb-2 group-hover:text-white transition-colors">
+              {cert.title}
+            </h3>
+
+            <p className="text-sm text-zinc-400 line-clamp-2 leading-relaxed mb-4">
+              {cert.description}
+            </p>
+          </>
+        )}
 
         <div className="mt-auto flex items-center justify-between pt-4 border-t border-white/5">
           <div className="flex items-center gap-1.5 text-white/30">
@@ -323,28 +369,28 @@ export default function CertificationsPage() {
   return (
     <div className="min-h-screen bg-[#09090b] aurora-gradient relative overflow-x-hidden">
       <div className="bg-noise" aria-hidden="true" />
-      
+
       {/* Scroll to Top helper for SmoothScroll compatibility */}
       <div id="top" />
 
       {/* Header Section */}
       <section className="pt-40 pb-20 px-6 max-w-7xl mx-auto relative">
         <motion.div
-           initial={{ opacity: 0, y: 20 }}
-           animate={{ opacity: 1, y: 0 }}
-           className="flex flex-col items-center text-center space-y-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-col items-center text-center space-y-6"
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/10 shadow-xl">
-             <Award className="w-4 h-4 text-blue-400" />
-             <span className="text-xs font-bold uppercase tracking-[0.2em] text-white/70">Professional Credentials</span>
+            <Award className="w-4 h-4 text-blue-400" />
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-white/70">Professional Credentials</span>
           </div>
-          
+
           <h1 className="text-5xl md:text-6xl font-black tracking-tighter text-white leading-tight">
             Knowledge <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400">Album.</span>
           </h1>
-          
+
           <p className="text-lg text-zinc-400 max-w-2xl leading-relaxed">
-            A curated collection of my professional certifications, specialized training, 
+            A curated collection of my professional certifications, specialized training,
             and continuous education in QA, Development, and Artificial Intelligence.
           </p>
         </motion.div>
@@ -560,27 +606,27 @@ export default function CertificationsPage() {
         <section>
           <div className="flex flex-col md:flex-row items-end justify-between mb-12 gap-6">
             <div className="space-y-4">
-               <div className="flex items-center gap-2 text-purple-400 font-bold text-xs uppercase tracking-widest">
-                  <Sparkles className="w-4 h-4" />
-                  AI & NEXT-GEN TECH
-               </div>
-               <h2 className="text-3xl font-bold text-white tracking-tight">AI Specialists</h2>
-               <p className="text-white/40 max-w-md">Highlighting expertise in Generative AI, Prompt Engineering, and AI-Powered Testing.</p>
+              <div className="flex items-center gap-2 text-purple-400 font-bold text-xs uppercase tracking-widest">
+                <Sparkles className="w-4 h-4" />
+                AI & NEXT-GEN TECH
+              </div>
+              <h2 className="text-3xl font-bold text-white tracking-tight">AI Specialists</h2>
+              <p className="text-white/40 max-w-md">Highlighting expertise in Generative AI, Prompt Engineering, and AI-Powered Testing.</p>
             </div>
             {/* Minimal counter */}
             <div className="hidden md:flex flex-col items-end">
-               <span className="text-5xl font-black text-white/5 leading-none">03</span>
-               <span className="text-[10px] font-bold text-white/20 tracking-tighter uppercase mr-1">Certifications</span>
+              <span className="text-5xl font-black text-white/5 leading-none">03</span>
+              <span className="text-[10px] font-bold text-white/20 tracking-tighter uppercase mr-1">Certifications</span>
             </div>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {AI_CERTIFICATES.map((cert) => (
-              <CertificateCard 
-                key={cert.id} 
-                cert={cert} 
-                isAI={true} 
-                onClick={handleCertificateClick} 
+              <CertificateCard
+                key={cert.id}
+                cert={cert}
+                isAI={true}
+                onClick={handleCertificateClick}
               />
             ))}
           </div>
@@ -590,26 +636,26 @@ export default function CertificationsPage() {
         <section>
           <div className="flex flex-col md:flex-row items-end justify-between mb-12 gap-6">
             <div className="space-y-4">
-               <div className="flex items-center gap-2 text-blue-400 font-bold text-xs uppercase tracking-widest">
-                  <ShieldCheck className="w-4 h-4" />
-                  CORE FOUNDATIONS
-               </div>
-               <h2 className="text-3xl font-bold text-white tracking-tight">Technical & Leadership</h2>
-               <p className="text-white/40 max-w-md">Fundamental testing standards, development principles, and project management.</p>
+              <div className="flex items-center gap-2 text-blue-400 font-bold text-xs uppercase tracking-widest">
+                <ShieldCheck className="w-4 h-4" />
+                CORE FOUNDATIONS
+              </div>
+              <h2 className="text-3xl font-bold text-white tracking-tight">Technical & Leadership</h2>
+              <p className="text-white/40 max-w-md">Fundamental testing standards, development principles, and project management.</p>
             </div>
             {/* Minimal counter */}
             <div className="hidden md:flex flex-col items-end">
-               <span className="text-5xl font-black text-white/5 leading-none">06</span>
-               <span className="text-[10px] font-bold text-white/20 tracking-tighter uppercase mr-1">Certifications</span>
+              <span className="text-5xl font-black text-white/5 leading-none">06</span>
+              <span className="text-[10px] font-bold text-white/20 tracking-tighter uppercase mr-1">Certifications</span>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {GENERAL_CERTIFICATES.map((cert) => (
-              <CertificateCard 
-                key={cert.id} 
-                cert={cert} 
-                onClick={handleCertificateClick} 
+              <CertificateCard
+                key={cert.id}
+                cert={cert}
+                onClick={handleCertificateClick}
               />
             ))}
           </div>
@@ -634,7 +680,7 @@ export default function CertificationsPage() {
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close Button Mobile */}
-              <button 
+              <button
                 className="absolute top-4 right-4 z-20 p-2 rounded-full bg-black/50 border border-white/10 text-white md:hidden"
                 onClick={() => setSelectedCert(null)}
               >
@@ -658,7 +704,7 @@ export default function CertificationsPage() {
               {/* Content Area */}
               <div className="flex-1 p-8 md:p-12 flex flex-col bg-white/[0.02]">
                 {/* Back to album (desktop) */}
-                <button 
+                <button
                   onClick={() => setSelectedCert(null)}
                   className="hidden md:flex items-center gap-2 text-white/40 hover:text-white transition-colors text-xs font-bold uppercase tracking-widest mb-10"
                 >
@@ -689,10 +735,10 @@ export default function CertificationsPage() {
 
                   <div className="pt-10 mt-auto">
                     {selectedCert.url ? (
-                      <Link 
-                        href={selectedCert.url} 
+                      <Link
+                        href={selectedCert.url}
                         target="_blank"
-                        onClick={() => trackEvent('verify_certificate', { 
+                        onClick={() => trackEvent('verify_certificate', {
                           title: selectedCert.title,
                           issuer: selectedCert.issuer
                         })}
