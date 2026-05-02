@@ -8,7 +8,7 @@ import {
   Terminal, ShieldCheck, Box, Layers, Settings, GraduationCap, Sparkles,
   ExternalLink, Target, Cpu, Trophy, BadgeCheck, MessageSquareQuote, User,
 } from "lucide-react";
-import { skills, recommendations } from "@/data/portfolio";
+import { skills, recommendations, certifications } from "@/data/portfolio";
 
 const CORE_FOCUS_TAGS = [
   "FIRMWARE QUALITY GOVERNANCE",
@@ -23,19 +23,9 @@ const CORE_FOCUS_TAGS = [
   "TECHNICAL MENTORSHIP",
 ];
 
-const AI_CERTS = [
-  "Software Testing Foundations: Integrating AI into Quality Process (2026)",
-  "AI Coding Agents with GitHub Copilot and Cursor (2025)",
-  "AI for App building (2026)",
-];
-
-const TESTING_CERTS = ["ISTQB Certified Tester Foundation Level (CTFL)"];
-
-const LEADERSHIP_CERTS = [
-  "How to Master Your Executive Presence (2023)",
-  "Project Management Foundations (2023)",
-  "Scrum: Advanced (2021)",
-];
+const AI_CERTS = certifications.filter((c) => c.category === "ai").map((c) => c.title);
+const TESTING_CERTS = certifications.filter((c) => c.category === "testing").map((c) => c.title);
+const LEADERSHIP_CERTS = certifications.filter((c) => c.category === "leadership").map((c) => c.title);
 
 export function ExperienceRightColumn() {
   return (
