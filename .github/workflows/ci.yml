@@ -48,10 +48,24 @@ jobs:
       - name: Install Dependencies
         working-directory: ./resume-site
         run: npm ci
-        
-      - name: Install Playwright Browsers
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('resume-site/package-lock.json') }}
+
+      - name: Install Playwright Chromium
         working-directory: ./resume-site
-        run: npx playwright install --with-deps
+        run: npx playwright install --with-deps chromium
+
+      - name: Cache Next.js build
+        uses: actions/cache@v4
+        with:
+          path: resume-site/.next/cache
+          key: nextjs-${{ runner.os }}-${{ hashFiles('resume-site/package-lock.json') }}-${{ hashFiles('resume-site/src/**', 'resume-site/content/**', 'resume-site/public/**', 'resume-site/next.config.ts', 'resume-site/tailwind.config.*', 'resume-site/postcss.config.*') }}
+          restore-keys: |
+            nextjs-${{ runner.os }}-${{ hashFiles('resume-site/package-lock.json') }}-
 
       - name: Build Next.js (required for `next start` webServer)
         working-directory: ./resume-site
