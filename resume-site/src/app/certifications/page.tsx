@@ -466,7 +466,7 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
       {/* Section header — title is split into two lines (name / N-Course Journey).
           Per the design brief, the descriptive paragraph lives ONLY inside the card,
           not in the header. */}
-      <div className="mb-12 flex flex-col items-end justify-between gap-6 md:flex-row">
+      <div className="mb-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
         <div className="space-y-4">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-indigo-400">
             <GitBranch className="h-4 w-4" aria-hidden />
@@ -555,7 +555,7 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
                 </div>
               </button>
 
-              {/* Logo + issuer + date */}
+              {/* Logo + issuer + date + VIEW DETAILS (mobile-friendly CTA) */}
               <div className="flex items-center gap-3">
                 <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/5 p-1.5">
                   <Image
@@ -566,7 +566,7 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
                     className="object-contain"
                   />
                 </div>
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <p className="truncate text-xs font-bold uppercase tracking-widest text-blue-400">
                     {spec.issuer}
                   </p>
@@ -575,6 +575,21 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
                     {spec.date}
                   </p>
                 </div>
+                <button
+                  type="button"
+                  onClick={() =>
+                    openVerifyUrl(spec.url, {
+                      title: spec.titleLines[0],
+                      issuer: spec.issuer,
+                      specialization: spec.titleLines[0],
+                    })
+                  }
+                  aria-label={`View ${spec.titleLines[0]} details on Coursera`}
+                  className="group/details inline-flex shrink-0 items-center gap-1 text-[11px] font-semibold tracking-wider text-white/40 transition-colors hover:text-blue-400 focus:outline-none focus-visible:text-blue-400"
+                >
+                  VIEW DETAILS
+                  <ArrowRight className="h-3 w-3 transition-transform group-hover/details:translate-x-1" />
+                </button>
               </div>
 
               {/* Description text + parent badge — horizontally aligned.
