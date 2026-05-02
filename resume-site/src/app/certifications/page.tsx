@@ -371,7 +371,7 @@ const GENERAL_CERTIFICATES: GalleryCertificate[] = [
 /**
  * 2-3-2 staggered ("circular") grid of badge tiles for the Pro Cert.
  *
- * Layout (desktop, 7 items):
+ * Layout (7 items, every breakpoint):
  *
  *     [B1]  [B2]
  *   [B3] [B4] [B5]
@@ -380,20 +380,19 @@ const GENERAL_CERTIFICATES: GalleryCertificate[] = [
  * Implementation notes:
  * - We render a single `<ol>` (one `<li>` per course) so screen readers and
  *   tests that count children-as-list-items both keep working.
- * - Visual 2-3-2 placement is done via a 6-col CSS grid with explicit
- *   `col-start` / `col-end` classes per item index.
- * - On mobile we drop the explicit positioning and let items flow into a
- *   simple 3-up wrap, which never overflows the card.
+ * - Visual 2-3-2 placement uses a 6-col CSS grid with explicit
+ *   `col-start` / `col-end` classes per item index, applied at all sizes so
+ *   the staggered rhythm holds on mobile too.
  */
 const PRO_CERT_GRID_POSITIONS = [
-  // index → desktop column placement on a 6-col track
-  "md:col-start-2 md:col-end-4", // 1 — row 1 left
-  "md:col-start-4 md:col-end-6", // 2 — row 1 right
-  "md:col-start-1 md:col-end-3", // 3 — row 2 left
-  "md:col-start-3 md:col-end-5", // 4 — row 2 center
-  "md:col-start-5 md:col-end-7", // 5 — row 2 right
-  "md:col-start-2 md:col-end-4", // 6 — row 3 left
-  "md:col-start-4 md:col-end-6", // 7 — row 3 right
+  // index → column placement on a 6-col track (applies at all breakpoints)
+  "col-start-2 col-end-4", // 1 — row 1 left
+  "col-start-4 col-end-6", // 2 — row 1 right
+  "col-start-1 col-end-3", // 3 — row 2 left
+  "col-start-3 col-end-5", // 4 — row 2 center
+  "col-start-5 col-end-7", // 5 — row 2 right
+  "col-start-2 col-end-4", // 6 — row 3 left
+  "col-start-4 col-end-6", // 7 — row 3 right
 ] as const;
 
 const ChildBadgesGrid = ({
@@ -404,7 +403,7 @@ const ChildBadgesGrid = ({
   return (
     <ol
       data-testid={spec.testId}
-      className="m-0 grid w-full max-w-[440px] list-none grid-cols-3 place-items-center gap-x-2 gap-y-4 p-0 md:max-w-[460px] md:grid-cols-6 md:gap-x-0 md:gap-y-5"
+      className="m-0 grid w-full max-w-[460px] list-none grid-cols-6 place-items-center gap-x-0 gap-y-4 p-0 md:gap-y-5"
     >
       {spec.children.map((child, index) => (
         <motion.li
@@ -428,13 +427,13 @@ const ChildBadgesGrid = ({
               })
             }
             aria-label={`View ${child.title} verified badge on Credly`}
-            className="group/badge relative h-24 w-24 shrink-0 rounded-full transition-transform duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70 md:h-[112px] md:w-[112px]"
+            className="group/badge relative h-[76px] w-[76px] shrink-0 rounded-full transition-transform duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70 md:h-[112px] md:w-[112px]"
           >
             <Image
               src={child.badge.image}
               alt={`${child.title} verified badge`}
               fill
-              sizes="(max-width: 768px) 96px, 112px"
+              sizes="(max-width: 768px) 76px, 112px"
               className="object-contain drop-shadow-[0_4px_16px_rgba(16,185,129,0.25)]"
             />
           </button>
@@ -511,7 +510,7 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
         />
 
         <div className="relative">
-          <div className="grid items-stretch gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] md:gap-10">
+          <div className="grid grid-cols-1 items-stretch gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] md:gap-10">
             {/* ─────────── LEFT COLUMN ───────────
                Stacked, fills the card height so there is no empty space:
                  1. Thumbnail (with AI Skills ribbon)
