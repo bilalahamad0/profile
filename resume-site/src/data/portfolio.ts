@@ -171,16 +171,31 @@ export const skills = [
   { name: "AI Copilot / Cursor", icon: ShieldCheck, color: "text-purple-400" }
 ];
 
-export const certs = [
-  "Google AI Essentials Specialization — 5 Courses (Google · Coursera, 2026)",
-  "Software Testing Foundations: Integrating AI into Quality Process (2026)",
-  "AI Coding Agents with GitHub Copilot and Cursor (2025)",
-  "AI for App building (2026)",
-  "ISTQB Certified Tester Foundation Level (CTFL)",
-  "How to Master Your Executive Presence (2023)",
-  "Project Management Foundations (2023)",
-  "Scrum: Advanced (2021)",
+export type CertCategory = "ai" | "testing" | "leadership";
+
+export type Certification = {
+  title: string;
+  category: CertCategory;
+};
+
+// Single source of truth for the Experience-page Certifications card.
+// Order = display priority within each category (most prominent / newest first).
+// Mirrors the priority on /certifications so the summary card stays in sync
+// whenever a new credential is added to the gallery.
+// Note: "AI for App Building" is intentionally absent — it's now course #7 of
+// the Google AI Professional Certificate specialization.
+export const certifications: Certification[] = [
+  { title: "Google AI Professional Certificate — 7 Courses (Google · Coursera, 2026)", category: "ai" },
+  { title: "Google AI Essentials Specialization — 5 Courses (Google · Coursera, 2026)", category: "ai" },
+  { title: "Software Testing Foundations: Integrating AI into Quality Process (2026)", category: "ai" },
+  { title: "AI Coding Agents with GitHub Copilot and Cursor (2025)", category: "ai" },
+  { title: "ISTQB Certified Tester Foundation Level (CTFL)", category: "testing" },
+  { title: "Project Management Foundations (2023)", category: "leadership" },
+  { title: "Scrum: Advanced (2021)", category: "leadership" },
+  { title: "How to Master Your Executive Presence (2023)", category: "leadership" },
 ];
+
+export const certs = certifications.map((c) => c.title);
 
 export const recommendations = [
   { name: "Sai Abhishek / MBA", title: "Project Manager | PMP | Scrum Master", review: "Bilal is an extremely hardworking and dedicated worker, he gives him 100% to all that he does. It was wonderful working with him in a brief stint way back in 2012, however, he has always kept in touch and has ensured that relations built stay forever. I wish him luck in all his future endeavours." },
