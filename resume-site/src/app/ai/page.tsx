@@ -388,7 +388,7 @@ function MetricsAtAGlance({ projects }: { projects: ProjectWithMetrics[] }) {
   });
 
   return (
-    <section className="px-6 lg:px-24 pb-8 relative z-10" aria-labelledby="glance-heading">
+    <section className="px-6 lg:px-24 pb-6 md:pb-8 relative z-10" aria-labelledby="glance-heading">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center gap-2 text-purple-400 font-bold text-xs uppercase tracking-widest mb-4">
           <TrendingUp className="w-4 h-4" aria-hidden="true" />
@@ -510,7 +510,7 @@ export default async function AILabPage() {
       <NeuralBackground />
 
       {/* Hero */}
-      <section className="relative pt-36 pb-20 px-6 lg:px-24 text-center" aria-labelledby="ai-heading">
+      <section className="relative pt-24 pb-12 md:pt-32 md:pb-16 lg:pt-36 lg:pb-20 px-6 lg:px-24 text-center" aria-labelledby="ai-heading">
         <div className="max-w-5xl mx-auto relative z-10">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 mb-8">
             <Sparkles className="w-4 h-4 text-purple-400 fill-purple-400/30" aria-hidden="true" />
@@ -546,7 +546,7 @@ export default async function AILabPage() {
       <MetricsAtAGlance projects={enriched} />
 
       {/* AI Projects */}
-      <section className="py-20 px-6 lg:px-24 relative z-10" aria-labelledby="systems-heading">
+      <section className="py-12 md:py-16 lg:py-20 px-6 lg:px-24 relative z-10" aria-labelledby="systems-heading">
         <div className="max-w-7xl mx-auto">
           <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
@@ -571,7 +571,7 @@ export default async function AILabPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-6 text-center border-t border-white/5 bg-white/[0.01] relative z-10" aria-labelledby="cta-heading">
+      <section className="py-12 md:py-16 lg:py-20 px-6 text-center border-t border-white/5 bg-white/[0.01] relative z-10" aria-labelledby="cta-heading">
         <div className="max-w-2xl mx-auto space-y-6">
           <h2 id="cta-heading" className="text-3xl font-black tracking-tighter">
             Read the Full{" "}
