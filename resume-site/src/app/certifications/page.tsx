@@ -466,7 +466,7 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
       {/* Section header — title is split into two lines (name / N-Course Journey).
           Per the design brief, the descriptive paragraph lives ONLY inside the card,
           not in the header. */}
-      <div className="mb-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+      <div className="mb-8 md:mb-10 lg:mb-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
         <div className="space-y-4">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-indigo-400">
             <GitBranch className="h-4 w-4" aria-hidden />
@@ -851,7 +851,7 @@ export default function CertificationsPage() {
       <div id="top" />
 
       {/* Header Section */}
-      <section className="pt-40 pb-20 px-6 max-w-7xl mx-auto relative">
+      <section className="pt-24 pb-12 md:pt-32 md:pb-16 lg:pt-40 lg:pb-20 px-6 max-w-7xl mx-auto relative">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -874,7 +874,7 @@ export default function CertificationsPage() {
       </section>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6 pb-40 space-y-32">
+      <div className="max-w-7xl mx-auto px-6 pb-20 md:pb-32 lg:pb-40 space-y-16 md:space-y-24 lg:space-y-32">
         {/* SPECIALIZATION PATHS — reverse chronology: Pro Certificate first, Essentials second */}
         {SPECIALIZATIONS.map((spec) => (
           <SpecializationSection key={spec.id} spec={spec} />
@@ -882,7 +882,7 @@ export default function CertificationsPage() {
 
         {/* AI SECTION - HIGHLIGHTED */}
         <section>
-          <div className="flex flex-col md:flex-row items-end justify-between mb-12 gap-6">
+          <div className="flex flex-col md:flex-row items-end justify-between mb-8 md:mb-10 lg:mb-12 gap-6">
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-purple-400 font-bold text-xs uppercase tracking-widest">
                 <Sparkles className="w-4 h-4" />
@@ -914,7 +914,7 @@ export default function CertificationsPage() {
 
         {/* GENERAL SECTION */}
         <section>
-          <div className="flex flex-col md:flex-row items-end justify-between mb-12 gap-6">
+          <div className="flex flex-col md:flex-row items-end justify-between mb-8 md:mb-10 lg:mb-12 gap-6">
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-blue-400 font-bold text-xs uppercase tracking-widest">
                 <ShieldCheck className="w-4 h-4" />
