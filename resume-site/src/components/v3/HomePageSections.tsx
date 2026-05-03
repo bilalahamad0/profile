@@ -50,7 +50,7 @@ function SectionLabel({ color, children }: { color: string; children: React.Reac
    ================================================================ */
 export function AILabPreview() {
   return (
-    <section className="px-6 lg:px-24 py-24 relative overflow-hidden" aria-labelledby="ai-preview-heading">
+    <section className="px-6 lg:px-24 py-12 md:py-20 lg:py-24 relative overflow-hidden" aria-labelledby="ai-preview-heading">
       {/* Neural-style background */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div className="absolute top-[-15%] left-[25%] w-[500px] h-[500px] rounded-full bg-violet-600/[0.07] blur-[130px]" />
@@ -70,7 +70,7 @@ export function AILabPreview() {
           </motion.div>
 
           {/* Philosophy quote */}
-          <motion.div variants={fadeUp} transition={{ duration: 0.5 }} className="mb-10">
+          <motion.div variants={fadeUp} transition={{ duration: 0.5 }} className="mb-6 md:mb-8 lg:mb-10">
             <blockquote className="relative p-6 md:p-8 rounded-2xl bg-gradient-to-r from-violet-950/40 to-indigo-950/40 border border-violet-500/15">
               <div className="absolute top-4 left-6 text-violet-500/20 text-6xl font-serif leading-none" aria-hidden="true">&ldquo;</div>
               <p className="relative z-10 text-lg md:text-xl text-zinc-200 font-light leading-relaxed italic pl-8">
@@ -119,7 +119,7 @@ export function BlogPreview({ posts }: { posts: BlogPostPreview[] }) {
   const hasRecentPosts = recent.length > 0;
 
   return (
-    <section className="px-6 lg:px-24 py-24 relative overflow-hidden" aria-labelledby="blog-preview-heading">
+    <section className="px-6 lg:px-24 py-12 md:py-20 lg:py-24 relative overflow-hidden" aria-labelledby="blog-preview-heading">
       <div className="max-w-7xl mx-auto">
         <motion.div
           variants={staggerContainer}
@@ -133,7 +133,7 @@ export function BlogPreview({ posts }: { posts: BlogPostPreview[] }) {
               Lab{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Notes</span>
             </h2>
-            <p className="text-zinc-400 text-lg max-w-2xl mb-14 leading-relaxed">
+            <p className="text-zinc-400 text-lg max-w-2xl mb-8 md:mb-12 lg:mb-14 leading-relaxed">
               Project deep-dives, whitepapers, and thought leadership on engineering quality and AI-native development.
             </p>
           </motion.div>
@@ -203,7 +203,7 @@ export function BlogPreview({ posts }: { posts: BlogPostPreview[] }) {
           </div>
 
           {/* CTA */}
-          <motion.div variants={fadeUp} transition={{ duration: 0.5 }} className="mt-10 flex justify-center">
+          <motion.div variants={fadeUp} transition={{ duration: 0.5 }} className="mt-6 md:mt-8 lg:mt-10 flex justify-center">
             <Link
               href="/blog"
               className="group flex items-center gap-3 px-8 py-3.5 rounded-full bg-white/[0.05] border border-white/10 text-white font-bold hover:bg-white/[0.1] hover:border-white/20 transition-all"
@@ -224,7 +224,7 @@ export function BlogPreview({ posts }: { posts: BlogPostPreview[] }) {
    ================================================================ */
 export function ContactCTA() {
   return (
-    <section className="px-6 lg:px-24 py-24 relative overflow-hidden" aria-label="Contact and availability">
+    <section className="px-6 lg:px-24 py-12 md:py-20 lg:py-24 relative overflow-hidden" aria-label="Contact and availability">
       {/* Gradient background */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] rounded-[100%] bg-blue-600/[0.08] blur-[150px]" />
@@ -257,7 +257,7 @@ export function ContactCTA() {
           </motion.p>
 
           {/* CTAs */}
-          <motion.div variants={fadeUp} transition={{ duration: 0.5 }} className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+          <motion.div variants={fadeUp} transition={{ duration: 0.5 }} className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8 md:mb-10 lg:mb-12">
             <Link
               href="/contact"
               className="group flex items-center gap-3 px-8 py-4 rounded-full bg-white text-zinc-900 font-bold hover:bg-zinc-200 transition-all shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:scale-105 active:scale-95"
