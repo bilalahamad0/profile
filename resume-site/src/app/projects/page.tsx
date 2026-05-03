@@ -195,7 +195,7 @@ export default function ProjectsPage() {
     <main className="min-h-screen bg-[#09090b] text-white">
       {videoLightboxPortal}
       {/* Header */}
-      <section className="pt-32 pb-16 px-6 lg:px-24 border-b border-white/5 relative overflow-hidden">
+      <section className="pt-24 pb-10 md:pt-28 md:pb-12 lg:pt-32 lg:pb-16 px-6 lg:px-24 border-b border-white/5 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[600px] h-[400px] bg-blue-500/5 blur-[120px] rounded-full pointer-events-none" aria-hidden="true" />
         <div className="max-w-7xl mx-auto relative">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
@@ -266,7 +266,7 @@ export default function ProjectsPage() {
       </section>
 
       {/* Project grid */}
-      <section className="py-16 px-6 lg:px-24">
+      <section className="py-10 md:py-12 lg:py-16 px-6 lg:px-24">
         <div className="max-w-7xl mx-auto">
           <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <AnimatePresence mode="popLayout">
@@ -517,7 +517,7 @@ export default function ProjectsPage() {
       </section>
 
       {/* GitHub CTA */}
-      <section className="py-24 px-6 text-center border-t border-white/5 bg-white/[0.01]">
+      <section className="py-12 md:py-20 lg:py-24 px-6 text-center border-t border-white/5 bg-white/[0.01]">
         <div className="max-w-2xl mx-auto space-y-6">
           <h2 className="text-3xl font-black tracking-tighter">See All Repositories</h2>
           <p className="text-zinc-400">
