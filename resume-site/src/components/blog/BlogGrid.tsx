@@ -76,7 +76,7 @@ export function BlogGrid({ mdxPosts, linkedInPosts }: BlogGridProps) {
       </section>
 
       {/* Post Grid */}
-      <section className="py-16 px-6 lg:px-24">
+      <section className="py-10 md:py-12 lg:py-16 px-6 lg:px-24">
         <div className="max-w-7xl mx-auto">
           {/* Use a simple CSS grid without motion.div layout — avoids expensive layout recalculations on mobile */}
           <AnimatePresence mode="popLayout">
