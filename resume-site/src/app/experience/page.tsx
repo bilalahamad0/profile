@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ExperienceTimeline } from "@/components/experience/ExperienceTimeline";
 import { ExperienceRightColumn } from "@/components/experience/ExperienceRightColumn";
 import { ShareButton } from "@/components/experience/ShareButton";
-import { DownloadButton } from "@/components/experience/DownloadButton";
 
 export default function ExperiencePage() {
   return (
@@ -22,7 +21,6 @@ export default function ExperiencePage() {
           </div>
 
           <div className="flex flex-wrap gap-4">
-            <DownloadButton />
             <ShareButton />
           </div>
         </div>
