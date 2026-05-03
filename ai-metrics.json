@@ -29,6 +29,6 @@
   "cycle": "19 active days",
   "beforeAI": "Static HTML/CSS resume site",
   "afterAI": "AI-native Next.js portfolio with analytics",
-  "tests": 10,
+  "tests": 306,
   "testSuites": 5
 }
