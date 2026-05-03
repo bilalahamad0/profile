@@ -476,13 +476,13 @@ export default function ProjectsPage() {
 
                       {/* Footer */}
                       <div className="mt-6 pt-6 border-t border-white/5 flex items-start justify-between gap-4">
-                        <div className="flex items-start gap-4 text-xs text-zinc-500">
+                        <div className="flex-1 min-w-0 flex items-start gap-4 text-xs text-zinc-500">
                           <span className="flex items-start gap-1.5">
                             <Zap className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" aria-hidden="true" />
-                            <span className="leading-relaxed">{project.impact}</span>
+                            <span className="leading-relaxed text-justify sm:text-left">{project.impact}</span>
                           </span>
                         </div>
-                        <div className="flex flex-wrap items-center justify-end gap-3 shrink-0">
+                        <div className="flex flex-col sm:flex-row sm:flex-wrap items-end sm:items-center justify-end gap-2 sm:gap-3 shrink-0">
                           <a
                             href={project.repo}
                             target="_blank"

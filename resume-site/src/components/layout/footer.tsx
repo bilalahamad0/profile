@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Github, Linkedin, Mail, Download, ArrowUpRight, MapPin } from "lucide-react";
+import { Github, Linkedin, Mail, ArrowUpRight, MapPin } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 const navLinks = [
@@ -43,9 +43,9 @@ export function Footer() {
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-24 py-16">
         {/* Top row */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-12 md:gap-12 mb-16">
           {/* Brand column */}
-          <div className="space-y-4">
+          <div className="col-span-2 md:col-span-1 space-y-4">
             <Link
               href="/"
               className="inline-flex flex-col group"
@@ -64,20 +64,10 @@ export function Footer() {
             </p>
 
             {!isHome && (
-              <>
-                <p className="text-xs text-zinc-400 flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-zinc-700" />
-                  Sunnyvale, CA · Open to Remote & Bay Area
-                </p>
-                <a
-                  href="/Bilal_Ahamad_Resume.pdf"
-                  download
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm font-semibold text-zinc-300 hover:bg-white/10 hover:text-white transition-all mt-2"
-                >
-                  <Download className="w-4 h-4" />
-                  Download Resume
-                </a>
-              </>
+              <p className="text-xs text-zinc-400 flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 text-zinc-700" />
+                Sunnyvale, CA · Open to Remote & Bay Area
+              </p>
             )}
           </div>
 

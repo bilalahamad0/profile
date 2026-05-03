@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import {
   ArrowRight, Sparkles, BookOpen, Terminal,
-  Download, FileText, Linkedin,
+  FileText, Linkedin,
 } from "lucide-react";
 import { linkedInPosts } from "@/data/portfolio";
 
@@ -265,14 +265,6 @@ export function ContactCTA() {
               Get in Touch
               <Terminal className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
-            <a
-              href="/Bilal_Ahamad_Resume.pdf"
-              download
-              className="group flex items-center gap-3 px-8 py-4 rounded-full bg-white/[0.05] border border-white/10 text-white font-bold hover:bg-white/[0.1] hover:border-white/20 transition-all"
-            >
-              <Download className="w-4 h-4 text-blue-400" />
-              Download Resume
-            </a>
           </motion.div>
 
         </motion.div>
