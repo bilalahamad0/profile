@@ -9,7 +9,7 @@ export default function ExperiencePage() {
   return (
     <main className="min-h-screen bg-[#09090b] text-white">
       {/* Header */}
-      <section className="pt-32 pb-12 px-6 lg:px-24 border-b border-white/5">
+      <section className="pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12 px-6 lg:px-24 border-b border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div className="space-y-4">
             <h1 className="text-5xl md:text-6xl font-black tracking-tighter">
@@ -29,7 +29,7 @@ export default function ExperiencePage() {
       </section>
 
       {/* Career content — fully SSR'd */}
-      <section className="relative py-12 px-4 sm:px-6" aria-label="Professional dashboard">
+      <section className="relative py-8 md:py-10 lg:py-12 px-4 sm:px-6" aria-label="Professional dashboard">
         <div
           className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full -z-10"
           aria-hidden="true"
@@ -44,7 +44,7 @@ export default function ExperiencePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 px-6 text-center border-t border-white/5">
+      <section className="py-12 md:py-20 lg:py-24 px-6 text-center border-t border-white/5">
         <h2 className="text-3xl font-bold mb-8">Ready to build something together?</h2>
         <Link
           href="/contact"
