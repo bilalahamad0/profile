@@ -6,7 +6,9 @@ import {
   Bot, Coins, GitCommit, FileCode2, Server, FlaskConical
 } from "lucide-react";
 import { projectsData } from "@/data/portfolio";
-import type { AIMetrics } from "@/app/api/ai-metrics/route";
+import { getAIMetricsMap, type AIMetrics } from "@/lib/ai-metrics";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "AI Lab",
@@ -36,8 +38,6 @@ const breadcrumb = {
     { "@type": "ListItem", position: 2, name: "AI Lab", item: "https://bilalahamad.com/ai" },
   ],
 };
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://bilalahamad.com";
 
 const STATIC_FALLBACK: Record<string, AIMetrics> = {
   warn: {
@@ -168,18 +168,6 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
     testSuites: 5,
   },
 };
-
-async function getDynamicMetrics(): Promise<Record<string, AIMetrics>> {
-  try {
-    const res = await fetch(`${SITE_URL}/api/ai-metrics`, {
-      next: { revalidate: 0 },
-    });
-    if (!res.ok) return {};
-    return (await res.json()) as Record<string, AIMetrics>;
-  } catch {
-    return {};
-  }
-}
 
 function formatTokens(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
@@ -481,7 +469,7 @@ function MetricsAtAGlance({ projects }: { projects: ProjectWithMetrics[] }) {
 }
 
 export default async function AILabPage() {
-  const dynamicMetrics = await getDynamicMetrics();
+  const dynamicMetrics = await getAIMetricsMap();
   const aiProjects = projectsData.filter((p) => p.isAI);
 
   const enriched: ProjectWithMetrics[] = aiProjects.map((p) => ({
