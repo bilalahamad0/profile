@@ -232,7 +232,7 @@ export const projectsData = [
   },
   {
     id: "adhan",
-    name: "Smart-Home IoT Audio Caster",
+    name: "Smart-Home IoT Media Caster",
     tagline: "AI-orchestrated IoT prayer time automation",
     description: "An advanced IoT orchestration layer for automated prayer-time notifications. Integrates Raspberry Pi with Sony Android TV via ADB, managing media states and low-level system commands. Built from scratch using AI pair programming—compressing a 3-week engineering cycle into 4 days.",
     category: "IoT & Automation" as ProjectCategory,
@@ -243,16 +243,16 @@ export const projectsData = [
     isAI: true,
     aiTools: ["Antigravity", "Gemini 2.5 Flash/Pro", "Cursor", "Claude Sonnet 4 / Opus 4.6"],
     aiContribution: 92,
-    impact: "Zero-touch prayer-time audio notifications with automated media-state control (Raspberry Pi + Android TV via ADB) · 10 microservices",
+    impact: "Zero-touch prayer-time media notifications with automated media-state control (Raspberry Pi + Android TV via ADB) · 10 microservices",
     gradient: "from-emerald-600/20 via-emerald-500/10 to-transparent",
     accent: "emerald",
-    blogSlug: "adhan-caster-story",
+    blogSlug: "media-caster-story",
     // YouTube demo
     previewType: "youtube" as const,
     previewSrc: "https://www.youtube.com/embed/GETyDnvZWog",
     dashboardSrc: "https://bilalahamad0.github.io/adhan-api/dashboard.html",
     thumbnail: "/videos/The_Architecture_of_Automation.mp4",
-    thumbnailAlt: "Smart-Home IoT Audio Caster system flow animation",
+    thumbnailAlt: "Smart-Home IoT Media Caster system flow animation",
     thumbnailType: "video" as const,
   },
   {

@@ -16,6 +16,16 @@ const nextConfig: NextConfig = {
     ],
   },
 
+  async redirects() {
+    return [
+      {
+        source: "/blog/adhan-caster-story",
+        destination: "/blog/media-caster-story",
+        permanent: true,
+      },
+    ];
+  },
+
   // Static asset + API caching headers
   async headers() {
     return [

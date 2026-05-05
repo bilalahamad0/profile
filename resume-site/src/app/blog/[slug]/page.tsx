@@ -12,7 +12,7 @@ export async function generateStaticParams() {
 const slugToThumb: Record<string, string> = {
   "ai-driven-development": "/blog-thumbs/ai-native-dev.png",
   "california-warn-story": "/blog-thumbs/california-warn.png",
-  "adhan-caster-story":    "/blog-thumbs/adhan-iot.png",
+  "media-caster-story":    "/blog-thumbs/media-caster.png",
   "resilient-iot-application": "/blog-thumbs/resilient-iot.png",
 };
 

@@ -912,7 +912,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                   </div>
                 </div>
 
-                {/* 2. ADHAN API / AUDIO CASTER */}
+                {/* 2. ADHAN API / MEDIA CASTER */}
                 <div className="glass-card rounded-[2.5rem] p-8 flex flex-col gap-8 relative overflow-hidden group border-white/5 hover:border-emerald-500/20 transition-all duration-700">
                   <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-1000">
                     <Check className="w-64 h-64" />
@@ -925,7 +925,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                           <Smartphone className="w-6 h-6 text-emerald-500" />
                         </div>
                         <div>
-                          <h3 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tight">Smart-Home IoT Audio Caster</h3>
+                          <h3 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tight">Smart-Home IoT Media Caster</h3>
                           <div className="flex gap-3 mt-1">
                             {repos.find(r => r.name === 'adhan-api') && (
                               <div className="flex gap-3 text-xs text-zinc-500 font-bold uppercase tracking-widest">

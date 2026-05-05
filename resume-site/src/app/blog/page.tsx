@@ -75,8 +75,8 @@ export const mdxPosts = [
     thumbnail: "/blog-thumbs/california-warn.png",
   },
   {
-    slug: "adhan-caster-story",
-    title: "Smart-Home IoT Audio Caster: Engineering IoT Automation with AI",
+    slug: "media-caster-story",
+    title: "Smart-Home IoT Media Caster: Engineering IoT Automation with AI",
     date: "August 12, 2025",
     description:
       "A deep dive into building a prayer-time IoT orchestration system with Raspberry Pi, ADB, and Sony Android TV — compressed from 3 weeks to 4 days using AI pair programming.",
@@ -84,7 +84,7 @@ export const mdxPosts = [
     category: "Project Story" as const,
     readingTime: 5,
     featured: false,
-    thumbnail: "/blog-thumbs/adhan-iot.png",
+    thumbnail: "/blog-thumbs/media-caster.png",
   },
 ];
 
