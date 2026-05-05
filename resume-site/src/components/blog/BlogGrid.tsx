@@ -103,7 +103,7 @@ export function BlogGrid({ mdxPosts, linkedInPosts }: BlogGridProps) {
                         <img
                           src={post.thumbnail}
                           alt={post.title}
-                          className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                          className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                           loading="lazy"
                           decoding="async"
                         />
