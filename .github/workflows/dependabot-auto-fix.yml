@@ -22,7 +22,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/nextjs-node-setup@v1 # Or standard node setup
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
 

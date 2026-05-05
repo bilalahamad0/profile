@@ -23,6 +23,11 @@ const nextConfig: NextConfig = {
         destination: "/blog/media-caster-story",
         permanent: true,
       },
+      {
+        source: "/docs/Bilal_Ahamad_Resume.pdf",
+        destination: "/Bilal_Ahamad_Resume.pdf",
+        permanent: true,
+      },
     ];
   },
 
