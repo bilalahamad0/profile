@@ -17,7 +17,7 @@
  *   - 180/192/512: full BA + ring composition (ring adds brand polish
  *     at sizes where detail is appreciable)
  *
- * Outputs (paths relative to resume-site/):
+ * Outputs (paths relative to repo root):
  *   src/app/favicon.ico        — 16+32+48 multi-res ICO, BA-only crop
  *   src/app/icon.png           — 512x512, full composition
  *   src/app/apple-icon.png     — 180x180, full composition

@@ -41,9 +41,10 @@ SMTP_TO=your-email@gmail.com
 
 ## 💻 Local Development
 
-1. Clone repository and install dependencies.
+1. Clone the repository and install dependencies from the repo root.
 ```bash
-cd resume-site
+git clone https://github.com/bilalahamad0/profile.git
+cd profile
 npm install
 ```
 2. Spawn the Next.js development server.

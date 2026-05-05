@@ -5,7 +5,7 @@ This document provides instructions on how to use the automated testing and secu
 ## 1. Unit & Integration Testing
 We use **Vitest** combined with **React Testing Library** for our unit and integration tests. Vitest was chosen over Jest for its superior performance and native ESM support with Vite/Next.js.
 
-- **Run all tests:** `npm run test` inside the `resume-site` directory.
+- **Run all tests:** `npm run test` from the repo root.
 - **Run tests in watch mode:** `npx vitest`
 - **View Coverage:** `npm run test:coverage`
   - A global threshold is set to 85%. If coverage falls below this, the CI pipeline will fail.
@@ -14,7 +14,7 @@ We use **Vitest** combined with **React Testing Library** for our unit and integ
 ## 2. End-to-End (E2E) & System Testing
 **Playwright** is configured to run end-to-end tests simulating real user interactions across Chromium, Firefox, WebKit, and mobile emulators.
 
-- **Run E2E tests:** `npx playwright test` inside the `resume-site` directory.
+- **Run E2E tests:** `npx playwright test` from the repo root.
 - **View trace/HTML report:** `npx playwright show-report`
 - **UI Mode:** `npx playwright test --ui`
 

@@ -43,6 +43,6 @@ async function runSanityCheck(dir) {
 }
 
 if (require.main === module) {
-  const targetDir = process.argv[2] || './resume-site';
+  const targetDir = process.argv[2] || '.';
   runSanityCheck(targetDir);
 }

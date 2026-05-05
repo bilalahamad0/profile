@@ -47,16 +47,20 @@ Before asking the user to manually verify anything, check available tools in thi
 
 ## Repo Layout
 
-There are **two distinct apps** in this repo:
+The repo is a single Next.js 16 App Router app at the root:
 
-| Path | Purpose |
-|---|---|
-| `/` (root) | Legacy static HTML site (`index.html` + Tailwind CLI) — not the live site |
-| `/resume-site/` | **Active Next.js portfolio** — this is what deploys to bilalahamad.com |
+```
+/                    Next.js project root (package.json, next.config.ts, src/, public/, content/, ...)
+.github/workflows/   CI/CD pipelines (lint, unit, e2e, visual regression, dependabot auto-fix)
+scripts/             Utility scripts (efficiency-check, fix-alerts, sanity-check, generate-favicons)
+content/blog/        MDX blog posts
+src/                 App Router source
+public/              Static assets served at /
+```
 
-**All development work targets `resume-site/`.** Run all Next.js commands from that directory.
+This deploys to `bilalahamad.com` via the single `resume-site` Vercel project (Vercel "Root Directory" = `.`).
 
-## Commands (run from `resume-site/`)
+## Commands (run from repo root)
 
 ```bash
 npm run dev          # local dev server
@@ -92,7 +96,7 @@ All career data lives here — `experienceData`, `skills`, `certs`, `recommendat
 - Use `generateStaticParams` / `async` page functions for SSR — never `useEffect` for content fetching
 
 ### Blog pipeline
-- Posts are MDX files in `resume-site/content/blog/`
+- Posts are MDX files in `content/blog/`
 - Parsed server-side by `src/lib/blog.ts` using `gray-matter` — no client JS required
 - Required frontmatter: `title`, `date`, `description`, `tags`, `category` (`"Project Story" | "Whitepaper" | "LinkedIn" | "Tutorial"`), `featured`
 - Blog slug = filename without `.mdx`
@@ -131,7 +135,7 @@ All career data lives here — `experienceData`, `skills`, `certs`, `recommendat
 2. Read PLAN.md and identify the next incomplete phase
 3. Enter Plan Mode — propose approach before writing code
 4. Execute after confirmation
-5. Run `npm run build` + `npm run lint` from `resume-site/`
+5. Run `npm run build` + `npm run lint` from repo root
 6. Commit with phase label
 7. Mark phase complete in PLAN.md
 8. Report summary of what changed

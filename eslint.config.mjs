@@ -17,6 +17,10 @@ const eslintConfig = [
       "next-env.d.ts",
       // Node.js scripts (CommonJS, not Next.js source). Lint separately if needed.
       "scripts/",
+      // Local agent scratch directories (Claude/Cursor worktrees, MCP outputs).
+      ".claude/",
+      ".cursor/",
+      ".playwright-mcp/",
     ],
   },
   {
