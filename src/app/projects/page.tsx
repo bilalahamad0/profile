@@ -195,7 +195,7 @@ export default function ProjectsPage() {
     <main className="min-h-screen bg-[#09090b] text-white">
       {videoLightboxPortal}
       {/* Header */}
-      <section className="pt-24 pb-10 md:pt-28 md:pb-12 lg:pt-32 lg:pb-16 px-6 lg:px-24 border-b border-white/5 relative overflow-hidden">
+      <section className="pt-24 pb-10 md:pt-28 md:pb-12 lg:pt-36 lg:pb-16 px-6 lg:px-24 border-b border-white/5 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[600px] h-[400px] bg-blue-500/5 blur-[120px] rounded-full pointer-events-none" aria-hidden="true" />
         <div className="max-w-7xl mx-auto relative">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>

@@ -100,7 +100,7 @@ export default function BlogPage() {
     <main className="min-h-screen bg-[#09090b] text-white" id="top">
 
       {/* Header — static, server-rendered, paints instantly */}
-      <section className="pt-24 pb-10 md:pt-28 md:pb-12 lg:pt-32 lg:pb-16 px-6 lg:px-24 border-b border-white/5 relative overflow-hidden" aria-labelledby="blog-heading">
+      <section className="pt-24 pb-10 md:pt-28 md:pb-12 lg:pt-36 lg:pb-16 px-6 lg:px-24 border-b border-white/5 relative overflow-hidden" aria-labelledby="blog-heading">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/5 blur-[150px] rounded-full pointer-events-none" aria-hidden="true" />
         <div className="max-w-7xl mx-auto relative">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-6">
