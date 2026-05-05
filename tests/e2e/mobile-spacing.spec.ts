@@ -48,8 +48,13 @@ for (const vp of VIEWPORTS) {
   for (const p of PAGES) {
     test(`${p.name} @ ${vp.label}px — section spacing within tolerances`, async ({ page }, testInfo) => {
       await page.setViewportSize({ width: vp.width, height: vp.height });
-      await page.goto(p.path);
-      await page.waitForLoadState('networkidle');
+      await page.goto(p.path, { waitUntil: 'domcontentloaded' });
+      // `networkidle` is unreliable on pages with autoplay/loop <video> (e.g. /projects)
+      // because continuous byte streaming + analytics pings prevent the network from
+      // ever going quiet. Wait for first <section> to render — it's all this test inspects.
+      await page.waitForSelector('section', { state: 'attached', timeout: 15000 });
+      // Give layout a moment to settle (fonts, images) before measuring.
+      await page.waitForLoadState('load').catch(() => undefined);
 
       const sections = await getSectionMetrics(page);
       expect(sections.length, 'page should render at least one <section>').toBeGreaterThan(0);
@@ -88,8 +93,8 @@ for (const vp of VIEWPORTS) {
 
 test('certifications space-y stack gap on mobile is ≤ 80px', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/certifications');
-  await page.waitForLoadState('networkidle');
+  await page.goto('/certifications', { waitUntil: 'domcontentloaded' });
+  await page.waitForSelector('section', { state: 'attached', timeout: 15000 });
 
   // The space-y-* container holds all main content sections.
   const stackGap = await page.evaluate(() => {

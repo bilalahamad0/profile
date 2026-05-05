@@ -8,7 +8,7 @@ export default function ContactPage() {
     <main className="min-h-screen bg-[#09090b] text-white">
 
       {/* Header Section */}
-      <section className="pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-32 lg:pb-12 px-6 lg:px-24 border-b border-white/5">
+      <section className="pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-36 lg:pb-12 px-6 lg:px-24 border-b border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col items-start gap-4">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
