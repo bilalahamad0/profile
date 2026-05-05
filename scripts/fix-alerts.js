@@ -89,13 +89,11 @@ async function fixAlert(alert) {
 
     // 3. Build & Test
     console.log('Running Sanity Checks...');
-    execSync('npm run build', { cwd: manifestDir === '.' ? process.cwd() : manifestDir, stdio: 'inherit' });
-    
-    // Add coverage check if it's resume-site
-    if (manifestDir.includes('resume-site')) {
-        console.log('Running test coverage...');
-        execSync('npm run test:coverage', { cwd: manifestDir, stdio: 'inherit' });
-    }
+    const runDir = manifestDir === '.' ? process.cwd() : manifestDir;
+    execSync('npm run build', { cwd: runDir, stdio: 'inherit' });
+
+    console.log('Running test coverage...');
+    execSync('npm run test:coverage', { cwd: runDir, stdio: 'inherit' });
 
     // 4. Commit and Push
     execSync('git add .', { stdio: 'inherit' });

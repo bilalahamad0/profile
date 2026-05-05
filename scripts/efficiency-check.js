@@ -43,5 +43,5 @@ function runEfficiencyCheck(dir) {
   }
 }
 
-const targetDirs = ['./resume-site'];
+const targetDirs = ['.'];
 targetDirs.forEach(runEfficiencyCheck);
