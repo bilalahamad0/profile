@@ -84,7 +84,7 @@ export const mdxPosts = [
     category: "Project Story" as const,
     readingTime: 5,
     featured: false,
-    thumbnail: "/blog-thumbs/media-caster.png",
+    thumbnail: "/blog-thumbs/media-caster.png?v=2",
   },
 ];
 
