@@ -78,6 +78,7 @@ jobs:
   visual-regression:
     name: Lost-Pixel Visual Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       
@@ -103,5 +104,5 @@ jobs:
       - name: Start Next.js server & Run Lost-Pixel
         run: |
           npm run start &
-          npx wait-on http://localhost:3000
+          npx wait-on http://localhost:3000 --timeout 120000
           npx lost-pixel

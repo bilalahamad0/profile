@@ -1,8 +1,6 @@
 name: Dependabot Auto-Fix
 
 on:
-  dependabot_alert:
-    types: [created]
   schedule:
     - cron: '0 0 * * *' # Daily at midnight
   workflow_dispatch:
