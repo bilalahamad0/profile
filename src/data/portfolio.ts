@@ -272,11 +272,12 @@ export const projectsData = [
     gradient: "from-pink-600/20 via-rose-500/10 to-transparent",
     accent: "pink",
     blogSlug: null,
-    previewType: "image" as const,
-    previewSrc: "https://opengraph.githubassets.com/1/bilalahamad0/tmo",
-    thumbnail: "https://opengraph.githubassets.com/1/bilalahamad0/tmo",
-    thumbnailAlt: "Monthly Phone Bill Split & Autopay E2E Automation repository",
-    thumbnailType: "screenshot" as const,
+    // YouTube demo + silent looping video thumbnail
+    previewType: "youtube" as const,
+    previewSrc: "https://www.youtube.com/embed/gS9uSDc-h48",
+    thumbnail: "/videos/Monthly_Phone_Bill_Split_Autopay.mp4",
+    thumbnailAlt: "Monthly Phone Bill Split & Autopay E2E Automation — pipeline demo",
+    thumbnailType: "video" as const,
   },
   {
     id: "profile",
