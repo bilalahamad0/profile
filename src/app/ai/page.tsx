@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { projectsData } from "@/data/portfolio";
 import { getAIMetricsMap, type AIMetrics } from "@/lib/ai-metrics";
+import HashScrollHandler from "@/components/HashScrollHandler";
 
 export const revalidate = 3600;
 
@@ -495,6 +496,7 @@ export default async function AILabPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
       />
     <main className="min-h-screen bg-[#09090b] text-white relative" id="top">
+      <HashScrollHandler />
       <NeuralBackground />
 
       {/* Hero */}
