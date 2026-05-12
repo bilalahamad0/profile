@@ -93,9 +93,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       {/* Header */}
       <section className="pt-32 pb-16 px-6 lg:px-24 border-b border-white/5 relative overflow-hidden">
         {image && (
-          <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
-            <img src={image} alt={post.title} className="w-full h-full object-cover blur-sm" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/80 to-[#09090b]/20" />
+          <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
+            <img src={image} alt={post.title} className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/60 to-transparent" />
           </div>
         )}
         <div className="absolute top-0 left-0 w-[500px] h-[400px] bg-indigo-500/5 blur-[150px] rounded-full pointer-events-none z-0" />
