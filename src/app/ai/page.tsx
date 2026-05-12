@@ -221,7 +221,7 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
   return (
     <div
       id={project.id}
-      className={`relative rounded-3xl border ${colors.border} bg-white/[0.02] overflow-hidden group transition-all duration-300 hover:bg-white/[0.04]`}
+      className={`relative rounded-3xl border ${colors.border} bg-white/[0.02] overflow-hidden group transition-all duration-300 hover:bg-white/[0.04] scroll-mt-32`}
       style={{ animationDelay: `${index * 0.1}s` }}
     >
       <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-50 pointer-events-none`} />

@@ -501,7 +501,7 @@ export default function ProjectsPage() {
                             </Link>
                           ))}
                           <Link
-                            href="/ai"
+                            href={`/ai#${project.id}`}
                             className="flex items-center gap-1.5 text-xs font-bold text-zinc-500 hover:text-violet-400 transition-colors whitespace-nowrap"
                           >
                             <Sparkles className="w-3.5 h-3.5 shrink-0" aria-hidden="true" /> AI Details
