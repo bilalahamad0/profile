@@ -491,14 +491,15 @@ export default function ProjectsPage() {
                           >
                             <Github className="w-3.5 h-3.5 shrink-0" aria-hidden="true" /> GitHub
                           </a>
-                          {project.blogSlug && (
+                          {project.relatedPosts?.map((post) => (
                             <Link
-                              href={`/blog/${project.blogSlug}`}
+                              key={post.slug}
+                              href={`/blog/${post.slug}`}
                               className="flex items-center gap-1.5 text-xs font-bold text-zinc-500 hover:text-blue-400 transition-colors whitespace-nowrap"
                             >
-                              <BookOpen className="w-3.5 h-3.5 shrink-0" aria-hidden="true" /> Story
+                              <BookOpen className="w-3.5 h-3.5 shrink-0" aria-hidden="true" /> {post.label}
                             </Link>
-                          )}
+                          ))}
                           <Link
                             href="/ai"
                             className="flex items-center gap-1.5 text-xs font-bold text-zinc-500 hover:text-violet-400 transition-colors whitespace-nowrap"

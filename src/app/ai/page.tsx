@@ -330,13 +330,13 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
             ))}
           </div>
           <div className="flex gap-3">
-            {project.blogSlug && (
-              <Link href={`/blog/${project.blogSlug}`}
+            {project.relatedPosts?.map((post) => (
+              <Link key={post.slug} href={`/blog/${post.slug}`}
                 className={`flex items-center gap-1.5 px-4 py-2 rounded-xl ${colors.bg} border ${colors.border} text-xs font-bold ${colors.text} hover:scale-105 transition-all`}>
                 <BookOpen className="w-3.5 h-3.5" />
-                Read Story
+                {post.label}
               </Link>
-            )}
+            ))}
             <a href={project.repo} target="_blank" rel="noreferrer"
               className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-zinc-400 hover:text-white hover:border-white/20 transition-all">
               <Github className="w-3.5 h-3.5" />

@@ -221,7 +221,9 @@ export const projectsData = [
     impact: "Automated 100% of data ingestion and alerting",
     gradient: "from-blue-600/20 via-blue-500/10 to-transparent",
     accent: "blue",
-    blogSlug: "california-warn-story",
+    relatedPosts: [
+      { slug: "california-warn-story", label: "Project Story" },
+    ],
     // YouTube demo + silent looping video thumbnail
     previewType: "youtube" as const,
     previewSrc: "https://www.youtube.com/embed/s5pSbdQyYM8",
@@ -246,7 +248,11 @@ export const projectsData = [
     impact: "Zero-touch prayer-time media notifications with automated media-state control (Raspberry Pi + Android TV via ADB) · 10 microservices",
     gradient: "from-emerald-600/20 via-emerald-500/10 to-transparent",
     accent: "emerald",
-    blogSlug: "media-caster-story",
+    relatedPosts: [
+      { slug: "media-caster-story", label: "Project Story" },
+      { slug: "resilient-iot-application", label: "Whitepaper" },
+      { slug: "clock-jump-case-study", label: "Case Study" },
+    ],
     // YouTube demo
     previewType: "youtube" as const,
     previewSrc: "https://www.youtube.com/embed/GETyDnvZWog",
@@ -271,7 +277,7 @@ export const projectsData = [
     impact: "Zero-touch monthly billing cycle",
     gradient: "from-pink-600/20 via-rose-500/10 to-transparent",
     accent: "pink",
-    blogSlug: null,
+    relatedPosts: [],
     // YouTube demo + silent looping video thumbnail
     previewType: "youtube" as const,
     previewSrc: "https://www.youtube.com/embed/gS9uSDc-h48",
@@ -295,7 +301,7 @@ export const projectsData = [
     impact: "Full-stack portfolio deployed to production · 500k tokens",
     gradient: "from-violet-600/20 via-purple-500/10 to-transparent",
     accent: "violet",
-    blogSlug: null,
+    relatedPosts: [],
     previewType: "iframe" as const,
     previewSrc: "https://bilalahamad.com",
     thumbnail: "https://opengraph.githubassets.com/1/bilalahamad0/profile",

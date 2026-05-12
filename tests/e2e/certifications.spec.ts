@@ -22,7 +22,6 @@ async function spyOnWindowOpen(page: import('@playwright/test').Page) {
   await page.evaluate(() => {
     // @ts-expect-error attach probe state for the test
     window.__openCalls = [];
-    // @ts-expect-error override
     window.open = (url, target) => {
       // @ts-expect-error read probe state
       window.__openCalls.push({ url: String(url), target: String(target) });
