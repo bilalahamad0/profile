@@ -51,6 +51,18 @@ export const mdxPosts = [
     thumbnail: "/blog-thumbs/resilient-iot.png",
   },
   {
+    slug: "clock-jump-case-study",
+    title: "Engineering a Resilient Smart Home IoT Application: Navigating System Clock Jumps and Network Outages",
+    date: "May 12, 2026",
+    description:
+      "A deep dive into how an unexpected network outage and subsequent NTP clock jump caused chaos in a Node.js IoT scheduler, and how we engineered a resilient self-healing pipeline.",
+    tags: ["IoT", "Node.js", "Raspberry Pi", "System Architecture", "Debugging"],
+    category: "Whitepaper" as const,
+    readingTime: 5,
+    featured: false,
+    thumbnail: "/blog-thumbs/iot_clock_jump_thumbnail.png",
+  },
+  {
     slug: "ai-driven-development",
     title: "AI-Driven Development: Compressing 3 Weeks into 4 Days",
     date: "August 26, 2025",

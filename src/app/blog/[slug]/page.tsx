@@ -14,6 +14,7 @@ const slugToThumb: Record<string, string> = {
   "california-warn-story": "/blog-thumbs/california-warn.png",
   "media-caster-story":    "/blog-thumbs/media-caster.png?v=2",
   "resilient-iot-application": "/blog-thumbs/resilient-iot.png",
+  "clock-jump-case-study": "/blog-thumbs/iot_clock_jump_thumbnail.png",
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -84,14 +85,21 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   if (!post) notFound();
 
   const colors = categoryColors[post.category] ?? categoryColors["Project Story"];
+  const image = slugToThumb[slug];
 
   return (
     <main className="min-h-screen bg-[#09090b] text-white">
 
       {/* Header */}
       <section className="pt-32 pb-16 px-6 lg:px-24 border-b border-white/5 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-[500px] h-[400px] bg-indigo-500/5 blur-[150px] rounded-full pointer-events-none" />
-        <div className="max-w-4xl mx-auto relative">
+        {image && (
+          <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
+            <img src={image} alt={post.title} className="w-full h-full object-cover blur-sm" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/80 to-[#09090b]/20" />
+          </div>
+        )}
+        <div className="absolute top-0 left-0 w-[500px] h-[400px] bg-indigo-500/5 blur-[150px] rounded-full pointer-events-none z-0" />
+        <div className="max-w-4xl mx-auto relative z-10">
           <Link href="/blog" className="inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors group mb-10">
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             Back to Blog
