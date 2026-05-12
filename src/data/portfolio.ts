@@ -250,8 +250,8 @@ export const projectsData = [
     accent: "emerald",
     relatedPosts: [
       { slug: "media-caster-story", label: "Project Story" },
-      { slug: "resilient-iot-application", label: "Whitepaper" },
-      { slug: "clock-jump-case-study", label: "Case Study" },
+      { slug: "resilient-iot-application", label: "Whitepaper: Core Practices" },
+      { slug: "clock-jump-case-study", label: "Whitepaper: NTP Clock Sync" },
     ],
     // YouTube demo
     previewType: "youtube" as const,

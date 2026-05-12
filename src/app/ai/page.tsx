@@ -329,7 +329,7 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
               </span>
             ))}
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-col items-start sm:items-start gap-2.5 shrink-0">
             {project.relatedPosts?.map((post) => (
               <Link key={post.slug} href={`/blog/${post.slug}`}
                 className={`flex items-center gap-1.5 px-4 py-2 rounded-xl ${colors.bg} border ${colors.border} text-xs font-bold ${colors.text} hover:scale-105 transition-all`}>

@@ -482,7 +482,7 @@ export default function ProjectsPage() {
                             <span className="leading-relaxed text-justify sm:text-left">{project.impact}</span>
                           </span>
                         </div>
-                        <div className="flex flex-col sm:flex-row sm:flex-wrap items-end sm:items-center justify-end gap-2 sm:gap-3 shrink-0">
+                        <div className="flex flex-col items-start sm:items-start gap-2.5 shrink-0">
                           <a
                             href={project.repo}
                             target="_blank"
