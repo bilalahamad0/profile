@@ -1,0 +1,98 @@
+name: Auto Audit and Resolve
+
+on:
+  repository_vulnerability_alert:
+    types: [create]
+  code_scanning_alert:
+    types: [created]
+  schedule:
+    - cron: '0 0 * * *' # Daily at midnight
+  workflow_dispatch:
+
+permissions:
+  security-events: write
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-audit-fix:
+    name: NPM Audit & Dependabot Fixes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Root Dependencies
+        run: npm install
+
+      - name: Run NPM Audit Fix
+        run: npm audit fix || true
+
+      - name: Create Pull Request for NPM Audit
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: 'security: auto npm audit fix'
+          title: 'Automated Security Fix: npm audit fix'
+          body: |
+            Automated \`npm audit fix\` to resolve vulnerable dependencies.
+          branch: 'auto/npm-audit-fix'
+          base: 'main'
+          labels: 'security, dependabot'
+
+      - name: Run Advanced Dependabot Auto-Fix Script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_FROM: ${{ secrets.SMTP_FROM }}
+          SMTP_TO: ${{ secrets.SMTP_TO }}
+        run: |
+          git config --global user.name "bilalahamad-bot"
+          git config --global user.email "bilal.ahamad@gmail.com"
+          # Wait to ensure we're back on main if previous PR creation didn't clean up correctly
+          git checkout main || true
+          node scripts/fix-alerts.js
+
+      - name: Run Efficiency Report
+        run: node scripts/efficiency-check.js || true
+
+  auto-lint-fix:
+    name: ESLint Auto-Fix for CodeQL
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Root Dependencies
+        run: npm install
+
+      - name: Run ESLint Auto-Fix
+        run: npm run lint:fix || true
+
+      - name: Create Pull Request for ESLint Fixes
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: 'style: auto eslint fix for code scanning alerts'
+          title: 'Automated Style Fix: eslint --fix'
+          body: |
+            Automated \`eslint --fix\` to resolve standard linting issues and stylistic Code Scanning alerts.
+          branch: 'auto/eslint-fix'
+          base: 'main'
+          labels: 'code-scanning, style'
