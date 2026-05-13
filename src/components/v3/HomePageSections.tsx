@@ -143,7 +143,7 @@ export function BlogPreview({ posts }: { posts: BlogPostPreview[] }) {
             {featured && (
               <motion.div variants={fadeUp} transition={{ duration: 0.5 }} className="lg:col-span-3">
                 <Link
-                  href={`/blog/${featured.slug}`}
+                  href={`/blog/${encodeURIComponent(featured.slug)}`}
                   className="group relative block rounded-2xl border border-violet-500/15 bg-gradient-to-br from-violet-950/30 to-indigo-950/20 p-8 hover:border-violet-500/30 transition-all duration-500 h-full overflow-hidden"
                 >
                   <div className="absolute top-0 right-0 w-48 h-48 bg-violet-500/10 rounded-full blur-[80px] pointer-events-none" />
@@ -171,7 +171,7 @@ export function BlogPreview({ posts }: { posts: BlogPostPreview[] }) {
               {hasRecentPosts && recent.map((post) => (
                 <Link
                   key={post.slug}
-                  href={`/blog/${post.slug}`}
+                  href={`/blog/${encodeURIComponent(post.slug)}`}
                   className="group flex-1 rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 hover:bg-white/[0.04] hover:border-white/[0.12] transition-all duration-500"
                 >
                   <div className="flex items-center gap-2 mb-3">

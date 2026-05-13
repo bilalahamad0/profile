@@ -1,4 +1,4 @@
-const { execSync } = require('child_process');
+const { execSync, execFileSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
@@ -10,7 +10,7 @@ function runEfficiencyCheck(dir) {
   try {
     console.log('--- Unused Dependency Check ---');
     const depcheckPath = path.join(absoluteDir, 'node_modules/.bin/depcheck');
-    const output = execSync(`${depcheckPath} ${absoluteDir} --json`, { encoding: 'utf8' });
+    const output = execFileSync(depcheckPath, [absoluteDir, '--json'], { encoding: 'utf8' });
     console.log(output);
   } catch (err) {
     // depcheck exits with non-zero if unused deps are found
@@ -25,7 +25,7 @@ function runEfficiencyCheck(dir) {
   console.log('\n--- Build Time Check ---');
   const start = Date.now();
   try {
-    execSync('npm run build', { cwd: absoluteDir, stdio: 'ignore' });
+    execFileSync('npm', ['run', 'build'], { cwd: absoluteDir, stdio: 'ignore' });
     const duration = (Date.now() - start) / 1000;
     console.log(`Build completed in ${duration}s`);
   } catch (err) {
