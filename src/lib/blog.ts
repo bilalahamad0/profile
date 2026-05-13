@@ -28,7 +28,8 @@ export function getAllPosts(): Omit<BlogPost, "content">[] {
   const files = fs.readdirSync(contentDir).filter((f) => f.endsWith(".mdx"));
 
   const posts = files.map((file) => {
-    const slug = file.replace(/\.mdx$/, "");
+    const rawSlug = file.replace(/\.mdx$/, "");
+    const slug = rawSlug.replace(/[^a-zA-Z0-9-]/g, "");
     const raw = fs.readFileSync(path.join(contentDir, file), "utf-8");
     const { data, content } = matter(raw);
 
@@ -57,8 +58,9 @@ export function getPostBySlug(slug: string): BlogPost | null {
   const raw = fs.readFileSync(filePath, "utf-8");
   const { data, content } = matter(raw);
 
+  const safeSlug = slug.replace(/[^a-zA-Z0-9-]/g, "");
   return {
-    slug,
+    slug: safeSlug,
     title: data.title ?? slug,
     date: data.date ?? "",
     description: data.description ?? "",
