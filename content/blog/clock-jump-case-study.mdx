@@ -33,9 +33,9 @@ To understand what went wrong, we have to trace the behavior of the Raspberry Pi
 
 The fix required addressing both the system logic and the corrupted data. 
 
-### 1. Defending Against Time Travel (Logic Patch)
+### 1. Defending Against Time Travel and Auto-Recovery (Logic Patch)
 
-The core mistake was trusting the scheduler's trigger blindly. To fix this, I introduced a validation layer in `CoreScheduler.js`. Before initiating any heavy media encoding or casting logic, the system now verifies the "freshness" of the trigger:
+The core mistake was trusting the scheduler's trigger blindly. To fix this, I introduced a validation and self-healing layer in `CoreScheduler.js`. Before initiating any heavy media encoding or casting logic, the system now verifies the "freshness" of the trigger. If it detects a clock jump, it gracefully aborts the stale events and immediately triggers a "True Recovery" to recalculate and schedule based on the new, correct system time:
 
 ```javascript
 // Prevent massively delayed triggers (e.g., clock jumps after network reconnect)
@@ -43,12 +43,19 @@ if (targetTimeObj) {
     const delayMs = Date.now() - targetTimeObj.toMillis();
     if (delayMs > 30 * 60 * 1000) { // 30 minutes
         log(`⏭️ Skipping ${prayerName}: trigger is too old (latency: ${Math.round(delayMs / 1000)}s). System clock likely jumped.`);
+        if (!this._isRescheduling) {
+            this._isRescheduling = true;
+            log(`🔄 Initiating True Recovery: Syncing and rescheduling based on correct system time.`);
+            this.scheduleToday().catch(e => log(`❌ Recovery failed: ${e.message}`)).finally(() => {
+                this._isRescheduling = false;
+            });
+        }
         return;
     }
 }
 ```
 
-Now, if the scheduler fires an event that is more than 30 minutes past its intended execution time, the application assumes a clock skew event has occurred and gracefully aborts.
+Now, if the scheduler fires an event that is more than 30 minutes past its intended execution time, the application assumes a clock skew event has occurred. Rather than permanently breaking for the rest of the day, it automatically synchronizes its schedule with the new system clock and plays upcoming prayers flawlessly.
 
 ### 2. Surgical Data Repair (State Restoration)
 
