@@ -23,6 +23,71 @@ const REMOTE_REPO_MAP = {
 
 const SOURCE_EXTENSIONS = /\.(ts|tsx|js|jsx|css|mdx)$/;
 
+// Seed data for repos that have no ai-metrics.json yet.
+// Manual fields only — totalCommits/linesOfCode are updated by each repo's own workflow.
+const SEED_METRICS = {
+  adhan: {
+    projectId: "adhan",
+    lastUpdated: TODAY,
+    aiContribution: 92,
+    agents: [
+      {
+        name: "Antigravity",
+        provider: "Google DeepMind",
+        period: "Feb – Apr 2026",
+        models: ["Gemini 2.5 Flash", "Gemini 2.5 Pro"],
+        tokens: 255000,
+        role: "v1–v2 architecture",
+      },
+      {
+        name: "Cursor",
+        provider: "Anthropic",
+        period: "Apr 2026 – Present",
+        models: ["Claude Sonnet 4", "Claude Opus 4.6"],
+        tokens: 200000,
+        role: "v3 pipeline, auto-updater & dashboard",
+      },
+    ],
+    totalTokens: 455000,
+    totalCommits: 0,
+    linesOfCode: 0,
+    devCycleDays: 4,
+    manualEstimateDays: 21,
+    impact:
+      "Zero-touch prayer-time audio notifications with automated media-state control (Raspberry Pi + Android TV via ADB) · 10 microservices",
+    cycle: "4 days",
+    beforeAI: "No automation, manual device control",
+    afterAI: "Zero-touch IoT orchestration system",
+    microservices: 10,
+    tests: 54,
+    testSuites: 12,
+  },
+  tmo: {
+    projectId: "tmo",
+    lastUpdated: TODAY,
+    aiContribution: 75,
+    agents: [
+      {
+        name: "Antigravity",
+        provider: "Google DeepMind",
+        period: "Apr 2026",
+        models: ["Gemini 2.5 Flash"],
+        tokens: 90000,
+        role: "Pipeline scaffolding & automation architecture",
+      },
+    ],
+    totalTokens: 90000,
+    totalCommits: 0,
+    linesOfCode: 0,
+    devCycleDays: 3,
+    manualEstimateDays: 12,
+    impact: "Zero-touch monthly billing cycle",
+    cycle: "~3 days",
+    beforeAI: "Manual Python script, ran per request",
+    afterAI: "Event-driven E2E billing automation",
+  },
+};
+
 // Workflow bootstrapped into each other repo if it doesn't already exist.
 // Uses a heredoc so no quote-escaping is needed inside the Node.js code.
 const REMOTE_WORKFLOW_YAML = `name: Update AI Metrics
@@ -194,6 +259,41 @@ async function ensureWorkflowExists(repo) {
   return false;
 }
 
+// Seeds ai-metrics.json in the repo if it doesn't exist.
+// The dispatched workflow will immediately overwrite totalCommits/linesOfCode.
+async function ensureMetricsFileExists(projectId, repo) {
+  const seed = SEED_METRICS[projectId];
+  if (!seed) return true; // no seed defined, nothing to do
+
+  const url = `https://api.github.com/repos/${GH_USER}/${repo}/contents/ai-metrics.json`;
+  const check = await ghFetch(url);
+  if (check.status === 200) return true; // file already exists
+
+  if (check.status !== 404) {
+    console.error(`[${repo}] metrics check failed: HTTP ${check.status}`);
+    return false;
+  }
+
+  const res = await ghFetch(url, {
+    method: "PUT",
+    body: JSON.stringify({
+      message: "chore: seed ai-metrics.json [skip ci]",
+      content: Buffer.from(JSON.stringify(seed, null, 2) + "\n").toString("base64"),
+      committer: { name: "bilalahamad-bot", email: "bilal.ahamad@gmail.com" },
+    }),
+  });
+
+  if (res.ok) {
+    console.log(`[${repo}] seeded ai-metrics.json`);
+    return true;
+  }
+  const body = await res.text();
+  console.error(
+    `[${repo}] seed failed (${res.status}) — GH_PAT needs Contents:Write on '${repo}': ${body.slice(0, 300)}`
+  );
+  return false;
+}
+
 // Sends repository_dispatch to trigger the repo's own update workflow.
 // Requires GH_PAT to have Actions:Write (or repo scope on classic PAT).
 async function triggerRepoDispatch(repo) {
@@ -220,6 +320,8 @@ async function updateRemoteRepo(projectId, repo) {
   }
   const bootstrapped = await ensureWorkflowExists(repo);
   if (!bootstrapped) return false;
+  const seeded = await ensureMetricsFileExists(projectId, repo);
+  if (!seeded) return false;
   return triggerRepoDispatch(repo);
 }
 
