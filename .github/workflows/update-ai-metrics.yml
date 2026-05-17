@@ -45,3 +45,7 @@ jobs:
           else
             echo "No changes to commit"
           fi
+
+      - name: Trigger Vercel deployment
+        if: ${{ secrets.VERCEL_DEPLOY_HOOK != '' }}
+        run: curl -s -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"
