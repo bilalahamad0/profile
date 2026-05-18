@@ -14,6 +14,8 @@ const ROOT = resolve(__dirname, "..");
 const TODAY = new Date().toISOString().slice(0, 10);
 const GH_USER = "bilalahamad0";
 const GH_PAT = process.env.GH_PAT;
+const CURSOR_ADMIN_KEY = process.env.CURSOR_ADMIN_KEY;
+const TOKEN_WINDOW_DAYS = 7;
 
 const REMOTE_REPO_MAP = {
   warn: "warn",
@@ -325,12 +327,177 @@ async function updateRemoteRepo(projectId, repo) {
   return triggerRepoDispatch(repo);
 }
 
+// ── Cursor token sync ──────────────────────────────────────────────────────
+// Queries Cursor Admin API for Claude token usage in the last TOKEN_WINDOW_DAYS,
+// distributes proportionally by commits-in-period across all 4 projects, and
+// pushes per-project token deltas. Profile is updated locally; remote repos
+// get pushed via Contents API BEFORE their dispatched workflows run (which
+// preserve token fields and only refresh commits/LOC).
+
+async function fetchCursorClaudeTokens(startMs, endMs) {
+  if (!CURSOR_ADMIN_KEY) return null;
+  const auth = Buffer.from(`${CURSOR_ADMIN_KEY}:`).toString("base64");
+  let total = 0;
+  let page = 1;
+  while (page <= 100) {
+    const res = await fetch("https://api.cursor.com/teams/filtered-usage-events", {
+      method: "POST",
+      headers: {
+        Authorization: `Basic ${auth}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        startDate: startMs,
+        endDate: endMs,
+        page,
+        pageSize: 100,
+      }),
+    });
+    if (!res.ok) {
+      const body = await res.text();
+      console.error(`[cursor] usage fetch failed (${res.status}): ${body.slice(0, 200)}`);
+      return null;
+    }
+    const data = await res.json();
+    for (const ev of data.usageEvents ?? []) {
+      const usage = ev.tokenUsage;
+      if (!usage || !/^claude-/i.test(ev.model ?? "")) continue;
+      total +=
+        (usage.inputTokens ?? 0) +
+        (usage.outputTokens ?? 0) +
+        (usage.cacheReadTokens ?? 0) +
+        (usage.cacheWriteTokens ?? 0);
+    }
+    if (!data.pagination?.hasNextPage) break;
+    page++;
+  }
+  return total;
+}
+
+function countProfileCommitsSince(sinceISO) {
+  try {
+    return parseInt(exec(`git rev-list --count --since="${sinceISO}" HEAD`), 10) || 0;
+  } catch {
+    return 0;
+  }
+}
+
+async function fetchRemoteCommitsSince(repo, sinceISO) {
+  const url = `https://api.github.com/repos/${GH_USER}/${repo}/commits?since=${encodeURIComponent(sinceISO)}&per_page=100`;
+  const res = await ghFetch(url);
+  if (!res.ok) return 0;
+  const link = res.headers.get("link") || "";
+  const m = link.match(/[?&]page=(\d+)>;\s*rel="last"/);
+  if (m) return parseInt(m[1], 10) * 100; // last-page approximation
+  const body = await res.json();
+  return Array.isArray(body) ? body.length : 0;
+}
+
+function addCursorTokensToMetrics(metrics, delta) {
+  if (!metrics.agents) metrics.agents = [];
+  let cursorAgent = metrics.agents.find((a) => a.name === "Cursor");
+  if (!cursorAgent) {
+    cursorAgent = {
+      name: "Cursor",
+      provider: "Anthropic",
+      period: `${TODAY.slice(0, 7)} – Present`,
+      models: ["Claude Sonnet 4", "Claude Opus 4.6"],
+      tokens: 0,
+      role: "Ongoing maintenance & feature development",
+    };
+    metrics.agents.push(cursorAgent);
+  }
+  cursorAgent.tokens = (cursorAgent.tokens ?? 0) + delta;
+  metrics.totalTokens = metrics.agents.reduce((s, a) => s + (a.tokens ?? 0), 0);
+}
+
+function applyProfileTokenDelta(delta) {
+  if (!delta) return;
+  const path = resolve(ROOT, "ai-metrics.json");
+  const metrics = JSON.parse(readFileSync(path, "utf8"));
+  addCursorTokensToMetrics(metrics, delta);
+  writeFileSync(path, JSON.stringify(metrics, null, 2) + "\n");
+  console.log(`[profile] Cursor token delta +${delta.toLocaleString()} applied locally`);
+}
+
+async function applyRemoteTokenDelta(projectId, repo, delta) {
+  if (!delta) return true;
+  const url = `https://api.github.com/repos/${GH_USER}/${repo}/contents/ai-metrics.json`;
+  const get = await ghFetch(url);
+  if (!get.ok) {
+    console.warn(`[${repo}] cannot fetch metrics for token update: HTTP ${get.status}`);
+    return false;
+  }
+  const meta = await get.json();
+  const metrics = JSON.parse(Buffer.from(meta.content, "base64").toString("utf8"));
+  addCursorTokensToMetrics(metrics, delta);
+  const res = await ghFetch(url, {
+    method: "PUT",
+    body: JSON.stringify({
+      message: `chore: weekly Cursor token delta +${delta} [skip ci]`,
+      content: Buffer.from(JSON.stringify(metrics, null, 2) + "\n").toString("base64"),
+      sha: meta.sha,
+      committer: { name: "bilalahamad-bot", email: "bilal.ahamad@gmail.com" },
+    }),
+  });
+  if (res.ok) {
+    console.log(`[${repo}] Cursor token delta +${delta.toLocaleString()} pushed`);
+    return true;
+  }
+  const body = await res.text();
+  console.error(`[${repo}] token delta push failed (${res.status}): ${body.slice(0, 200)}`);
+  return false;
+}
+
+async function syncCursorTokens() {
+  if (!CURSOR_ADMIN_KEY) {
+    console.log("[cursor] CURSOR_ADMIN_KEY not set — skipping token sync");
+    return;
+  }
+  const endMs = Date.now();
+  const startMs = endMs - TOKEN_WINDOW_DAYS * 24 * 60 * 60 * 1000;
+  const sinceISO = new Date(startMs).toISOString();
+
+  const total = await fetchCursorClaudeTokens(startMs, endMs);
+  if (total === null) return;
+  console.log(`[cursor] Claude tokens past ${TOKEN_WINDOW_DAYS}d: ${total.toLocaleString()}`);
+  if (total === 0) return;
+
+  const commits = { profile: countProfileCommitsSince(sinceISO) };
+  for (const [pid, repo] of Object.entries(REMOTE_REPO_MAP)) {
+    commits[pid] = await fetchRemoteCommitsSince(repo, sinceISO);
+  }
+  const totalCommits = Object.values(commits).reduce((s, c) => s + c, 0);
+  console.log(`[cursor] Commits per project (${TOKEN_WINDOW_DAYS}d): ${JSON.stringify(commits)}`);
+
+  const dist = {};
+  if (totalCommits === 0) {
+    // No activity in any repo — attribute all to profile (the always-active project)
+    dist.profile = total;
+  } else {
+    for (const [pid, count] of Object.entries(commits)) {
+      if (count > 0) dist[pid] = Math.round(total * (count / totalCommits));
+    }
+  }
+  console.log(`[cursor] Distribution: ${JSON.stringify(dist)}`);
+
+  if (dist.profile) applyProfileTokenDelta(dist.profile);
+  for (const [pid, repo] of Object.entries(REMOTE_REPO_MAP)) {
+    if (dist[pid]) await applyRemoteTokenDelta(pid, repo, dist[pid]);
+  }
+}
+
 // ── Main ────────────────────────────────────────────────────────────────────
 
 async function main() {
   console.log(`=== AI Metrics Update — ${TODAY} ===`);
 
   updateProfileMetrics();
+
+  // Push token deltas BEFORE dispatching remote workflows.
+  // The dispatched workflows only touch totalCommits/linesOfCode, so our
+  // token updates are preserved when those workflows commit.
+  await syncCursorTokens();
 
   const results = await Promise.all(
     Object.entries(REMOTE_REPO_MAP).map(([projectId, repo]) =>
