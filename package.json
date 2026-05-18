@@ -57,7 +57,7 @@
     "@vitest/coverage-v8": "^4.1.4",
     "bundle-stats-webpack-plugin": "^4.0.7",
     "depcheck": "^1.4.7",
-    "eslint": "^9",
+    "eslint": "^10",
     "eslint-config-next": "^16.2.2",
     "happy-dom": "^20.9.0",
     "jsdom": "^27.0.1",
