@@ -341,14 +341,24 @@ async function updateRemoteRepo(projectId, repo) {
 
 async function fetchAnthropicClaudeTokens(startISO, endISO) {
   if (!ANTHROPIC_ADMIN_KEY) return null;
-  const baseUrl = "https://api.anthropic.com/v1/organizations/usage_report/messages";
+
+  // Admin API requires sk-ant-admin... keys — regular API keys return 401
+  if (!ANTHROPIC_ADMIN_KEY.startsWith("sk-ant-admin")) {
+    console.error(
+      "[anthropic] ANTHROPIC_ADMIN_KEY is not an Admin API key (must start with sk-ant-admin...).\n" +
+        "  Generate one at: console.anthropic.com → Settings → Organization → Admin API Keys"
+    );
+    return null;
+  }
+
+  // Claude Code Analytics API — daily per-user breakdown by model
+  const baseUrl = "https://api.anthropic.com/v1/organizations/usage_report/claude_code";
   let total = 0;
   let pageToken = null;
   while (true) {
     const url = new URL(baseUrl);
     url.searchParams.set("starting_at", startISO);
     url.searchParams.set("ending_at", endISO);
-    url.searchParams.set("bucket_width", "1d");
     if (pageToken) url.searchParams.set("page", pageToken);
     const res = await fetch(url, {
       headers: {
@@ -362,12 +372,14 @@ async function fetchAnthropicClaudeTokens(startISO, endISO) {
       return null;
     }
     const data = await res.json();
-    for (const bucket of data.data ?? []) {
-      total +=
-        (bucket.input_tokens ?? 0) +
-        (bucket.output_tokens ?? 0) +
-        (bucket.cache_read_input_tokens ?? 0) +
-        (bucket.cache_creation_input_tokens ?? 0);
+    for (const record of data.data ?? []) {
+      for (const model of record.model_breakdown ?? []) {
+        total +=
+          (model.input ?? 0) +
+          (model.output ?? 0) +
+          (model.cache_read ?? 0) +
+          (model.cache_creation ?? 0);
+      }
     }
     if (!data.has_more) break;
     pageToken = data.next_page;
