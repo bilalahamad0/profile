@@ -32,6 +32,7 @@ jobs:
       - name: Update AI metrics
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
+          CURSOR_ADMIN_KEY: ${{ secrets.CURSOR_ADMIN_KEY }}
         run: node scripts/update-ai-metrics.js
 
       - name: Commit and push if metrics changed
