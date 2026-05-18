@@ -14,7 +14,7 @@ const ROOT = resolve(__dirname, "..");
 const TODAY = new Date().toISOString().slice(0, 10);
 const GH_USER = "bilalahamad0";
 const GH_PAT = process.env.GH_PAT;
-const CURSOR_ADMIN_KEY = process.env.CURSOR_ADMIN_KEY;
+const ANTHROPIC_ADMIN_KEY = process.env.ANTHROPIC_ADMIN_KEY;
 const TOKEN_WINDOW_DAYS = 7;
 
 const REMOTE_REPO_MAP = {
@@ -327,49 +327,51 @@ async function updateRemoteRepo(projectId, repo) {
   return triggerRepoDispatch(repo);
 }
 
-// ── Cursor token sync ──────────────────────────────────────────────────────
-// Queries Cursor Admin API for Claude token usage in the last TOKEN_WINDOW_DAYS,
-// distributes proportionally by commits-in-period across all 4 projects, and
-// pushes per-project token deltas. Profile is updated locally; remote repos
-// get pushed via Contents API BEFORE their dispatched workflows run (which
-// preserve token fields and only refresh commits/LOC).
+// ── Anthropic token sync ───────────────────────────────────────────────────
+// Queries Anthropic's Admin Usage API for Claude token usage in the last
+// TOKEN_WINDOW_DAYS, distributes proportionally by commits-in-period across
+// all 4 projects, and pushes per-project token deltas. Profile is updated
+// locally; remote repos get pushed via Contents API BEFORE their dispatched
+// workflows run (which preserve token fields and only refresh commits/LOC).
+//
+// Captures: direct Anthropic API usage from the org's API keys (Claude Code,
+// any SDK calls in your projects). Does NOT capture Cursor-mediated usage —
+// that lives in Cursor's billing, not Anthropic's, and individual Cursor
+// plans don't expose it via API.
 
-async function fetchCursorClaudeTokens(startMs, endMs) {
-  if (!CURSOR_ADMIN_KEY) return null;
-  const auth = Buffer.from(`${CURSOR_ADMIN_KEY}:`).toString("base64");
+async function fetchAnthropicClaudeTokens(startISO, endISO) {
+  if (!ANTHROPIC_ADMIN_KEY) return null;
+  const baseUrl = "https://api.anthropic.com/v1/organizations/usage_report/messages";
   let total = 0;
-  let page = 1;
-  while (page <= 100) {
-    const res = await fetch("https://api.cursor.com/teams/filtered-usage-events", {
-      method: "POST",
+  let pageToken = null;
+  while (true) {
+    const url = new URL(baseUrl);
+    url.searchParams.set("starting_at", startISO);
+    url.searchParams.set("ending_at", endISO);
+    url.searchParams.set("bucket_width", "1d");
+    if (pageToken) url.searchParams.set("page", pageToken);
+    const res = await fetch(url, {
       headers: {
-        Authorization: `Basic ${auth}`,
-        "Content-Type": "application/json",
+        "x-api-key": ANTHROPIC_ADMIN_KEY,
+        "anthropic-version": "2023-06-01",
       },
-      body: JSON.stringify({
-        startDate: startMs,
-        endDate: endMs,
-        page,
-        pageSize: 100,
-      }),
     });
     if (!res.ok) {
       const body = await res.text();
-      console.error(`[cursor] usage fetch failed (${res.status}): ${body.slice(0, 200)}`);
+      console.error(`[anthropic] usage fetch failed (${res.status}): ${body.slice(0, 200)}`);
       return null;
     }
     const data = await res.json();
-    for (const ev of data.usageEvents ?? []) {
-      const usage = ev.tokenUsage;
-      if (!usage || !/^claude-/i.test(ev.model ?? "")) continue;
+    for (const bucket of data.data ?? []) {
       total +=
-        (usage.inputTokens ?? 0) +
-        (usage.outputTokens ?? 0) +
-        (usage.cacheReadTokens ?? 0) +
-        (usage.cacheWriteTokens ?? 0);
+        (bucket.input_tokens ?? 0) +
+        (bucket.output_tokens ?? 0) +
+        (bucket.cache_read_input_tokens ?? 0) +
+        (bucket.cache_creation_input_tokens ?? 0);
     }
-    if (!data.pagination?.hasNextPage) break;
-    page++;
+    if (!data.has_more) break;
+    pageToken = data.next_page;
+    if (!pageToken) break;
   }
   return total;
 }
@@ -393,21 +395,21 @@ async function fetchRemoteCommitsSince(repo, sinceISO) {
   return Array.isArray(body) ? body.length : 0;
 }
 
-function addCursorTokensToMetrics(metrics, delta) {
+function addClaudeCodeTokensToMetrics(metrics, delta) {
   if (!metrics.agents) metrics.agents = [];
-  let cursorAgent = metrics.agents.find((a) => a.name === "Cursor");
-  if (!cursorAgent) {
-    cursorAgent = {
-      name: "Cursor",
+  let agent = metrics.agents.find((a) => a.name === "Claude Code");
+  if (!agent) {
+    agent = {
+      name: "Claude Code",
       provider: "Anthropic",
       period: `${TODAY.slice(0, 7)} – Present`,
-      models: ["Claude Sonnet 4", "Claude Opus 4.6"],
+      models: ["Claude Sonnet 4.6", "Claude Opus 4.7"],
       tokens: 0,
-      role: "Ongoing maintenance & feature development",
+      role: "Automated metrics, agentic refactors & code review",
     };
-    metrics.agents.push(cursorAgent);
+    metrics.agents.push(agent);
   }
-  cursorAgent.tokens = (cursorAgent.tokens ?? 0) + delta;
+  agent.tokens = (agent.tokens ?? 0) + delta;
   metrics.totalTokens = metrics.agents.reduce((s, a) => s + (a.tokens ?? 0), 0);
 }
 
@@ -415,9 +417,9 @@ function applyProfileTokenDelta(delta) {
   if (!delta) return;
   const path = resolve(ROOT, "ai-metrics.json");
   const metrics = JSON.parse(readFileSync(path, "utf8"));
-  addCursorTokensToMetrics(metrics, delta);
+  addClaudeCodeTokensToMetrics(metrics, delta);
   writeFileSync(path, JSON.stringify(metrics, null, 2) + "\n");
-  console.log(`[profile] Cursor token delta +${delta.toLocaleString()} applied locally`);
+  console.log(`[profile] Claude Code token delta +${delta.toLocaleString()} applied locally`);
 }
 
 async function applyRemoteTokenDelta(projectId, repo, delta) {
@@ -430,18 +432,18 @@ async function applyRemoteTokenDelta(projectId, repo, delta) {
   }
   const meta = await get.json();
   const metrics = JSON.parse(Buffer.from(meta.content, "base64").toString("utf8"));
-  addCursorTokensToMetrics(metrics, delta);
+  addClaudeCodeTokensToMetrics(metrics, delta);
   const res = await ghFetch(url, {
     method: "PUT",
     body: JSON.stringify({
-      message: `chore: weekly Cursor token delta +${delta} [skip ci]`,
+      message: `chore: weekly Claude Code token delta +${delta} [skip ci]`,
       content: Buffer.from(JSON.stringify(metrics, null, 2) + "\n").toString("base64"),
       sha: meta.sha,
       committer: { name: "bilalahamad-bot", email: "bilal.ahamad@gmail.com" },
     }),
   });
   if (res.ok) {
-    console.log(`[${repo}] Cursor token delta +${delta.toLocaleString()} pushed`);
+    console.log(`[${repo}] Claude Code token delta +${delta.toLocaleString()} pushed`);
     return true;
   }
   const body = await res.text();
@@ -449,26 +451,30 @@ async function applyRemoteTokenDelta(projectId, repo, delta) {
   return false;
 }
 
-async function syncCursorTokens() {
-  if (!CURSOR_ADMIN_KEY) {
-    console.log("[cursor] CURSOR_ADMIN_KEY not set — skipping token sync");
+async function syncAnthropicTokens() {
+  if (!ANTHROPIC_ADMIN_KEY) {
+    console.log("[anthropic] ANTHROPIC_ADMIN_KEY not set — skipping token sync");
     return;
   }
   const endMs = Date.now();
   const startMs = endMs - TOKEN_WINDOW_DAYS * 24 * 60 * 60 * 1000;
-  const sinceISO = new Date(startMs).toISOString();
+  const startISO = new Date(startMs).toISOString();
+  const endISO = new Date(endMs).toISOString();
 
-  const total = await fetchCursorClaudeTokens(startMs, endMs);
+  const total = await fetchAnthropicClaudeTokens(startISO, endISO);
   if (total === null) return;
-  console.log(`[cursor] Claude tokens past ${TOKEN_WINDOW_DAYS}d: ${total.toLocaleString()}`);
-  if (total === 0) return;
+  console.log(`[anthropic] Claude tokens past ${TOKEN_WINDOW_DAYS}d: ${total.toLocaleString()}`);
+  if (total === 0) {
+    console.log("[anthropic] No usage in window — nothing to distribute");
+    return;
+  }
 
-  const commits = { profile: countProfileCommitsSince(sinceISO) };
+  const commits = { profile: countProfileCommitsSince(startISO) };
   for (const [pid, repo] of Object.entries(REMOTE_REPO_MAP)) {
-    commits[pid] = await fetchRemoteCommitsSince(repo, sinceISO);
+    commits[pid] = await fetchRemoteCommitsSince(repo, startISO);
   }
   const totalCommits = Object.values(commits).reduce((s, c) => s + c, 0);
-  console.log(`[cursor] Commits per project (${TOKEN_WINDOW_DAYS}d): ${JSON.stringify(commits)}`);
+  console.log(`[anthropic] Commits per project (${TOKEN_WINDOW_DAYS}d): ${JSON.stringify(commits)}`);
 
   const dist = {};
   if (totalCommits === 0) {
@@ -479,7 +485,7 @@ async function syncCursorTokens() {
       if (count > 0) dist[pid] = Math.round(total * (count / totalCommits));
     }
   }
-  console.log(`[cursor] Distribution: ${JSON.stringify(dist)}`);
+  console.log(`[anthropic] Distribution: ${JSON.stringify(dist)}`);
 
   if (dist.profile) applyProfileTokenDelta(dist.profile);
   for (const [pid, repo] of Object.entries(REMOTE_REPO_MAP)) {
@@ -497,7 +503,7 @@ async function main() {
   // Push token deltas BEFORE dispatching remote workflows.
   // The dispatched workflows only touch totalCommits/linesOfCode, so our
   // token updates are preserved when those workflows commit.
-  await syncCursorTokens();
+  await syncAnthropicTokens();
 
   const results = await Promise.all(
     Object.entries(REMOTE_REPO_MAP).map(([projectId, repo]) =>
