@@ -30,7 +30,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.4.0",
-    "three": "^0.181.2"
+    "three": "^0.184.0"
   },
   "overrides": {
     "axios": "^1.15.0",
