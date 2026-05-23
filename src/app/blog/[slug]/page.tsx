@@ -15,6 +15,7 @@ const slugToThumb: Record<string, string> = {
   "media-caster-story":    "/blog-thumbs/media-caster.png?v=2",
   "resilient-iot-application": "/blog-thumbs/resilient-iot.png",
   "clock-jump-case-study": "/blog-thumbs/iot_clock_jump_thumbnail.png",
+  "gemma-ollama-raspberry-pi-adhan": "/blog-thumbs/gemma-ollama-raspberry-pi-adhan.png",
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
