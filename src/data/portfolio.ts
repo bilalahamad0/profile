@@ -252,6 +252,7 @@ export const projectsData = [
       { slug: "media-caster-story", label: "Project Story" },
       { slug: "resilient-iot-application", label: "Whitepaper: Core Practices" },
       { slug: "clock-jump-case-study", label: "Whitepaper: NTP Clock Sync" },
+      { slug: "gemma-ollama-raspberry-pi-adhan", label: "Whitepaper: Local Edge AI" },
     ],
     // YouTube demo
     previewType: "youtube" as const,

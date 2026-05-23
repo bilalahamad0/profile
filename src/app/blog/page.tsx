@@ -39,6 +39,18 @@ const breadcrumb = {
 // Static post metadata — defined at module level, not inside a client component
 export const mdxPosts = [
   {
+    slug: "gemma-ollama-raspberry-pi-adhan",
+    title: "Edge AI on a Raspberry Pi 4: Adding Gemma 3 + Ollama to the Adhan Caster",
+    date: "May 22, 2026",
+    description:
+      "How I embedded a fully local Gemma 3 (1B) model via Ollama into a production Raspberry Pi 4 home-automation system — adding a natural-language assistant, self-diagnosing failures, and an in-context advisory loop, all without ever touching the real-time prayer-cast path.",
+    tags: ["Edge AI", "Gemma 3", "Ollama", "Raspberry Pi", "LLM", "Home Automation"],
+    category: "Whitepaper" as const,
+    readingTime: 9,
+    featured: false,
+    thumbnail: "/blog-thumbs/gemma-ollama-raspberry-pi-adhan.png",
+  },
+  {
     slug: "resilient-iot-application",
     title: "Engineering a Resilient Smart Home IoT Application: Lessons in Latency, mDNS, and Self-Healing Systems",
     date: "April 30, 2026",
