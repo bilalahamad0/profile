@@ -159,6 +159,8 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
     cycle: "~3 days",
     beforeAI: "Manual Python script, ran per request",
     afterAI: "Event-driven E2E billing automation",
+    tests: 174,
+    testSuites: 10,
   },
   profile: {
     projectId: "profile",
