@@ -32,7 +32,7 @@ const GH_USER = "bilalahamad0";
 // Gitignored — lives only on your local machine.
 const LAST_SYNC_FILE = resolve(ROOT, ".last-token-sync");
 
-const REMOTE_REPOS = { warn: "warn", adhan: "adhan-api", tmo: "tmo" };
+const REMOTE_REPOS = { warn: "warn", adhan: "adhan-api", tmo: "tmo", "adhan-ce": "adhan-ce" };
 
 // ── Session log parsing ──────────────────────────────────────────────────────
 

@@ -1,0 +1,137 @@
+---
+title: "Adhan Caster Pro for Chrome: Pausing Every Tab at Prayer Time"
+date: "2026-05-24"
+description: "How I built a Manifest V3 Chrome extension — end-to-end in a single day with Claude Code (Opus 4.7) — that shows a live prayer-time countdown and automatically pauses media in every open tab at Adhan, with a cross-tab full-screen prayer-focus mode and configurable auto-resume."
+tags: ["Chrome Extension", "Manifest V3", "JavaScript", "Service Worker", "AI-Assisted", "Claude Code"]
+category: "Project Story"
+featured: false
+---
+
+> **Related project:** [Adhan Caster Pro — Chrome Extension](https://bilalahamad.com/projects#adhan-ce) · source on [GitHub](https://github.com/bilalahamad0/adhan-ce). It's the browser-side sibling of my Raspberry Pi [Smart-Home IoT Media Caster](https://bilalahamad.com/projects#adhan) and reuses the same [adhan-api](https://github.com/bilalahamad0/adhan-api) schedule source.
+
+## TL;DR
+
+My Raspberry Pi [Adhan Caster](https://bilalahamad.com/projects#adhan) already handles prayer time *at home* — it pauses the TV, casts a dashboard to a Nest Hub, and plays the Adhan. But most of my day isn't in front of that TV; it's in front of a laptop with a dozen tabs open, something always playing. So I built the browser-native counterpart: a **Manifest V3 Chrome extension** that shows a live countdown to the next prayer and, at Adhan time, **pauses every playing `<video>`/`<audio>` across every open tab** — with an opt-in full-screen "prayer focus" screen and a one-click (or automatic) resume.
+
+No hardware. No account. It was built **end-to-end in a single day** with **Claude Code (Opus 4.7)** — 9 commits, ~2,300 lines, 31 tests across 3 suites.
+
+![Adhan Caster Pro — in-page countdown, cross-tab media pause, full-screen prayer-focus, and resume](/images/adhan-ce-demo.gif)
+
+## The gap it fills
+
+The Pi system is great inside the house, but it controls *the room*, not *the browser*. The moment I'm working — a YouTube tab here, a video call there, a podcast in a pinned tab — none of that is aware that Maghrib just started. The extension closes that gap on the one device I actually stare at all day, and because it's a browser extension it follows me to any machine I sign in on, no Pi required.
+
+## What it does
+
+- **Next-prayer popup** — all five daily prayers with the next highlighted and a live countdown.
+- **In-page heads-up countdown** — a small card pinned to the bottom-right of whatever tab I'm looking at, appearing shortly before the prayer (default **30s**, configurable to 15/30/60).
+- **Auto-pause across tabs** — at the exact prayer time, every playing `<video>`/`<audio>` — including same- and cross-origin iframes — is paused.
+- **Resume** — one button (in the popup or the in-page card) restores the paused tabs, and playback **auto-resumes** after a configurable delay (default 5 min) with a live "Auto-resumes in M:SS" readout.
+- **Prayer-focus mode (opt-in)** — a full-screen, dismissible focus screen across tabs during the Adhan. Trigger it per-event from the notification, the popup, or `Ctrl/Cmd+Shift+Y`; exit with **Resume** or **Esc**.
+- **Desktop notification** at prayer time, with **Prayer focus** / **Resume now** action buttons.
+- **Location picker** — a single search box backed by [Open-Meteo](https://open-meteo.com/) geocoding. You can't save a location that isn't a real, geocoded place.
+
+## Architecture
+
+Three moving parts, plus a pair of pure helper modules that hold all the logic worth testing:
+
+| Piece | Responsibility |
+| :--- | :--- |
+| `background.js` (module service worker) | Fetches the schedule, parses prayer times into timestamps, arms `chrome.alarms`, fires the desktop notification, broadcasts the cross-tab pause, and arms auto-resume. |
+| `content.js` (injected in **all frames**) | A per-second ticker: draws the bottom-right countdown and the full-screen focus overlay (in a Shadow DOM), and pauses/resumes its own frame's media. |
+| `popup.html/js/css` | The prayer list, live countdown, Resume button, the Open-Meteo location search, and settings. |
+| `lib/schedule.js`, `lib/geocode.js` | Pure, dependency-free helpers — no `chrome.*`, no DOM — so they're unit-testable under Node/Jest. |
+
+## The problems worth solving
+
+### 1. Pausing media you don't own
+
+A page's media elements live in the page, and often inside nested iframes from other origins. There's no central "pause everything" API. The manifest answer is to inject the content script into **every frame** of every page:
+
+```json
+"content_scripts": [
+  {
+    "matches": ["http://*/*", "https://*/*"],
+    "js": ["content.js"],
+    "css": ["content.css"],
+    "run_at": "document_idle",
+    "all_frames": true
+  }
+]
+```
+
+Each injected copy only ever touches *its own* frame's `<video>`/`<audio>`, so a YouTube player buried three iframes deep still gets paused — and the UI overlays render in a **Shadow DOM** so the host page's CSS can never bleed in or be clobbered.
+
+### 2. Timing without a clock you can trust
+
+A Manifest V3 service worker is not always alive — Chrome tears it down when idle and wakes it for events. `chrome.alarms` is the wake-up mechanism, but it isn't second-accurate when the worker is asleep, and it clamps very short delays. Relying on the alarm alone would mean prayers that fire a little late, or not at the instant they should.
+
+The fix is to not trust a single timer. The service worker arms the alarm, but `content.js` runs its own per-second countdown and **self-triggers the pause the moment its own countdown hits zero**. Both paths are **idempotent** — whichever fires first wins, the other is a no-op — so the media pauses on time regardless of whether the worker happened to be awake.
+
+### 3. Do the arithmetic in code, and test it
+
+Prayer times come back from the API as `"hh:mm a"` strings. Turning those into "what's next, and how long until it" is exactly the kind of off-by-one, timezone-sensitive logic that's easy to get subtly wrong — so it lives in a pure module with no `chrome.*` or DOM dependencies, which means it runs straight under Jest:
+
+```js
+// First prayer after fromTs; rolls over to tomorrow's Fajr when the day is done.
+export function computeNext(prayers, fromTs) {
+  for (const p of prayers) {
+    if (p.ts > fromTs) return { name: p.name, time: p.time, ts: p.ts };
+  }
+  const fajr = (prayers || []).find((p) => p.name === 'Fajr');
+  return fajr ? { name: 'Fajr', time: fajr.time, ts: fajr.ts + DAY_MS } : null;
+}
+```
+
+That "roll over to tomorrow's Fajr after Isha" edge case is precisely what a unit test should pin down, and it is. The 31 tests across 3 suites (`schedule`, `geocode`, and a `manifest` qualification test) are almost entirely against these pure helpers — the part where correctness actually matters.
+
+### 4. Locations that are real
+
+A wrong location means prayers at the wrong time, which defeats the whole point. So the location picker doesn't let you free-type a string and hope — it searches Open-Meteo, you pick a real geocoded place, and it stores the resolved region/country plus coordinates. If it isn't a real place, you can't save it.
+
+## Permissions: the honest tradeoff
+
+On first load, Chrome warns that the extension can "read and change all your data on all websites." That sounds heavy, and it's worth being upfront about *why*: pausing media in any tab requires reaching into any tab. The host permissions are exactly that —
+
+```json
+"host_permissions": [
+  "https://adhan-api-mauve.vercel.app/*",
+  "http://*/*",
+  "https://*/*"
+]
+```
+
+— and `permissions` is the minimal set the features need: `storage` (settings), `alarms` (the wake-up), `notifications` (the prayer banner), `scripting` + `tabs` (the cross-tab broadcast). There's no analytics, no remote code, and the only network call out is to the prayer schedule and the geocoder.
+
+## Built in a day with Claude Code
+
+This is the first project I built **entirely** with Claude Code (Opus 4.7) — service worker, the all-frames content script, the Shadow-DOM overlays, the geocoding flow, the Jest suites, and the Web Store assets (icons, screenshots, privacy policy, packaging script). My job was the spec, the judgment calls, and the QA on real pages.
+
+| Metric | Value |
+| :--- | :--- |
+| Build time | ~1 day |
+| Commits | 9 |
+| Lines of code | ~2,307 |
+| Tests / suites | 31 / 3 |
+| AI contribution | ~95% |
+| Runtime dependencies | 0 (Jest is dev-only) |
+
+## Limitations & honest tradeoffs
+
+- **Restricted pages.** Chrome won't run content scripts on `chrome://` pages, the Web Store, or the built-in PDF viewer, so media there can't be paused — a platform limitation, not a bug.
+- **Timezone assumption.** Times are parsed in the browser's local timezone, which is correct when your machine's timezone matches the location you picked.
+- **Alarm granularity.** `chrome.alarms` clamps very short delays (the dev "test Adhan" is ~30s for this reason); the content-script self-trigger is what keeps real prayers on time.
+
+## What's next
+
+- **Chrome Web Store** publish (the store assets and a privacy policy are already in the repo).
+- Optional per-site allow/deny lists for tabs you never want touched.
+- A voice/announcement hook so the browser can chime alongside the Pi at home.
+
+## Closing
+
+The Pi version taught me that the hard part of "automate prayer time" is never the prayer math — it's the messy real-world plumbing around it: devices that ignore commands, timers you can't trust, state that has to survive a restart. The extension is the same lesson in a different sandbox. Pausing a video sounds trivial until the video is in a cross-origin iframe, the clock is a service worker that keeps falling asleep, and the UI has to live inside pages whose CSS is actively hostile. Solve those carefully, do the arithmetic in code instead of guessing, test the part that matters — and a one-day build can be something you actually trust to interrupt you at the right moment, every day.
+
+---
+
+*Source on [GitHub](https://github.com/bilalahamad0/adhan-ce) · see the [AI Lab breakdown](https://bilalahamad.com/ai#adhan-ce) for the full metrics.*
