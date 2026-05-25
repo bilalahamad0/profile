@@ -18,6 +18,7 @@ const REMOTE_REPO_MAP = {
   warn: "warn",
   adhan: "adhan-api",
   tmo: "tmo",
+  "adhan-ce": "adhan-ce",
 };
 
 const SOURCE_EXTENSIONS = /\.(ts|tsx|js|jsx|css|mdx)$/;
@@ -60,6 +61,32 @@ const SEED_METRICS = {
     microservices: 10,
     tests: 54,
     testSuites: 12,
+  },
+  "adhan-ce": {
+    projectId: "adhan-ce",
+    lastUpdated: TODAY,
+    aiContribution: 95,
+    agents: [
+      {
+        name: "Claude Code",
+        provider: "Anthropic",
+        period: "May 2026",
+        models: ["Claude Opus 4.7"],
+        tokens: 458000,
+        role: "End-to-end build — service worker, content scripts, geocoding, tests & store assets",
+      },
+    ],
+    totalTokens: 458000,
+    totalCommits: 9,
+    linesOfCode: 2307,
+    devCycleDays: 1,
+    manualEstimateDays: 14,
+    impact: "Auto-pauses media across every Chrome tab at Adhan time · cross-tab prayer-focus mode",
+    cycle: "1 day",
+    beforeAI: "Manual prayer tracking; media kept playing during Adhan",
+    afterAI: "One-click extension pauses every tab at prayer time",
+    tests: 31,
+    testSuites: 3,
   },
   tmo: {
     projectId: "tmo",

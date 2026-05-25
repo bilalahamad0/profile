@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const REPOS = ["warn", "adhan-api", "profile", "tmo"];
+const REPOS = ["warn", "adhan-api", "profile", "tmo", "adhan-ce"];
 
 /**
  * Cached proxy for GitHub repo metadata.

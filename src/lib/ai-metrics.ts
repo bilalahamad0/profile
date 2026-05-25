@@ -35,6 +35,7 @@ const REPO_MAP: Record<string, string> = {
   adhan: "adhan-api",
   profile: "profile",
   tmo: "tmo",
+  "adhan-ce": "adhan-ce",
 };
 
 const REVALIDATE_SECONDS = 3600;

@@ -39,6 +39,18 @@ const breadcrumb = {
 // Static post metadata — defined at module level, not inside a client component
 export const mdxPosts = [
   {
+    slug: "adhan-caster-extension-story",
+    title: "Adhan Caster Pro for Chrome: Pausing Every Tab at Prayer Time",
+    date: "May 24, 2026",
+    description:
+      "How I built a Manifest V3 Chrome extension — end-to-end in a single day with Claude Code (Opus 4.7) — that shows a live prayer-time countdown and automatically pauses media in every open tab at Adhan, with a cross-tab full-screen prayer-focus mode and configurable auto-resume.",
+    tags: ["Chrome Extension", "Manifest V3", "JavaScript", "Service Worker", "AI-Assisted"],
+    category: "Project Story" as const,
+    readingTime: 8,
+    featured: false,
+    thumbnail: "/images/adhan-ce-demo.gif",
+  },
+  {
     slug: "gemma-ollama-raspberry-pi-adhan",
     title: "Edge AI on a Raspberry Pi 4: Adding Gemma 3 + Ollama to the Adhan Caster",
     date: "May 22, 2026",
