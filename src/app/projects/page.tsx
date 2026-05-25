@@ -226,7 +226,7 @@ export default function ProjectsPage() {
               { label: "Public Repos",  value: `${projectsData.length}+` },
               { label: "AI-Augmented",  value: `${Math.round(projectsData.reduce((acc, p) => acc + (p.aiContribution || 0), 0) / projectsData.filter(p => p.aiContribution).length)}%` },
               { label: "Languages",     value: "5+" },
-              { label: "Deployed Live", value: "3" },
+              { label: "Deployed Live", value: "5" },
             ].map(({ label, value }) => (
               <div key={label} className="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
                 <span className="block text-2xl md:text-3xl font-black text-white mb-1">{value}</span>
