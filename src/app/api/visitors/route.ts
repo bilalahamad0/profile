@@ -2,39 +2,32 @@ import { NextResponse } from 'next/server';
 import crypto from 'node:crypto';
 
 /**
- * shields.io endpoint badge backed by the GA4 Data API: historical total users
- * for the property (all-time). CDN-cached 1h via next.config.ts.
+ * shields.io endpoint badge: historical, monotonic visitor count.
  *
- * Auth (in priority order):
- *  1. OAuth as the property owner — refresh-token flow. Preferred, because a
- *     Google bug (since 2025-04-23) blocks NEW service accounts from being added
- *     to GA4 properties. Env: GA_OAUTH_CLIENT_ID, GA_OAUTH_CLIENT_SECRET,
- *     GA_OAUTH_REFRESH_TOKEN.
- *  2. Service-account JWT (signed via node:crypto, no SDK). Only works for SAs
- *     created before the bug. Env: GA_SERVICE_ACCOUNT_JSON (base64 of key file).
+ * Reads all-time totalUsers from the GA4 Data API and serves max(stored, live),
+ * persisting the high-water mark in a KV store. The number therefore only ever
+ * grows — it never resets, survives GA data-retention aging-out old users, and
+ * keeps showing the last known value if GA/OAuth is temporarily unavailable.
  *
- * Always also needs GA_PROPERTY_ID. Returns a graceful "n/a" badge if neither
- * auth path is configured or anything fails.
+ * Auth (priority): OAuth refresh token (GA_OAUTH_CLIENT_ID / _SECRET /
+ * _REFRESH_TOKEN) -> service-account JWT (GA_SERVICE_ACCOUNT_JSON). Always needs
+ * GA_PROPERTY_ID. Optional persistence: KV_REST_API_URL + KV_REST_API_TOKEN
+ * (Vercel's Upstash Redis integration) — without it the badge still works but is
+ * just the live value, not persisted/monotonic. CDN-cached 1h via next.config.ts.
  */
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-type ShieldsBadge = {
-  schemaVersion: 1;
-  label: string;
-  message: string;
-  color: string;
-};
+type ShieldsBadge = { schemaVersion: 1; label: string; message: string; color: string };
 
-const FALLBACK: ShieldsBadge = {
-  schemaVersion: 1,
-  label: 'visitors',
-  message: 'n/a',
-  color: 'lightgrey',
-};
+const FALLBACK: ShieldsBadge = { schemaVersion: 1, label: 'visitors', message: 'n/a', color: 'lightgrey' };
 
 const TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const SCOPE = 'https://www.googleapis.com/auth/analytics.readonly';
+const COUNT_KEY = 'visitors_total';
+
+const KV_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+const KV_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
 
 function base64url(input: string): string {
   return Buffer.from(input).toString('base64url');
@@ -112,13 +105,12 @@ async function resolveAccessToken(): Promise<string> {
   throw new Error('no GA credentials configured');
 }
 
-export async function GET() {
+/** Live all-time totalUsers from GA, or null if anything fails. */
+async function fetchLiveTotal(): Promise<number | null> {
   try {
     const propertyId = process.env.GA_PROPERTY_ID;
-    if (!propertyId) return NextResponse.json(FALLBACK);
-
+    if (!propertyId) return null;
     const token = await resolveAccessToken();
-
     const res = await fetch(
       `https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,
       {
@@ -130,20 +122,68 @@ export async function GET() {
         }),
       }
     );
-    if (!res.ok) return NextResponse.json(FALLBACK);
-
+    if (!res.ok) {
+      console.error('visitors: runReport failed', res.status);
+      return null;
+    }
     const data = (await res.json()) as { rows?: { metricValues?: { value?: string }[] }[] };
-    const value = Number(data.rows?.[0]?.metricValues?.[0]?.value ?? 0);
-
-    const badge: ShieldsBadge = {
-      schemaVersion: 1,
-      label: 'visitors',
-      message: formatCount(value),
-      color: 'blue',
-    };
-    return NextResponse.json(badge);
+    const n = Number(data.rows?.[0]?.metricValues?.[0]?.value ?? 0);
+    return Number.isFinite(n) ? n : null;
   } catch (error) {
-    console.error('visitors badge failed', error);
-    return NextResponse.json(FALLBACK);
+    console.error('visitors: GA fetch failed', error);
+    return null;
   }
+}
+
+/** Read the persisted high-water mark from KV, or null if unavailable. */
+async function kvGet(key: string): Promise<number | null> {
+  if (!KV_URL || !KV_TOKEN) return null;
+  try {
+    const res = await fetch(`${KV_URL}/get/${key}`, {
+      headers: { Authorization: `Bearer ${KV_TOKEN}` },
+      cache: 'no-store',
+    });
+    if (!res.ok) return null;
+    const json = (await res.json()) as { result?: string | null };
+    if (json.result == null) return null;
+    const n = Number(json.result);
+    return Number.isFinite(n) ? n : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Persist a new high-water mark to KV (best-effort). */
+async function kvSet(key: string, value: number): Promise<void> {
+  if (!KV_URL || !KV_TOKEN) return;
+  try {
+    await fetch(`${KV_URL}/set/${key}/${value}`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${KV_TOKEN}` },
+      cache: 'no-store',
+    });
+  } catch {
+    /* best-effort — a failed write just means we retry next request */
+  }
+}
+
+export async function GET() {
+  const [live, stored] = await Promise.all([fetchLiveTotal(), kvGet(COUNT_KEY)]);
+
+  // No data from either source → graceful placeholder (never "0").
+  if (live == null && stored == null) return NextResponse.json(FALLBACK);
+
+  // Monotonic: serve the high-water mark; never drop below what we've recorded.
+  const best = Math.max(live ?? 0, stored ?? 0);
+
+  // Persist a new high (also seeds the store on first run).
+  if (live != null && live > (stored ?? -1)) await kvSet(COUNT_KEY, live);
+
+  const badge: ShieldsBadge = {
+    schemaVersion: 1,
+    label: 'visitors',
+    message: formatCount(best),
+    color: 'blue',
+  };
+  return NextResponse.json(badge);
 }
