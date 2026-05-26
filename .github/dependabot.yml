@@ -8,6 +8,18 @@ updates:
     ignore:
       - dependency-name: "vitest"
         versions: ["< 4.0.0"]
+      # eslint 10 is unsupported by eslint-config-next / eslint-plugin-import
+      # (peer dep allows only ^2..^9). Remove once Next's lint config supports v10.
+      - dependency-name: "eslint"
+        versions: [">=10"]
+      # lucide-react 1.x renamed/removed brand icons (e.g. Github -> ...),
+      # which breaks the build. Remove after migrating the icon imports in code.
+      - dependency-name: "lucide-react"
+        versions: [">=1"]
+      # typescript 6 deferred for now. Remove once the toolchain
+      # (typescript-eslint, next) is confirmed compatible.
+      - dependency-name: "typescript"
+        versions: [">=6"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
