@@ -448,7 +448,7 @@ const ChildBadgesGrid = ({
               })
             }
             aria-label={`Verify ${child.title} certificate on Coursera`}
-            className="group/verify inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-300 transition-colors hover:border-emerald-300/60 hover:bg-emerald-500/20 hover:text-emerald-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70"
+            className="group/verify inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 t-label font-bold uppercase tracking-wider text-emerald-300 transition-colors hover:border-emerald-300/60 hover:bg-emerald-500/20 hover:text-emerald-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70"
           >
             Verify
             <ExternalLink className="h-3 w-3 transition-transform group-hover/verify:translate-x-0.5" />
@@ -474,7 +474,7 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
           </div>
           <h2
             id={spec.headingId}
-            className="text-3xl font-bold tracking-tight text-white md:text-4xl"
+            className="t-h2 text-white"
           >
             <span className="block">{spec.titleLines[0]}</span>
             <span className="block text-2xl font-semibold text-white/70 md:text-3xl">
@@ -486,7 +486,7 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
           <span className="text-5xl font-black leading-none text-white/5">
             {totalLabel}
           </span>
-          <span className="mr-1 text-[10px] font-bold uppercase tracking-tighter text-white/20">
+          <span className="mr-1 t-label font-bold uppercase tracking-tighter text-white/20">
             Courses · 1 Specialization
           </span>
         </div>
@@ -540,7 +540,7 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
                 {/* AI Skills ribbon */}
                 <div className="pointer-events-none absolute right-4 top-4 z-20 flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-gradient-to-r from-amber-500/95 via-yellow-400/95 to-amber-500/95 px-3 py-1 shadow-[0_4px_20px_-4px_rgba(251,191,36,0.6)] backdrop-blur-sm">
                   <span className="text-xs leading-none" aria-hidden>🌟</span>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-amber-950">
+                  <span className="t-label font-black uppercase tracking-wider text-amber-950">
                     AI Skills
                   </span>
                 </div>
@@ -570,7 +570,7 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
                   <p className="truncate text-xs font-bold uppercase tracking-widest text-blue-400">
                     {spec.issuer}
                   </p>
-                  <p className="flex items-center gap-1.5 text-[11px] uppercase tracking-tighter text-white/30">
+                  <p className="flex items-center gap-1.5 t-label uppercase tracking-tighter text-white/30">
                     <Calendar className="h-3 w-3" aria-hidden />
                     {spec.date}
                   </p>
@@ -585,7 +585,7 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
                     })
                   }
                   aria-label={`View ${spec.titleLines[0]} details on Coursera`}
-                  className="group/details inline-flex shrink-0 items-center gap-1 text-[11px] font-semibold tracking-wider text-white/40 transition-colors hover:text-blue-400 focus:outline-none focus-visible:text-blue-400"
+                  className="group/details inline-flex shrink-0 items-center gap-1 t-label font-semibold tracking-wider text-white/40 transition-colors hover:text-blue-400 focus:outline-none focus-visible:text-blue-400"
                 >
                   VIEW DETAILS
                   <ArrowRight className="h-3 w-3 transition-transform group-hover/details:translate-x-1" />
@@ -597,7 +597,7 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
                   issuer/date block. The parent badge is a self-contained
                   hover-to-verify Credly link with no surrounding text. */}
               <div className="mt-1 flex flex-1 items-center gap-5 rounded-2xl border border-white/5 bg-white/[0.015] p-4 md:gap-6 md:p-5">
-                <p className="min-w-0 flex-1 text-sm leading-relaxed text-zinc-300 md:text-[15px]">
+                <p className="min-w-0 flex-1 t-small leading-relaxed text-zinc-300">
                   {spec.description}
                 </p>
                 <button
@@ -631,7 +631,7 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
                for each Essentials course — they all share the parent artwork.
             */}
             <div className="flex flex-col gap-5">
-              <div className="flex items-center gap-2 self-start rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-emerald-300">
+              <div className="flex items-center gap-2 self-start rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1.5 t-label font-bold uppercase tracking-wider text-emerald-300">
                 <CheckCircle2 className="h-3.5 w-3.5" aria-hidden />
                 All {spec.totalCourses} course credentials
               </div>
@@ -650,7 +650,7 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
                       transition={{ delay: index * 0.05, duration: 0.3 }}
                       className="group/sub flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2.5 backdrop-blur-sm transition-colors hover:border-purple-500/30 hover:bg-white/[0.04] md:px-4 md:py-3"
                     >
-                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-purple-500/40 bg-[#09090b] text-[11px] font-bold text-white shadow-[0_0_15px_-5px_rgba(168,85,247,0.35)] md:h-8 md:w-8 md:text-xs">
+                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-purple-500/40 bg-[#09090b] t-label font-bold text-white shadow-[0_0_15px_-5px_rgba(168,85,247,0.35)] md:h-8 md:w-8">
                         {child.step}
                       </div>
 
@@ -669,7 +669,7 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
                           })
                         }
                         aria-label={`Verify certificate for ${child.title}`}
-                        className="group/vc inline-flex shrink-0 items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-blue-400 transition-colors hover:text-blue-300"
+                        className="group/vc inline-flex shrink-0 items-center gap-1 t-label font-semibold uppercase tracking-wider text-blue-400 transition-colors hover:text-blue-300"
                       >
                         <span className="hidden sm:inline">Verify</span>
                         <ExternalLink className="h-3 w-3 transition-transform group-hover/vc:translate-x-0.5" />
@@ -724,7 +724,7 @@ const CertificateCard = ({
         <div className="absolute top-4 right-4 z-10">
           <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 backdrop-blur-sm shadow-sm">
             <Sparkles className="w-3.5 h-3.5 text-purple-400 fill-purple-400/20" />
-            <span className="text-[10px] font-bold uppercase tracking-wider text-purple-300">AI Skills</span>
+            <span className="t-label font-bold uppercase tracking-wider text-purple-300">AI Skills</span>
           </div>
         </div>
       )}
@@ -742,7 +742,7 @@ const CertificateCard = ({
             {cert.url ? (
               <>
                 <ExternalLink className="w-4 h-4 text-white" />
-                <span className="text-[10px] font-bold uppercase tracking-wider text-white pr-1">View Certificate</span>
+                <span className="t-label font-bold uppercase tracking-wider text-white pr-1">View Certificate</span>
               </>
             ) : (
               <Search className="w-5 h-5 text-white" />
@@ -764,7 +764,7 @@ const CertificateCard = ({
                 <p className="text-xs font-medium text-white/50 truncate max-w-[150px]">{cert.issuer}</p>
               </div>
 
-              <h3 className="text-lg font-semibold text-white/90 leading-tight mb-3 group-hover:text-white transition-colors">
+              <h3 className="t-h3 text-white/90 mb-3 group-hover:text-white transition-colors">
                 {cert.title}
               </h3>
 
@@ -799,7 +799,7 @@ const CertificateCard = ({
               <p className="text-xs font-medium text-white/50 truncate max-w-[150px]">{cert.issuer}</p>
             </div>
 
-            <h3 className="text-lg font-semibold text-white/90 leading-tight mb-2 group-hover:text-white transition-colors">
+            <h3 className="t-h3 text-white/90 mb-2 group-hover:text-white transition-colors">
               {cert.title}
             </h3>
 
@@ -812,9 +812,9 @@ const CertificateCard = ({
         <div className="mt-auto flex items-center justify-between pt-4 border-t border-white/5">
           <div className="flex items-center gap-1.5 text-white/30">
             <Calendar className="w-3.5 h-3.5" />
-            <span className="text-[11px] font-medium uppercase tracking-widest">{cert.date}</span>
+            <span className="t-label font-medium uppercase tracking-widest">{cert.date}</span>
           </div>
-          <div className="flex items-center gap-1 text-[11px] font-semibold text-white/40 group-hover:text-blue-400 transition-colors">
+          <div className="flex items-center gap-1 t-label font-semibold text-white/40 group-hover:text-blue-400 transition-colors">
             VIEW DETAILS
             <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
           </div>
@@ -862,11 +862,11 @@ export default function CertificationsPage() {
             <span className="text-xs font-bold uppercase tracking-[0.2em] text-white/70">Professional Credentials</span>
           </div>
 
-          <h1 className="text-5xl md:text-6xl font-black tracking-tighter text-white leading-tight">
+          <h1 className="t-h1 text-white">
             Knowledge <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400">Album.</span>
           </h1>
 
-          <p className="text-lg text-zinc-400 max-w-2xl leading-relaxed">
+          <p className="t-lead text-zinc-400 max-w-2xl">
             A curated collection of my professional certifications, specialized training,
             and continuous education in QA, Development, and Artificial Intelligence.
           </p>
@@ -888,7 +888,7 @@ export default function CertificationsPage() {
                 <Sparkles className="w-4 h-4" />
                 AI & NEXT-GEN TECH
               </div>
-              <h2 className="text-3xl font-bold text-white tracking-tight">AI Specialists</h2>
+              <h2 className="t-h2 text-white">AI Specialists</h2>
               <p className="text-white/40 max-w-md">Highlighting expertise in Generative AI, Prompt Engineering, and AI-Powered Testing.</p>
             </div>
             {/* Minimal counter */}
@@ -896,7 +896,7 @@ export default function CertificationsPage() {
               <span className="text-5xl font-black text-white/5 leading-none">
                 {String(AI_CERTIFICATES.length).padStart(2, "0")}
               </span>
-              <span className="text-[10px] font-bold text-white/20 tracking-tighter uppercase mr-1">Certifications</span>
+              <span className="t-label font-bold text-white/20 tracking-tighter uppercase mr-1">Certifications</span>
             </div>
           </div>
 
@@ -920,7 +920,7 @@ export default function CertificationsPage() {
                 <ShieldCheck className="w-4 h-4" />
                 CORE FOUNDATIONS
               </div>
-              <h2 className="text-3xl font-bold text-white tracking-tight">Technical & Leadership</h2>
+              <h2 className="t-h2 text-white">Technical & Leadership</h2>
               <p className="text-white/40 max-w-md">Fundamental testing standards, development principles, and project management.</p>
             </div>
             {/* Minimal counter */}
@@ -928,7 +928,7 @@ export default function CertificationsPage() {
               <span className="text-5xl font-black text-white/5 leading-none">
                 {String(GENERAL_CERTIFICATES.length).padStart(2, "0")}
               </span>
-              <span className="text-[10px] font-bold text-white/20 tracking-tighter uppercase mr-1">Certifications</span>
+              <span className="t-label font-bold text-white/20 tracking-tighter uppercase mr-1">Certifications</span>
             </div>
           </div>
 
@@ -1001,11 +1001,11 @@ export default function CertificationsPage() {
                     </div>
                     <div>
                       <p className="text-xs font-bold text-blue-400 uppercase tracking-widest">{selectedCert.issuer}</p>
-                      <p className="text-[11px] text-white/30 uppercase tracking-tighter">{selectedCert.date}</p>
+                      <p className="t-label text-white/30 uppercase tracking-tighter">{selectedCert.date}</p>
                     </div>
                   </div>
 
-                  <h3 className="text-2xl md:text-3xl font-bold text-white leading-tight">
+                  <h3 className="t-h3 text-white">
                     {selectedCert.title}
                   </h3>
 

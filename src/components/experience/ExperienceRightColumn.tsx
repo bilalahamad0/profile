@@ -38,7 +38,7 @@ export function ExperienceRightColumn() {
           className="glass-card rounded-3xl p-8 flex flex-col justify-between h-full relative hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
         >
           <Target className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-zinc-400 pointer-events-none z-0" aria-hidden="true" />
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
+          <h2 className="t-h3 text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
             <Layers className="w-6 h-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />
             Core Focus
           </h2>
@@ -50,7 +50,7 @@ export function ExperienceRightColumn() {
               return (
                 <span
                   key={tag}
-                  className={`px-3 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-[0.08em] border hover:bg-white/5 hover:border-white/20 transition-all duration-200 cursor-default ${tone}`}
+                  className={`px-3 py-1.5 rounded-md t-label font-bold uppercase tracking-[0.08em] border hover:bg-white/5 hover:border-white/20 transition-all duration-200 cursor-default ${tone}`}
                 >
                   {tag}
                 </span>
@@ -67,7 +67,7 @@ export function ExperienceRightColumn() {
           className="glass-card rounded-3xl p-8 flex flex-col justify-between h-full relative hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
         >
           <Cpu className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-zinc-400 pointer-events-none z-0" aria-hidden="true" />
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
+          <h2 className="t-h3 text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
             <Terminal className="w-6 h-6 text-purple-600 dark:text-purple-400" aria-hidden="true" />
             Technical Arsenal
           </h2>
@@ -95,7 +95,7 @@ export function ExperienceRightColumn() {
           className="glass-card rounded-3xl p-8 flex flex-col h-full relative hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
         >
           <GraduationCap className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-zinc-400 pointer-events-none z-0" aria-hidden="true" />
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
+          <h2 className="t-h3 text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
             <GraduationCap className="w-6 h-6 text-indigo-600 dark:text-indigo-400" aria-hidden="true" />
             Education
           </h2>
@@ -124,13 +124,13 @@ export function ExperienceRightColumn() {
         >
           <BadgeCheck className="absolute bottom-4 right-4 w-20 h-20 opacity-[0.04] text-zinc-400 pointer-events-none z-0" aria-hidden="true" />
           <div className="flex items-center justify-between mb-5 relative z-10">
-            <h2 className="text-2xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
+            <h2 className="t-h3 text-zinc-900 dark:text-white flex items-center gap-2">
               <Settings className="w-6 h-6 text-zinc-600 dark:text-zinc-400" aria-hidden="true" />
               Certifications
             </h2>
             <Link
               href="/certifications"
-              className="flex items-center gap-1.5 text-[11px] font-bold text-blue-500 hover:text-blue-400 transition-colors uppercase tracking-widest"
+              className="flex items-center gap-1.5 t-label font-bold text-blue-500 hover:text-blue-400 transition-colors uppercase tracking-widest"
             >
               View All <ExternalLink className="w-3 h-3" aria-hidden="true" />
             </Link>
@@ -138,7 +138,7 @@ export function ExperienceRightColumn() {
 
           {/* AI & ML */}
           <div className="mb-4 relative z-10">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-purple-500 dark:text-purple-400 mb-2 flex items-center gap-1.5">
+            <p className="t-label font-black uppercase tracking-[0.2em] text-purple-500 dark:text-purple-400 mb-2 flex items-center gap-1.5">
               <Sparkles className="w-3 h-3" aria-hidden="true" /> AI &amp; Machine Learning
             </p>
             <ul className="space-y-2 mt-2">
@@ -155,7 +155,7 @@ export function ExperienceRightColumn() {
 
           {/* Testing & Standards */}
           <div className="mb-4 relative z-10">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-500 dark:text-amber-400 mb-2 flex items-center gap-1.5">
+            <p className="t-label font-black uppercase tracking-[0.2em] text-amber-500 dark:text-amber-400 mb-2 flex items-center gap-1.5">
               <ShieldCheck className="w-3 h-3" aria-hidden="true" /> Testing &amp; Standards
             </p>
             <ul className="space-y-2 mt-2">
@@ -172,7 +172,7 @@ export function ExperienceRightColumn() {
 
           {/* Leadership */}
           <div className="relative z-10">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 dark:text-blue-400 mb-2 flex items-center gap-1.5">
+            <p className="t-label font-black uppercase tracking-[0.2em] text-blue-500 dark:text-blue-400 mb-2 flex items-center gap-1.5">
               <Box className="w-3 h-3" aria-hidden="true" /> Leadership &amp; Management
             </p>
             <ul className="space-y-2 mt-2">
@@ -196,7 +196,7 @@ export function ExperienceRightColumn() {
           className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col h-full hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
         >
           <MessageSquareQuote className="absolute bottom-4 right-4 w-20 h-20 opacity-[0.04] text-zinc-400 pointer-events-none z-0" aria-hidden="true" />
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
+          <h2 className="t-h3 text-zinc-900 dark:text-white mb-5 flex items-center gap-2 relative z-10">
             <MessageSquareQuote className="w-6 h-6 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
             Recommendations
           </h2>
@@ -231,7 +231,7 @@ export function ExperienceRightColumn() {
           className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col justify-between h-full hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300"
         >
           <Trophy className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-zinc-400 pointer-events-none z-0" aria-hidden="true" />
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2 flex items-center gap-2 relative z-10">
+          <h2 className="t-h3 text-zinc-900 dark:text-white mb-2 flex items-center gap-2 relative z-10">
             <span className="text-2xl" aria-hidden="true">🏆</span>
             Awards &amp; Recognition
           </h2>
@@ -257,7 +257,7 @@ export function ExperienceRightColumn() {
           <div className="absolute top-1/2 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px] pointer-events-none -translate-y-1/2" aria-hidden="true" />
 
           <div className="flex flex-col justify-between flex-1 z-10 w-full relative">
-            <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2 flex items-center gap-3">
+            <h2 className="t-h3 text-zinc-900 dark:text-white mb-2 flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0">
                 <Image src="/logos/google.png" alt="Google" width={20} height={20} className="object-contain" />
               </div>
@@ -274,14 +274,14 @@ export function ExperienceRightColumn() {
             <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed mb-8">
               Recognized participant in the Google Developer Ecosystem. Attended multiple flagship events in Mountain View, earning badges for technical integrations and Platform mastery.
             </p>
-            <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-4">
+            <h3 className="t-label font-bold text-zinc-500 uppercase tracking-widest mb-4">
               I/O Attendance &amp; Badges
             </h3>
             <div className="flex flex-wrap gap-2.5 mb-8">
-              <span className="px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-[10px] font-medium text-zinc-700 dark:text-zinc-300">
+              <span className="px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 t-label font-medium text-zinc-700 dark:text-zinc-300">
                 I/O 2022–25 Attendee
               </span>
-              <span className="px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+              <span className="px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 t-label font-semibold text-emerald-600 dark:text-emerald-400">
                 <BadgeCount /> Badges
               </span>
             </div>

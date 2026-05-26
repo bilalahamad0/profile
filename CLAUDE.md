@@ -84,6 +84,25 @@ npm run test:coverage
 ### Single source of truth: `src/data/portfolio.ts`
 All career data lives here — `experienceData`, `skills`, `certs`, `recommendations`, `projectsData`, `linkedInPosts`. Add or edit career content here only; components read from this file.
 
+### Typography — single source of truth: `src/app/globals.css`
+All text sizing uses the semantic `t-*` `@utility` classes (defined in `globals.css`, driven by the `--t-*` clamp tokens). **Put exactly ONE `t-*` class on a text element; never add a raw `text-<size>` / `font-<weight>` / `tracking-` / `leading-` class beside it** (color, margin, hover, layout are fine).
+
+| Class | Role | px (mobile→desktop) |
+|---|---|---|
+| `t-display` | home hero H1 | 44 → 72 |
+| `t-h1` | inner page title | 48 → 60 |
+| `t-h2` | section heading | 30 → 40 |
+| `t-h3` | card / sub-section heading | 20 → 24 |
+| `t-lead` | intro / lead paragraph | 18 |
+| `t-body` | body copy | 16 |
+| `t-small` | secondary / meta | 14 |
+| `t-caption` | dates / fine print | 12 |
+| `t-label` | uppercase tags / stat labels | 11 |
+
+- Headings bake in weight + tracking (display/h1 = 900, h2 = 700, h3 = 600). `t-lead` / `t-body` / `t-label` set size only — keep the element's own weight / uppercase / color.
+- **Nothing in content goes below `t-label` (11px).** The fixed `NavbarV2` pill is the ONE documented exception (dense chrome with sub-11px text).
+- Tailwind `text-xs/sm/base/lg` map 1:1 to `t-caption/small/body/lead`; prefer the `t-*` token in new code. **Never reintroduce arbitrary `text-[..px]` sizes.**
+
 ### Component versioning
 - `src/components/v2/` — current Navbar (`NavbarV2`) and `BentoGridV2` (the experience bento grid)
 - `src/components/v3/` — current home page sections: `HeroPortfolio`, `ResumeReelClient`, `FeaturedProjects`, `HomePageSections`

@@ -27,14 +27,19 @@
     --ring:              59 130 246;
     --radius:            1rem;
 
-    /* ── Type Scale Tokens ────────────────────────────── */
-    --text-display:      clamp(3rem, 8vw, 6rem);     /* Hero h1        */
-    --text-title:        clamp(2rem, 5vw, 3.5rem);   /* Page h1        */
-    --text-subtitle:     clamp(1.125rem, 3vw, 1.5rem); /* Section head  */
-    --text-card-heading: 1.125rem;                   /* Card h-title   */
-    --text-body:         1rem;                       /* Body text      */
-    --text-caption:      0.875rem;                   /* Dates / meta   */
-    --text-label:        0.75rem;                    /* Tags / badges  */
+    /* ── Type Scale Tokens — SINGLE SOURCE OF TRUTH ──────
+       Consumed only by the t-* semantic utilities below.
+       Fluid clamp() values scale smoothly with the viewport,
+       so there is no responsive-class soup (no text-3xl md:text-5xl). */
+    --t-display: clamp(2.75rem, 2.1rem + 3vw,   4.5rem);  /* 44 → 72  home hero h1     */
+    --t-h1:      clamp(3rem,    2.7rem + 1.3vw, 3.75rem); /* 48 → 60  inner page title */
+    --t-h2:      clamp(1.875rem,1.6rem + 1.4vw, 2.5rem);  /* 30 → 40  section heading  */
+    --t-h3:      clamp(1.25rem, 1.15rem + 0.5vw,1.5rem);  /* 20 → 24  card / sub head   */
+    --t-lead:    1.125rem;   /* 18  intro / lead paragraph      */
+    --t-body:    1rem;       /* 16  body copy                   */
+    --t-small:   0.875rem;   /* 14  secondary / meta            */
+    --t-caption: 0.75rem;    /* 12  dates / fine print (floor)  */
+    --t-label:   0.6875rem;  /* 11  uppercase tags / stat labels */
 
     /* ── Navbar height (used by sticky filter bars) ───── */
     --navbar-h:          68px;
@@ -119,7 +124,7 @@
     border-radius: 4px;
   }
 
-  /* Smooth scroll for hash navigation (non-Lenis browsers) */
+  /* Smooth scroll only for in-page hash navigation; normal scrolling stays native/lightweight */
   @media (prefers-reduced-motion: no-preference) {
     html:has(:target) {
       scroll-behavior: smooth;
@@ -156,8 +161,8 @@
 @layer base {
   /* Navbar glass pill */
   .glass {
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     background-color: rgba(9, 9, 11, 0.75);
     border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow:
@@ -298,4 +303,70 @@
   @media (min-width: 1024px) {
     .section-divider { padding: 0 6rem; }
   }
+}
+
+/* ============================================================
+   SEMANTIC TYPE UTILITIES — the canonical scale
+   ------------------------------------------------------------
+   RULE: put exactly ONE t-* class on a text element and DO NOT
+   add raw text-* / font-weight / tracking / leading size classes
+   beside it (color, margin, hover, etc. are fine).
+
+     t-display  home hero H1           (44 → 72)
+     t-h1       inner page title       (48 → 60)
+     t-h2       section heading        (30 → 40)
+     t-h3       card / sub-section head (20 → 24)
+     t-lead     intro paragraph        (18)
+     t-body     body copy              (16)
+     t-small    secondary / meta       (14)
+     t-caption  dates / fine print     (12  — prose floor)
+     t-label    uppercase tags / stats (11  — content floor)
+
+   Nothing in CONTENT goes below t-label (11px). The fixed navbar
+   pill is the one documented exception (dense chrome).
+   ============================================================ */
+@utility t-display {
+  font-size: var(--t-display);
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+}
+@utility t-h1 {
+  font-size: var(--t-h1);
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+@utility t-h2 {
+  font-size: var(--t-h2);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+@utility t-h3 {
+  font-size: var(--t-h3);
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+@utility t-lead {
+  font-size: var(--t-lead);
+  line-height: 1.65;
+}
+@utility t-body {
+  font-size: var(--t-body);
+  line-height: 1.7;
+}
+@utility t-small {
+  font-size: var(--t-small);
+  line-height: 1.5;
+}
+@utility t-caption {
+  font-size: var(--t-caption);
+  line-height: 1.45;
+}
+/* size-only — keep the element's own weight / uppercase / tracking / colour */
+@utility t-label {
+  font-size: var(--t-label);
+  line-height: 1.3;
 }

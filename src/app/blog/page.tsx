@@ -143,13 +143,13 @@ export default function BlogPage() {
             <BookOpen className="w-4 h-4 text-indigo-400" aria-hidden="true" />
             <span className="text-xs font-black uppercase tracking-[0.2em] text-indigo-300">Writing &amp; Insights</span>
           </div>
-          <h1 id="blog-heading" className="text-5xl md:text-6xl font-black tracking-tighter mb-6 leading-none">
+          <h1 id="blog-heading" className="t-h1 mb-6">
             The{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-400">
               Lab Notes
             </span>
           </h1>
-          <p className="text-lg text-zinc-400 font-light max-w-2xl leading-relaxed">
+          <p className="t-lead text-zinc-400 font-light max-w-2xl">
             Project stories, technical whitepapers, and thoughts on AI-native engineering. Published posts from LinkedIn and
             original deep-dives.
           </p>
@@ -160,7 +160,7 @@ export default function BlogPage() {
       {featured && (
         <section className="px-6 lg:px-24 py-10 md:py-12 lg:py-16 border-b border-white/5" aria-label="Featured post">
           <div className="max-w-7xl mx-auto">
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-600 mb-6">Featured Post</p>
+            <p className="t-label font-black uppercase tracking-[0.3em] text-zinc-600 mb-6">Featured Post</p>
             <Link href={`/blog/${featured.slug}`}>
               <div className="group relative rounded-3xl border border-violet-500/20 bg-gradient-to-br from-violet-600/10 via-white/[0.02] to-transparent overflow-hidden p-8 md:p-14 hover:border-violet-500/40 transition-all duration-300 cursor-pointer">
                 <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-violet-500/5 blur-[100px] rounded-full pointer-events-none group-hover:bg-violet-500/10 transition-all" />
@@ -168,7 +168,7 @@ export default function BlogPage() {
                   <div className="flex items-center gap-3 mb-6 flex-wrap">
                     <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20">
                       <FileText className="w-3.5 h-3.5 text-violet-400" aria-hidden="true" />
-                      <span className="text-[10px] font-black uppercase tracking-wider text-violet-300">Whitepaper</span>
+                      <span className="t-label font-black uppercase tracking-wider text-violet-300">Whitepaper</span>
                     </div>
                     <span className="text-xs text-zinc-500">{featured.date}</span>
                     <span className="text-xs text-zinc-500 flex items-center gap-1.5">
@@ -176,10 +176,10 @@ export default function BlogPage() {
                       {featured.readingTime} min read
                     </span>
                   </div>
-                  <h2 className="text-2xl md:text-4xl font-black text-white tracking-tight mb-4 group-hover:text-violet-200 transition-colors leading-tight">
+                  <h2 className="t-h2 text-white mb-4 group-hover:text-violet-200 transition-colors">
                     {featured.title}
                   </h2>
-                  <p className="text-zinc-400 text-base md:text-lg leading-relaxed mb-8">{featured.description}</p>
+                  <p className="t-lead text-zinc-400 mb-8">{featured.description}</p>
                   <div className="flex items-center gap-2 text-sm font-bold text-violet-400 group-hover:gap-3 transition-all">
                     Read Whitepaper <ArrowRight className="w-4 h-4" />
                   </div>

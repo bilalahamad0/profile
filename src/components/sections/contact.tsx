@@ -38,7 +38,7 @@ export function ContactSection() {
     return (
         <section id="contact" className="pt-2 pb-10 px-4 max-w-4xl mx-auto">
             <div className="text-center mb-10">
-                <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">Say Hello</h2>
+                <h2 className="t-h2 mb-4">Say Hello</h2>
                 <p className="text-muted-foreground max-w-xl mx-auto">
                     Interested in discussing a project or opportunity? Send me a message and let&apos;s create something amazing together.
                 </p>
@@ -48,7 +48,7 @@ export function ContactSection() {
                 {/* Contact Info */}
                 <div className="space-y-8">
                     <div className="p-6 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm">
-                        <h3 className="text-xl font-semibold mb-6">Connect</h3>
+                        <h3 className="t-h3 mb-6">Connect</h3>
                         <div className="space-y-4">
                             <a
                                 href="mailto:bilal.ahamad@gmail.com"

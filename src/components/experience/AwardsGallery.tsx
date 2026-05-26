@@ -166,7 +166,7 @@ export function AwardsGallery() {
           <span className="text-white font-bold text-sm block">Annual Best Performer · 2010–11</span>
           <span className="text-zinc-300 text-xs mt-0.5 block">L&amp;T Infotech · Receiving Award on Stage</span>
         </div>
-        <span className="absolute top-2 right-2 px-2 py-1 rounded-full bg-black/50 border border-white/20 text-[9px] font-bold text-white/70 uppercase tracking-wider pointer-events-none">
+        <span className="absolute top-2 right-2 px-2 py-1 rounded-full bg-black/50 border border-white/20 t-label font-bold text-white/70 uppercase tracking-wider pointer-events-none">
           Click to expand
         </span>
       </button>
@@ -187,8 +187,8 @@ export function AwardsGallery() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
             <div className="absolute bottom-0 left-0 p-3 pointer-events-none">
-              <span className="text-white text-[11px] font-black uppercase tracking-wider block">{award.label}</span>
-              <span className={`${award.textColor} text-[10px] font-semibold`}>{award.sublabel}</span>
+              <span className="text-white t-label font-black uppercase tracking-wider block">{award.label}</span>
+              <span className={`${award.textColor} t-label font-semibold`}>{award.sublabel}</span>
             </div>
           </button>
         ))}

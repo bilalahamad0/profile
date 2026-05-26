@@ -259,7 +259,7 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
         {/* Header */}
         <div className="flex items-start justify-between mb-6">
           <div>
-            <h2 className="text-xl md:text-2xl font-black text-white tracking-tight">{project.name}</h2>
+            <h2 className="t-h3 text-white">{project.name}</h2>
             <p className={`text-sm mt-1 ${colors.text}`}>{project.tagline}</p>
           </div>
           <div className="flex gap-2 shrink-0 ml-4">
@@ -281,7 +281,7 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
           {metrics.map(({ icon: Icon, label, value }) => (
             <div key={label} className={`p-3 rounded-2xl ${colors.bg} border ${colors.border}`}>
               <Icon className={`w-4 h-4 ${colors.text} mb-1.5`} />
-              <span className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{label}</span>
+              <span className="block t-label font-bold text-zinc-500 uppercase tracking-widest">{label}</span>
               <span className="block text-xs font-semibold text-zinc-300 mt-0.5 leading-tight">{value}</span>
             </div>
           ))}
@@ -292,7 +292,7 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
           <div className="mb-6">
             <div className={`p-3 rounded-2xl ${colors.bg} border ${colors.border}`}>
               <Server className={`w-4 h-4 ${colors.text} mb-1.5`} />
-              <span className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
+              <span className="block t-label font-bold text-zinc-500 uppercase tracking-widest">
                 Microservices
               </span>
               <span className="block text-xs font-semibold text-zinc-300 mt-0.5">
@@ -305,24 +305,24 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
         {/* Agent Cards — only when sidecar data is available */}
         {dm && dm.agents.length > 0 && (
           <div className="mb-6">
-            <span className="block text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-3">AI Agents</span>
+            <span className="block t-label font-black uppercase tracking-widest text-zinc-500 mb-3">AI Agents</span>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {dm.agents.map((agent) => (
                 <div key={agent.name} className={`p-4 rounded-2xl ${colors.bg} border ${colors.border}`}>
                   <div className="flex items-center gap-2 mb-2">
                     <Bot className={`w-4 h-4 ${colors.text}`} />
                     <span className="text-sm font-bold text-white">{agent.name}</span>
-                    <span className="text-[9px] text-zinc-500 ml-auto">{agent.period}</span>
+                    <span className="t-label text-zinc-500 ml-auto">{agent.period}</span>
                   </div>
-                  <p className="text-[10px] text-zinc-400 mb-1">{agent.provider}</p>
+                  <p className="t-label text-zinc-400 mb-1">{agent.provider}</p>
                   <div className="flex flex-wrap gap-1.5 mb-2">
                     {agent.models.map((m) => (
-                      <span key={m} className={`px-2 py-0.5 rounded-md text-[9px] font-bold ${colors.text} bg-white/5`}>
+                      <span key={m} className={`px-2 py-0.5 rounded-md t-label font-bold ${colors.text} bg-white/5`}>
                         {m}
                       </span>
                     ))}
                   </div>
-                  <div className="flex items-center justify-between text-[10px] text-zinc-500">
+                  <div className="flex items-center justify-between t-label text-zinc-500">
                     <span>{formatTokens(agent.tokens)} tokens</span>
                     <span>{agent.role}</span>
                   </div>
@@ -336,11 +336,11 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
         {timeline && (
           <div className="mb-6 grid grid-cols-2 gap-3">
             <div className="p-4 rounded-2xl bg-red-500/5 border border-red-500/15">
-              <span className="text-[9px] font-black uppercase tracking-widest text-red-400/70 block mb-2">Before AI</span>
+              <span className="t-label font-black uppercase tracking-widest text-red-400/70 block mb-2">Before AI</span>
               <p className="text-xs text-zinc-400 leading-relaxed">{timeline.before}</p>
             </div>
             <div className={`p-4 rounded-2xl ${colors.bg} border ${colors.border}`}>
-              <span className={`text-[9px] font-black uppercase tracking-widest ${colors.text} opacity-70 block mb-2`}>After AI</span>
+              <span className={`t-label font-black uppercase tracking-widest ${colors.text} opacity-70 block mb-2`}>After AI</span>
               <p className="text-xs text-zinc-300 leading-relaxed">{timeline.after}</p>
             </div>
           </div>
@@ -353,7 +353,7 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-wrap gap-2">
             {project.tech.map((t) => (
-              <span key={t} className={`px-2.5 py-1 rounded-lg ${colors.bg} border ${colors.border} text-[10px] font-bold ${colors.text} opacity-80 uppercase tracking-widest`}>
+              <span key={t} className={`px-2.5 py-1 rounded-lg ${colors.bg} border ${colors.border} t-label font-bold ${colors.text} opacity-80 uppercase tracking-widest`}>
                 {t}
               </span>
             ))}
@@ -377,10 +377,10 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
         {/* Last updated badge */}
         {dm && (
           <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between">
-            <span className="text-[9px] text-zinc-600">
+            <span className="t-label text-zinc-600">
               Dynamic data from <code className="text-zinc-500">ai-metrics.json</code>
             </span>
-            <span className="text-[9px] text-zinc-600">Updated {dm.lastUpdated}</span>
+            <span className="t-label text-zinc-600">Updated {dm.lastUpdated}</span>
           </div>
         )}
       </div>
@@ -419,36 +419,36 @@ function MetricsAtAGlance({ projects }: { projects: ProjectWithMetrics[] }) {
             <thead>
               <tr className="border-b border-white/[0.06]">
                 <th className="px-5 py-3">
-                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Project</div>
-                  <div className="text-[9px] text-zinc-600 mt-0.5">Jumps to card</div>
+                  <div className="t-label font-black uppercase tracking-widest text-zinc-500">Project</div>
+                  <div className="t-label text-zinc-600 mt-0.5">Jumps to card</div>
                 </th>
                 <th className="px-4 py-3">
-                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500">AI %</div>
-                  <div className="text-[9px] text-zinc-600 mt-0.5">AI Contribution</div>
+                  <div className="t-label font-black uppercase tracking-widest text-zinc-500">AI %</div>
+                  <div className="t-label text-zinc-600 mt-0.5">AI Contribution</div>
                 </th>
                 <th className="px-4 py-3">
-                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Tokens</div>
-                  <div className="text-[9px] text-zinc-600 mt-0.5">Total processed</div>
+                  <div className="t-label font-black uppercase tracking-widest text-zinc-500">Tokens</div>
+                  <div className="t-label text-zinc-600 mt-0.5">Total processed</div>
                 </th>
                 <th className="px-4 py-3">
-                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Commits</div>
-                  <div className="text-[9px] text-zinc-600 mt-0.5">Total commits</div>
+                  <div className="t-label font-black uppercase tracking-widest text-zinc-500">Commits</div>
+                  <div className="t-label text-zinc-600 mt-0.5">Total commits</div>
                 </th>
                 <th className="px-4 py-3">
-                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500">LOC</div>
-                  <div className="text-[9px] text-zinc-600 mt-0.5">Lines of code</div>
+                  <div className="t-label font-black uppercase tracking-widest text-zinc-500">LOC</div>
+                  <div className="t-label text-zinc-600 mt-0.5">Lines of code</div>
                 </th>
                 <th className="px-4 py-3">
-                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Cycle</div>
-                  <div className="text-[9px] text-zinc-600 mt-0.5">Dev cycle days</div>
+                  <div className="t-label font-black uppercase tracking-widest text-zinc-500">Cycle</div>
+                  <div className="t-label text-zinc-600 mt-0.5">Dev cycle days</div>
                 </th>
                 <th className="px-4 py-3">
-                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Saved</div>
-                  <div className="text-[9px] text-zinc-600 mt-0.5">Estimated days saved</div>
+                  <div className="t-label font-black uppercase tracking-widest text-zinc-500">Saved</div>
+                  <div className="t-label text-zinc-600 mt-0.5">Estimated days saved</div>
                 </th>
                 <th className="px-4 py-3">
-                  <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Tests</div>
-                  <div className="text-[9px] text-zinc-600 mt-0.5">Counts (+ suites)</div>
+                  <div className="t-label font-black uppercase tracking-widest text-zinc-500">Tests</div>
+                  <div className="t-label text-zinc-600 mt-0.5">Counts (+ suites)</div>
                 </th>
               </tr>
             </thead>
@@ -479,9 +479,9 @@ function MetricsAtAGlance({ projects }: { projects: ProjectWithMetrics[] }) {
             <a key={r.id} href={`#${r.id}`} className="block p-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04] transition-colors">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-sm font-bold text-white">{r.name}</span>
-                <span className="text-[10px] font-bold text-purple-400">{r.aiPct}% AI</span>
+                <span className="t-label font-bold text-purple-400">{r.aiPct}% AI</span>
               </div>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-[11px]">
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 t-label">
                 <span className="text-zinc-500">Tokens</span><span className="text-zinc-300 text-right">{r.tokens}</span>
                 <span className="text-zinc-500">Commits</span><span className="text-zinc-300 text-right">{r.commits}</span>
                 <span className="text-zinc-500">LOC</span><span className="text-zinc-300 text-right">{r.loc}</span>
@@ -535,7 +535,7 @@ export default async function AILabPage() {
             <span className="text-xs font-black uppercase tracking-[0.2em] text-purple-300">AI Lab</span>
           </div>
 
-          <h1 id="ai-heading" className="text-5xl md:text-6xl font-black tracking-tighter mb-8 leading-none">
+          <h1 id="ai-heading" className="t-h1 mb-8">
             Where{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-violet-400 to-indigo-400">
               AI Meets
@@ -543,7 +543,7 @@ export default async function AILabPage() {
             <br />Engineering
           </h1>
 
-          <p className="text-lg md:text-xl text-zinc-400 font-light max-w-2xl mx-auto mb-12">
+          <p className="t-lead text-zinc-400 font-light max-w-2xl mx-auto mb-12">
             A showcase of production systems built through AI pair programming — not AI-assisted, but{" "}
             <span className="text-white font-medium">AI-native from architecture to deployment</span>.
           </p>
@@ -553,7 +553,7 @@ export default async function AILabPage() {
             {heroStats.map(({ label, value }) => (
               <div key={label} className="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
                 <span className="block text-2xl md:text-3xl font-black text-white mb-1">{value}</span>
-                <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{label}</span>
+                <span className="t-label font-bold text-zinc-500 uppercase tracking-widest">{label}</span>
               </div>
             ))}
           </div>
@@ -572,7 +572,7 @@ export default async function AILabPage() {
                 <Sparkles className="w-4 h-4" aria-hidden="true" />
                 PRODUCTION DEPLOYMENTS
               </div>
-              <h2 id="systems-heading" className="text-3xl md:text-4xl font-black tracking-tighter">AI-Augmented Systems</h2>
+              <h2 id="systems-heading" className="t-h2">AI-Augmented Systems</h2>
             </div>
             <Link href="/projects" className="inline-flex items-center gap-2 text-sm font-bold text-zinc-500 hover:text-white transition-colors">
               View All Projects
@@ -591,7 +591,7 @@ export default async function AILabPage() {
       {/* CTA */}
       <section className="py-12 md:py-16 lg:py-20 px-6 text-center border-t border-white/5 bg-white/[0.01] relative z-10" aria-labelledby="cta-heading">
         <div className="max-w-2xl mx-auto space-y-6">
-          <h2 id="cta-heading" className="text-3xl font-black tracking-tighter">
+          <h2 id="cta-heading" className="t-h2">
             Read the Full{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-violet-400">Whitepaper</span>
           </h2>

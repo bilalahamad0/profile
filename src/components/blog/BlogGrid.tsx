@@ -109,7 +109,7 @@ export function BlogGrid({ mdxPosts, linkedInPosts }: BlogGridProps) {
                         />
                         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/70" />
                         {isLinkedIn && (
-                          <div className="absolute top-2 right-2 px-2 py-1 rounded-full bg-sky-600/80 border border-sky-500/40 text-[9px] font-black uppercase tracking-widest text-white flex items-center gap-1">
+                          <div className="absolute top-2 right-2 px-2 py-1 rounded-full bg-sky-600/80 border border-sky-500/40 t-label font-black uppercase tracking-widest text-white flex items-center gap-1">
                             <Linkedin className="w-2.5 h-2.5" />
                             LinkedIn
                           </div>
@@ -120,18 +120,18 @@ export function BlogGrid({ mdxPosts, linkedInPosts }: BlogGridProps) {
                     <div className="p-6 flex flex-col flex-grow">
                       {/* Category + Date */}
                       <div className="flex items-center gap-2 mb-4 flex-wrap">
-                        <span className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full ${colors.bg} border ${colors.border} text-[10px] font-black uppercase tracking-wider ${colors.text}`}>
+                        <span className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full ${colors.bg} border ${colors.border} t-label font-black uppercase tracking-wider ${colors.text}`}>
                           {isLinkedIn ? <Linkedin className="w-3 h-3" /> : <FileText className="w-3 h-3" />}
                           {post.category}
                         </span>
                         {isLinkedIn && (
-                          <span className="text-[10px] font-bold text-sky-500 uppercase tracking-widest">↗ LinkedIn</span>
+                          <span className="t-label font-bold text-sky-500 uppercase tracking-widest">↗ LinkedIn</span>
                         )}
-                        <span className="ml-auto text-[10px] text-zinc-600">{post.date}</span>
+                        <span className="ml-auto t-label text-zinc-600">{post.date}</span>
                       </div>
 
                       {/* Title */}
-                      <h3 className="text-base font-black text-white/90 leading-tight mb-3 group-hover:text-white transition-colors">
+                      <h3 className="t-h3 text-white/90 mb-3 group-hover:text-white transition-colors">
                         {post.title}
                       </h3>
 
@@ -143,7 +143,7 @@ export function BlogGrid({ mdxPosts, linkedInPosts }: BlogGridProps) {
                       {/* Tags */}
                       <div className="flex flex-wrap gap-1.5 mb-4">
                         {post.tags.slice(0, 3).map((tag) => (
-                          <span key={tag} className="flex items-center gap-1 text-[10px] font-semibold text-zinc-600 px-2 py-0.5 rounded-md bg-white/[0.04]">
+                          <span key={tag} className="flex items-center gap-1 t-label font-semibold text-zinc-600 px-2 py-0.5 rounded-md bg-white/[0.04]">
                             <Tag className="w-2.5 h-2.5" />
                             {String(tag).replace("#", "")}
                           </span>

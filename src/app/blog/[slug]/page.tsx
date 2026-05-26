@@ -43,10 +43,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 const mdxComponents = {
-  h1: (props: any) => <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight mt-12 mb-6 first:mt-0" {...props} />,
-  h2: (props: any) => <h2 className="text-2xl font-black text-white tracking-tight mt-10 mb-4 border-b border-white/5 pb-3" {...props} />,
-  h3: (props: any) => <h3 className="text-xl font-bold text-white/90 mt-8 mb-3" {...props} />,
-  p: (props: any) => <p className="text-zinc-400 leading-relaxed mb-5 text-base" {...props} />,
+  h1: (props: any) => <h1 className="t-h2 text-white mt-12 mb-6 first:mt-0" {...props} />,
+  h2: (props: any) => <h2 className="t-h3 text-white mt-10 mb-4 border-b border-white/5 pb-3" {...props} />,
+  h3: (props: any) => <h3 className="t-h3 text-white/90 mt-8 mb-3" {...props} />,
+  p: (props: any) => <p className="t-body text-zinc-400 mb-5" {...props} />,
   ul: (props: any) => <ul className="space-y-2 mb-5 ml-4" {...props} />,
   ol: (props: any) => <ol className="space-y-2 mb-5 ml-4 list-decimal list-inside" {...props} />,
   li: (props: any) => <li className="text-zinc-400 leading-relaxed flex gap-2 items-start"><span className="text-blue-500 mt-1.5 shrink-0">▪</span><span {...props} /></li>,
@@ -107,7 +107,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </Link>
 
           <div className="flex items-center gap-3 mb-6 flex-wrap">
-            <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[10px] font-black uppercase tracking-wider ${colors}`}>
+            <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border t-label font-black uppercase tracking-wider ${colors}`}>
               <BookOpen className="w-3.5 h-3.5" />
               {post.category}
             </span>
@@ -121,15 +121,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </span>
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-white leading-tight mb-6">
+          <h1 className="t-h1 text-white mb-6">
             {post.title}
           </h1>
 
-          <p className="text-xl text-zinc-400 leading-relaxed mb-8">{post.description}</p>
+          <p className="t-lead text-zinc-400 mb-8">{post.description}</p>
 
           <div className="flex flex-wrap gap-2">
             {post.tags.map((tag) => (
-              <span key={tag} className="flex items-center gap-1 text-[10px] font-semibold text-zinc-500 px-2.5 py-1 rounded-lg bg-white/5 border border-white/10">
+              <span key={tag} className="flex items-center gap-1 t-label font-semibold text-zinc-500 px-2.5 py-1 rounded-lg bg-white/5 border border-white/10">
                 <Tag className="w-3 h-3" />
                 {tag}
               </span>

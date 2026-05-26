@@ -65,7 +65,7 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
             playsInline
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/60 to-transparent pointer-events-none" />
-          <div className="absolute top-2 right-2 px-2.5 py-1 rounded-full bg-blue-500/80 backdrop-blur-md border border-white/20 text-[9px] font-black uppercase tracking-widest text-white shadow-lg flex items-center gap-1.5 z-10 pointer-events-none">
+          <div className="absolute top-2 right-2 px-2.5 py-1 rounded-full bg-blue-500/80 backdrop-blur-md border border-white/20 t-label font-black uppercase tracking-widest text-white shadow-lg flex items-center gap-1.5 z-10 pointer-events-none">
             <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             Click to play full video
           </div>
@@ -142,7 +142,7 @@ export function FeaturedProjectsSection() {
           <motion.div variants={fadeUp} transition={{ duration: 0.5 }}>
             <div className="flex items-end justify-between mb-12">
               <div>
-                <h2 id="proj-heading" className="text-3xl md:text-5xl font-black tracking-tight text-white">
+                <h2 id="proj-heading" className="t-h2 text-white">
                   Featured{" "}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Projects</span>
                 </h2>

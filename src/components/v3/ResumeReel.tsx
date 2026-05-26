@@ -203,8 +203,8 @@ export function ResumeReel() {
     <div ref={containerRef} className="md:hidden w-full flex flex-col items-center py-12 px-6 gap-6">
       {/* Label */}
       <div className="text-center">
-        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 mb-2">Career Reel</p>
-        <h2 className="text-lg font-black text-white/80 tracking-tight">Tap sides · Auto-plays · Swipe</h2>
+        <p className="t-label font-black uppercase tracking-[0.3em] text-zinc-400 mb-2">Career Reel</p>
+        <h2 className="t-small text-white/80 tracking-tight">Tap sides · Auto-plays · Swipe</h2>
       </div>
 
       {/* Phone Frame */}
@@ -281,7 +281,7 @@ export function ResumeReel() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full w-fit"
+                className="t-label font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full w-fit"
                 style={{ backgroundColor: `${slide.accent}22`, color: slide.accent, border: `1px solid ${slide.accent}40` }}
               >
                 {slide.label}
@@ -305,7 +305,7 @@ export function ResumeReel() {
                   style={{ backgroundColor: `${slide.accent}15`, border: `1px solid ${slide.accent}30` }}
                 >
                   <span className="text-2xl font-black" style={{ color: slide.accent }}>{slide.stat.value}</span>
-                  <span className="text-[10px] font-bold text-white/50 uppercase tracking-wider">{slide.stat.label}</span>
+                  <span className="t-label font-bold text-white/50 uppercase tracking-wider">{slide.stat.label}</span>
                 </motion.div>
               )}
 

@@ -43,7 +43,7 @@ function HeroBackground() {
           className="absolute top-[28%] right-[32%] text-cyan-400/40"
         >
           <Shield size={72} aria-hidden="true" />
-          <span className="block text-[9px] mt-2 font-mono opacity-80 uppercase tracking-[0.2em] text-cyan-300">Safety Critical</span>
+          <span className="block t-label mt-2 font-mono opacity-80 uppercase tracking-[0.2em] text-cyan-300">Safety Critical</span>
         </motion.div>
 
         <motion.div
@@ -52,7 +52,7 @@ function HeroBackground() {
           className="absolute bottom-[38%] right-[20%] text-violet-400/40"
         >
           <Cpu size={64} aria-hidden="true" />
-          <span className="block text-[9px] mt-1 font-mono opacity-80 uppercase tracking-[0.2em] text-violet-300">Firmware</span>
+          <span className="block t-label mt-1 font-mono opacity-80 uppercase tracking-[0.2em] text-violet-300">Firmware</span>
         </motion.div>
 
         <motion.div
@@ -61,7 +61,7 @@ function HeroBackground() {
           className="absolute top-[18%] right-[16%] text-amber-400/40"
         >
           <Car size={72} aria-hidden="true" />
-          <span className="block text-[9px] mt-2 font-mono opacity-80 uppercase tracking-[0.2em] text-amber-300">Automotive</span>
+          <span className="block t-label mt-2 font-mono opacity-80 uppercase tracking-[0.2em] text-amber-300">Automotive</span>
         </motion.div>
 
         <motion.div
@@ -70,7 +70,7 @@ function HeroBackground() {
           className="absolute bottom-[11%] right-[36%] text-emerald-400/40"
         >
           <Network size={64} aria-hidden="true" />
-          <span className="block text-[9px] mt-1 font-mono opacity-80 uppercase tracking-[0.2em] text-emerald-300">IoT Systems</span>
+          <span className="block t-label mt-1 font-mono opacity-80 uppercase tracking-[0.2em] text-emerald-300">IoT Systems</span>
         </motion.div>
 
         <motion.div
@@ -79,7 +79,7 @@ function HeroBackground() {
           className="absolute bottom-[10%] right-[14%] text-blue-400/40"
         >
           <CheckSquare size={64} aria-hidden="true" />
-          <span className="block text-[9px] mt-2 font-mono opacity-80 uppercase tracking-[0.2em] text-blue-300">Quality</span>
+          <span className="block t-label mt-2 font-mono opacity-80 uppercase tracking-[0.2em] text-blue-300">Quality</span>
         </motion.div>
 
         <motion.div
@@ -170,7 +170,7 @@ function CoreSpecCards() {
             </div>
             <div className="relative z-10">
               <p className="text-sm font-bold text-white leading-tight">{card.label}</p>
-              <p className="text-[11px] text-zinc-400 mt-1 leading-snug">{card.sub}</p>
+              <p className="t-label text-zinc-400 mt-1 leading-snug">{card.sub}</p>
             </div>
           </div>
         );
@@ -210,7 +210,7 @@ export function HeroPortfolio() {
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-500/10 border border-violet-500/20"
         >
           <Terminal className="w-4 h-4 text-violet-400" aria-hidden="true" />
-          <span className="text-violet-300 text-[10px] sm:text-xs font-black uppercase tracking-[0.2em]">
+          <span className="text-violet-300 t-label font-black uppercase tracking-[0.2em]">
             <span className="hidden sm:inline">Lead Embedded Firmware &amp; Systems QA Engineer</span>
             <span className="sm:hidden">
               Lead Embedded Firmware<br />
@@ -225,7 +225,7 @@ export function HeroPortfolio() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55 }}
-            className="text-[clamp(2.5rem,6vw,5rem)] font-black text-white leading-[1.05] tracking-tight"
+            className="t-display text-white"
           >
             Architecting <br className="sm:hidden" /> <span className="text-shimmer">Quality</span> &amp; <br />
             Automating <br className="sm:hidden" /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-cyan-400 to-blue-400">Complexity.</span>
@@ -236,7 +236,7 @@ export function HeroPortfolio() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <p className="text-lg sm:text-xl text-zinc-300 font-light leading-relaxed max-w-3xl">
+            <p className="t-lead text-zinc-300 font-light max-w-3xl">
               Building specialized test architectures and firmware validation frameworks for
               <Highlight>global industry leaders</Highlight>.
               Currently focusing on hardware-in-the-loop and automation systems.
@@ -285,7 +285,7 @@ export function HeroPortfolio() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="pt-10 mt-8 border-t border-white/[0.05]"
         >
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 mb-6 relative inline-block">
+          <p className="t-label font-bold uppercase tracking-[0.2em] text-zinc-400 mb-6 relative inline-block">
             Engineering experience at
             <span className="absolute -bottom-2 left-0 w-8 h-px bg-violet-500/50" />
           </p>
