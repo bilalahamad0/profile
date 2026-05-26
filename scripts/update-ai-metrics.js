@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 // Updates ai-metrics.json for all 4 projects every week.
-// Profile: local git counts + vitest. Other repos: repository_dispatch triggers
-// their own workflows to count locally and commit to themselves.
+// Profile: local git counts + Vitest (unit/feature) + Playwright (e2e/a11y).
+// Other repos: repository_dispatch triggers their own workflows to count
+// locally and commit to themselves.
 // Only touches: totalCommits, linesOfCode, tests, testSuites, lastUpdated.
+// Run with --profile-only to refresh just the profile repo (no GH_PAT needed).
 
 "use strict";
 
@@ -202,7 +204,8 @@ function countLOC() {
   }
 }
 
-function runTests() {
+// Vitest unit/feature layer: total cases + number of test files.
+function runVitestCounts() {
   const outFile = "/tmp/vitest-update-metrics.json";
   try {
     exec(`npx vitest run --reporter json 2>/dev/null > ${outFile} || true`, {
@@ -210,9 +213,37 @@ function runTests() {
     });
     if (!existsSync(outFile)) return null;
     const data = JSON.parse(readFileSync(outFile, "utf8"));
-    const tests = data.numTotalTests ?? null;
-    const testSuites = data.numTotalTestSuites ?? null;
-    return tests !== null || testSuites !== null ? { tests, testSuites } : null;
+    const tests = data.numTotalTests ?? 0;
+    const files = Array.isArray(data.testResults) ? data.testResults.length : 0;
+    return tests > 0 ? { tests, files } : null;
+  } catch {
+    return null;
+  }
+}
+
+// Playwright e2e/a11y layer. `--list` collects tests without launching browsers
+// (works in CI with no browser install), and pinning a single project avoids
+// multiplying every spec by the browser matrix.
+function runPlaywrightCounts() {
+  try {
+    const raw = exec(
+      `npx playwright test --list --project=chromium --reporter=json 2>/dev/null || true`,
+      { shell: true }
+    );
+    const start = raw.indexOf("{");
+    if (start === -1) return null;
+    const data = JSON.parse(raw.slice(start));
+    let tests = 0;
+    const files = new Set();
+    const walk = (suites) => {
+      for (const s of suites ?? []) {
+        if (s.file) files.add(s.file);
+        tests += (s.specs ?? []).length;
+        walk(s.suites);
+      }
+    };
+    walk(data.suites);
+    return tests > 0 ? { tests, files: files.size } : null;
   } catch {
     return null;
   }
@@ -223,12 +254,21 @@ function updateProfileMetrics() {
   const metrics = JSON.parse(readFileSync(metricsPath, "utf8"));
   const commits = countCommits();
   const loc = countLOC();
-  const testResults = runTests();
+  const vitest = runVitestCounts();
+  const playwright = runPlaywrightCounts();
+
   const updates = { lastUpdated: TODAY };
   if (!isNaN(commits)) updates.totalCommits = commits;
   if (loc !== null) updates.linesOfCode = loc;
-  if (testResults?.tests != null) updates.tests = testResults.tests;
-  if (testResults?.testSuites != null) updates.testSuites = testResults.testSuites;
+
+  // Honest combined count across both layers. "Suites" = test files, matching
+  // the Jest "Test Suites" convention. Skip the test fields entirely if Vitest
+  // didn't run, rather than writing a misleading partial count.
+  if (vitest) {
+    updates.tests = vitest.tests + (playwright?.tests ?? 0);
+    updates.testSuites = vitest.files + (playwright?.files ?? 0);
+  }
+
   const updated = { ...metrics, ...updates };
   writeFileSync(metricsPath, JSON.stringify(updated, null, 2) + "\n");
   console.log(`[profile] Updated: ${JSON.stringify(updates)}`);
@@ -357,6 +397,11 @@ async function main() {
   console.log(`=== AI Metrics Update — ${TODAY} ===`);
 
   updateProfileMetrics();
+
+  if (process.argv.includes("--profile-only")) {
+    console.log("=== Done (profile only) ===");
+    return;
+  }
 
   const results = await Promise.all(
     Object.entries(REMOTE_REPO_MAP).map(([projectId, repo]) =>

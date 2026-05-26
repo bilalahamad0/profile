@@ -164,7 +164,7 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
   },
   profile: {
     projectId: "profile",
-    lastUpdated: "2026-04-30",
+    lastUpdated: "2026-05-26",
     aiContribution: 85,
     agents: [
       {
@@ -185,16 +185,16 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
       },
     ],
     totalTokens: 500000,
-    totalCommits: 274,
-    linesOfCode: 5600,
+    totalCommits: 425,
+    linesOfCode: 11469,
     devCycleDays: 19,
     manualEstimateDays: 25,
     impact: "Full-stack portfolio with automated QA pipeline",
     cycle: "19 days",
     beforeAI: "Static HTML/CSS resume site",
     afterAI: "AI-native Next.js portfolio with Analytics & QA pipeline",
-    tests: 306,
-    testSuites: 5,
+    tests: 138,
+    testSuites: 9,
   },
 };
 
