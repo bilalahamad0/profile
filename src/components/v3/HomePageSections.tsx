@@ -129,7 +129,7 @@ export function BlogPreview({ posts }: { posts: BlogPostPreview[] }) {
         >
           <motion.div variants={fadeUp} transition={{ duration: 0.5 }}>
             <SectionLabel color="blue">Writing &amp; Insights</SectionLabel>
-            <h2 id="blog-preview-heading" className="text-3xl md:text-5xl font-black tracking-tight text-white mb-4">
+            <h2 id="blog-preview-heading" className="t-h2 text-white mb-4">
               Lab{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Notes</span>
             </h2>
@@ -149,12 +149,12 @@ export function BlogPreview({ posts }: { posts: BlogPostPreview[] }) {
                   <div className="absolute top-0 right-0 w-48 h-48 bg-violet-500/10 rounded-full blur-[80px] pointer-events-none" />
                   <div className="relative z-10">
                     <div className="flex items-center gap-3 mb-5">
-                      <span className="px-3 py-1 rounded-full bg-violet-500/15 border border-violet-500/25 text-[10px] font-bold uppercase tracking-widest text-violet-300">
+                      <span className="px-3 py-1 rounded-full bg-violet-500/15 border border-violet-500/25 t-label font-bold uppercase tracking-widest text-violet-300">
                         {featured.category}
                       </span>
                       <span className="text-xs text-zinc-500">{featured.readingTime} min read</span>
                     </div>
-                    <h3 className="text-xl md:text-2xl font-black text-white mb-3 group-hover:text-violet-200 transition-colors leading-tight">
+                    <h3 className="t-h3 text-white mb-3 group-hover:text-violet-200 transition-colors">
                       {featured.title}
                     </h3>
                     <p className="text-sm text-zinc-400 leading-relaxed mb-6 line-clamp-3">{featured.description}</p>
@@ -176,8 +176,8 @@ export function BlogPreview({ posts }: { posts: BlogPostPreview[] }) {
                 >
                   <div className="flex items-center gap-2 mb-3">
                     <FileText className="w-3.5 h-3.5 text-blue-400" />
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-blue-400">{post.category}</span>
-                    <span className="text-[10px] text-zinc-600 ml-auto">{post.readingTime} min</span>
+                    <span className="t-label font-bold uppercase tracking-widest text-blue-400">{post.category}</span>
+                    <span className="t-label text-zinc-600 ml-auto">{post.readingTime} min</span>
                   </div>
                   <h3 className="text-sm font-bold text-white mb-2 group-hover:text-blue-300 transition-colors line-clamp-2">{post.title}</h3>
                   <p className="text-xs text-zinc-500 line-clamp-2">{post.description}</p>
@@ -193,7 +193,7 @@ export function BlogPreview({ posts }: { posts: BlogPostPreview[] }) {
                 >
                   <div className="flex items-center gap-2 mb-3">
                     <Linkedin className="w-3.5 h-3.5 text-blue-400" />
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-blue-400">LinkedIn</span>
+                    <span className="t-label font-bold uppercase tracking-widest text-blue-400">LinkedIn</span>
                   </div>
                   <h3 className="text-sm font-bold text-white mb-2 group-hover:text-blue-300 transition-colors line-clamp-2">{post.title}</h3>
                   <p className="text-xs text-zinc-500 line-clamp-2">{post.excerpt}</p>
@@ -247,12 +247,12 @@ export function ContactCTA() {
             </div>
           </motion.div>
 
-          <motion.h2 variants={fadeUp} transition={{ duration: 0.5 }} className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight text-white mb-6">
+          <motion.h2 variants={fadeUp} transition={{ duration: 0.5 }} className="t-h2 text-white mb-6">
             Let&apos;s Build Something{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-violet-400 to-cyan-400">Together</span>
           </motion.h2>
 
-          <motion.p variants={fadeUp} transition={{ duration: 0.5 }} className="text-lg text-zinc-400 max-w-2xl mx-auto mb-8 leading-relaxed">
+          <motion.p variants={fadeUp} transition={{ duration: 0.5 }} className="t-lead text-zinc-400 max-w-2xl mx-auto mb-8">
             Open to senior engineering and QA leadership roles. Interested in firmware validation, test architecture, and AI-augmented quality systems.
           </motion.p>
 

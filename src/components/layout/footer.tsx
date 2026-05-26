@@ -73,7 +73,7 @@ export function Footer() {
 
           {/* Navigation column */}
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-zinc-400 mb-5">
+            <p className="t-label font-black uppercase tracking-[0.25em] text-zinc-400 mb-5">
               Navigation
             </p>
             <nav aria-label="Footer navigation">
@@ -95,7 +95,7 @@ export function Footer() {
 
           {/* Connect column */}
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-zinc-400 mb-5">
+            <p className="t-label font-black uppercase tracking-[0.25em] text-zinc-400 mb-5">
               Connect
             </p>
             <ul className="space-y-3">

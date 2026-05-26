@@ -11,10 +11,10 @@ export default function ExperiencePage() {
       <section className="pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-36 lg:pb-12 px-6 lg:px-24 border-b border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div className="space-y-4">
-            <h1 className="text-5xl md:text-6xl font-black tracking-tighter">
+            <h1 className="t-h1">
               Technical <span className="text-blue-400">Roadmap</span>
             </h1>
-            <p className="text-lg text-zinc-400 font-light max-w-2xl leading-relaxed">
+            <p className="t-lead text-zinc-400 font-light max-w-2xl">
               A comprehensive chronicle of 18+ years in engineering, test automation, and IoT
               orchestration across the global tech ecosystem.
             </p>
@@ -43,7 +43,7 @@ export default function ExperiencePage() {
 
       {/* CTA */}
       <section className="py-12 md:py-20 lg:py-24 px-6 text-center border-t border-white/5">
-        <h2 className="text-3xl font-bold mb-8">Ready to build something together?</h2>
+        <h2 className="t-h2 mb-8">Ready to build something together?</h2>
         <Link
           href="/contact"
           className="inline-flex items-center gap-3 px-10 py-5 rounded-full bg-blue-600 text-white font-bold hover:bg-blue-700 hover:scale-105 transition-all shadow-2xl shadow-blue-600/20"

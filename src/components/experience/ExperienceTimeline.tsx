@@ -14,7 +14,7 @@ export function ExperienceTimeline() {
         <Briefcase className="w-32 h-32" />
       </div>
 
-      <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-8 flex items-center gap-2">
+      <h2 className="t-h3 text-zinc-900 dark:text-white mb-8 flex items-center gap-2">
         <Briefcase className="w-6 h-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />
         Professional Career Timeline
       </h2>

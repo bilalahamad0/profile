@@ -87,7 +87,7 @@ export function GoogleDevCarousel() {
               sizes="160px"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent pointer-events-none" />
-            <div className="absolute top-2 left-3 px-1.5 py-0.5 rounded-md bg-black/80 text-[9px] font-black text-white uppercase tracking-widest shadow-sm">
+            <div className="absolute top-2 left-3 px-1.5 py-0.5 rounded-md bg-black/80 t-label font-black text-white uppercase tracking-widest shadow-sm">
               {item.yr}
             </div>
             <div className="absolute -bottom-1 -right-1 w-12 h-12 z-20">

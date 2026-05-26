@@ -409,7 +409,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                 <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
                   <Activity className="w-32 h-32" />
                 </div>
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-8 flex items-center gap-2">
+                <h2 className="t-h3 text-zinc-900 dark:text-white mb-8 flex items-center gap-2">
                   <Briefcase className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                   Professional Career Timeline
                 </h2>
@@ -502,7 +502,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                     transition={{ duration: 0.4, delay: 0 }}
                     className="glass-card rounded-3xl p-8 flex flex-col"
                   >
-                    <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2">
+                    <h2 className="t-h3 text-zinc-900 dark:text-white mb-5 flex items-center gap-2">
                       <Layers className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                       Core Focus
                     </h2>
@@ -514,7 +514,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                         return (
                           <span
                             key={tag}
-                            className={`px-3 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-[0.08em] border ${tone}`}
+                            className={`px-3 py-1.5 rounded-md t-label font-bold uppercase tracking-[0.08em] border ${tone}`}
                           >
                             {tag}
                           </span>
@@ -531,7 +531,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                     transition={{ duration: 0.4, delay: 0.03 }}
                     className="glass-card rounded-3xl p-8 flex flex-col transition-all duration-500"
                   >
-                    <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2">
+                    <h2 className="t-h3 text-zinc-900 dark:text-white mb-5 flex items-center gap-2">
                       <Terminal className="w-6 h-6 text-purple-600 dark:text-purple-400" />
                       Technical Arsenal
                     </h2>
@@ -553,7 +553,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                     transition={{ duration: 0.4, delay: 0.06 }}
                     className="glass-card rounded-3xl p-8 flex flex-col"
                   >
-                    <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2">
+                    <h2 className="t-h3 text-zinc-900 dark:text-white mb-5 flex items-center gap-2">
                       <GraduationCap className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
                       Education
                     </h2>
@@ -583,18 +583,18 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                   >
                     <Settings className="absolute -right-8 -bottom-8 w-48 h-48 text-zinc-500 dark:text-zinc-500/5 pointer-events-none" />
                     <div className="flex items-center justify-between mb-5 relative z-10">
-                      <h2 className="text-2xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
+                      <h2 className="t-h3 text-zinc-900 dark:text-white flex items-center gap-2">
                         <Settings className="w-6 h-6 text-zinc-600 dark:text-zinc-400" />
                         Certifications
                       </h2>
-                      <Link href="/certifications" className="flex items-center gap-1.5 text-[11px] font-bold text-blue-500 hover:text-blue-400 transition-colors uppercase tracking-widest">
+                      <Link href="/certifications" className="flex items-center gap-1.5 t-label font-bold text-blue-500 hover:text-blue-400 transition-colors uppercase tracking-widest">
                         View All <ExternalLink className="w-3 h-3" />
                       </Link>
                     </div>
 
                     {/* AI / Machine Learning */}
                     <div className="mb-4">
-                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-purple-500 dark:text-purple-400 mb-2 flex items-center gap-1.5">
+                      <span className="t-label font-black uppercase tracking-[0.2em] text-purple-500 dark:text-purple-400 mb-2 flex items-center gap-1.5">
                         <Sparkles className="w-3 h-3" /> AI & Machine Learning
                       </span>
                       <ul className="space-y-2 mt-2">
@@ -611,7 +611,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
 
                     {/* Testing & Standards */}
                     <div className="mb-4">
-                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-500 dark:text-amber-400 mb-2 flex items-center gap-1.5">
+                      <span className="t-label font-black uppercase tracking-[0.2em] text-amber-500 dark:text-amber-400 mb-2 flex items-center gap-1.5">
                         <ShieldCheck className="w-3 h-3" /> Testing &amp; Standards
                       </span>
                       <ul className="space-y-2 mt-2">
@@ -627,7 +627,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                     </div>
 
                     <div className="mb-4">
-                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 dark:text-blue-400 mb-2 flex items-center gap-1.5">
+                      <span className="t-label font-black uppercase tracking-[0.2em] text-blue-500 dark:text-blue-400 mb-2 flex items-center gap-1.5">
                         <Box className="w-3 h-3" /> Leadership & Management
                       </span>
                       <ul className="space-y-2 mt-2">
@@ -649,7 +649,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                     transition={{ duration: 0.4, delay: 0.12 }}
                     className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col"
                   >
-                    <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2 flex items-center gap-2 relative z-10">
+                    <h2 className="t-h3 text-zinc-900 dark:text-white mb-2 flex items-center gap-2 relative z-10">
                       <span className="text-2xl">🏆</span>
                       Awards &amp; Recognition
                     </h2>
@@ -669,7 +669,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                         <span className="text-white font-bold text-sm">Annual Best Performer · 2010–11</span>
                         <span className="block text-zinc-300 text-xs mt-0.5">L&amp;T Infotech · Receiving Award on Stage</span>
                       </div>
-                      <span className="absolute top-2 right-2 px-2 py-1 rounded-full bg-black/50 border border-white/20 text-[9px] font-bold text-white/70 uppercase tracking-wider pointer-events-none">Click to expand</span>
+                      <span className="absolute top-2 right-2 px-2 py-1 rounded-full bg-black/50 border border-white/20 t-label font-bold text-white/70 uppercase tracking-wider pointer-events-none">Click to expand</span>
                     </button>
 
                     <div className="grid grid-cols-2 gap-4 mb-6">
@@ -680,8 +680,8 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                         <img src="/awards/performance_award.jpeg" alt="Excellent Performance Award Certificate" className="w-full h-52 object-cover object-top group-hover:scale-105 transition-transform duration-700" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
                         <div className="absolute bottom-0 left-0 p-3 pointer-events-none">
-                          <span className="text-white text-[11px] font-black uppercase tracking-wider block">Annual Best Performer</span>
-                          <span className="text-emerald-400 text-[10px] font-semibold">Excellent Performance Award</span>
+                          <span className="text-white t-label font-black uppercase tracking-wider block">Annual Best Performer</span>
+                          <span className="text-emerald-400 t-label font-semibold">Excellent Performance Award</span>
                         </div>
                       </button>
                       <button
@@ -691,8 +691,8 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                         <img src="/awards/eagle_award.jpeg" alt="Eagle Award for Best Managed Project" className="w-full h-52 object-cover object-top group-hover:scale-105 transition-transform duration-700" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
                         <div className="absolute bottom-0 left-0 p-3 pointer-events-none">
-                          <span className="text-white text-[11px] font-black uppercase tracking-wider block">Annual Best Managed Project</span>
-                          <span className="text-blue-400 text-[10px] font-semibold">Eagle Award</span>
+                          <span className="text-white t-label font-black uppercase tracking-wider block">Annual Best Managed Project</span>
+                          <span className="text-blue-400 t-label font-semibold">Eagle Award</span>
                         </div>
                       </button>
                     </div>
@@ -732,7 +732,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                     </div>
                     <div className="absolute top-1/2 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px] pointer-events-none -translate-y-1/2" />
                     <div className="flex flex-col z-10 w-full relative">
-                      <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2 flex items-center gap-3">
+                      <h2 className="t-h3 text-zinc-900 dark:text-white mb-2 flex items-center gap-3">
                         <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0">
                           <img src="/logos/google.png" alt="Google" className="w-5 h-5 object-contain" />
                         </div>
@@ -744,10 +744,10 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                       <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed mb-8">
                         Recognized participant in the Google Developer Ecosystem. Attended multiple flagship events in Mountain View, earning badges for technical integrations and Platform mastery.
                       </p>
-                      <h3 className="text-[10px] font-bold text-zinc-500 dark:text-zinc-500 uppercase tracking-widest mb-4">I/O Attendance & Badges</h3>
+                      <h3 className="t-label font-bold text-zinc-500 dark:text-zinc-500 uppercase tracking-widest mb-4">I/O Attendance & Badges</h3>
                       <div className="flex flex-wrap gap-2.5 mb-8">
-                        <span className="px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-[10px] font-medium text-zinc-700 dark:text-zinc-300">I/O 2023-25 Attendee</span>
-                        <span className="px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">{badgeCount} Badges</span>
+                        <span className="px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 t-label font-medium text-zinc-700 dark:text-zinc-300">I/O 2023-25 Attendee</span>
+                        <span className="px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 t-label font-semibold text-emerald-600 dark:text-emerald-400">{badgeCount} Badges</span>
                       </div>
                       <div className="w-full relative group/reel">
                         {/* Navigation Arrows */}
@@ -788,7 +788,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                             <a key={i} href={`https://developers.google.com/profile/badges/events/${item.href}`} target="_blank" rel="noreferrer" className="relative w-40 h-52 min-w-[10rem] flex-shrink-0 rounded-xl border-2 border-zinc-800 bg-zinc-900 snap-center group shadow-lg overflow-hidden">
                               <img src={item.img} alt={`I/O ${item.yr}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent pointer-events-none" />
-                              <div className="absolute top-2 left-3 px-1.5 py-0.5 rounded-md bg-black/80 text-[9px] font-black text-white uppercase tracking-widest shadow-sm">
+                              <div className="absolute top-2 left-3 px-1.5 py-0.5 rounded-md bg-black/80 t-label font-black text-white uppercase tracking-widest shadow-sm">
                                 {item.yr}
                               </div>
                               <div className="absolute -bottom-1 -right-1 w-12 h-12 z-20">
@@ -799,7 +799,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                           <a href="https://developers.google.com/profile/badges/events/io/2022/attendee" target="_blank" rel="noreferrer" className="relative w-40 h-52 min-w-[10rem] flex-shrink-0 rounded-xl border-2 border-zinc-800 bg-zinc-900 snap-center group shadow-lg overflow-hidden">
                             <img src="/io/google-2022.png" alt="I/O 2022" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent pointer-events-none" />
-                            <div className="absolute top-2 left-3 px-1.5 py-0.5 rounded-md bg-black/80 text-[9px] font-black text-white uppercase tracking-widest shadow-sm">
+                            <div className="absolute top-2 left-3 px-1.5 py-0.5 rounded-md bg-black/80 t-label font-black text-white uppercase tracking-widest shadow-sm">
                               2022
                             </div>
                             <div className="absolute -bottom-1 -right-1 w-12 h-12 z-20">
@@ -829,7 +829,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
             >
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-8">
                 <div>
-                  <h2 className="text-3xl font-black text-zinc-900 dark:text-white tracking-tighter flex items-center gap-3">
+                  <h2 className="t-h2 text-zinc-900 dark:text-white flex items-center gap-3">
                     <Layout className="w-8 h-8 text-blue-500" />
                     Featured Public Projects
                   </h2>
@@ -857,7 +857,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                           <Monitor className="w-6 h-6 text-blue-500" />
                         </div>
                         <div>
-                          <h3 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tight">California Live Layoff Monitoring Dashboard</h3>
+                          <h3 className="t-h3 text-zinc-900 dark:text-white">California Live Layoff Monitoring Dashboard</h3>
                           <div className="flex gap-3 mt-1">
                             {repos.find(r => r.name === 'warn') && (
                               <div className="flex gap-3 text-xs text-zinc-500 font-bold uppercase tracking-widest">
@@ -879,11 +879,11 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
 
                     <div className="flex flex-wrap gap-2">
                       {['Python', 'GitHub Actions', 'ETag Cache', 'Data Visualization', 'MD5 Verification'].map(tag => (
-                        <span key={tag} className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{tag}</span>
+                        <span key={tag} className="px-3 py-1 rounded-full bg-white/5 border border-white/10 t-label font-bold text-zinc-500 uppercase tracking-widest">{tag}</span>
                       ))}
                     </div>
 
-                    <div className="pt-2 flex items-center gap-2 text-blue-500 font-black text-[10px] uppercase tracking-[0.2em]">
+                    <div className="pt-2 flex items-center gap-2 text-blue-500 font-black t-label uppercase tracking-[0.2em]">
                       <Monitor className="w-4 h-4" /> Production Ready Output
                     </div>
                   </div>
@@ -925,7 +925,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                           <Smartphone className="w-6 h-6 text-emerald-500" />
                         </div>
                         <div>
-                          <h3 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tight">Smart-Home IoT Media Caster</h3>
+                          <h3 className="t-h3 text-zinc-900 dark:text-white">Smart-Home IoT Media Caster</h3>
                           <div className="flex gap-3 mt-1">
                             {repos.find(r => r.name === 'adhan-api') && (
                               <div className="flex gap-3 text-xs text-zinc-500 font-bold uppercase tracking-widest">
@@ -947,11 +947,11 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
 
                     <div className="flex flex-wrap gap-2">
                       {['Node.js', 'ADB', 'Android TV', 'Raspberry Pi', 'IoT', 'Shell'].map(tag => (
-                        <span key={tag} className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{tag}</span>
+                        <span key={tag} className="px-3 py-1 rounded-full bg-white/5 border border-white/10 t-label font-bold text-zinc-500 uppercase tracking-widest">{tag}</span>
                       ))}
                     </div>
 
-                    <div className="pt-2 flex items-center gap-2 text-emerald-500 font-black text-[10px] uppercase tracking-[0.2em]">
+                    <div className="pt-2 flex items-center gap-2 text-emerald-500 font-black t-label uppercase tracking-[0.2em]">
                       <Check className="w-4 h-4" /> Production Ready Output
                     </div>
                   </div>
@@ -993,7 +993,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
               transition={{ duration: 0.5, delay: 0.8 }}
               className="lg:col-span-4 glass-card rounded-3xl p-8 flex flex-col h-full"
             >
-              <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-5 flex items-center gap-2">
+              <h2 className="t-h3 text-zinc-900 dark:text-white mb-5 flex items-center gap-2">
                 <Github className="w-6 h-6 text-zinc-900 dark:text-zinc-100" />
                 Additional Repositories
               </h2>
@@ -1011,7 +1011,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                         <div className="flex items-center gap-3 w-full sm:w-auto overflow-hidden">
                           <h4 className="text-sm font-semibold text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:text-blue-300 transition-colors truncate">{repo.name}</h4>
                           {repo.language && (
-                            <span className="text-[10px] font-medium px-2 py-0.5 rounded-full border border-zinc-300 dark:border-zinc-700 bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 shrink-0 whitespace-nowrap">
+                            <span className="t-label font-medium px-2 py-0.5 rounded-full border border-zinc-300 dark:border-zinc-700 bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 shrink-0 whitespace-nowrap">
                               {repo.language}
                             </span>
                           )}

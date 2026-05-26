@@ -14,7 +14,7 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-5xl md:text-6xl font-black tracking-tighter"
+            className="t-h1"
           >
             Get in <span className="text-blue-500">Touch</span>
           </motion.h1>
@@ -22,7 +22,7 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-xl text-zinc-400 font-light max-w-2xl"
+            className="t-lead text-zinc-400 font-light max-w-2xl"
           >
             Have a project in mind or just want to say hello? I&apos;m always open to discussing new opportunities and creative ideas.
           </motion.p>
@@ -43,7 +43,7 @@ export default function ContactPage() {
       {/* Additional Info Section */}
       <section className="py-12 md:py-20 lg:py-24 px-6 text-center border-t border-white/5 bg-white/[0.02]">
         <div className="max-w-3xl mx-auto space-y-6">
-          <h2 className="text-2xl font-bold">Based in Sunnyvale, CA</h2>
+          <h2 className="t-h3">Based in Sunnyvale, CA</h2>
           <p className="text-zinc-400">
             Available for remote roles or local opportunities in the San Francisco Bay Area.
             I typically respond to inquiries within 24-48 business hours.

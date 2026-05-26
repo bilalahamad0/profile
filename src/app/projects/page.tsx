@@ -203,13 +203,13 @@ export default function ProjectsPage() {
               <Github className="w-4 h-4 text-blue-400" aria-hidden="true" />
               <span className="text-xs font-black uppercase tracking-[0.2em] text-blue-300">Open Source</span>
             </div>
-            <h1 className="text-5xl md:text-6xl font-black tracking-tighter mb-6">
+            <h1 className="t-h1 mb-6">
               Featured{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-400">
                 Projects
               </span>
             </h1>
-            <p className="text-lg text-zinc-400 font-light max-w-2xl leading-relaxed">
+            <p className="t-lead text-zinc-400 font-light max-w-2xl">
               Production-grade systems built at the intersection of automation, data engineering, and
               AI-native development.
             </p>
@@ -230,7 +230,7 @@ export default function ProjectsPage() {
             ].map(({ label, value }) => (
               <div key={label} className="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
                 <span className="block text-2xl md:text-3xl font-black text-white mb-1">{value}</span>
-                <span className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{label}</span>
+                <span className="block t-label font-bold text-zinc-500 uppercase tracking-widest">{label}</span>
               </div>
             ))}
           </motion.div>
@@ -302,7 +302,7 @@ export default function ProjectsPage() {
                               <span className="text-xs font-bold uppercase tracking-wider text-violet-300">AI-Built</span>
                             </div>
                           )}
-                          <h2 className="text-xl md:text-2xl font-black text-white tracking-tight">
+                          <h2 className="t-h3 text-white">
                             {project.name}
                           </h2>
                           <p className="text-sm text-zinc-400 mt-1">{project.tagline}</p>
@@ -520,7 +520,7 @@ export default function ProjectsPage() {
       {/* GitHub CTA */}
       <section className="py-12 md:py-20 lg:py-24 px-6 text-center border-t border-white/5 bg-white/[0.01]">
         <div className="max-w-2xl mx-auto space-y-6">
-          <h2 className="text-3xl font-black tracking-tighter">See All Repositories</h2>
+          <h2 className="t-h2">See All Repositories</h2>
           <p className="text-zinc-400">
             Explore the complete collection of public work, contributions, and experiments.
           </p>
