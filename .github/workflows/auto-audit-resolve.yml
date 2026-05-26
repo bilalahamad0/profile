@@ -1,12 +1,11 @@
 name: Auto Audit and Resolve
 
 on:
-  repository_vulnerability_alert:
-    types: [create]
-  code_scanning_alert:
-    types: [created]
+  # `repository_vulnerability_alert` / `code_scanning_alert` are webhook-only events, not valid
+  # workflow triggers — declaring them made the file invalid (startup failure on every push).
+  # The daily schedule covers the audit-and-fix intent; workflow_dispatch runs it on demand.
   schedule:
-    - cron: '0 0 * * *' # Daily at midnight
+    - cron: '0 0 * * *' # Daily at midnight UTC
   workflow_dispatch:
 
 permissions:
@@ -37,6 +36,8 @@ jobs:
 
       - name: Create Pull Request for NPM Audit
         uses: peter-evans/create-pull-request@v6
+        # Non-fatal: needs "Allow GitHub Actions to create and approve pull requests" enabled.
+        continue-on-error: true
         with:
           commit-message: 'security: auto npm audit fix'
           title: 'Automated Security Fix: npm audit fix'
@@ -47,6 +48,9 @@ jobs:
           labels: 'security, dependabot'
 
       - name: Run Advanced Dependabot Auto-Fix Script
+        # Non-fatal: best-effort alert remediation; missing alerts API access or PR-creation
+        # permission should not fail the scheduled run.
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
@@ -88,6 +92,8 @@ jobs:
 
       - name: Create Pull Request for ESLint Fixes
         uses: peter-evans/create-pull-request@v6
+        # Non-fatal: needs "Allow GitHub Actions to create and approve pull requests" enabled.
+        continue-on-error: true
         with:
           commit-message: 'style: auto eslint fix for code scanning alerts'
           title: 'Automated Style Fix: eslint --fix'
