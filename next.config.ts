@@ -49,8 +49,8 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // Cached API routes — repos, badges
-        source: "/api/(repos|badges)",
+        // Cached API routes — repos, badges, visitors
+        source: "/api/(repos|badges|visitors)",
         headers: [
           { key: "Cache-Control", value: "public, s-maxage=3600, stale-while-revalidate=7200" },
         ],
