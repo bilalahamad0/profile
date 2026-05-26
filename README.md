@@ -1,43 +1,68 @@
 # Bilal Ahamad | Professional Portfolio Website
 
+<p align="center">
+  <a href="https://bilalahamad.com"><img alt="Website" src="https://img.shields.io/website?url=https%3A%2F%2Fbilalahamad.com&up_message=online&up_color=brightgreen&down_message=offline&label=bilalahamad.com"></a>
+  <a href="https://bilalahamad.com"><img alt="Live visitors" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fbilalahamad.com%2Fapi%2Fvisitors"></a>
+  <a href="https://github.com/bilalahamad0/profile/actions/workflows/ci.yml"><img alt="CI/CD" src="https://img.shields.io/github/actions/workflow/status/bilalahamad0/profile/ci.yml?branch=main&label=CI%2FCD&logo=githubactions&logoColor=white"></a>
+  <a href="https://github.com/bilalahamad0/profile/actions/workflows/codeql.yml"><img alt="CodeQL" src="https://img.shields.io/github/actions/workflow/status/bilalahamad0/profile/codeql.yml?branch=main&label=CodeQL&logo=github&logoColor=white"></a>
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/github/license/bilalahamad0/profile?label=license&color=blue"></a>
+  <a href="https://github.com/bilalahamad0/profile/commits/main"><img alt="Last commit" src="https://img.shields.io/github/last-commit/bilalahamad0/profile/main?logo=git&logoColor=white"></a>
+</p>
+
+<p align="center">
+  <img alt="Next.js" src="https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white">
+  <img alt="React" src="https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white">
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white">
+  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-v4-38BDF8?logo=tailwindcss&logoColor=white">
+  <img alt="Framer Motion" src="https://img.shields.io/badge/Framer_Motion-12-0055FF?logo=framer&logoColor=white">
+  <img alt="Three.js" src="https://img.shields.io/badge/Three.js-r184-000000?logo=threedotjs&logoColor=white">
+  <img alt="Vercel" src="https://img.shields.io/badge/Vercel-deployed-000000?logo=vercel&logoColor=white">
+</p>
+
 An interactive, premium digital portfolio built entirely from scratch to showcase engineering history, open-source projects, and technical certifications. Designed specifically to present a world-class professional developer footprint bridging into a cohesive, highly polished "Dark Glass Bento" UI.
 
 ## ⚡ Highlighted Tech Stack
-* **Core Framework**: [Next.js](https://nextjs.org/) (App Router, React 19)
-* **Styling & Layout**: [Tailwind CSS v4](https://tailwindcss.com/)
-* **Motion & Interactions**: [Framer Motion](https://www.framer.com/motion/) powering fluid viewport reveals and real-time SVG DOM animations.
+* **Core Framework**: [Next.js 16](https://nextjs.org/) (App Router) with [React 19](https://react.dev/)
+* **Language**: [TypeScript](https://www.typescriptlang.org/) in strict mode
+* **Styling & Layout**: [Tailwind CSS v4](https://tailwindcss.com/) with a custom glassmorphism design system
+* **Motion & Interactions**: [Framer Motion](https://www.framer.com/motion/) for fluid viewport reveals and SVG animations, over native smooth scroll
+* **3D**: [Three.js](https://threejs.org/) via [React Three Fiber](https://r3f.docs.pmnd.rs/) + Drei
 * **Icons**: [Lucide React](https://lucide.dev/)
-* **Backend Utilities**: Serverless `nodemailer` API routes, live GitHub REST API fetching.
+* **Content**: MDX blog pipeline (`next-mdx-remote` + `gray-matter`), parsed server-side
+* **Analytics**: Google Analytics 4, Vercel Analytics + Speed Insights
+* **Backend**: Serverless API routes — `nodemailer` email, GitHub REST proxy, and a GA4-backed visitor counter persisted in Upstash Redis (KV)
+* **Quality**: [Vitest](https://vitest.dev/) (unit + coverage), [Playwright](https://playwright.dev/) (e2e), lost-pixel (visual regression), axe-core (a11y)
 
 ## 🚀 Architectural Features
 
 * **Built From Scratch**: Completely custom, hand-coded components designed to replace standard CVs with a dynamic, immersive experience.
 * **Bento Grid Architecture**: A tightly woven "glassmorphism" layout that wraps multiple data contexts (LinkedIn, Experience, Technical Arsenal) smoothly into viewport grids.
-* **Google Developer Integration**: Features a bespoke interactive horizontal reel mapping digital badges seamlessly onto physical event photography.
-* **Serverless Edge Networking**: Integrates native form submissions that proxy straight to automated email routing without third-party form builders.
+* **Live Visitor Counter**: A GA4 Data API route exposes a [shields.io](https://shields.io/)-compatible badge, persisted in Upstash Redis (KV) so the count stays monotonic and survives GA data-retention windows and outages.
+* **Google Developer Integration**: A bespoke interactive horizontal reel mapping digital badges seamlessly onto physical event photography.
+* **AI-Driven Development Dashboard**: A transparent, data-backed breakdown (below) of the fully AI-native build process.
+* **Serverless Edge Networking**: Native form submissions that proxy straight to automated email routing without third-party form builders.
 
 ---
 
 ## 🛠 Required Environment Variables
 
-To properly launch the Contact Form logic in Vercel, navigate to **Settings -> Environment Variables** and map:
+Copy [`.env.local.example`](.env.local.example) to `.env.local` for local development, and mirror the same keys in **Vercel → Settings → Environment Variables** for production.
 
-- `SMTP_HOST` – your mail server host (e.g., `smtp.gmail.com`)
-- `SMTP_PORT` – the server port (e.g., `465`)
-- `SMTP_USER` – SMTP username (your gmail address)
-- `SMTP_PASS` – SMTP App Password (do not use primary password)
-- `SMTP_FROM` – Sender Address
-- `SMTP_TO` – Recipient Address
+**Analytics & visitor counter**
+- `NEXT_PUBLIC_GA_ID` – GA4 Measurement ID (public, safe to expose)
+- `GA_PROPERTY_ID` – numeric GA4 property ID powering the `/api/visitors` badge
+- `GA_OAUTH_CLIENT_ID`, `GA_OAUTH_CLIENT_SECRET`, `GA_OAUTH_REFRESH_TOKEN` – OAuth credentials for the GA Data API (preferred auth)
+- `GA_SERVICE_ACCOUNT_JSON` – *(optional)* base64-encoded service-account key (fallback auth)
+- `KV_REST_API_URL`, `KV_REST_API_TOKEN` – *(optional)* Upstash Redis (KV) for a persistent, monotonic count; auto-injected by Vercel's Upstash integration
 
-Example `.env.local`:
-```bash
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=465
-SMTP_USER=your-email@gmail.com
-SMTP_PASS=your-app-password
-SMTP_FROM=your-email@gmail.com
-SMTP_TO=your-email@gmail.com
-```
+**Contact form (SMTP)**
+- `SMTP_HOST` – mail server host (e.g., `smtp.gmail.com`)
+- `SMTP_PORT` – server port (e.g., `465`)
+- `SMTP_SECURE` – `true` for port 465, `false` for STARTTLS (e.g., 587)
+- `SMTP_USER` – SMTP username
+- `SMTP_PASS` – SMTP App Password (never the primary password)
+- `SMTP_FROM` – sender address
+- `SMTP_TO` – recipient address
 
 ## 💻 Local Development
 
@@ -52,6 +77,13 @@ npm install
 npm run dev
 ```
 3. Load `localhost:3000` to review the local build.
+
+Run the quality gates before pushing:
+```bash
+npm run lint    # ESLint
+npm test        # Vitest unit + route suites
+npm run build   # production build
+```
 
 ## 🚢 Deployment (Vercel)
 
@@ -111,41 +143,42 @@ Portfolio: bilalahamad.com
 ├── Framework ............ Next.js 16 (App Router) + React 19
 ├── Language ............. TypeScript (strict mode)
 ├── Styling .............. Tailwind CSS v4
-├── Motion ............... Framer Motion + Lenis smooth scroll
+├── Motion ............... Framer Motion + native smooth scroll
+├── 3D ................... Three.js + React Three Fiber + Drei
 ├── Total LOC ............ 5,600+ (source) · 780+ (content/config)
-├── Components ........... 13 production · 0 dead code
+├── Components ........... 22 (src/components) · 0 dead code
 ├── Page Routes .......... 8 (home, experience, certifications, projects, ai, blog, blog/[slug], contact)
-├── API Routes ........... 3 (contact, repos proxy, badges)
-├── Blog Posts ........... 3 MDX articles
-├── Dependencies ......... 18 runtime · 15 dev
-├── Test Framework ....... Vitest 4 + v8 coverage
-├── Test Suites .......... 1 (sanity baseline)
-├── Test Coverage ........ Sanity-level (infrastructure validated)
-├── Build Target ......... Vercel Edge · Node 22
-└── CI/CD ................ GitHub → Vercel auto-deploy
+├── API Routes ........... 5 (contact, repos, badges, ai-metrics, visitors)
+├── Blog Posts ........... 7 MDX articles
+├── Dependencies ......... 17 runtime · 28 dev
+├── Test Framework ....... Vitest 4 + v8 coverage · Playwright e2e · lost-pixel visual
+├── Test Suites .......... 7 unit/route suites + e2e + visual regression
+├── Test Coverage ........ Unit, API-route, e2e, and visual-regression layers
+├── Build Target ......... Vercel · Node 22
+└── CI/CD ................ GitHub Actions → Vercel auto-deploy
 ```
 
 ### 🧪 Quality Engineering
 
 | Area | Status | Details |
 | :--- | :---: | :--- |
-| **TypeScript Strict** | ✅ | Zero type errors across 33 source files |
+| **TypeScript Strict** | ✅ | Zero type errors across the source tree |
 | **ESLint** | ✅ | `next/core-web-vitals` + `next/typescript` rules |
 | **Accessibility** | ✅ | WCAG 2.4.1 skip-link, `aria-*` labels, `prefers-reduced-motion`, focus-visible rings |
 | **SEO** | ✅ | OpenGraph, Twitter cards, per-page metadata, robots config |
 | **Performance** | ✅ | `next/font` swap, dynamic imports (SSR off), image optimization, aggressive caching headers |
 | **Security** | ✅ | HTML sanitization on contact APIs, no hardcoded secrets, `poweredByHeader: false` |
 | **Dead Code** | ✅ | 15 unused components removed (965 LOC cleaned) |
-| **Test Infrastructure** | ✅ | Vitest 4 + v8 coverage provider configured and passing |
+| **Test Infrastructure** | ✅ | Vitest unit/route suites, Playwright e2e, lost-pixel visual regression, axe-core a11y — green in CI |
 
 ### 🧠 Test Design Pattern
 
 | Pattern | Implementation |
 | :--- | :--- |
 | **Sanity Testing** | Baseline math assertion validates test infrastructure end-to-end |
-| **Type-Level Testing** | TypeScript `strict` mode acts as compile-time test suite across all 33 source files |
+| **Type-Level Testing** | TypeScript `strict` mode acts as a compile-time test suite across the entire source tree |
 | **Lint-Level Testing** | ESLint with Next.js core-web-vitals catches runtime anti-patterns at author time |
-| **Visual Regression** | Manual verification via Vercel preview deployments on each push |
+| **Visual Regression** | Automated via lost-pixel in CI, backed by Vercel preview deployments on each push |
 | **Integration Confidence** | `tsc --noEmit` zero-error gate validates all cross-module contracts |
 
 ### 📊 Commit Intelligence
@@ -199,4 +232,10 @@ Portfolio: bilalahamad.com
 
 ---
 
-<sub>Dashboard data auto-generated from git history (`273 commits`) and codebase analysis. Last updated: April 2026.</sub>
+## 📄 License
+
+Released under the [MIT License](LICENSE) © 2023 Bilal Ahamad.
+
+---
+
+<sub>Dashboard data auto-generated from git history (`273 commits` across Phases 1–3) and codebase analysis. Last updated: May 2026.</sub>
