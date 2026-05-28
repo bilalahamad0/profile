@@ -54,7 +54,7 @@
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^6.0.2",
     "@vitest/coverage-v8": "^4.1.4",
-    "bundle-stats-webpack-plugin": "^4.0.7",
+    "bundle-stats-webpack-plugin": "^4.22.2",
     "depcheck": "^1.4.7",
     "eslint": "^9",
     "eslint-config-next": "^16.2.6",
