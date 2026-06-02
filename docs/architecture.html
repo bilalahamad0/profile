@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>System Architecture — Bilal Ahamad</title>
+<meta name="description" content="The architecture, system design and automated workflows behind bilalahamad.com — a self-contained, animated diagram. Next.js 16 App Router, server-rendered for ATS, a single typed source of truth, edge-cached API routes, and a blog-to-LinkedIn pipeline." />
+<meta name="color-scheme" content="dark" />
+<meta property="og:title" content="System Architecture — Bilal Ahamad" />
+<meta property="og:description" content="How bilalahamad.com is engineered — layered architecture, request lifecycle, automated pipelines, and the design principles behind it." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     DESIGN TOKENS — mirrors the site's globals.css
+     ============================================================ */
+  :root{
+    --bg:#09090b; --fg:#f4f4f5; --secondary:#a1a1aa; --caption:#71717a;
+    --radius:1rem;
+    /* accent RGB triplets */
+    --blue:96,165,250; --sky:56,189,248; --emerald:52,211,153;
+    --violet:167,139,250; --amber:251,191,36; --zinc:212,212,216;
+  }
+  *{box-sizing:border-box;}
+  html{font-size:16px; -webkit-text-size-adjust:100%;}
+  @media (prefers-reduced-motion: no-preference){ html{scroll-behavior:smooth;} }
+  body{
+    margin:0; background:var(--bg); color:var(--fg);
+    font-family:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden; line-height:1.6;
+  }
+  a{color:inherit;}
+  ::selection{background:rgba(59,130,246,.3);}
+
+  /* ── Fluid type scale (clamp) ── */
+  .t-h1{font-size:clamp(3rem,2.7rem + 1.3vw,3.75rem);line-height:1.05;font-weight:900;letter-spacing:-.04em;margin:0;}
+  .t-h2{font-size:clamp(1.875rem,1.6rem + 1.4vw,2.5rem);line-height:1.15;font-weight:700;letter-spacing:-.02em;margin:0;}
+  .t-h3{font-size:clamp(1.25rem,1.15rem + .5vw,1.5rem);line-height:1.25;font-weight:600;letter-spacing:-.015em;margin:0;}
+  .t-lead{font-size:1.125rem;line-height:1.65;margin:0;}
+  .t-body{font-size:1rem;line-height:1.7;margin:0;}
+  .t-small{font-size:.875rem;line-height:1.5;margin:0;}
+  .t-caption{font-size:.75rem;line-height:1.45;margin:0;}
+  .t-label{font-size:.6875rem;line-height:1.3;letter-spacing:.18em;text-transform:uppercase;font-weight:600;}
+
+  .sec{color:var(--secondary);} .cap{color:var(--caption);}
+  .grad{background:linear-gradient(135deg,#60a5fa 0%,#34d399 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+  /* ── Glass surfaces ── */
+  .glass-card{
+    backdrop-filter:blur(12px) saturate(140%); -webkit-backdrop-filter:blur(12px) saturate(140%);
+    background:rgba(18,18,20,.7); border:1px solid rgba(255,255,255,.06);
+    box-shadow:0 1px 3px rgba(0,0,0,.1),0 20px 40px -12px rgba(0,0,0,.35);
+  }
+
+  /* ── Accent helper: set --c then use rgb(var(--c)) ── */
+  .blue{--c:var(--blue);} .sky{--c:var(--sky);} .emerald{--c:var(--emerald);}
+  .violet{--c:var(--violet);} .amber{--c:var(--amber);} .zinc{--c:var(--zinc);}
+  .icobox{
+    display:flex;align-items:center;justify-content:center;flex:none;border-radius:.75rem;
+    background:rgba(var(--c),.1); border:1px solid rgba(var(--c),.25); color:rgb(var(--c));
+  }
+  .chip{
+    display:inline-flex;align-items:center;border-radius:.375rem;padding:.25rem .5rem;
+    font-size:.75rem;font-weight:500;
+    background:rgba(var(--c),.1); border:1px solid rgba(var(--c),.22); color:rgb(var(--c));
+  }
+
+  /* ── Layout ── */
+  .wrap{max-width:72rem;margin:0 auto;padding:0 1.5rem;}
+  @media (min-width:1024px){ .wrap{padding:0 2rem;} }
+  section{position:relative;}
+
+  /* ── Top bar ── */
+  .topbar{position:sticky;top:0;z-index:50;backdrop-filter:blur(20px) saturate(180%);
+    background:rgba(9,9,11,.7);border-bottom:1px solid rgba(255,255,255,.06);}
+  .topbar .row{display:flex;align-items:center;justify-content:space-between;height:60px;}
+  .mark{display:flex;flex-direction:column;line-height:1;}
+  .mark b{font-size:13px;font-weight:900;letter-spacing:.18em;}
+  .mark span{font-size:9px;font-weight:600;letter-spacing:.2em;color:var(--secondary);margin-top:2px;}
+  .home-link{display:inline-flex;align-items:center;gap:.4rem;font-size:.8125rem;font-weight:600;
+    color:var(--secondary);text-decoration:none;border:1px solid rgba(255,255,255,.1);
+    background:rgba(255,255,255,.03);border-radius:999px;padding:.4rem .85rem;transition:.2s;}
+  .home-link:hover{color:#fff;border-color:rgba(255,255,255,.2);}
+
+  /* ── Hero ── */
+  .aurora{position:absolute;inset:0;z-index:-1;
+    background:
+      radial-gradient(ellipse 80% 40% at 50% -10%, rgba(59,130,246,.10) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 30% at 0% 0%, rgba(59,130,246,.05) 0%, transparent 50%),
+      radial-gradient(ellipse 50% 30% at 100% 0%, rgba(139,92,246,.05) 0%, transparent 50%);}
+  .hero{padding:4.5rem 0 2.5rem;}
+  .eyebrow{display:inline-flex;align-items:center;gap:.5rem;border:1px solid rgba(255,255,255,.1);
+    background:rgba(255,255,255,.03);border-radius:999px;padding:.35rem .75rem;color:var(--secondary);}
+  .dot{width:6px;height:6px;border-radius:50%;background:#34d399;display:inline-block;
+    animation:pulse 1.8s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.8);}}
+  .hero h1{margin-top:1.25rem;max-width:48rem;}
+  .hero .lead{margin-top:1.25rem;max-width:42rem;color:#d4d4d4;}
+  .stats{margin-top:2.25rem;display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;max-width:46rem;}
+  @media (min-width:640px){ .stats{grid-template-columns:repeat(4,1fr);} }
+  .stat{border-radius:1rem;padding:1rem;}
+  .stat b{font-size:clamp(1.875rem,1.6rem + 1.4vw,2.5rem);font-weight:700;letter-spacing:-.02em;display:block;}
+  .stat span{color:var(--caption);margin-top:.25rem;display:block;}
+
+  /* ── Section heading ── */
+  .shead{margin-bottom:2.25rem;}
+  .shead .k{color:var(--caption);letter-spacing:.25em;}
+  .shead h2{margin-top:.6rem;}
+  .shead p{margin-top:.75rem;max-width:42rem;color:var(--secondary);}
+  .stack-section{padding:2.5rem 0;}
+  @media (min-width:640px){ .stack-section{padding:3.5rem 0;} }
+
+  /* ── 1 · Layered stack (vertical bus) ── */
+  .stack{position:relative;overflow:hidden;border-radius:1.5rem;}
+  .spine{position:absolute;left:44px;top:1.5rem;bottom:1.5rem;width:1px;
+    background:linear-gradient(to bottom,transparent,rgba(255,255,255,.2),transparent);}
+  .flow{position:absolute;left:44px;width:8px;height:8px;border-radius:50%;
+    transform:translateX(-50%);background:#60a5fa;
+    box-shadow:0 0 12px 3px rgba(96,165,250,.6);animation:flow 3.8s linear infinite;}
+  @keyframes flow{0%{top:2%;opacity:0;}10%{opacity:1;}90%{opacity:1;}100%{top:98%;opacity:0;}}
+  .layers{position:relative;z-index:1;}
+  .layer{display:flex;gap:1rem;align-items:flex-start;padding:1rem 1.25rem;}
+  .layer + .layer{border-top:1px solid rgba(255,255,255,.06);}
+  .layer .icobox{width:48px;height:48px;}
+  .layer .lc{min-width:0;flex:1;}
+  .layer .lc h3{color:#fff;}
+  .layer .lc .ls{margin-top:.15rem;color:var(--secondary);}
+  .layer .chips{margin-top:.75rem;display:flex;flex-wrap:wrap;gap:.375rem;}
+
+  /* ── 2 · Request lifecycle (packet on a track) ── */
+  .track{position:relative;display:flex;flex-direction:column;gap:1.75rem;}
+  .lspine{position:absolute;left:28px;top:0;bottom:0;width:1px;
+    background:linear-gradient(to bottom,transparent,rgba(255,255,255,.15),transparent);}
+  .packet{position:absolute;left:28px;top:0;width:10px;height:10px;border-radius:50%;background:#fff;
+    box-shadow:0 0 16px 4px rgba(255,255,255,.7);transform:translate(-50%,-50%);
+    animation:travelY 4.5s ease-in-out infinite;}
+  @keyframes travelY{0%{top:0;}100%{top:100%;}}
+  .lnode{display:flex;gap:1rem;align-items:flex-start;position:relative;z-index:1;}
+  .lnode .icobox{width:56px;height:56px;border-radius:1rem;position:relative;}
+  .lnum{position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;
+    background:var(--bg);border:1px solid rgba(255,255,255,.1);color:var(--secondary);
+    font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+  .lnode .ltext{padding-top:.35rem;}
+  .lnode .ltext b{display:block;font-size:.875rem;font-weight:600;color:#fff;}
+  .lnode .ltext span{display:block;font-size:.75rem;color:var(--secondary);margin-top:.15rem;max-width:13rem;}
+  @media (min-width:1024px){
+    .track{flex-direction:row;justify-content:space-between;gap:.75rem;}
+    .lnode{flex-direction:column;align-items:center;text-align:center;flex:1;min-width:0;}
+    .lnode .ltext{padding-top:0;margin-top:.85rem;}
+    .lnode .ltext span{margin-left:auto;margin-right:auto;}
+    .lspine{left:0;right:0;top:28px;bottom:auto;width:auto;height:1px;
+      background:linear-gradient(to right,transparent,rgba(255,255,255,.15),transparent);}
+    .packet{left:0;top:28px;animation-name:travelX;}
+  }
+  @keyframes travelX{0%{left:0;}100%{left:100%;}}
+
+  /* ── 3 · Pipelines (sequential illumination) ── */
+  .pipes{display:flex;flex-direction:column;gap:1rem;}
+  .pipe{border-radius:1.5rem;padding:1.25rem;}
+  @media (min-width:640px){ .pipe{padding:1.5rem;} }
+  .pipe .ph{display:flex;align-items:center;gap:.75rem;margin-bottom:1.1rem;}
+  .pipe .ph .icobox{width:44px;height:44px;}
+  .pipe .ph h3{color:#fff;}
+  .pipe .ph .ps{margin-top:.1rem;color:var(--secondary);}
+  .pchips{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .375rem;list-style:none;margin:0;padding:0;}
+  .pchips li{display:flex;align-items:center;gap:.375rem;}
+  .pchip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:var(--secondary);
+    border-radius:.5rem;padding:.375rem .625rem;font-size:.75rem;font-weight:500;
+    transition:background .3s,border-color .3s,color .3s,transform .3s,box-shadow .3s;}
+  .pchip.active{background:rgba(var(--c),.12);border-color:rgba(var(--c),.55);color:rgb(var(--c));
+    box-shadow:0 0 24px -6px rgba(var(--c),.65);transform:scale(1.06);}
+  .parrow{width:14px;height:14px;color:#3f3f46;transition:color .3s;flex:none;}
+  .parrow.active{color:rgb(var(--c));}
+
+  /* ── 4 · Principles ── */
+  .principles{display:grid;grid-template-columns:1fr;gap:1rem;}
+  @media (min-width:640px){ .principles{grid-template-columns:repeat(2,1fr);} }
+  @media (min-width:1024px){ .principles{grid-template-columns:repeat(4,1fr);} }
+  .pcard{height:100%;border-radius:1rem;border:1px solid rgba(255,255,255,.06);
+    background:rgba(255,255,255,.02);padding:1.25rem;
+    transition:border-color .3s,box-shadow .3s,transform .3s;}
+  .pcard:hover{border-color:rgba(var(--c),.4);box-shadow:0 0 45px -10px rgba(var(--c),.5);transform:translateY(-2px);}
+  .pcard .icobox{width:40px;height:40px;border-radius:.625rem;margin-bottom:1rem;}
+  .pcard h3{color:#fff;}
+  .pcard p{margin-top:.5rem;color:var(--secondary);}
+
+  /* ── Footer ── */
+  footer{border-top:1px solid rgba(255,255,255,.06);margin-top:1rem;}
+  .foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;
+    padding:2rem 0;color:var(--caption);}
+  .foot a{color:var(--secondary);text-decoration:none;font-weight:600;}
+  .foot a:hover{color:#fff;}
+  .foot .links{display:flex;gap:1.25rem;}
+
+  /* ── Reveal-on-scroll ── */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1);}
+  .reveal.in{opacity:1;transform:none;}
+
+  /* ── Schematic grid backdrop ── */
+  .grid-bg{position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+    background-size:46px 46px;
+    -webkit-mask-image:radial-gradient(ellipse 75% 55% at 50% 25%,black,transparent);
+    mask-image:radial-gradient(ellipse 75% 55% at 50% 25%,black,transparent);}
+
+  svg.ic{width:1.25rem;height:1.25rem;stroke:currentColor;fill:none;stroke-width:2;
+    stroke-linecap:round;stroke-linejoin:round;}
+  .lnode svg.ic{width:1.5rem;height:1.5rem;}
+  .pcard svg.ic,.pipe .ph svg.ic{width:1.25rem;height:1.25rem;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important;}
+    .reveal{opacity:1;transform:none;}
+  }
+</style>
+</head>
+<body>
+<div class="grid-bg" aria-hidden="true"></div>
+
+<!-- ── Top bar ── -->
+<div class="topbar">
+  <div class="wrap row">
+    <div class="mark"><b>BILAL</b><span>AHAMAD</span></div>
+    <a class="home-link" href="https://bilalahamad.com" target="_blank" rel="noopener">
+      bilalahamad.com
+      <svg class="ic" style="width:.85rem;height:.85rem" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+    </a>
+  </div>
+</div>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="aurora" aria-hidden="true"></div>
+  <div class="wrap">
+    <span class="eyebrow"><span class="dot" aria-hidden="true"></span><span class="t-label">System Architecture</span></span>
+    <h1 class="t-h1">How this portfolio is <span class="grad">engineered</span></h1>
+    <p class="t-lead lead">A self-contained look at the architecture, system design and automated workflows behind
+      <strong>bilalahamad.com</strong> — from the Vercel edge down to a single source of truth, the content
+      pipelines, and the quality gates that ship every change.</p>
+    <div class="stats">
+      <div class="stat glass-card"><b>8</b><span class="t-label">Page routes</span></div>
+      <div class="stat glass-card"><b>5</b><span class="t-label">API routes</span></div>
+      <div class="stat glass-card"><b>22</b><span class="t-label">Components</span></div>
+      <div class="stat glass-card"><b>7</b><span class="t-label">Blog posts</span></div>
+    </div>
+  </div>
+</section>
+
+<main>
+  <!-- ── 1 · Layered stack ── -->
+  <section class="stack-section">
+    <div class="wrap">
+      <div class="shead reveal">
+        <p class="t-label k">The Stack</p>
+        <h2 class="t-h2">A layered, server-first architecture</h2>
+        <p class="t-body">Requests flow down from the visitor through the edge into server-rendered React, then back
+          up as static HTML enriched with hydrated client islands. The dots trace that path through every layer.</p>
+      </div>
+      <div class="stack glass-card reveal">
+        <div class="spine" aria-hidden="true"></div>
+        <span class="flow" style="animation-delay:0s" aria-hidden="true"></span>
+        <span class="flow" style="animation-delay:1.25s" aria-hidden="true"></span>
+        <span class="flow" style="animation-delay:2.5s" aria-hidden="true"></span>
+        <div class="layers" id="layers"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 2 · Request lifecycle ── -->
+  <section class="stack-section">
+    <div class="wrap">
+      <div class="shead reveal">
+        <p class="t-label k">Request Lifecycle</p>
+        <h2 class="t-h2">From URL to interactive</h2>
+        <p class="t-body">What happens between a click and a fully interactive page — the packet follows a single
+          request through the rendering pipeline.</p>
+      </div>
+      <div class="reveal">
+        <div class="track" id="track">
+          <div class="lspine" aria-hidden="true"></div>
+          <span class="packet" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 3 · Pipelines ── -->
+  <section class="stack-section">
+    <div class="wrap">
+      <div class="shead reveal">
+        <p class="t-label k">Workflows</p>
+        <h2 class="t-h2">Automated content &amp; delivery pipelines</h2>
+        <p class="t-body">Three pipelines keep the site fresh and trustworthy — each lights up stage by stage as work
+          moves through it.</p>
+      </div>
+      <div class="pipes" id="pipes"></div>
+    </div>
+  </section>
+
+  <!-- ── 4 · Principles ── -->
+  <section class="stack-section">
+    <div class="wrap">
+      <div class="shead reveal">
+        <p class="t-label k">System Design</p>
+        <h2 class="t-h2">The principles holding it together</h2>
+        <p class="t-body">Eight decisions that make the site fast, accessible, recruiter-ready and cheap to maintain.</p>
+      </div>
+      <div class="principles" id="principles"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span class="t-small">&copy; <span id="yr">2026</span> Bilal Ahamad · System architecture</span>
+    <span class="links t-small">
+      <a href="https://bilalahamad.com" target="_blank" rel="noopener">Live site</a>
+      <a href="https://github.com/bilalahamad0/profile" target="_blank" rel="noopener">Source</a>
+      <span class="cap">Built using AI</span>
+    </span>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   Inline icon set (Lucide paths) + data, rendered with JS
+   ============================================================ */
+const ICONS = {
+  globe:'<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20a15.3 15.3 0 0 1 0-20"/>',
+  cloud:'<path d="M17.5 19a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.6 1.8A3.5 3.5 0 0 0 6.5 19z"/>',
+  server:'<rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01M6 18h.01"/>',
+  cursor:'<path d="m9 9 5 12 1.8-5.2L21 14z"/><path d="M7.2 2.2 8 5.1M5.1 8 2.2 7.2M14 4.1 12 6M6 12l-1.9 2"/>',
+  database:'<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/>',
+  network:'<rect x="9" y="2" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="16" y="16" width="6" height="6" rx="1"/><path d="M12 8v4M12 12H5v4M12 12h7v4"/>',
+  webhook:'<path d="M18 16.98h-5.99c-1.1 0-1.95.94-2.48 1.9A4 4 0 1 1 4 11.36"/><path d="m6 17 3.13-5.78c.53-.97.1-2.18-.5-3.1a4 4 0 1 1 6.89-4.06"/><path d="m12 6 3.13 5.73C15.66 12.7 16.9 13 18 13a4 4 0 0 1 0 8"/>',
+  filecode:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m9 13-2 2 2 2M15 13l2 2-2 2"/>',
+  send:'<path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/>',
+  gitbranch:'<line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/>',
+  activity:'<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
+  arrow:'<path d="M5 12h14M12 5l7 7-7 7"/>',
+  type:'<path d="M4 7V5h16v2M9 19h6M12 5v14"/>',
+  layers:'<path d="m12 2 9 5-9 5-9-5 9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/>',
+  gauge:'<path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/>',
+  access:'<circle cx="12" cy="4" r="1"/><path d="m18 19-1-7-5 .5M6 19l1-7 5 .5M12 5v8M9 7h6"/>',
+  shield:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>',
+  workflow:'<rect x="3" y="3" width="8" height="8" rx="1"/><path d="M7 11v4a2 2 0 0 0 2 2h4"/><rect x="13" y="13" width="8" height="8" rx="1"/>'
+};
+const ico = (name) => `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]||''}</svg>`;
+
+/* ── Layered stack ── */
+const LAYERS = [
+  {icon:'globe',acc:'zinc',title:'Client &amp; Crawlers',sub:'Recruiters, browsers, ATS bots and social scrapers',items:['Desktop &amp; mobile','Googlebot / ATS','OG link previews','RSS · sitemap']},
+  {icon:'cloud',acc:'blue',title:'Vercel Edge &amp; CDN',sub:'Global edge network with response caching',items:['Edge routing','s-maxage 1h cache','next/image optimization','Speed Insights']},
+  {icon:'server',acc:'blue',title:'Next.js 16 · App Router',sub:'React Server Components render HTML on the server',items:['Server Components','Metadata API','JSON-LD: Person + Breadcrumbs','sitemap.xml · robots.txt']},
+  {icon:'cursor',acc:'sky',title:'Client Islands',sub:'Hydrated interactivity layered over static HTML',items:['NavbarV2','BentoGridV2 · ssr:false','Framer Motion','Theme + analytics']},
+  {icon:'database',acc:'emerald',title:'Data &amp; Content',sub:'A single, typed source of truth feeds every view',items:['portfolio.ts','MDX blog · gray-matter','ai-metrics.json','9 roles · 5 projects']},
+  {icon:'network',acc:'emerald',title:'API Routes',sub:'Serverless endpoints for dynamic + form data',items:['/api/contact','/api/repos','/api/badges','/api/ai-metrics','/api/visitors']},
+  {icon:'webhook',acc:'zinc',title:'External Services',sub:'Third-party integrations behind the API layer',items:['SMTP · nodemailer','GitHub API','GA4 Data API','Upstash KV','LinkedIn API']}
+];
+document.getElementById('layers').innerHTML = LAYERS.map(l => `
+  <div class="layer ${l.acc}">
+    <div class="icobox">${ico(l.icon)}</div>
+    <div class="lc">
+      <h3 class="t-h3">${l.title}</h3>
+      <p class="t-caption ls">${l.sub}</p>
+      <div class="chips">${l.items.map(i=>`<span class="chip">${i}</span>`).join('')}</div>
+    </div>
+  </div>`).join('');
+
+/* ── Request lifecycle ── */
+const STEPS = [
+  {icon:'globe',acc:'zinc',title:'Request',sub:'GET /experience hits the edge'},
+  {icon:'cloud',acc:'blue',title:'Edge &amp; cache',sub:'CDN serves or forwards'},
+  {icon:'server',acc:'blue',title:'RSC render',sub:'HTML built on the server'},
+  {icon:'filecode',acc:'emerald',title:'Stream HTML',sub:'Static markup + JSON-LD'},
+  {icon:'cursor',acc:'sky',title:'Hydrate',sub:'Client islands wake up'},
+  {icon:'activity',acc:'violet',title:'Interactive',sub:'Animations + analytics live'}
+];
+const track = document.getElementById('track');
+track.insertAdjacentHTML('beforeend', STEPS.map((s,i)=>`
+  <div class="lnode ${s.acc}">
+    <div class="icobox">${ico(s.icon)}<span class="lnum">${i+1}</span></div>
+    <div class="ltext"><b>${s.title}</b><span>${s.sub}</span></div>
+  </div>`).join(''));
+
+/* ── Pipelines ── */
+const PIPELINES = [
+  {icon:'filecode',acc:'emerald',title:'Blog publishing',sub:'MDX in, static HTML out — no client JS to read a post',
+   steps:['MDX file','gray-matter parse','Server render','Static HTML','ATS-indexed route']},
+  {icon:'send',acc:'violet',title:'Blog → LinkedIn (/post)',sub:'One command cross-publishes to the blog and LinkedIn',
+   steps:['Topic','Draft + infographic','MDX article','npm run build','LinkedIn API','Backfill URL','Commit + push']},
+  {icon:'gitbranch',acc:'amber',title:'CI/CD quality gates',sub:'Every push is linted, tested and visually checked before deploy',
+   steps:['git push','Lint','Unit + e2e','Visual regression','Vercel build','Production']}
+];
+document.getElementById('pipes').innerHTML = PIPELINES.map(p=>`
+  <div class="pipe glass-card ${p.acc} reveal">
+    <div class="ph">
+      <div class="icobox">${ico(p.icon)}</div>
+      <div><h3 class="t-h3">${p.title}</h3><p class="t-caption ps">${p.sub}</p></div>
+    </div>
+    <ol class="pchips">${p.steps.map((s,i)=>`
+      <li><span class="pchip">${s}</span>${i<p.steps.length-1?`<svg class="parrow" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`:''}</li>`).join('')}</ol>
+  </div>`).join('');
+
+/* ── Principles ── */
+const PRINCIPLES = [
+  {icon:'server',acc:'blue',title:'SSR-first for ATS',body:'Every job title, company and metric ships as static HTML — applicant-tracking crawlers read it without running a line of JS.'},
+  {icon:'database',acc:'emerald',title:'Single source of truth',body:'All career data lives in one typed module, portfolio.ts. Components only read from it, so content never drifts out of sync.'},
+  {icon:'type',acc:'sky',title:'Fluid type system',body:'Nine semantic t-* tokens built on clamp() scale text smoothly from phone to desktop — no responsive class soup.'},
+  {icon:'layers',acc:'violet',title:'Glassmorphism system',body:'A small set of glass utilities and design tokens keeps every surface visually consistent and on-brand.'},
+  {icon:'gauge',acc:'amber',title:'Edge caching',body:'GitHub-backed API routes cache at the CDN for an hour via s-maxage, so repeat visits feel instant.'},
+  {icon:'access',acc:'emerald',title:'Accessible by default',body:'WCAG-AA contrast, visible focus rings, a skip-link and full prefers-reduced-motion support are baked in.'},
+  {icon:'shield',acc:'blue',title:'Type-safe &amp; linted',body:'TypeScript strict mode, zero any types, and a clean build + lint gate run on every single commit.'},
+  {icon:'workflow',acc:'violet',title:'Automated publishing',body:'A /post pipeline cross-publishes to the blog and LinkedIn — draft, build, API publish and commit in one flow.'}
+];
+document.getElementById('principles').innerHTML = PRINCIPLES.map(p=>`
+  <div class="reveal"><div class="pcard ${p.acc}">
+    <div class="icobox">${ico(p.icon)}</div>
+    <h3 class="t-h3">${p.title}</h3>
+    <p class="t-small">${p.body}</p>
+  </div></div>`).join('');
+
+/* ── Behaviour ── */
+document.getElementById('yr').textContent = new Date().getFullYear();
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* reveal on scroll */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+},{rootMargin:'-60px'});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+if(reduce){ document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in')); }
+
+/* pipeline sequential illumination */
+if(!reduce){
+  document.querySelectorAll('.pipe').forEach((pipe,pi)=>{
+    const chips = [...pipe.querySelectorAll('.pchip')];
+    const arrows = [...pipe.querySelectorAll('.parrow')];
+    let i = 0;
+    const tick = ()=>{
+      chips.forEach((c,ci)=>c.classList.toggle('active', ci===i));
+      arrows.forEach((a,ai)=>a.classList.toggle('active', ai===i));
+      i = (i+1) % chips.length;
+    };
+    setTimeout(()=>{ tick(); setInterval(tick, 1100); }, pi*380);
+  });
+}
+</script>
+</body>
+</html>

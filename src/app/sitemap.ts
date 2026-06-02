@@ -8,7 +8,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: BASE,                      priority: 1.0, changeFrequency: "weekly"  },
     { url: `${BASE}/experience`,      priority: 0.9, changeFrequency: "monthly" },
     { url: `${BASE}/projects`,        priority: 0.9, changeFrequency: "monthly" },
-    { url: `${BASE}/architecture`,    priority: 0.7, changeFrequency: "monthly" },
     { url: `${BASE}/certifications`,  priority: 0.8, changeFrequency: "monthly" },
     { url: `${BASE}/ai`,              priority: 0.8, changeFrequency: "monthly" },
     { url: `${BASE}/blog`,            priority: 0.8, changeFrequency: "weekly"  },

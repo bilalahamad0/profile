@@ -42,6 +42,16 @@ An interactive, premium digital portfolio built entirely from scratch to showcas
 * **AI-Driven Development Dashboard**: A transparent, data-backed breakdown (below) of the fully AI-native build process.
 * **Serverless Edge Networking**: Native form submissions that proxy straight to automated email routing without third-party form builders.
 
+## 🏗️ Architecture, Visualized
+
+An animated, self-contained walkthrough of how this site is engineered — the layered, server-first stack, the request lifecycle, the automated content & delivery pipelines, and the system-design principles behind it.
+
+[![System architecture diagram for bilalahamad.com](docs/architecture-preview.png)](https://htmlpreview.github.io/?https://github.com/bilalahamad0/profile/blob/main/docs/architecture.html)
+
+▶ **[Open the interactive diagram](https://htmlpreview.github.io/?https://github.com/bilalahamad0/profile/blob/main/docs/architecture.html)** &nbsp;·&nbsp; [view the source](docs/architecture.html)
+
+> A standalone [`docs/architecture.html`](docs/architecture.html) — pure HTML / CSS / vanilla JS, no build step and no dependencies. It's documentation only and is **not** part of the deployed site.
+
 ---
 
 ## 🛠 Required Environment Variables
