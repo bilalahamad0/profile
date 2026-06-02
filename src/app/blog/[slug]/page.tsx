@@ -2,7 +2,7 @@ import { getPostBySlug, getAllPosts } from "@/lib/blog";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
-import { ArrowLeft, Clock, Tag, Calendar, BookOpen, Github } from "lucide-react";
+import { ArrowLeft, Clock, Tag, Calendar, BookOpen, Github, Linkedin } from "lucide-react";
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
@@ -152,6 +152,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               <p className="text-zinc-600 text-xs mt-1">Technical QA Lead & AI-Driven Engineer</p>
             </div>
             <div className="flex gap-4">
+              {post.linkedinUrl && (
+                <a href={post.linkedinUrl} target="_blank" rel="noreferrer"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-sky-600 text-white text-sm font-bold hover:bg-sky-700 transition-all">
+                  <Linkedin className="w-4 h-4" />
+                  Discuss on LinkedIn
+                </a>
+              )}
               <a href="https://github.com/bilalahamad0" target="_blank" rel="noreferrer"
                 className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm font-bold text-zinc-400 hover:text-white hover:border-white/20 transition-all">
                 <Github className="w-4 h-4" />
