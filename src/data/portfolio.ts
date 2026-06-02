@@ -405,4 +405,15 @@ export const linkedInPosts: LinkedInPost[] = [
     thumbnail:
       "https://media.licdn.com/dms/image/v2/D5610AQG35d5IUimEIQ/image-shrink_1280/B56ZjoIZ2CHkAQ-/0/1756241176239?e=2147483647&v=beta&t=sx6wMLRe0F56ERjknl2-RZgQ9ZnMMNok883Y3_SnEkY",
   },
+  {
+    id: "li-6",
+    title: "Flash Update: 2,300+ California Tech Roles Hit by July Layoffs",
+    excerpt:
+      "Straight from California WARN filings: Intuit, Meta, LinkedIn, Credit Karma, and NetApp are cutting 2,300+ tech roles this July. Sharing the data early so we can look out for one another.",
+    tags: ["#technews", "#dataanalytics", "#bayareatech"],
+    date: "May 27, 2026",
+    url: "https://www.linkedin.com/feed/update/urn:li:activity:7465282589398999040/",
+    category: "LinkedIn",
+    thumbnail: "/blog-thumbs/warn-july-2026-layoffs.png",
+  },
 ];
