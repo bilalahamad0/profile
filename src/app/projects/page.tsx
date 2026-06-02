@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {
   Github, ExternalLink, Sparkles, Star, GitFork,
-  Filter, ArrowRight, BookOpen, Zap, ChevronUp,
+  Filter, ArrowRight, BookOpen, Zap, ChevronUp, Network,
 } from "lucide-react";
 import { projectsData, type ProjectCategory } from "@/data/portfolio";
 
@@ -490,6 +490,15 @@ export default function ProjectsPage() {
                             className="flex items-center gap-1.5 text-xs font-bold text-zinc-500 hover:text-white transition-colors whitespace-nowrap"
                           >
                             <Github className="w-3.5 h-3.5 shrink-0" aria-hidden="true" /> GitHub
+                          </a>
+                          <a
+                            href={project.architecture}
+                            target="_blank"
+                            rel="noreferrer"
+                            title="Architecture & system design diagram"
+                            className="flex items-center gap-1.5 text-xs font-bold text-zinc-500 hover:text-cyan-400 transition-colors whitespace-nowrap"
+                          >
+                            <Network className="w-3.5 h-3.5 shrink-0" aria-hidden="true" /> Architecture
                           </a>
                           {project.relatedPosts?.map((post) => (
                             <Link

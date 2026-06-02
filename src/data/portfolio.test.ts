@@ -129,6 +129,7 @@ describe("projectsData", () => {
     expect(project.aiTools.length).toBeGreaterThan(0);
 
     expect(project.repo).toMatch(REPO_RE);
+    expect(isHttps(project.architecture)).toBe(true);
     if (project.demo !== null) expect(isHttps(project.demo)).toBe(true);
 
     expect(typeof project.isAI).toBe("boolean");
