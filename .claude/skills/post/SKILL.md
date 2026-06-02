@@ -1,78 +1,78 @@
 ---
 name: post
-description: Cross-publish a post to the Blog and LinkedIn. Use when the user wants to publish/share something new on LinkedIn (e.g. "/post ...", "post this to my blog and LinkedIn", "draft a LinkedIn post about X"). Drafts an MDX blog article + a brand infographic, then (after explicit confirmation) publishes the same content to LinkedIn via the API and backfills the live URL.
+description: Cross-publish a post to the Blog AND LinkedIn, fully automated. TRIGGER on any request to publish/share a new post to LinkedIn — e.g. "post this on blog and LinkedIn", "post on blog and LinkedIn", "share this on LinkedIn", "publish a LinkedIn post about X", "/post ...". The agent does ALL technical steps itself (draft, infographic, MDX article, blog wiring, build, LinkedIn publish via API, backfill the live URL, commit, push). The user's only inputs are the topic/content and a single final approval (waivable). Existing blog posts are already on LinkedIn manually — this is for NEW posts only.
 ---
 
-# Blog → LinkedIn cross-publish
+# Blog → LinkedIn cross-publish (fully automated)
 
-Draft once here → publish to the Blog → auto-post the same content to LinkedIn → store the live
-LinkedIn URL back in the post. The actual LinkedIn post is **irreversible and public** — never
-publish without showing the user the final image + text and getting an explicit "yes".
+When the user asks to post something to blog + LinkedIn, **you do everything below yourself**. The
+user does not run commands or edit files. Their only inputs: the topic/content, one final approval of
+the post (skip it if they say "just post it" / "no preview"), and — at most once every ~60 days — a
+single "Allow" click to renew the LinkedIn token (LinkedIn issues no refresh token for this app, so
+that one OAuth click is unavoidable; everything around it is automated).
 
-## 0. Preflight (fail fast)
+All commands run from the repo root. Credentials live in `.env.local` (gitignored).
 
-- Confirm credentials exist: check that `.env.local` contains `LINKEDIN_CLIENT_ID` and either
-  `LINKEDIN_REFRESH_TOKEN` or `LINKEDIN_ACCESS_TOKEN`. If missing, STOP and tell the user to run the
-  one-time setup: `node scripts/linkedin-auth.mjs` (after adding the products + redirect URL — see the
-  script header), then paste the printed `LINKEDIN_*` lines into `.env.local`.
-- Use today's real date for the post date.
+## 0. Token preflight (automatic — never post with a dead token)
 
-## 1. Draft the content (with the user)
+```
+node --env-file=.env.local scripts/post-to-linkedin.mjs --check-token
+```
+- `TOKEN_STATUS=ok` → continue.
+- `TOKEN_STATUS=expiring` (≤7 days left) → continue, but mention it'll need a renewal soon.
+- `TOKEN_STATUS=expired` (exit 3) → **renew it for the user, don't make them figure it out:** run
+  `node --env-file=.env.local scripts/linkedin-auth.mjs --write`, tell them "your 60-day LinkedIn
+  token expired — I've opened LinkedIn; please click **Allow** in the browser." Wait for it to write
+  the new keys, re-run `--check-token` to confirm `ok`, then continue.
+- `TOKEN_STATUS=error` (no creds) → first-time setup: see `scripts/linkedin-auth.mjs` header.
 
-Produce and confirm: `title`, `description` (1–2 sentence excerpt), `tags` (3–6), a `slug`
-(use `slugify` from `scripts/lib/linkedin-core.mjs`; keep it `[a-z0-9-]`), the **LinkedIn body**
-(the commentary — punchy, ≤ ~2800 chars before tags/link), and an **infographic concept**.
+## 1. Draft (propose, don't make them write it)
 
-## 2. Render the brand infographic → `public/blog-thumbs/<slug>.png`
+Draft and briefly confirm: `title`, `description` (1–2 sentences), `tags` (3–6), the **LinkedIn body**
+(commentary; punchy, ≤ ~2800 chars before link/tags), and an **infographic concept**. Compute the
+`slug` with `slugify` from `scripts/lib/linkedin-core.mjs` (`[a-z0-9-]`). Use today's real date.
 
-Write a spec and render it (2.05:1, date top-left, safe zones are built in):
+## 2. Render the infographic → `public/blog-thumbs/<slug>.png`
+
 ```
 node scripts/render-card.mjs --spec /tmp/<slug>.json --out public/blog-thumbs/<slug>.png
 ```
-Spec keys: `pill, date, title, titleHighlight, subtitle, rows:[{label,value,suffix}], footer`.
-For a bespoke visual, hand-author HTML and use `--html` instead. Prefer comparable units in `rows`
-(bars scale to the max value). View the PNG to sanity-check it.
+Spec keys: `pill, date, title, titleHighlight, subtitle, rows:[{label,value,suffix}], footer`
+(omit `rows` for a clean title card). 2.05:1 + date-top-left crop-safety is built in. View the PNG.
 
-## 3. Create the MDX article + register it (the "Both" surface)
+## 3. Create the MDX article + wire it in (the "Both" surface)
 
-- `content/blog/<slug>.mdx` — frontmatter `title, date, description, tags, category, featured: false,
-  linkedinUrl: ""` (backfilled in step 7) + the full article body.
-- `src/app/blog/page.tsx` — append an entry to the `mdxPosts` array (slug, title, date, description,
-  tags, category, readingTime, featured:false, thumbnail:`/blog-thumbs/<slug>.png`, linkedinUrl:"").
-- `src/app/blog/[slug]/page.tsx` — add `"<slug>": "/blog-thumbs/<slug>.png"` to `slugToThumb`
-  (drives OG image + header). The article page auto-renders a "Discuss on LinkedIn" button from
-  `post.linkedinUrl` once it's set.
+- `content/blog/<slug>.mdx` — frontmatter `title, date, description, tags, category, featured:false,
+  linkedinUrl:""` (backfilled in step 6) + the article body.
+- `src/app/blog/page.tsx` — append a `mdxPosts` entry (slug, title, date, description, tags, category,
+  readingTime, featured:false, `thumbnail:"/blog-thumbs/<slug>.png"`, `linkedinUrl:""`).
+- `src/app/blog/[slug]/page.tsx` — add `"<slug>": "/blog-thumbs/<slug>.png"` to `slugToThumb`.
+  (The article auto-renders a "Discuss on LinkedIn" button once `linkedinUrl` is set.)
 
-## 4. Quality gates (must pass before publishing)
+## 4. Quality gates
 
-`npm run build` (0 errors) · `npm run lint` (0 errors) · `npx vitest run` · Playwright-screenshot the
-new card at 1440px and 390px and eyeball the crop.
+`npm run build` (0 errors) · `npm run lint` (0 errors) · `npx vitest run` · screenshot the new card at
+1440px + 390px and eyeball the crop.
 
-## 5. CONFIRM GATE 🚦
+## 5. Single approval 🚦 (the one human decision)
 
-Show the user the rendered image and the **exact** LinkedIn commentary text (run the poster with
-`--dry-run` and show its payload). Ask for explicit approval. Do not continue without a clear yes.
+Run the poster with `--dry-run` and show the user the **rendered image + the exact LinkedIn text**.
+Ask once for a yes. **Skip this step only if the user explicitly said to post without preview.** Never
+publish on a typo'd/unreviewed draft by default — it's public under their name and irreversible.
 
-## 6. Publish to LinkedIn
+## 6. Publish + backfill + ship (all automatic)
 
 ```
 node --env-file=.env.local scripts/post-to-linkedin.mjs --confirm \
-  --commentary-file /tmp/<slug>-commentary.txt \
-  --image public/blog-thumbs/<slug>.png \
-  --blog-url https://bilalahamad.com/blog/<slug> \
-  --title "<title>" --description "<description>" --tags "<comma,tags>"
+  --commentary-file /tmp/<slug>-commentary.txt --image public/blog-thumbs/<slug>.png \
+  --blog-url https://bilalahamad.com/blog/<slug> --title "<title>" --tags "<comma,tags>"
 ```
-Capture the printed `POST_URL=<url>`. Default media is the uploaded image (blog link goes in the
-text). Pass `--link-mode article` instead if the user wants a link-preview card from the blog's OG
-image rather than a natively uploaded image (LinkedIn allows only one, not both).
-
-## 7. Backfill the live URL + ship
-
-- Put the `POST_URL` into the `.mdx` frontmatter `linkedinUrl` and the `mdxPosts` entry `linkedinUrl`.
-- `git checkout -b post/<slug>`, commit (`feat(blog): <title> + LinkedIn cross-post`), push.
-  Re-check the branch before pushing and use `--force-with-lease` (parallel-agent safety).
+Capture `POST_URL=<url>`. Default media = the uploaded image with the blog link in the text; pass
+`--link-mode article` for a link-preview card instead (LinkedIn allows only one). Then:
+- Write `POST_URL` into the `.mdx` frontmatter `linkedinUrl` and the `mdxPosts` entry.
+- `git checkout -b post/<slug>`, commit `feat(blog): <title> + LinkedIn cross-post`, push
+  (`--force-with-lease`, re-check branch first — parallel-agent safety). Offer to open a PR.
 
 ## Notes
-- Existing blog posts are already on LinkedIn manually — this skill is for NEW posts only.
-- Pure helpers (`scripts/lib/linkedin-core.mjs`) are unit-tested; API wrappers live in
-  `scripts/lib/linkedin-api.mjs`. Validate end-to-end with `--dry-run` whenever unsure.
+- Pure helpers (`scripts/lib/linkedin-core.mjs`, `linkedin-token.mjs`) are unit-tested; API I/O is in
+  `scripts/lib/linkedin-api.mjs`. The poster refuses to publish without `--confirm`.

@@ -137,6 +137,14 @@ const server = http.createServer(async (req, res) => {
     if (tok.refresh_token) out.LINKEDIN_REFRESH_TOKEN = tok.refresh_token;
     else out.LINKEDIN_ACCESS_TOKEN = tok.access_token;
 
+    // Record expiry (unix seconds) so the pipeline can auto-detect when a re-auth
+    // is due. For refresh-token apps, the refresh token is the limiting factor;
+    // otherwise it's the access token.
+    const ttlSec = tok.refresh_token
+      ? tok.refresh_token_expires_in || tok.expires_in || 0
+      : tok.expires_in || 0;
+    out.LINKEDIN_TOKEN_EXPIRES = String(Math.floor(Date.now() / 1000) + ttlSec);
+
     const ttl = tok.refresh_token
       ? `refresh token valid ~${Math.round((tok.refresh_token_expires_in || 0) / 86400)} days; access token auto-refreshed on demand`
       : `no refresh token granted — access token expires in ~${Math.round((tok.expires_in || 0) / 86400)} days; re-run to renew`;

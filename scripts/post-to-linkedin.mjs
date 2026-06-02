@@ -22,6 +22,7 @@ import {
   createUgcPost,
 } from "./lib/linkedin-api.mjs";
 import { composeCommentary, buildUgcPayload } from "./lib/linkedin-core.mjs";
+import { tokenStatus } from "./lib/linkedin-token.mjs";
 
 function arg(name, fallback) {
   const i = process.argv.indexOf(`--${name}`);
@@ -29,7 +30,35 @@ function arg(name, fallback) {
 }
 const has = (name) => process.argv.includes(`--${name}`);
 
+// `--check-token`: report whether the LinkedIn token is usable. Prints machine-
+// readable TOKEN_STATUS=ok|expiring|expired and exits 3 when a re-auth is due.
+async function checkToken() {
+  const now = Math.floor(Date.now() / 1000);
+  const st = tokenStatus({ expiresAt: process.env.LINKEDIN_TOKEN_EXPIRES, now });
+  let live;
+  try {
+    const { token } = await resolveAccessToken();
+    await getPersonUrn(token); // live GET /v2/userinfo — 401 if the token is dead
+    live = "valid";
+  } catch (e) {
+    if (/\b401\b|expired|revoked|invalid_token/i.test(e.message)) {
+      live = "expired";
+    } else {
+      console.log("TOKEN_STATUS=error");
+      console.error(e.message);
+      process.exit(1);
+    }
+  }
+  // Live check wins for valid/expired; the timestamp supplies daysLeft + "expiring".
+  const status = live === "expired" ? "expired" : st.status === "expiring" ? "expiring" : "ok";
+  console.log(`TOKEN_STATUS=${status}`);
+  console.log(`TOKEN_DAYS_LEFT=${st.daysLeft ?? ""}`);
+  console.log(`live=${live}`);
+  process.exit(status === "expired" ? 3 : 0);
+}
+
 async function main() {
+  if (has("check-token")) return checkToken();
   const dryRun = has("dry-run");
   const confirm = has("confirm");
   const linkMode = arg("link-mode", "image"); // image | article
