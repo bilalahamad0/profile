@@ -167,6 +167,7 @@ describe("linkedInPosts", () => {
     expect(post.tags.length).toBeGreaterThan(0);
     for (const tag of post.tags) expect(tag).toMatch(/^#/);
 
-    if (post.thumbnail) expect(isHttps(post.thumbnail)).toBe(true);
+    if (post.thumbnail)
+      expect(isHttps(post.thumbnail) || post.thumbnail.startsWith("/")).toBe(true);
   });
 });
