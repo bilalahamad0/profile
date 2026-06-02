@@ -10,12 +10,16 @@
 //   LINKEDIN_CLIENT_ID=xxx LINKEDIN_CLIENT_SECRET=yyy node scripts/linkedin-auth.mjs
 //   (or pass --client-id / --client-secret, or put them in .env.local and run with --env-file=.env.local)
 //
-// It opens your browser, you click "Allow", and it prints the LINKEDIN_* lines
-// to paste into .env.local. No secrets are written to disk by this script.
+// It opens your browser, you click "Allow", then EITHER prints the LINKEDIN_*
+// lines to paste into .env.local, OR — with --write — upserts them into
+// .env.local for you (recommended; avoids dropping the token/URN lines):
+//   node --env-file=.env.local scripts/linkedin-auth.mjs --write
 
 import http from "node:http";
 import { randomUUID } from "node:crypto";
 import { exec } from "node:child_process";
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
+import { resolve } from "node:path";
 
 const PORT = 4571;
 const REDIRECT_URI = `http://localhost:${PORT}/callback`;
@@ -31,6 +35,20 @@ function arg(name) {
 
 const CLIENT_ID = arg("client-id") || process.env.LINKEDIN_CLIENT_ID;
 const CLIENT_SECRET = arg("client-secret") || process.env.LINKEDIN_CLIENT_SECRET;
+const WRITE = process.argv.includes("--write");
+const ENV_PATH = resolve(process.cwd(), ".env.local");
+
+/** Upsert KEY=value pairs into .env.local, preserving other lines. */
+function upsertEnvLocal(kv) {
+  const lines = existsSync(ENV_PATH) ? readFileSync(ENV_PATH, "utf-8").split("\n") : [];
+  for (const [k, v] of Object.entries(kv)) {
+    const idx = lines.findIndex((l) => l.replace(/^#\s*/, "").startsWith(`${k}=`));
+    const line = `${k}=${v}`;
+    if (idx !== -1) lines[idx] = line;
+    else lines.push(line);
+  }
+  writeFileSync(ENV_PATH, lines.join("\n").replace(/\n*$/, "\n"));
+}
 
 if (!CLIENT_ID || !CLIENT_SECRET) {
   console.error(
@@ -109,27 +127,29 @@ const server = http.createServer(async (req, res) => {
     const author = await fetchAuthorUrn(tok.access_token);
 
     respond("✅ LinkedIn authorized!");
-
     console.log(`\n✅ Authorized as ${author.name} (${author.urn})\n`);
-    console.log("Add these lines to .env.local (gitignored):\n");
-    console.log("# ---- LinkedIn (Blog → LinkedIn cross-publish) ----");
-    console.log(`LINKEDIN_CLIENT_ID=${CLIENT_ID}`);
-    console.log(`LINKEDIN_CLIENT_SECRET=${CLIENT_SECRET}`);
-    console.log(`LINKEDIN_AUTHOR_URN=${author.urn}`);
-    if (tok.refresh_token) {
-      console.log(`LINKEDIN_REFRESH_TOKEN=${tok.refresh_token}`);
-      console.log(
-        `# refresh token valid ~${Math.round((tok.refresh_token_expires_in || 0) / 86400)} days; ` +
-          `access token auto-refreshed on demand.`
-      );
+
+    const out = {
+      LINKEDIN_CLIENT_ID: CLIENT_ID,
+      LINKEDIN_CLIENT_SECRET: CLIENT_SECRET,
+      LINKEDIN_AUTHOR_URN: author.urn,
+    };
+    if (tok.refresh_token) out.LINKEDIN_REFRESH_TOKEN = tok.refresh_token;
+    else out.LINKEDIN_ACCESS_TOKEN = tok.access_token;
+
+    const ttl = tok.refresh_token
+      ? `refresh token valid ~${Math.round((tok.refresh_token_expires_in || 0) / 86400)} days; access token auto-refreshed on demand`
+      : `no refresh token granted — access token expires in ~${Math.round((tok.expires_in || 0) / 86400)} days; re-run to renew`;
+
+    if (WRITE) {
+      upsertEnvLocal(out);
+      console.log(`✅ Wrote ${Object.keys(out).length} LINKEDIN_* keys to .env.local (${ttl}).`);
     } else {
-      console.log(`LINKEDIN_ACCESS_TOKEN=${tok.access_token}`);
-      console.log(
-        `# No refresh token granted by your app — this access token expires in ~` +
-          `${Math.round((tok.expires_in || 0) / 86400)} days. Re-run this script to renew.`
-      );
+      console.log("Add these lines to .env.local (gitignored), or re-run with --write:\n");
+      for (const [k, v] of Object.entries(out)) console.log(`${k}=${v}`);
+      console.log(`# ${ttl}`);
     }
-    console.log("\nDone. You can stop other terminals; this server will now exit.\n");
+    console.log("\nDone. This server will now exit.\n");
   } catch (err) {
     respond(`❌ ${err.message}`);
     console.error(`\n❌ ${err.message}\n`);
