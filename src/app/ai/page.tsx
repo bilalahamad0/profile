@@ -3,7 +3,7 @@ import Link from "next/link";
 import {
   Sparkles, Github, ExternalLink, BookOpen,
   ChevronRight, Zap, TrendingUp, ArrowRight,
-  Bot, Coins, GitCommit, FileCode2, Server, FlaskConical
+  Bot, Coins, GitCommit, FileCode2, Server, FlaskConical, Network
 } from "lucide-react";
 import { projectsData } from "@/data/portfolio";
 import { getAIMetricsMap, type AIMetrics } from "@/lib/ai-metrics";
@@ -370,6 +370,11 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
               className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-zinc-400 hover:text-white hover:border-white/20 transition-all">
               <Github className="w-3.5 h-3.5" />
               Source
+            </a>
+            <a href={project.architecture} target="_blank" rel="noreferrer" title="Architecture & system design diagram"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-bold text-zinc-400 hover:text-white hover:border-white/20 transition-all">
+              <Network className="w-3.5 h-3.5" />
+              Architecture
             </a>
           </div>
         </div>
