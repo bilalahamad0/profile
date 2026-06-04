@@ -15,12 +15,12 @@ import { getAllPosts } from "@/lib/blog";
 export const metadata: Metadata = {
   title: "Home | Bilal Ahamad",
   description:
-    "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer. 18+ years at Amazon, Google, Rivian, Cruise, Samsara. Portfolio of production-grade automation, IoT, and AI systems.",
+    "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer. 18+ years at Amazon, Google, Rivian, Cruise & Samsara building automation, IoT & AI systems.",
   openGraph: {
     type: "website",
     title: "Home | Bilal Ahamad",
     description:
-      "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer. 18+ years at Amazon, Google, Rivian, Cruise, Samsara. Portfolio of production-grade automation, IoT, and AI systems.",
+      "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer. 18+ years at Amazon, Google, Rivian, Cruise & Samsara building automation, IoT & AI systems.",
     url: "https://bilalahamad.com",
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer" }],
   },

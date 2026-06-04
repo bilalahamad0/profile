@@ -1,4 +1,4 @@
-import { getPostBySlug, getAllPosts } from "@/lib/blog";
+import { getPostBySlug, getAllPosts, metaDescription } from "@/lib/blog";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
@@ -23,20 +23,21 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const post = getPostBySlug(slug);
   if (!post) return {};
   const image = slugToThumb[slug] ?? "/og-image.png";
+  const desc = metaDescription(post.description);
   return {
     title: post.title,
-    description: post.description,
+    description: desc,
     openGraph: {
       type: "article",
       title: `${post.title} | Bilal Ahamad`,
-      description: post.description,
+      description: desc,
       url: `https://bilalahamad.com/blog/${slug}`,
       images: [{ url: image, width: 1200, height: 630, alt: post.title }],
     },
     twitter: {
       card: "summary_large_image" as const,
       title: `${post.title} | Bilal Ahamad`,
-      description: post.description,
+      description: desc,
       images: [image],
     },
   };

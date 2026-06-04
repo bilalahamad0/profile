@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Certifications",
   description:
-    "Professional certifications of Bilal Ahamad — ISTQB CTFL, AI/ML testing, leadership, and Scrum. 18+ years of continuous learning in firmware quality and test automation.",
+    "Professional certifications of Bilal Ahamad — ISTQB CTFL, AI/ML testing, leadership & Scrum. 18+ years advancing firmware quality & test automation.",
   openGraph: {
     type: "website",
     title: "Certifications | Bilal Ahamad",
