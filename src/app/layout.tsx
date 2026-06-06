@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     template: "%s | Bilal Ahamad",
   },
   description:
-    "Portfolio of Bilal Ahamad — 18+ years engineering quality for Amazon, Google, Rivian, Cruise & Samsara. Specializing in IoT automation, test architecture, and AI-native development.",
+    "Portfolio of Bilal Ahamad — 18+ years engineering quality at Amazon, Google, Rivian, Cruise & Samsara. IoT automation, test architecture & AI-native dev.",
   keywords: [
     "Technical QA Lead", "IoT Engineer", "Test Automation", "Amazon", "Google",
     "Rivian", "Cruise", "Samsara", "QA Manager", "Software Engineer", "AI",

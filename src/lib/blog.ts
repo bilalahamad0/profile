@@ -22,6 +22,22 @@ function calcReadingTime(content: string): number {
   return Math.ceil(words / 200); // avg 200 wpm
 }
 
+// Clamp a description for use in a <meta name="description"> tag.
+// Search engines (Bing/Google) flag descriptions over ~160 chars, so truncate
+// at a word boundary and append an ellipsis. The full, untruncated text can
+// still render as the on-page excerpt — this only guards the meta tag.
+export function metaDescription(desc: string): string {
+  const MAX = 160;
+  if (desc.length <= MAX) return desc;
+  const slice = desc.slice(0, MAX - 1); // reserve one char for the ellipsis
+  const lastSpace = slice.lastIndexOf(" ");
+  const trimmed = (lastSpace > 0 ? slice.slice(0, lastSpace) : slice).replace(
+    /[\s.,;:—-]+$/,
+    ""
+  );
+  return `${trimmed}…`;
+}
+
 export function getAllPosts(): Omit<BlogPost, "content">[] {
   if (!fs.existsSync(contentDir)) return [];
 

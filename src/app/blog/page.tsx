@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Clock, FileText, ArrowRight, BookOpen } from "lucide-react";
 import { linkedInPosts } from "@/data/portfolio";
+import { getAllPosts } from "@/lib/blog";
 import { BlogGridClient } from "@/components/blog/BlogGridClient";
 
 export const metadata: Metadata = {
@@ -36,93 +37,44 @@ const breadcrumb = {
   ],
 };
 
-// Static post metadata — defined at module level, not inside a client component
-export const mdxPosts = [
-  {
-    slug: "adhan-caster-extension-story",
-    title: "Adhan Caster Pro for Chrome: Pausing Every Tab at Prayer Time",
-    date: "May 24, 2026",
-    description:
-      "How I built a Manifest V3 Chrome extension — end-to-end in a single day with Claude Code (Opus 4.7) — that shows a live prayer-time countdown and automatically pauses media in every open tab at Adhan, with a cross-tab full-screen prayer-focus mode and configurable auto-resume.",
-    tags: ["Chrome Extension", "Manifest V3", "JavaScript", "Service Worker", "AI-Assisted"],
-    category: "Project Story" as const,
-    readingTime: 8,
-    featured: false,
-    thumbnail: "/images/adhan-ce-demo.gif",
-  },
-  {
-    slug: "gemma-ollama-raspberry-pi-adhan",
-    title: "Edge AI on a Raspberry Pi 4: Adding Gemma 3 + Ollama to the Adhan Caster",
-    date: "May 22, 2026",
-    description:
-      "How I embedded a fully local Gemma 3 (1B) model via Ollama into a production Raspberry Pi 4 home-automation system — adding a natural-language assistant, self-diagnosing failures, and an in-context advisory loop, all without ever touching the real-time prayer-cast path.",
-    tags: ["Edge AI", "Gemma 3", "Ollama", "Raspberry Pi", "LLM", "Home Automation"],
-    category: "Whitepaper" as const,
-    readingTime: 9,
-    featured: false,
-    thumbnail: "/blog-thumbs/gemma-ollama-raspberry-pi-adhan.png",
-  },
-  {
-    slug: "resilient-iot-application",
-    title: "Engineering a Resilient Smart Home IoT Application: Lessons in Latency, mDNS, and Self-Healing Systems",
-    date: "April 30, 2026",
-    description:
-      "Building a highly reliable, zero-latency IoT system on a Raspberry Pi, tackling mDNS discovery, background compute windows, and self-healing multi-tier fallbacks.",
-    tags: ["IoT", "Raspberry Pi", "Networking", "Node.js", "System Design"],
-    category: "Whitepaper" as const,
-    readingTime: 6,
-    featured: false,
-    thumbnail: "/blog-thumbs/resilient-iot.png",
-  },
-  {
-    slug: "clock-jump-case-study",
-    title: "Engineering a Resilient Smart Home IoT Application: Navigating System Clock Jumps and Network Outages",
-    date: "May 12, 2026",
-    description:
-      "A deep dive into how an unexpected network outage and subsequent NTP clock jump caused chaos in a Node.js IoT scheduler, and how we engineered a resilient self-healing pipeline.",
-    tags: ["IoT", "Node.js", "Raspberry Pi", "System Architecture", "Debugging"],
-    category: "Whitepaper" as const,
-    readingTime: 5,
-    featured: false,
-    thumbnail: "/blog-thumbs/iot_clock_jump_thumbnail.png",
-  },
-  {
-    slug: "ai-driven-development",
-    title: "AI-Driven Development: Compressing 3 Weeks into 4 Days",
-    date: "August 26, 2025",
-    description:
-      "A technical whitepaper on AI-native software engineering: methodology, toolchain, metrics, and a framework for measuring engineering velocity gains.",
-    tags: ["AI", "Software Engineering", "Productivity"],
-    category: "Whitepaper" as const,
-    readingTime: 8,
-    featured: true,
-    thumbnail: "/blog-thumbs/ai-native-dev.png",
-  },
-  {
-    slug: "california-warn-story",
-    title: "California Live Layoff Monitoring Dashboard: Live Layoff Intelligence from Scratch",
-    date: "August 20, 2025",
-    description:
-      "How I built a fully automated data pipeline that transforms raw California WARN Act filings into live, actionable layoff intelligence — running twice daily with zero human intervention.",
-    tags: ["Python", "GitHub Actions", "Data Engineering"],
-    category: "Project Story" as const,
-    readingTime: 6,
-    featured: false,
-    thumbnail: "/blog-thumbs/california-warn.png",
-  },
-  {
-    slug: "media-caster-story",
-    title: "Smart-Home IoT Media Caster: Engineering IoT Automation with AI",
-    date: "August 12, 2025",
-    description:
-      "A deep dive into building a prayer-time IoT orchestration system with Raspberry Pi, ADB, and Sony Android TV — compressed from 3 weeks to 4 days using AI pair programming.",
-    tags: ["IoT", "Raspberry Pi", "ADB", "Node.js"],
-    category: "Project Story" as const,
-    readingTime: 5,
-    featured: false,
-    thumbnail: "/blog-thumbs/media-caster.png?v=2",
-  },
+// Thumbnails are presentation assets keyed by slug — not part of post content,
+// so they live here rather than in MDX frontmatter.
+const slugToThumb: Record<string, string> = {
+  "adhan-caster-extension-story": "/images/adhan-ce-demo.gif",
+  "gemma-ollama-raspberry-pi-adhan": "/blog-thumbs/gemma-ollama-raspberry-pi-adhan.png",
+  "resilient-iot-application": "/blog-thumbs/resilient-iot.png",
+  "clock-jump-case-study": "/blog-thumbs/iot_clock_jump_thumbnail.png",
+  "ai-driven-development": "/blog-thumbs/ai-native-dev.png",
+  "california-warn-story": "/blog-thumbs/california-warn.png",
+  "media-caster-story": "/blog-thumbs/media-caster.png?v=2",
+};
+
+const MONTHS = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
 ];
+
+// "2026-05-24" -> "May 24, 2026"; non-ISO input is returned unchanged.
+function formatDate(iso: string): string {
+  const [y, m, d] = iso.split("-");
+  const mi = Number(m) - 1;
+  if (!y || !d || mi < 0 || mi > 11) return iso;
+  return `${MONTHS[mi]} ${Number(d)}, ${y}`;
+}
+
+// Single source of truth: post content comes from MDX frontmatter via getAllPosts().
+// Only presentation (thumbnail, display date) is layered on here.
+export const mdxPosts = getAllPosts().map((p) => ({
+  slug: p.slug,
+  title: p.title,
+  date: formatDate(p.date),
+  description: p.description,
+  tags: p.tags,
+  category: p.category,
+  readingTime: p.readingTime,
+  featured: p.featured,
+  thumbnail: slugToThumb[p.slug],
+}));
 
 const featured = mdxPosts.find((p) => p.featured);
 
