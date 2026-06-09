@@ -112,7 +112,8 @@ The site is built securely on Vercel utilizing automatic GitHub CI/CD deployment
 | **Phase 1** — Foundation & MVP | **Antigravity IDE** | Gemini 2.5 Flash (orchestration) · Gemini 2.5 Pro (architecture) | Jul 6 – Jul 25, 2025 | 138 |
 | **Phase 2** — Maintenance | Manual | — | Nov 2025 | 1 |
 | **Phase 3** — Modernization & Hardening | **Cursor IDE** | Claude Opus 4.6 (architecture & deep debugging) · Claude Sonnet 4 (fast iteration) | Apr 2 – Apr 14, 2026 | 134 |
-| | | **Total** | | **273** |
+| **Phase 4** — Automation, SEO & Ops | **Claude Code** | Claude Opus 4.7 / 4.8 (autonomous engineering) · Claude Fable 5 | Apr 27, 2026 – Present | 199 |
+| | | **Total** | | **472** |
 
 ### 📈 Token & Cost Economics
 
@@ -124,6 +125,8 @@ The site is built securely on Vercel utilizing automatic GitHub CI/CD deployment
 | **Manual Cost (@$75/hr)** | $9,000 | $6,000 | **$15,000** |
 | **Cost Savings** | 99.9% | 99.8% | **99.9%** |
 | **ROI** | 1,500x | 400x | **714x** |
+
+> **Phase 4 measured usage (Claude Code):** 158.1M tokens processed, measured from session logs — input + output + cache writes + cache reads (≈4.6M excluding cache reads). Not included in the estimate table above; live per-project numbers are on [bilalahamad.com/ai](https://bilalahamad.com/ai).
 
 <details>
 <summary><strong>Cost methodology</strong></summary>
