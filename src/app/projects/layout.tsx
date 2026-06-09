@@ -4,6 +4,7 @@ export const metadata: Metadata = {
   title: "Projects",
   description:
     "Production-grade open source projects — automation pipelines, IoT systems, AI-powered tools, and web applications by Bilal Ahamad.",
+  alternates: { canonical: "/projects" },
   openGraph: {
     type: "website",
     title: "Projects | Bilal Ahamad",

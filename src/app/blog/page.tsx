@@ -11,6 +11,7 @@ import { BlogGridClient } from "@/components/blog/BlogGridClient";
 export const metadata: Metadata = {
   title: "Blog",
   description: "Project stories, technical whitepapers, and thoughts on AI-native engineering by Bilal Ahamad — firmware quality lead and agentic developer.",
+  alternates: { canonical: "/blog" },
   openGraph: {
     type: "website",
     title: "Blog | Bilal Ahamad",

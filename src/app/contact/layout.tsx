@@ -4,6 +4,7 @@ export const metadata: Metadata = {
   title: "Contact",
   description:
     "Get in touch with Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer. Open to senior engineering, QA leadership, and AI consulting opportunities.",
+  alternates: { canonical: "/contact" },
   openGraph: {
     type: "website",
     title: "Contact | Bilal Ahamad",

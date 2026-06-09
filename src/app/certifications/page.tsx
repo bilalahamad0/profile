@@ -1020,6 +1020,7 @@ export default function CertificationsPage() {
                       <Link
                         href={selectedCert.url}
                         target="_blank"
+                        rel="noopener noreferrer"
                         onClick={() => trackEvent('verify_certificate', {
                           title: selectedCert.title,
                           issuer: selectedCert.issuer

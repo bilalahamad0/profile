@@ -14,6 +14,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "AI Lab",
   description: "Production systems built through AI pair programming — AI-native from architecture to deployment. Bilal Ahamad's showcase of agentic engineering.",
+  alternates: { canonical: "/ai" },
   openGraph: {
     type: "website",
     title: "AI Lab | Bilal Ahamad",
