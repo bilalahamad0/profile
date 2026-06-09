@@ -1,8 +1,9 @@
 name: Weekly AI Metrics Update
 
 on:
-  schedule:
-    - cron: '0 2 * * 0'  # Sunday 02:00 UTC (after CodeQL at 00:00)
+  # Scheduled run disabled: the weekly cron failed ~85% of the time (missing
+  # GH_PAT / VERCEL_DEPLOY_HOOK secret), generating noise with no benefit.
+  # Re-add the `schedule:` block once those secrets are configured.
   workflow_dispatch:      # allow manual trigger from Actions tab
 
 permissions:
