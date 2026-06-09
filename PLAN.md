@@ -33,20 +33,22 @@ small **UX decisions** — not infrastructure.
 - ✅ **3B (partial)** — Added the missing `adhan-caster-extension-story` OG thumbnail mapping (it was falling back to the generic image).
 - ✅ **Repo hygiene** — `.gitignore` now covers `.claude/worktrees/`, `.lostpixel/`, `.playwright-mcp/`, `.antigravityignore`, and the 6.4 MB `bilal-logo-master.png` master art.
 
+### Mobile / UX (2026-06-08)
+- ✅ **4D** — *375 px mobile audit (Playwright, production build).* All 7 routes **+ a blog post = 0 px horizontal overflow**, zero unclipped offenders; the dense 7-pill `NavbarV2` fits (357 px row in a 375 px viewport). Decorative blur blobs extend off-canvas but are ancestor-clipped (no document scroll). Console clean except the expected `/_vercel/insights` + `/speed-insights` 404s (Vercel-edge-only; resolve in prod). No `overflow-x: clip` guard needed.
+- ✅ **4B** — Hero CTA kept as "Full Career Roadmap" → `/experience` (decided 2026-06-08; the bento career grid is the stronger recruiter CTA). No code change.
+
 ---
 
 ## ⬜ Outstanding — codebase-doable (I can implement autonomously)
 
-- ⬜ **4D** — Run a real 375 px mobile pass (Playwright/Chrome) on `/`, `/experience`, `/certifications`, and the dense 7-pill `NavbarV2`. Code looks sound but the plan needs an *actual* viewport audit; add `body { overflow-x: clip }` if any horizontal scroll appears.
 - ⬜ **2C (mostly)** — Add a Testimonials section to the homepage between `FeaturedProjects` and `AILabPreview`. Data partly exists: `portfolio.ts` `recommendations` (2 real LinkedIn recs) already renders on `/experience` only. Reuse it on the homepage. *(Needs owner input only for a `company` field per rec.)*
 
 ## ⬜ Outstanding — needs owner content or a decision
 
 - ⬜ **3C** — **Resume PDF is a 614-byte placeholder stub** ("Placeholder - replace with your resume") and is linked nowhere. Two halves: (a) supply a real PDF matching the 10 `portfolio.ts` roles *(owner)*; (b) add a visible "Download Resume" link *(codebase)*. Single biggest recruiter-facing gap.
-- ⬜ **2A** — *Decision:* deliver case studies as a **dedicated `/case-studies` route** (new MDX pipeline) **or** a **new "Case Study" blog category** (reuses existing `lib/blog.ts`, far less infra — audit's recommendation). Resolve before building.
+- ⬜ **2A** — *Decided 2026-06-08:* **dedicated `/case-studies` route** (new `content/case-studies/` MDX pipeline + `src/app/case-studies/[slug]` with Challenge/Approach/Outcome sections). Infra can be scaffolded now; the studies themselves (2B) need owner narratives.
 - ⬜ **2B** — 2 sanitized employer case studies ("Tier-1 automotive OEM", "global IoT platform company") from firmware-validation/HIL experience. None exist today (and no client-name leakage either). *Needs owner narratives/metrics.* Depends on 2A.
 - ⬜ **2D** — 3 firmware-credibility blog posts genuinely missing: "Testing at Scale in Automotive", "HIL vs SIL", "What 18 Years in QA Taught Me About AI". *Needs owner technical specifics* (use the `/post` skill). (The 4th, "Zero-Budget Data Pipeline", is already covered by `california-warn-story.mdx`.)
-- ⬜ **4B** — *Decision:* hero CTA still reads "Full Career Roadmap" → `/experience`. Change to "Explore My Work →" → `/projects` per the old plan, **or** keep `/experience` (arguably the stronger recruiter CTA) and mark 4B done-differently.
 
 ---
 
@@ -82,3 +84,4 @@ small **UX decisions** — not infrastructure.
 | 2026-04-23 | 1F | robots.ts (allow all, sitemap referenced). | 15bb8fd |
 | 2026-06-08 | audit | Full codebase audit reconciled PLAN vs reality (4 domains, 21 items + critic). | — |
 | 2026-06-08 | 3D/1C/SEO | Canonicals on all routes + self-canonical on posts; BreadcrumbList + BlogPosting JSON-LD on /blog/[slug]; cert-link rel fix (4E); adhan OG thumb; .gitignore hygiene. | _this branch_ |
+| 2026-06-08 | 4D/4B/2A | 375px Playwright mobile audit — 0px overflow on all routes + a post (4D ✅). Decisions: keep hero CTA→/experience (4B ✅); case studies via dedicated /case-studies route (2A). | _this branch_ |
