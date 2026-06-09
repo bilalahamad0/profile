@@ -18,7 +18,15 @@ export default defineConfig({
     environment: 'happy-dom',
     css: false,
     setupFiles: ['./vitest.setup.ts'],
-    exclude: ['node_modules', 'dist', '.idea', '.git', '.cache', 'tests/e2e/**'],
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/.idea/**',
+      '**/.git/**',
+      '**/.cache/**',
+      'tests/e2e/**',
+      '**/.claude/**',
+    ],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
