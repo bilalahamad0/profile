@@ -43,7 +43,7 @@ const breadcrumb = {
 const STATIC_FALLBACK: Record<string, AIMetrics> = {
   warn: {
     projectId: "warn",
-    lastUpdated: "2026-04-28",
+    lastUpdated: "2026-06-07",
     aiContribution: 88,
     agents: [
       {
@@ -64,8 +64,8 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
       },
     ],
     totalTokens: 200000,
-    totalCommits: 64,
-    linesOfCode: 6000,
+    totalCommits: 196,
+    linesOfCode: 4749,
     devCycleDays: 2,
     manualEstimateDays: 10,
     impact: "Automated 100% of data ingestion and alerting",
@@ -77,7 +77,7 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
   },
   adhan: {
     projectId: "adhan",
-    lastUpdated: "2026-04-28",
+    lastUpdated: "2026-06-07",
     aiContribution: 92,
     agents: [
       {
@@ -98,8 +98,8 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
       },
     ],
     totalTokens: 455000,
-    totalCommits: 182,
-    linesOfCode: 7800,
+    totalCommits: 244,
+    linesOfCode: 10740,
     devCycleDays: 4,
     manualEstimateDays: 21,
     impact: "Zero-touch prayer-time audio notifications with automated media-state control (Raspberry Pi + Android TV via ADB) · 10 microservices",
@@ -112,7 +112,7 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
   },
   "adhan-ce": {
     projectId: "adhan-ce",
-    lastUpdated: "2026-05-24",
+    lastUpdated: "2026-06-08",
     aiContribution: 95,
     agents: [
       {
@@ -125,20 +125,20 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
       },
     ],
     totalTokens: 458000,
-    totalCommits: 9,
-    linesOfCode: 2307,
+    totalCommits: 80,
+    linesOfCode: 7790,
     devCycleDays: 1,
     manualEstimateDays: 14,
     impact: "Auto-pauses media across every Chrome tab at Adhan time · cross-tab prayer-focus mode",
     cycle: "1 day",
     beforeAI: "Manual prayer tracking; media kept playing during Adhan",
     afterAI: "One-click extension pauses every tab at prayer time",
-    tests: 31,
-    testSuites: 3,
+    tests: 179,
+    testSuites: 13,
   },
   tmo: {
     projectId: "tmo",
-    lastUpdated: "2026-04-28",
+    lastUpdated: "2026-06-07",
     aiContribution: 75,
     agents: [
       {
@@ -151,8 +151,8 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
       },
     ],
     totalTokens: 90000,
-    totalCommits: 40,
-    linesOfCode: 2200,
+    totalCommits: 18,
+    linesOfCode: 4241,
     devCycleDays: 3,
     manualEstimateDays: 12,
     impact: "Zero-touch monthly billing cycle",
@@ -164,16 +164,16 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
   },
   profile: {
     projectId: "profile",
-    lastUpdated: "2026-05-26",
+    lastUpdated: "2026-06-08",
     aiContribution: 85,
     agents: [
       {
         name: "Antigravity",
         provider: "Google DeepMind",
-        period: "Apr 2026",
-        models: ["Gemini 3.1 Pro (High)"],
+        period: "Jul 2025",
+        models: ["Gemini 2.5 Flash", "Gemini 2.5 Pro"],
         tokens: 300000,
-        role: "Full-Stack QA & Testing Suite Pipeline",
+        role: "Foundation & MVP architecture",
       },
       {
         name: "Cursor",
@@ -185,15 +185,15 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
       },
     ],
     totalTokens: 500000,
-    totalCommits: 425,
-    linesOfCode: 11469,
+    totalCommits: 460,
+    linesOfCode: 11340,
     devCycleDays: 19,
     manualEstimateDays: 25,
-    impact: "Full-stack portfolio with automated QA pipeline",
-    cycle: "19 days",
+    impact: "Full-stack portfolio deployed to production",
+    cycle: "19 active days",
     beforeAI: "Static HTML/CSS resume site",
-    afterAI: "AI-native Next.js portfolio with Analytics & QA pipeline",
-    tests: 138,
+    afterAI: "AI-native Next.js portfolio with analytics",
+    tests: 116,
     testSuites: 9,
   },
 };
