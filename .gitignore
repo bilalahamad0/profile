@@ -42,3 +42,13 @@ next-env.d.ts
 
 # local Claude Code token sync state
 .last-token-sync
+
+# agent & test scratch artifacts (generated locally / by MCP tools)
+.claude/worktrees/
+.claude/scheduled_tasks.lock
+.lostpixel/
+.playwright-mcp/
+.antigravityignore
+
+# local master art — not a served asset (public/ holds the built logos/favicons)
+bilal-logo-master.png

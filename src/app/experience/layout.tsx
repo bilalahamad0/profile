@@ -68,6 +68,7 @@ export const metadata: Metadata = {
     "release risk reduction", "post-launch escape reduction",
     "regression cycle time reduction", "operational savings QA",
   ],
+  alternates: { canonical: "/experience" },
   openGraph: {
     type: "profile",
     title: "Experience | Bilal Ahamad",

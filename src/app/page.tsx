@@ -16,6 +16,7 @@ export const metadata: Metadata = {
   title: "Home | Bilal Ahamad",
   description:
     "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer. 18+ years at Amazon, Google, Rivian, Cruise & Samsara building automation, IoT & AI systems.",
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     title: "Home | Bilal Ahamad",

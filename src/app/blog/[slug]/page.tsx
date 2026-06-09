@@ -10,6 +10,7 @@ export async function generateStaticParams() {
 }
 
 const slugToThumb: Record<string, string> = {
+  "adhan-caster-extension-story": "/images/adhan-ce-demo.gif",
   "ai-driven-development": "/blog-thumbs/ai-native-dev.png",
   "california-warn-story": "/blog-thumbs/california-warn.png",
   "media-caster-story":    "/blog-thumbs/media-caster.png?v=2",
@@ -27,6 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: post.title,
     description: desc,
+    alternates: { canonical: `/blog/${slug}` },
     openGraph: {
       type: "article",
       title: `${post.title} | Bilal Ahamad`,
@@ -89,8 +91,45 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const colors = categoryColors[post.category] ?? categoryColors["Project Story"];
   const image = slugToThumb[slug];
 
+  // Structured data — blog post pages are the most-indexed/most-shared URLs.
+  // Canonical points at bilalahamad.com (not any LinkedIn cross-post) so the
+  // source page wins ranking over syndicated copies.
+  const canonicalUrl = `https://bilalahamad.com/blog/${slug}`;
+  const ogImage = `https://bilalahamad.com${image ?? "/og-image.png"}`;
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://bilalahamad.com" },
+      { "@type": "ListItem", position: 2, name: "Blog", item: "https://bilalahamad.com/blog" },
+      { "@type": "ListItem", position: 3, name: post.title, item: canonicalUrl },
+    ],
+  };
+  const articleLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.description,
+    datePublished: post.date,
+    dateModified: post.date,
+    image: ogImage,
+    url: canonicalUrl,
+    mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
+    keywords: post.tags.join(", "),
+    author: { "@type": "Person", name: "Bilal Ahamad", url: "https://bilalahamad.com" },
+    publisher: { "@type": "Person", name: "Bilal Ahamad", url: "https://bilalahamad.com" },
+  };
+
   return (
     <main className="min-h-screen bg-[#09090b] text-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }}
+      />
 
       {/* Header */}
       <section className="pt-32 pb-16 px-6 lg:px-24 border-b border-white/5 relative overflow-hidden">
