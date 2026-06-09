@@ -78,7 +78,7 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
   },
   adhan: {
     projectId: "adhan",
-    lastUpdated: "2026-06-07",
+    lastUpdated: "2026-06-09",
     aiContribution: 92,
     agents: [
       {
@@ -97,8 +97,16 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
         tokens: 200000,
         role: "v3 pipeline, auto-updater & dashboard",
       },
+      {
+        name: "Claude Code",
+        provider: "Anthropic",
+        period: "May 2026",
+        models: ["Claude Opus 4.7"],
+        tokens: 215542213,
+        role: "Edge-AI assistant tuning & Chrome extension build",
+      },
     ],
-    totalTokens: 455000,
+    totalTokens: 215997213,
     totalCommits: 244,
     linesOfCode: 10740,
     devCycleDays: 4,
@@ -113,19 +121,19 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
   },
   "adhan-ce": {
     projectId: "adhan-ce",
-    lastUpdated: "2026-06-08",
+    lastUpdated: "2026-06-09",
     aiContribution: 95,
     agents: [
       {
         name: "Claude Code",
         provider: "Anthropic",
-        period: "May 2026",
-        models: ["Claude Opus 4.7"],
-        tokens: 458000,
+        period: "May – Jun 2026",
+        models: ["Claude Opus 4.8", "Claude Opus 4.7"],
+        tokens: 77538600,
         role: "End-to-end build — service worker, content scripts, geocoding, tests & store assets",
       },
     ],
-    totalTokens: 458000,
+    totalTokens: 77538600,
     totalCommits: 80,
     linesOfCode: 7790,
     devCycleDays: 1,
@@ -139,7 +147,7 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
   },
   tmo: {
     projectId: "tmo",
-    lastUpdated: "2026-06-07",
+    lastUpdated: "2026-06-09",
     aiContribution: 75,
     agents: [
       {
@@ -150,8 +158,16 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
         tokens: 90000,
         role: "Pipeline scaffolding & automation architecture",
       },
+      {
+        name: "Claude Code",
+        provider: "Anthropic",
+        period: "May 2026 – Present",
+        models: ["Claude Opus 4.8", "Claude Opus 4.7"],
+        tokens: 120933204,
+        role: "Zelle hardening, login robustness & dashboards",
+      },
     ],
-    totalTokens: 90000,
+    totalTokens: 121023204,
     totalCommits: 18,
     linesOfCode: 4241,
     devCycleDays: 3,
@@ -165,7 +181,7 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
   },
   profile: {
     projectId: "profile",
-    lastUpdated: "2026-06-08",
+    lastUpdated: "2026-06-09",
     aiContribution: 85,
     agents: [
       {
@@ -184,10 +200,18 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
         tokens: 200000,
         role: "Modernization, hardening & code review",
       },
+      {
+        name: "Claude Code",
+        provider: "Anthropic",
+        period: "Apr 2026 – Present",
+        models: ["Claude Opus 4.7", "Claude Opus 4.8", "Claude Opus 4.6", "Claude Fable 5"],
+        tokens: 158077769,
+        role: "SEO, metrics automation & CI hardening",
+      },
     ],
-    totalTokens: 500000,
-    totalCommits: 460,
-    linesOfCode: 11340,
+    totalTokens: 158577769,
+    totalCommits: 472,
+    linesOfCode: 11655,
     devCycleDays: 19,
     manualEstimateDays: 25,
     impact: "Full-stack portfolio deployed to production",

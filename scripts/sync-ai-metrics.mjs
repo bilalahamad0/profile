@@ -8,30 +8,43 @@
 // own GitHub repo (see src/lib/ai-metrics.ts → getAIMetricsMap). STATIC_FALLBACK in the
 // page is a build-time mirror used only when that fetch fails.
 //
-// This script is the engine behind the `update-ai-page` skill. It NEVER invents AI/token
-// data — those live in each repo. It only recomputes the *derived* fields from the actual
-// code/git, and reports what the page's fallback should mirror.
+// This script is the engine behind the `update-ai-page` skill. It NEVER invents AI data:
+// Claude Code token usage is *measured* from session transcripts (--tokens), derived fields
+// are recomputed from the actual code/git, and narrative fields stay curated in each repo.
 //
-// Two responsibilities:
+// Three responsibilities:
 //   1. (default / --check) Recompute THIS repo's (`profile`) derived metrics and write them
 //      into ./ai-metrics.json, preserving every curated field.
 //   2. (--report) Pull every project's canonical metrics — live sidecar where one exists,
 //      a fresh clone + recompute where one doesn't — and print them so STATIC_FALLBACK and
 //      portfolio.ts can be reconciled.
+//   3. (--tokens) Measure each project's Claude Code token usage from ~/.claude/projects
+//      transcripts and print what the sidecars' Claude Code agent / totalTokens should be.
 //
 // Usage:
 //   node scripts/sync-ai-metrics.mjs            # update ./ai-metrics.json (profile)
 //   node scripts/sync-ai-metrics.mjs --check    # dry run: show the diff, write nothing
 //   node scripts/sync-ai-metrics.mjs --report    # fetch/clone every repo, print canonical values
+//   node scripts/sync-ai-metrics.mjs --tokens    # measure Claude Code usage per project
 //
 // Fields are split into:
 //   DERIVED  — recomputed from code/git here (objective, reproducible)
-//   CURATED  — owned by each repo's ai-metrics.json (AI usage, tokens, narrative). Never touched.
+//   MEASURED — Claude Code agents[].tokens + totalTokens, summed from session transcripts
+//   CURATED  — owned by each repo's ai-metrics.json (other agents, narrative). Never touched.
 
 import { execSync } from 'node:child_process';
-import { readFileSync, writeFileSync, existsSync, mkdtempSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import {
+  readFileSync,
+  writeFileSync,
+  existsSync,
+  mkdtempSync,
+  rmSync,
+  readdirSync,
+  createReadStream,
+} from 'node:fs';
+import { tmpdir, homedir } from 'node:os';
 import { join } from 'node:path';
+import readline from 'node:readline';
 
 const GITHUB_USER = 'bilalahamad0';
 
@@ -258,10 +271,140 @@ const report = async () => {
   );
 };
 
+// ── Mode 3: measure Claude Code token usage from session transcripts ──────────
+//
+// Claude Code journals every API call in ~/.claude/projects/<dir>/*.jsonl (incl.
+// agent-*.jsonl sidechains) with a `message.usage` block. A repo's <dir> is its absolute
+// path with every non-alphanumeric char → '-', plus `…--claude-worktrees-*` variants for
+// sessions run in worktrees.
+// Tokens = Σ input + output + cache_creation + cache_read, deduplicated by
+// message.id:requestId (streamed messages are journaled more than once) — the standard
+// "total tokens processed" (ccusage) convention. Lower bound: this machine, Claude Code
+// only; other agents' token figures stay curated in each sidecar.
+
+const TRANSCRIPT_ROOT = join(homedir(), '.claude', 'projects');
+const REPO_ROOT = join(homedir(), 'git_repo');
+
+const transcriptDirsFor = (repo, allDirs) => {
+  // Claude Code names the dir after the absolute path with EVERY non-alphanumeric
+  // character → '-' (so /Users/x/git_repo/profile → -Users-x-git-repo-profile).
+  const prefix = join(REPO_ROOT, repo).replace(/[^a-zA-Z0-9]/g, '-');
+  // Exact match or a worktree variant — a bare startsWith(prefix) would wrongly pull in
+  // lookalike siblings (profile → profile-ai-studio).
+  return allDirs.filter((d) => d === prefix || d.startsWith(`${prefix}--claude-worktrees-`));
+};
+
+const measureProject = async (dirs) => {
+  const t = {
+    apiCalls: 0,
+    input: 0,
+    output: 0,
+    cacheWrite: 0,
+    cacheRead: 0,
+    files: 0,
+    models: {},
+    first: null,
+    last: null,
+  };
+  const seen = new Set();
+  for (const dir of dirs) {
+    for (const f of readdirSync(join(TRANSCRIPT_ROOT, dir)).filter((x) => x.endsWith('.jsonl'))) {
+      t.files++;
+      const rl = readline.createInterface({
+        input: createReadStream(join(TRANSCRIPT_ROOT, dir, f)),
+        crlfDelay: Infinity,
+      });
+      for await (const line of rl) {
+        if (!line.includes('"usage"')) continue;
+        let obj;
+        try {
+          obj = JSON.parse(line);
+        } catch {
+          continue;
+        }
+        const u = obj?.message?.usage;
+        if (!u) continue;
+        const key = obj.message.id
+          ? `${obj.message.id}:${obj.requestId ?? ''}`
+          : `${dir}/${f}:${obj.uuid}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        t.apiCalls++;
+        t.input += u.input_tokens ?? 0;
+        t.output += u.output_tokens ?? 0;
+        t.cacheWrite += u.cache_creation_input_tokens ?? 0;
+        t.cacheRead += u.cache_read_input_tokens ?? 0;
+        const m = obj.message.model;
+        if (m && m !== '<synthetic>') t.models[m] = (t.models[m] ?? 0) + 1;
+        const ts = obj.timestamp;
+        if (ts) {
+          if (!t.first || ts < t.first) t.first = ts;
+          if (!t.last || ts > t.last) t.last = ts;
+        }
+      }
+    }
+  }
+  return t;
+};
+
+const fmt = (x) => x.toLocaleString('en-US');
+
+const tokensReport = async () => {
+  if (!existsSync(TRANSCRIPT_ROOT)) {
+    console.error(`✗ no Claude Code transcript directory at ${TRANSCRIPT_ROOT}`);
+    process.exit(1);
+  }
+  const allDirs = readdirSync(TRANSCRIPT_ROOT);
+  console.log('\nMeasured Claude Code token usage per project (lower bound — this machine only):\n');
+  for (const [id, repo] of Object.entries(REPO_MAP)) {
+    const dirs = transcriptDirsFor(repo, allDirs);
+    if (dirs.length === 0) {
+      console.log(`  ${id.padEnd(9)} no transcripts — token fields stay curated\n`);
+      continue;
+    }
+    const t = await measureProject(dirs);
+    const total = t.input + t.output + t.cacheWrite + t.cacheRead;
+    const models = Object.entries(t.models)
+      .sort((a, b) => b[1] - a[1])
+      .map(([m, c]) => `${m} (${c})`)
+      .join(', ');
+    console.log(
+      `  ${id.padEnd(9)} [${dirs.length} dir${dirs.length > 1 ? 's' : ''}, ${t.files} files, ${fmt(t.apiCalls)} API calls]`
+    );
+    console.log(
+      `    TOTAL=${fmt(total)}  (input=${fmt(t.input)} output=${fmt(t.output)}` +
+        ` cacheWrite=${fmt(t.cacheWrite)} cacheRead=${fmt(t.cacheRead)})`
+    );
+    console.log(`    models: ${models || '—'}`);
+    console.log(`    span:   ${t.first?.slice(0, 10) ?? '?'} → ${t.last?.slice(0, 10) ?? '?'}`);
+    if (id === LOCAL_PROJECT) {
+      try {
+        const sidecar = JSON.parse(readFileSync(join(process.cwd(), 'ai-metrics.json'), 'utf8'));
+        const curated = (sidecar.agents ?? [])
+          .filter((a) => a.name !== 'Claude Code')
+          .reduce((s, a) => s + (a.tokens ?? 0), 0);
+        console.log(
+          `    apply:  Claude Code agent tokens=${fmt(total)}; totalTokens=${fmt(curated + total)}` +
+            ` (${fmt(curated)} curated + measured)`
+        );
+      } catch {
+        /* sidecar unreadable — skip the suggestion */
+      }
+    }
+    console.log('');
+  }
+  console.log(
+    "Apply: set each sidecar's Claude Code agent tokens to TOTAL and totalTokens to\n" +
+      'curated-agents + TOTAL (sibling repos via `gh api` PUT — see the update-ai-page skill).'
+  );
+};
+
 // ── CLI ───────────────────────────────────────────────────────────────────────
 
 const args = process.argv.slice(2);
-if (args.includes('--report')) {
+if (args.includes('--tokens')) {
+  await tokensReport();
+} else if (args.includes('--report')) {
   await report();
 } else {
   updateLocal({ check: args.includes('--check') });
