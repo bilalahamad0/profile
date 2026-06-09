@@ -35,7 +35,7 @@ jobs:
         run: npm audit fix || true
 
       - name: Create Pull Request for NPM Audit
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         # Non-fatal: needs "Allow GitHub Actions to create and approve pull requests" enabled.
         continue-on-error: true
         with:
@@ -91,7 +91,7 @@ jobs:
         run: npm run lint:fix || true
 
       - name: Create Pull Request for ESLint Fixes
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         # Non-fatal: needs "Allow GitHub Actions to create and approve pull requests" enabled.
         continue-on-error: true
         with:
