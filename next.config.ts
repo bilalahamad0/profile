@@ -18,6 +18,18 @@ const nextConfig: NextConfig = {
 
   async redirects() {
     return [
+      // Canonical WWW to non-WWW redirect
+      {
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "www.bilalahamad.com",
+          },
+        ],
+        destination: "https://bilalahamad.com/:path*",
+        permanent: true,
+      },
       {
         source: "/blog/adhan-caster-story",
         destination: "/blog/media-caster-story",
