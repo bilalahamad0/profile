@@ -194,6 +194,69 @@ const SPECIALIZATIONS: SpecializationData[] = [
     ],
   },
   {
+    id: "spec-google-prompting-essentials",
+    headingId: "specialization-path-heading-prompting",
+    testId: "specialization-courses-list-prompting",
+    titleLines: ["Google Prompting Essentials", "4-Course Journey"],
+    issuer: "Google · Coursera",
+    date: "2026",
+    url: "https://www.coursera.org/account/accomplishments/specialization/4LTXZE4J1Z0Z",
+    logo: "/logos/google.png",
+    description:
+      "Google's focused 4-course specialization on applied prompt engineering — a hands-on progression from writing strong prompts to designing them for everyday work tasks, speeding up data analysis and presentation building, and partnering with AI as a creative or expert collaborator, each course backed by its own verified credential.",
+    totalCourses: 4,
+    image: "/certificates/google_prompting_essentials_thumb.jpg",
+    gradient: "from-amber-500/25 via-yellow-500/15 to-emerald-600/25",
+    childrenLayout: "list",
+    parentBadge: {
+      image: "/badges/google-prompting-essentials.png",
+      credlyUrl:
+        "https://www.credly.com/badges/1f5fe261-f90d-417b-b158-3f0199237e7b/public_url",
+    },
+    children: [
+      {
+        step: 1,
+        title: "Start Writing Prompts like a Pro",
+        url: "https://www.coursera.org/account/accomplishments/verify/LF3MBR0DKK99",
+        badge: {
+          image: "/badges/google-prompting-essentials.png",
+          credlyUrl:
+            "https://www.credly.com/badges/1f5fe261-f90d-417b-b158-3f0199237e7b/public_url",
+        },
+      },
+      {
+        step: 2,
+        title: "Design Prompts for Everyday Work Tasks",
+        url: "https://www.coursera.org/account/accomplishments/verify/ASIU4DXSZSRQ",
+        badge: {
+          image: "/badges/google-prompting-essentials.png",
+          credlyUrl:
+            "https://www.credly.com/badges/1f5fe261-f90d-417b-b158-3f0199237e7b/public_url",
+        },
+      },
+      {
+        step: 3,
+        title: "Speed Up Data Analysis and Presentation Building",
+        url: "https://www.coursera.org/account/accomplishments/verify/OR6AU79FC5WN",
+        badge: {
+          image: "/badges/google-prompting-essentials.png",
+          credlyUrl:
+            "https://www.credly.com/badges/1f5fe261-f90d-417b-b158-3f0199237e7b/public_url",
+        },
+      },
+      {
+        step: 4,
+        title: "Use AI as a Creative or Expert Partner",
+        url: "https://www.coursera.org/account/accomplishments/verify/FK1PQFV1EI3F",
+        badge: {
+          image: "/badges/google-prompting-essentials.png",
+          credlyUrl:
+            "https://www.credly.com/badges/1f5fe261-f90d-417b-b158-3f0199237e7b/public_url",
+        },
+      },
+    ],
+  },
+  {
     id: "spec-google-ai-essentials",
     headingId: "specialization-path-heading",
     testId: "specialization-courses-list",
