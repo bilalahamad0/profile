@@ -60,6 +60,11 @@ type SpecializationData = {
   gradient: string;
   childrenLayout: "list" | "badges";
   parentBadge: CredlyBadgeRef;
+  /** Radial halo tint behind the parent badge — tuned to contrast its own card
+   *  background so the badge always reads as a glowing shield, never flat. */
+  badgeHalo: string;
+  /** Drop-shadow glow on the parent badge image, matched to the halo tint. */
+  badgeShadow: string;
   children: SpecializationChild[];
 };
 
@@ -114,6 +119,8 @@ const SPECIALIZATIONS: SpecializationData[] = [
     totalCourses: 7,
     image: "/certificates/google_ai_professional_certificate_thumb.jpg",
     gradient: "from-emerald-600/25 via-teal-500/15 to-cyan-600/25",
+    badgeHalo: "bg-sky-400/30",
+    badgeShadow: "drop-shadow-[0_8px_30px_rgba(56,189,248,0.55)]",
     childrenLayout: "badges",
     parentBadge: {
       image: "/badges/google-ai-professional-certificate.png",
@@ -207,6 +214,8 @@ const SPECIALIZATIONS: SpecializationData[] = [
     totalCourses: 4,
     image: "/certificates/google_prompting_essentials_thumb.jpg",
     gradient: "from-amber-500/25 via-yellow-500/15 to-emerald-600/25",
+    badgeHalo: "bg-emerald-400/35",
+    badgeShadow: "drop-shadow-[0_8px_30px_rgba(16,185,129,0.6)]",
     childrenLayout: "list",
     parentBadge: {
       image: "/badges/google-prompting-essentials.png",
@@ -270,6 +279,8 @@ const SPECIALIZATIONS: SpecializationData[] = [
     totalCourses: 5,
     image: "/certificates/google_ai_essentials_thumb.jpg",
     gradient: "from-blue-600/25 via-indigo-500/15 to-purple-600/25",
+    badgeHalo: "bg-amber-400/30",
+    badgeShadow: "drop-shadow-[0_8px_30px_rgba(251,191,36,0.55)]",
     childrenLayout: "list",
     parentBadge: {
       image: "/badges/google-ai-essentials.png",
@@ -574,13 +585,14 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
 
         <div className="relative">
           <div className="grid grid-cols-1 items-stretch gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] md:gap-10">
-            {/* ─────────── LEFT COLUMN ───────────
-               Stacked, fills the card height so there is no empty space:
-                 1. Thumbnail (with AI Skills ribbon)
-                 2. Issuer + date
-                 3. Description text + parent badge (horizontal, side-by-side)
+            {/* ─────────── LEFT COLUMN — visual ───────────
+               The certificate thumbnail (hero) + issuer/date row, vertically
+               centered so it stays balanced against the taller right column.
+               The description + parent badge now live at the top of the RIGHT
+               column so the credential list reads as one tight, top-anchored
+               group instead of being stretched down the full card height.
             */}
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col justify-center gap-5">
               <button
                 type="button"
                 onClick={() =>
@@ -655,11 +667,22 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
                 </button>
               </div>
 
-              {/* Description text + parent badge — horizontally aligned.
-                  This row absorbs the empty space that used to sit under the
-                  issuer/date block. The parent badge is a self-contained
-                  hover-to-verify Credly link with no surrounding text. */}
-              <div className="mt-1 flex flex-1 items-center gap-5 rounded-2xl border border-white/5 bg-white/[0.015] p-4 md:gap-6 md:p-5">
+            </div>
+
+            {/* ─────────── RIGHT COLUMN — info + credentials ───────────
+               Top: the specialization description + its parent Credly badge,
+               pinned to the top-right of the card. Then the credential header
+               pill and the per-course list (`list`) or 2-3-2 badge grid
+               (`badges`). Pro Cert (`badges`) is a 2-3-2 circular grid of
+               clickable Credly badges; the `list` layouts keep a numbered list
+               because Coursera issues one shared parent badge per course.
+            */}
+            <div className="flex flex-col gap-5">
+              {/* Description + parent badge — pinned to the top-right. The badge
+                  sits over a soft radial halo (tinted per card) so it always
+                  reads as a glowing shield with "lights around it", never a
+                  flat image, regardless of the card's background gradient. */}
+              <div className="flex flex-col gap-4 rounded-2xl border border-white/5 bg-white/[0.02] p-4 lg:flex-row lg:items-center lg:gap-6 lg:p-5">
                 <p className="min-w-0 flex-1 t-small leading-relaxed text-zinc-300">
                   {spec.description}
                 </p>
@@ -673,27 +696,25 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
                   }
                   aria-label={`View ${spec.titleLines[0]} parent badge on Credly`}
                   data-testid={`${spec.testId}-parent-badge`}
-                  className="group/parent relative h-32 w-32 shrink-0 rounded-full transition-transform duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70 md:h-40 md:w-40"
+                  className="group/parent relative h-28 w-28 shrink-0 self-center rounded-full transition-transform duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70 md:h-32 md:w-32 lg:h-36 lg:w-36 lg:self-auto"
                 >
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "pointer-events-none absolute -inset-3 rounded-full blur-2xl",
+                      spec.badgeHalo
+                    )}
+                  />
                   <Image
                     src={spec.parentBadge.image}
                     alt={`${spec.titleLines[0]} verified parent badge`}
                     fill
-                    sizes="(max-width: 768px) 128px, 160px"
-                    className="object-contain drop-shadow-[0_6px_22px_rgba(251,191,36,0.45)]"
+                    sizes="(max-width: 1024px) 128px, 144px"
+                    className={cn("relative object-contain", spec.badgeShadow)}
                   />
                 </button>
               </div>
-            </div>
 
-            {/* ─────────── RIGHT COLUMN ───────────
-               Children of the specialization. Pro Cert (`badges` layout) is a
-               2-3-2 circular grid of clickable Credly badges with VERIFY
-               ribbons. Essentials (`list` layout) keeps the existing 5-course
-               numbered list because Coursera does not issue a unique badge
-               for each Essentials course — they all share the parent artwork.
-            */}
-            <div className="flex flex-col gap-5">
               <div className="flex items-center gap-2 self-start rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1.5 t-label font-bold uppercase tracking-wider text-emerald-300">
                 <CheckCircle2 className="h-3.5 w-3.5" aria-hidden />
                 All {spec.totalCourses} course credentials
@@ -702,7 +723,7 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
               {spec.childrenLayout === "list" ? (
                 <ol
                   data-testid={spec.testId}
-                  className="m-0 flex flex-1 list-none flex-col justify-between space-y-2.5 p-0"
+                  className="m-0 flex flex-1 list-none flex-col justify-center gap-3 p-0"
                 >
                   {spec.children.map((child, index) => (
                     <motion.li

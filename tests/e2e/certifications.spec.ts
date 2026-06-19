@@ -113,7 +113,7 @@ test.describe('Certifications — Google AI Essentials specialization path', () 
     ).toHaveCount(0);
   });
 
-  test('parent badge sits next to the description in the left column; right column has the 5-course numbered list', async ({ page }) => {
+  test('parent badge sits next to the description at the top of the right column, above the 5-course numbered list', async ({ page }) => {
     await page.goto('/certifications');
 
     const section = page.locator('section[aria-labelledby="specialization-path-heading"]');
@@ -232,14 +232,14 @@ test.describe('Certifications — Google AI Professional Certificate specializat
     ).toHaveCount(0);
   });
 
-  test('right column has 7 child badges in 2-3-2 formation; parent badge sits in the left column next to the description; each tile has a clickable VERIFY linker', async ({ page }) => {
+  test('right column has 7 child badges in 2-3-2 formation; parent badge sits at the top of the right column next to the description; each tile has a clickable VERIFY linker', async ({ page }) => {
     await page.goto('/certifications');
 
     const section = page.locator(
       'section[aria-labelledby="specialization-path-heading-professional"]',
     );
 
-    // Parent badge moved to the LEFT column alongside the description text.
+    // Parent badge sits at the top of the RIGHT column alongside the description text.
     const parentBadge = section.getByRole('button', {
       name: /view google ai professional certificate parent badge on credly/i,
     });
