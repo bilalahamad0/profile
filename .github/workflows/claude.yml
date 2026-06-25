@@ -40,8 +40,11 @@ jobs:
           additional_permissions: |
             actions: read
           
-          # Optional: Specify model (defaults to Claude Sonnet 4, uncomment for Claude Opus 4.1)
-          # model: "claude-opus-4-1-20250805"
+          # Pin the model explicitly. The action's baked-in default points at a
+          # dated snapshot (claude-sonnet-4-20250514) that has been decommissioned,
+          # which makes runs fail with "404 not_found_error: model". Use the stable
+          # (non-dated) Sonnet alias so this won't break when snapshots are retired.
+          model: "claude-sonnet-4-6"
           
           # Optional: Customize the trigger phrase (default: @claude)
           # trigger_phrase: "/claude"
