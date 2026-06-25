@@ -17,14 +17,14 @@ jobs:
     #   github.event.pull_request.user.login == 'external-contributor' ||
     #   github.event.pull_request.user.login == 'new-developer' ||
     #   github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR'
-    
+
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: read
       issues: read
       id-token: write
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -33,49 +33,33 @@ jobs:
 
       - name: Run Claude Code Review
         id: claude-review
-        uses: anthropics/claude-code-action@beta
+        # Pinned to the stable v1 tag (carries the claude_args schema). Do NOT use
+        # @main (moves under us) or @beta (old v0 schema whose default model id was
+        # decommissioned, which previously broke this workflow with a 404).
+        uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 
-          # Pin the model explicitly. The action's baked-in default points at a
-          # dated snapshot (claude-sonnet-4-20250514) that has been decommissioned,
-          # which makes runs fail with "404 not_found_error: model". Use the stable
-          # (non-dated) Sonnet alias so this won't break when snapshots are retired.
-          model: "claude-sonnet-4-6"
+          # v1 has no `model:` input — model and session settings go through
+          # claude_args (passed straight to the Claude Code CLI):
+          #   --model claude-opus-4-8            pins Opus 4.8 (overrides ANTHROPIC_MODEL).
+          #   --settings '{"ultracode":true}'    enables ultracode for the session:
+          #     xhigh reasoning PLUS dynamic-workflow orchestration. ultracode is a
+          #     session-only Claude Code *setting* (code.claude.com/docs/en/model-config),
+          #     NOT an effort level — so it must be passed via --settings, not --effort.
+          claude_args: |
+            --model claude-opus-4-8
+            --settings '{"ultracode":true}'
 
-          # Direct prompt for automated review (no @claude mention needed)
-          direct_prompt: |
+          # v1 renames `direct_prompt` -> `prompt` (drop-in). Supplying `prompt`
+          # runs the action in automation mode, so this review fires on every PR
+          # with no @claude mention required.
+          prompt: |
             Please review this pull request and provide feedback on:
             - Code quality and best practices
             - Potential bugs or issues
             - Performance considerations
             - Security concerns
             - Test coverage
-            
+
             Be constructive and helpful in your feedback.
-
-          # Optional: Use sticky comments to make Claude reuse the same comment on subsequent pushes to the same PR
-          # use_sticky_comment: true
-          
-          # Optional: Customize review based on file types
-          # direct_prompt: |
-          #   Review this PR focusing on:
-          #   - For TypeScript files: Type safety and proper interface usage
-          #   - For API endpoints: Security, input validation, and error handling
-          #   - For React components: Performance, accessibility, and best practices
-          #   - For tests: Coverage, edge cases, and test quality
-          
-          # Optional: Different prompts for different authors
-          # direct_prompt: |
-          #   ${{ github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR' && 
-          #   'Welcome! Please review this PR from a first-time contributor. Be encouraging and provide detailed explanations for any suggestions.' ||
-          #   'Please provide a thorough code review focusing on our coding standards and best practices.' }}
-          
-          # Optional: Add specific tools for running tests or linting
-          # allowed_tools: "Bash(npm run test),Bash(npm run lint),Bash(npm run typecheck)"
-          
-          # Optional: Skip review for certain conditions
-          # if: |
-          #   !contains(github.event.pull_request.title, '[skip-review]') &&
-          #   !contains(github.event.pull_request.title, '[WIP]')
-

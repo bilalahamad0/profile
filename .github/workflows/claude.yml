@@ -32,36 +32,29 @@ jobs:
 
       - name: Run Claude Code
         id: claude
-        uses: anthropics/claude-code-action@beta
+        # Pinned to the stable v1 tag (carries the claude_args schema). Do NOT use
+        # @main (moves under us) or @beta (old v0 schema whose default model id was
+        # decommissioned, which previously broke this workflow with a 404).
+        uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 
-          # This is an optional setting that allows Claude to read CI results on PRs
+          # Lets Claude read CI results on PRs.
           additional_permissions: |
             actions: read
-          
-          # Pin the model explicitly. The action's baked-in default points at a
-          # dated snapshot (claude-sonnet-4-20250514) that has been decommissioned,
-          # which makes runs fail with "404 not_found_error: model". Use the stable
-          # (non-dated) Sonnet alias so this won't break when snapshots are retired.
-          model: "claude-sonnet-4-6"
-          
-          # Optional: Customize the trigger phrase (default: @claude)
-          # trigger_phrase: "/claude"
-          
-          # Optional: Trigger when specific user is assigned to an issue
-          # assignee_trigger: "claude-bot"
-          
-          # Optional: Allow Claude to run specific commands
-          # allowed_tools: "Bash(npm install),Bash(npm run build),Bash(npm run test:*),Bash(npm run lint:*)"
-          
-          # Optional: Add custom instructions for Claude to customize its behavior for your project
-          # custom_instructions: |
-          #   Follow our coding standards
-          #   Ensure all new code has tests
-          #   Use TypeScript for new files
-          
-          # Optional: Custom environment variables for Claude
-          # claude_env: |
-          #   NODE_ENV: test
 
+          # v1 has no `model:` input — the model and session settings are passed
+          # straight to the Claude Code CLI via claude_args:
+          #   --model claude-opus-4-8            pins Opus 4.8 (overrides ANTHROPIC_MODEL).
+          #   --settings '{"ultracode":true}'    enables ultracode for the session:
+          #     xhigh per-message reasoning PLUS dynamic-workflow orchestration for
+          #     substantive tasks. ultracode is a session-only Claude Code *setting*
+          #     (see code.claude.com/docs/en/model-config), NOT an effort level — so
+          #     it must be passed via --settings, not --effort.
+          claude_args: |
+            --model claude-opus-4-8
+            --settings '{"ultracode":true}'
+
+          # No `prompt:` on purpose: on a trigger-phrase (@claude) event with no
+          # prompt, v1 runs in tag mode and builds the prompt from the comment.
+          # Supplying `prompt` would force agent/automation mode instead.
