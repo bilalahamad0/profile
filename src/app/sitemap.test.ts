@@ -25,7 +25,14 @@ describe("sitemap", () => {
   });
 
   it("uses absolute https URLs on the canonical host everywhere", () => {
-    for (const route of routes) expect(route.url.startsWith(BASE)).toBe(true);
+    // Parse and compare the host exactly rather than a prefix check: a bare
+    // startsWith(BASE) would also accept https://bilalahamad.com.evil.com
+    // (CodeQL js/incomplete-url-substring-sanitization).
+    for (const route of routes) {
+      const u = new URL(route.url);
+      expect(u.protocol).toBe("https:");
+      expect(u.host).toBe("bilalahamad.com");
+    }
   });
 
   it("gives the homepage top priority", () => {
