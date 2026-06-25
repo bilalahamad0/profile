@@ -26,6 +26,17 @@ small **UX decisions** — not infrastructure.
 - ✅ **1E** — Dynamic `sitemap.ts` covers 7 static routes + all blog posts (14 URLs).
 - ✅ **1F** — `robots.ts` allows all, references the sitemap.
 
+### SEO / AI-readability hardening (2026-06-25, issue #178)
+- ✅ **Structured-data module** — extracted all JSON-LD into a single, unit-tested source of truth (`src/lib/structured-data.ts`) + a reusable `<JsonLd>` server component (`src/components/seo/JsonLd.tsx`). All 7 breadcrumbs now build from one `breadcrumbList()` helper (identical output, deduped).
+- ✅ **WebSite schema** — added a `WebSite` entity on the homepage, `@id`-linked to the existing `Person` node (`#person`) so engines/LLMs merge the identity graph.
+- ✅ **Blog schema** — `/blog` now emits a `Blog` entity listing every post as a `BlogPosting` (rich results + AI summarization).
+- ✅ **Credentials schema** — `/certifications` emits a `ProfilePage` → `ItemList` of `EducationalOccupationalCredential` (category-labelled).
+- ✅ **Projects schema** — `/projects` emits a `CollectionPage` → `ItemList` of `SoftwareSourceCode` (repo, languages, keywords per project).
+- ✅ **robots.txt** — explicit, named allow-rules for major AI/LLM crawlers (GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-Web, anthropic-ai, PerplexityBot, Perplexity-User, Google-Extended, Applebot-Extended, CCBot, cohere-ai) + canonical `host`.
+- ✅ **sitemap.xml** — content-driven `lastModified` on the home + blog-index routes (newest post date; no hardcoded build date).
+- ✅ **llms.txt** — new dynamic `/llms.txt` route (https://llmstxt.org convention) generated from the same portfolio + blog single-source-of-truth, giving AI agents a curated, machine-readable site map.
+- ✅ **Tests** — new suites for `structured-data`, `llms-txt`, `sitemap`, `robots`, `manifest`, and the `llms.txt` route (the latter four were previously untested).
+
 ### SEO / security hardening (2026-06-08)
 - ✅ **3D** — `alternates.canonical` added to all 7 static routes **and** a self-referencing `/blog/${slug}` canonical on blog posts (points at bilalahamad.com so the source outranks any LinkedIn cross-post). Verified in prerendered HTML.
 - ✅ **Article schema** — `BlogPosting` JSON-LD (headline, datePublished, author/publisher Person, image, mainEntityOfPage) added to `/blog/[slug]` — previously had zero structured data.
@@ -85,3 +96,4 @@ small **UX decisions** — not infrastructure.
 | 2026-06-08 | audit | Full codebase audit reconciled PLAN vs reality (4 domains, 21 items + critic). | — |
 | 2026-06-08 | 3D/1C/SEO | Canonicals on all routes + self-canonical on posts; BreadcrumbList + BlogPosting JSON-LD on /blog/[slug]; cert-link rel fix (4E); adhan OG thumb; .gitignore hygiene. | _this branch_ |
 | 2026-06-08 | 4D/4B/2A | 375px Playwright mobile audit — 0px overflow on all routes + a post (4D ✅). Decisions: keep hero CTA→/experience (4B ✅); case studies via dedicated /case-studies route (2A). | _this branch_ |
+| 2026-06-25 | SEO/#178 | Structured-data module + `<JsonLd>`; WebSite/Blog/credentials/projects JSON-LD; AI-crawler robots + host; content-driven sitemap lastModified; dynamic /llms.txt; tests for structured-data, llms-txt, sitemap, robots, manifest, llms.txt route. | _this branch_ |

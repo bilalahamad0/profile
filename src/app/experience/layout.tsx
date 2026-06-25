@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbList } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   title: "Experience",
@@ -86,14 +88,10 @@ export const metadata: Metadata = {
   },
 };
 
-const breadcrumb = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://bilalahamad.com" },
-    { "@type": "ListItem", position: 2, name: "Experience", item: "https://bilalahamad.com/experience" },
-  ],
-};
+const breadcrumb = breadcrumbList([
+  { name: "Home", path: "" },
+  { name: "Experience", path: "/experience" },
+]);
 
 export default function ExperienceLayout({
   children,
@@ -102,10 +100,7 @@ export default function ExperienceLayout({
 }) {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
-      />
+      <JsonLd data={breadcrumb} />
       {children}
     </>
   );

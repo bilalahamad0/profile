@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbList, projectsSchema } from "@/lib/structured-data";
+import { projectsData } from "@/data/portfolio";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -22,22 +25,15 @@ export const metadata: Metadata = {
   },
 };
 
-const breadcrumb = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://bilalahamad.com" },
-    { "@type": "ListItem", position: 2, name: "Projects", item: "https://bilalahamad.com/projects" },
-  ],
-};
+const breadcrumb = breadcrumbList([
+  { name: "Home", path: "" },
+  { name: "Projects", path: "/projects" },
+]);
 
 export default function ProjectsLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
-      />
+      <JsonLd data={[breadcrumb, projectsSchema(projectsData)]} />
       {children}
     </>
   );

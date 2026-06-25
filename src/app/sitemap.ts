@@ -1,21 +1,30 @@
 import type { MetadataRoute } from "next";
 import { getAllPosts } from "@/lib/blog";
-
-const BASE = "https://bilalahamad.com";
+import { SITE_URL } from "@/lib/structured-data";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const posts = getAllPosts();
+
+  // Freshness signal for the index pages that surface the latest writing.
+  // Content-driven (newest post date) rather than a hardcoded build date so it
+  // only changes when the content actually does.
+  const newestPost = posts
+    .map((p) => new Date(p.date))
+    .filter((d) => !Number.isNaN(d.getTime()))
+    .sort((a, b) => b.getTime() - a.getTime())[0];
+
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: BASE,                      priority: 1.0, changeFrequency: "weekly"  },
-    { url: `${BASE}/experience`,      priority: 0.9, changeFrequency: "monthly" },
-    { url: `${BASE}/projects`,        priority: 0.9, changeFrequency: "monthly" },
-    { url: `${BASE}/certifications`,  priority: 0.8, changeFrequency: "monthly" },
-    { url: `${BASE}/ai`,              priority: 0.8, changeFrequency: "monthly" },
-    { url: `${BASE}/blog`,            priority: 0.8, changeFrequency: "weekly"  },
-    { url: `${BASE}/contact`,         priority: 0.7, changeFrequency: "yearly"  },
+    { url: SITE_URL,                      priority: 1.0, changeFrequency: "weekly",  lastModified: newestPost },
+    { url: `${SITE_URL}/experience`,      priority: 0.9, changeFrequency: "monthly" },
+    { url: `${SITE_URL}/projects`,        priority: 0.9, changeFrequency: "monthly" },
+    { url: `${SITE_URL}/certifications`,  priority: 0.8, changeFrequency: "monthly" },
+    { url: `${SITE_URL}/ai`,              priority: 0.8, changeFrequency: "monthly" },
+    { url: `${SITE_URL}/blog`,            priority: 0.8, changeFrequency: "weekly",  lastModified: newestPost },
+    { url: `${SITE_URL}/contact`,         priority: 0.7, changeFrequency: "yearly"  },
   ];
 
-  const blogRoutes: MetadataRoute.Sitemap = getAllPosts().map((p) => ({
-    url: `${BASE}/blog/${p.slug}`,
+  const blogRoutes: MetadataRoute.Sitemap = posts.map((p) => ({
+    url: `${SITE_URL}/blog/${p.slug}`,
     lastModified: new Date(p.date),
     priority: 0.7,
     changeFrequency: "monthly",

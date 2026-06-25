@@ -8,6 +8,8 @@ import {
 import { projectsData } from "@/data/portfolio";
 import { getAIMetricsMap, type AIMetrics } from "@/lib/ai-metrics";
 import HashScrollHandler from "@/components/HashScrollHandler";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbList } from "@/lib/structured-data";
 
 export const revalidate = 3600;
 
@@ -32,14 +34,10 @@ export const metadata: Metadata = {
   },
 };
 
-const breadcrumb = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://bilalahamad.com" },
-    { "@type": "ListItem", position: 2, name: "AI Lab", item: "https://bilalahamad.com/ai" },
-  ],
-};
+const breadcrumb = breadcrumbList([
+  { name: "Home", path: "" },
+  { name: "AI Lab", path: "/ai" },
+]);
 
 const STATIC_FALLBACK: Record<string, AIMetrics> = {
   warn: {
@@ -549,10 +547,7 @@ export default async function AILabPage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
-      />
+      <JsonLd data={breadcrumb} />
     <main className="min-h-screen bg-[#09090b] text-white relative" id="top">
       <HashScrollHandler />
       <NeuralBackground />

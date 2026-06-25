@@ -7,6 +7,8 @@ import { Clock, FileText, ArrowRight, BookOpen } from "lucide-react";
 import { linkedInPosts } from "@/data/portfolio";
 import { getAllPosts } from "@/lib/blog";
 import { BlogGridClient } from "@/components/blog/BlogGridClient";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { blogSchema, breadcrumbList } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -29,14 +31,10 @@ export const metadata: Metadata = {
   },
 };
 
-const breadcrumb = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://bilalahamad.com" },
-    { "@type": "ListItem", position: 2, name: "Blog", item: "https://bilalahamad.com/blog" },
-  ],
-};
+const breadcrumb = breadcrumbList([
+  { name: "Home", path: "" },
+  { name: "Blog", path: "/blog" },
+]);
 
 // Thumbnails are presentation assets keyed by slug — not part of post content,
 // so they live here rather than in MDX frontmatter.
@@ -65,7 +63,9 @@ function formatDate(iso: string): string {
 
 // Single source of truth: post content comes from MDX frontmatter via getAllPosts().
 // Only presentation (thumbnail, display date) is layered on here.
-export const mdxPosts = getAllPosts().map((p) => ({
+const allPosts = getAllPosts();
+
+export const mdxPosts = allPosts.map((p) => ({
   slug: p.slug,
   title: p.title,
   date: formatDate(p.date),
@@ -77,15 +77,15 @@ export const mdxPosts = getAllPosts().map((p) => ({
   thumbnail: slugToThumb[p.slug],
 }));
 
+// schema.org Blog listing every post (raw ISO dates) for rich results + AI agents.
+const blogLd = blogSchema(allPosts);
+
 const featured = mdxPosts.find((p) => p.featured);
 
 export default function BlogPage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
-      />
+      <JsonLd data={[breadcrumb, blogLd]} />
     <main className="min-h-screen bg-[#09090b] text-white" id="top">
 
       {/* Header — static, server-rendered, paints instantly */}
