@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
 import { ArrowLeft, Clock, Tag, Calendar, BookOpen, Github, Linkedin } from "lucide-react";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbList } from "@/lib/structured-data";
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
@@ -96,15 +98,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   // source page wins ranking over syndicated copies.
   const canonicalUrl = `https://bilalahamad.com/blog/${slug}`;
   const ogImage = `https://bilalahamad.com${image ?? "/og-image.png"}`;
-  const breadcrumbLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://bilalahamad.com" },
-      { "@type": "ListItem", position: 2, name: "Blog", item: "https://bilalahamad.com/blog" },
-      { "@type": "ListItem", position: 3, name: post.title, item: canonicalUrl },
-    ],
-  };
+  const breadcrumbLd = breadcrumbList([
+    { name: "Home", path: "" },
+    { name: "Blog", path: "/blog" },
+    { name: post.title, path: `/blog/${slug}` },
+  ]);
   const articleLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -122,14 +120,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <main className="min-h-screen bg-[#09090b] text-white">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }}
-      />
+      <JsonLd data={[breadcrumbLd, articleLd]} />
 
       {/* Header */}
       <section className="pt-32 pb-16 px-6 lg:px-24 border-b border-white/5 relative overflow-hidden">

@@ -11,6 +11,8 @@ import {
 } from "@/components/v3/HomePageSections";
 import { FeaturedProjectsSection } from "@/components/v3/FeaturedProjects";
 import { getAllPosts } from "@/lib/blog";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { PERSON_ID, websiteSchema } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   title: "Home | Bilal Ahamad",
@@ -37,6 +39,7 @@ export const metadata: Metadata = {
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": PERSON_ID,
   name: "Bilal Ahamad",
   jobTitle: [
     "Lead Embedded Firmware & Systems QA Engineer",
@@ -277,10 +280,7 @@ export default function HomePage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
-      />
+      <JsonLd data={[personSchema, websiteSchema()]} />
       <div className="flex flex-col overflow-x-hidden dark" id="top">
       {/* ── Hero ───────────────────────────────────────── */}
       <HeroPortfolio />
