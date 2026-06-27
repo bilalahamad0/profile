@@ -52,7 +52,7 @@ The repo is a single Next.js 16 App Router app at the root:
 ```
 /                    Next.js project root (package.json, next.config.ts, src/, public/, content/, ...)
 .github/workflows/   CI/CD pipelines (lint, unit, e2e, visual regression, dependabot auto-fix)
-scripts/             Utility scripts (efficiency-check, fix-alerts, sanity-check, generate-favicons)
+scripts/             Utility scripts (efficiency-check, sanity-check, generate-favicons)
 content/blog/        MDX blog posts
 src/                 App Router source
 public/              Static assets served at /
