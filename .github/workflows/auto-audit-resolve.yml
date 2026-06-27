@@ -2,74 +2,68 @@ name: Auto Audit and Resolve
 
 on:
   # `repository_vulnerability_alert` / `code_scanning_alert` are webhook-only events, not valid
-  # workflow triggers — declaring them made the file invalid (startup failure on every push).
-  # The daily schedule covers the audit-and-fix intent; workflow_dispatch runs it on demand.
+  # workflow triggers. Dependency *fixes* (security + version bumps) are delegated to Dependabot
+  # (.github/dependabot.yml), which regenerates COMPLETE, all-platform lockfiles. This workflow
+  # therefore never mutates package-lock.json — see the per-job notes below.
   schedule:
     - cron: '0 0 * * *' # Daily at midnight UTC
   workflow_dispatch:
 
 permissions:
-  security-events: write
   contents: write
   pull-requests: write
 
 jobs:
-  auto-audit-fix:
-    name: NPM Audit & Dependabot Fixes
+  # ---------------------------------------------------------------------------
+  # Audit + efficiency REPORT only.
+  #
+  # This job intentionally does NOT run `npm install`, `npm audit fix`, or
+  # scripts/fix-alerts.js, and never opens a PR. Those steps rewrote
+  # package-lock.json for the runner's single platform (linux/x64), PRUNING the
+  # other platforms' optional binaries (@tailwindcss/oxide-*, @img/sharp-*) and
+  # producing lockfiles that break `npm ci` on Vercel / macOS / Windows. The
+  # resulting PRs (e.g. #187, #188) had to be closed repeatedly as unsafe.
+  #
+  # Security and version bumps are now owned by Dependabot, which generates
+  # correct all-platform lockfiles. Here we only surface advisories in the log.
+  # ---------------------------------------------------------------------------
+  audit-report:
+    name: NPM Audit & Efficiency Report
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
 
-      - name: Install Root Dependencies
-        run: npm install
+      # `npm ci` installs strictly from package-lock.json and NEVER rewrites it
+      # (it errors on an out-of-sync lock rather than mutating it). Unlike
+      # `npm install`, it cannot prune cross-platform optional dependencies.
+      - name: Install Dependencies (lockfile-safe)
+        run: npm ci
 
-      - name: Run NPM Audit Fix
-        run: npm audit fix || true
-
-      - name: Create Pull Request for NPM Audit
-        uses: peter-evans/create-pull-request@v8
-        # Non-fatal: needs "Allow GitHub Actions to create and approve pull requests" enabled.
-        continue-on-error: true
-        with:
-          commit-message: 'security: auto npm audit fix'
-          title: 'Automated Security Fix: npm audit fix'
-          body: |
-            Automated \`npm audit fix\` to resolve vulnerable dependencies.
-          branch: 'auto/npm-audit-fix'
-          base: 'main'
-          labels: 'security, dependabot'
-
-      - name: Run Advanced Dependabot Auto-Fix Script
-        # Non-fatal: best-effort alert remediation; missing alerts API access or PR-creation
-        # permission should not fail the scheduled run.
-        continue-on-error: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          SMTP_HOST: ${{ secrets.SMTP_HOST }}
-          SMTP_PORT: ${{ secrets.SMTP_PORT }}
-          SMTP_USER: ${{ secrets.SMTP_USER }}
-          SMTP_PASS: ${{ secrets.SMTP_PASS }}
-          SMTP_FROM: ${{ secrets.SMTP_FROM }}
-          SMTP_TO: ${{ secrets.SMTP_TO }}
-        run: |
-          git config --global user.name "bilalahamad-bot"
-          git config --global user.email "bilal.ahamad@gmail.com"
-          # Wait to ensure we're back on main if previous PR creation didn't clean up correctly
-          git checkout main || true
-          node scripts/fix-alerts.js
+      # Report only — surfaces advisories in the run log. We deliberately do NOT
+      # run `npm audit fix`; it rewrites the lockfile and prunes platform optionals.
+      - name: Run NPM Audit (report only)
+        run: npm audit || true
 
       - name: Run Efficiency Report
         run: node scripts/efficiency-check.js || true
 
+  # ---------------------------------------------------------------------------
+  # ESLint auto-fix.
+  #
+  # Uses `npm ci` (never touches the lockfile) and restricts the PR to source
+  # files via `add-paths`, so a PR is opened ONLY when `eslint --fix` actually
+  # changes source — never to churn package-lock.json. The previous version ran
+  # `npm install` and committed the resulting lockfile diff, opening PRs that
+  # touched nothing but a pruned package-lock.json.
+  # ---------------------------------------------------------------------------
   auto-lint-fix:
     name: ESLint Auto-Fix for CodeQL
     runs-on: ubuntu-latest
@@ -83,9 +77,11 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
 
-      - name: Install Root Dependencies
-        run: npm install
+      - name: Install Dependencies (lockfile-safe)
+        run: npm ci
 
       - name: Run ESLint Auto-Fix
         run: npm run lint:fix || true
@@ -98,7 +94,21 @@ jobs:
           commit-message: 'style: auto eslint fix for code scanning alerts'
           title: 'Automated Style Fix: eslint --fix'
           body: |
-            Automated \`eslint --fix\` to resolve standard linting issues and stylistic Code Scanning alerts.
+            Automated `eslint --fix` to resolve standard linting issues and stylistic Code Scanning alerts.
+
+            Source-only PR: this branch never stages `package-lock.json` or `package.json`
+            (lockfile integrity is owned by Dependabot). If `eslint --fix` changed no source
+            files, no PR is opened.
           branch: 'auto/eslint-fix'
           base: 'main'
           labels: 'code-scanning, style'
+          # Restrict the commit to source files so the lockfile / package.json can never be
+          # staged, and a PR is opened ONLY when eslint actually changed source. node_modules
+          # is .gitignore'd, so `git add` skips it even though these globs would match.
+          add-paths: |
+            **/*.ts
+            **/*.tsx
+            **/*.js
+            **/*.jsx
+            **/*.mjs
+            **/*.cjs
