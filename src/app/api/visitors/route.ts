@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import crypto from 'node:crypto';
+import { rateLimit, getClientIp } from '@/lib/security/ratelimit';
 
 /**
  * shields.io endpoint badge: historical, monotonic visitor count.
@@ -167,7 +168,10 @@ async function kvSet(key: string, value: number): Promise<void> {
   }
 }
 
-export async function GET() {
+export async function GET(req: Request) {
+  const rl = await rateLimit(`read:visitors:${getClientIp(req)}`, 60, 60);
+  if (!rl.ok) return NextResponse.json(FALLBACK, { status: 429 });
+
   const [live, stored] = await Promise.all([fetchLiveTotal(), kvGet(COUNT_KEY)]);
 
   // No data from either source → graceful placeholder (never "0").

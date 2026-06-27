@@ -9,6 +9,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ScrollToTop } from "@/components/layout/scroll-to-top";
 import { NavbarV2 } from "@/components/v2/NavbarV2";
+import { EntryGate } from "@/components/v3/EntryGate";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -110,6 +111,9 @@ export default function RootLayout({
             {children}
             <Footer />
           </main>
+          {/* Client-only entry splash + anti-automation handshake. Renders nothing
+              on the server, so the static HTML crawlers read is the full page. */}
+          <EntryGate />
         </ThemeProvider>
       </body>
     </html>

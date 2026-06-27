@@ -2,6 +2,7 @@
 
 import { Mail, Send, Linkedin, Github } from "lucide-react";
 import { useState } from "react";
+import { ensureSession } from "@/lib/security/client";
 
 export function ContactSection() {
     const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
@@ -10,12 +11,17 @@ export function ContactSection() {
         e.preventDefault();
         setStatus("sending");
 
-        const formData = new FormData(e.currentTarget);
+        const form = e.currentTarget;
+        const formData = new FormData(form);
         const name = formData.get("name") as string;
         const email = formData.get("email") as string;
         const message = formData.get("message") as string;
 
         try {
+            // Ensure a fresh entry token (the contact endpoint requires it). Returning
+            // visitors whose 2h token lapsed re-mint silently here — no splash needed.
+            await ensureSession();
+
             const res = await fetch("/api/contact", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -23,9 +29,9 @@ export function ContactSection() {
             });
 
             if (!res.ok) throw new Error("Failed to send");
-            
+
             setStatus("success");
-            (e.target as HTMLFormElement).reset();
+            form.reset();
         } catch (error) {
             console.error("Submission error:", error);
             setStatus("error");

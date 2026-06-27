@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { rateLimit, getClientIp } from '@/lib/security/ratelimit';
 
 /**
  * Google Developer Profile badges count.
@@ -9,7 +10,10 @@ import { NextResponse } from 'next/server';
  */
 const VERIFIED_BADGE_COUNT = 12;
 
-export async function GET() {
+export async function GET(req: Request) {
+  const rl = await rateLimit(`read:badges:${getClientIp(req)}`, 60, 60);
+  if (!rl.ok) return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 });
+
   try {
     const response = await fetch('https://developers.google.com/profile/u/bahamad', {
       headers: {
