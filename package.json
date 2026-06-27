@@ -58,7 +58,7 @@
     "depcheck": "^1.4.7",
     "eslint": "^9",
     "eslint-config-next": "^16.2.9",
-    "happy-dom": "^20.10.1",
+    "happy-dom": "^20.10.6",
     "jsdom": "^29.1.1",
     "lost-pixel": "^3.22.0",
     "png-to-ico": "^3.0.1",
