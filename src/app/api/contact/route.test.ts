@@ -4,16 +4,22 @@ const {
   createTransportMock,
   verifyMock,
   sendMailMock,
+  checkBotIdMock,
 } = vi.hoisted(() => ({
   createTransportMock: vi.fn(),
   verifyMock: vi.fn(),
   sendMailMock: vi.fn(),
+  checkBotIdMock: vi.fn(),
 }));
 
 vi.mock("nodemailer", () => ({
   default: {
     createTransport: createTransportMock,
   },
+}));
+
+vi.mock("botid/server", () => ({
+  checkBotId: checkBotIdMock,
 }));
 
 import { POST } from "./route";
@@ -59,12 +65,24 @@ describe("POST /api/contact", () => {
     delete process.env.UPSTASH_REDIS_REST_TOKEN;
     validCookie = `ba_entry=${(await issueSession("America/Los_Angeles")).token}`;
 
+    checkBotIdMock.mockResolvedValue({ isBot: false });
     verifyMock.mockResolvedValue(undefined);
     sendMailMock.mockResolvedValue({ messageId: "test-id" });
     createTransportMock.mockReturnValue({
       verify: verifyMock,
       sendMail: sendMailMock,
     });
+  });
+
+  it("returns 403 when BotID flags the request as a bot", async () => {
+    checkBotIdMock.mockResolvedValueOnce({ isBot: true });
+
+    const response = await POST(
+      makeRequest({ name: "Bilal", email: "bilal@example.com", message: "Hello" })
+    );
+
+    expect(response.status).toBe(403);
+    expect(createTransportMock).not.toHaveBeenCalled();
   });
 
   it("returns 403 without a valid entry session token", async () => {

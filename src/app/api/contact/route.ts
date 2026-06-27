@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { checkBotId } from "botid/server";
 import { verifySession, readCookie, SESSION_COOKIE } from "@/lib/security/session";
 import { rateLimit, getClientIp, hashKey } from "@/lib/security/ratelimit";
 
@@ -25,7 +26,14 @@ function isSafeHeaderValue(value: string): boolean {
 
 export async function POST(req: Request) {
   try {
-    // 1. Anti-automation gate: require the signed entry token the official frontend sets.
+    // 1. Vercel BotID (invisible, Basic): block automated clients the challenge
+    //    flags. In local dev / off-Vercel this always returns isBot:false.
+    const bot = await checkBotId();
+    if (bot.isBot) {
+      return NextResponse.json({ error: "Automated request blocked." }, { status: 403 });
+    }
+
+    // 2. Anti-automation gate: require the signed entry token the official frontend sets.
     const session = await verifySession(readCookie(req.headers.get("cookie"), SESSION_COOKIE));
     if (!session) {
       return NextResponse.json(
@@ -34,7 +42,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // 2. Rate limit: per IP and (below) per email, so a valid session can't be a spam cannon.
+    // 3. Rate limit: per IP and (below) per email, so a valid session can't be a spam cannon.
     const ip = getClientIp(req);
     const ipLimit = await rateLimit(`contact:ip:${ip}`, 5, 3600); // 5 / hour / IP
     if (!ipLimit.ok) {
@@ -50,7 +58,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // 3. Input hardening.
+    // 4. Input hardening.
     if (typeof name !== "string" || typeof email !== "string" || typeof message !== "string") {
       return NextResponse.json({ error: "Invalid input" }, { status: 400 });
     }
