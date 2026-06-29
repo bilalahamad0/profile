@@ -413,13 +413,6 @@ export function EntryGate() {
               Enter
               <span aria-hidden="true" style={{ fontSize: 18, lineHeight: 1 }}>→</span>
             </button>
-            <button
-              type="button"
-              onClick={handleEnter}
-              style={{ marginTop: 16, background: "none", border: "none", color: "#52525b", fontSize: 11, letterSpacing: "0.04em", cursor: "pointer" }}
-            >
-              skip intro
-            </button>
           </motion.div>
         </motion.div>
       )}
