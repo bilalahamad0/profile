@@ -37,6 +37,12 @@ describe("GET /api/ai-metrics", () => {
   beforeEach(() => {
     fetchMock.mockReset();
     globalThis.fetch = fetchMock as unknown as typeof fetch;
+    // Keep the rate limiter fail-open (no KV) so it never calls the mocked fetch
+    // and the upstream call count stays deterministic.
+    delete process.env.KV_REST_API_URL;
+    delete process.env.KV_REST_API_TOKEN;
+    delete process.env.UPSTASH_REDIS_REST_URL;
+    delete process.env.UPSTASH_REDIS_REST_TOKEN;
   });
 
   afterAll(() => {

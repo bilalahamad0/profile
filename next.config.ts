@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withBotId } from "botid/next/config";
 
 const nextConfig: NextConfig = {
   compress: true,
@@ -93,4 +94,7 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// Wrap with BotID so the invisible challenge script is proxied same-origin
+// (ad-blocker resistant). Pairs with src/instrumentation-client.ts (client init)
+// and the checkBotId() guard in /api/contact.
+export default withBotId(nextConfig);

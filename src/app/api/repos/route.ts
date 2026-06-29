@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { rateLimit, getClientIp } from "@/lib/security/ratelimit";
 
 const REPOS = ["warn", "adhan-api", "profile", "tmo", "adhan-ce"];
 
@@ -7,7 +8,10 @@ const REPOS = ["warn", "adhan-api", "profile", "tmo", "adhan-ce"];
  * Revalidates every hour — eliminates direct GitHub API calls from the browser
  * and prevents hitting the 60 req/hr unauthenticated rate limit.
  */
-export async function GET() {
+export async function GET(req: Request) {
+  const rl = await rateLimit(`read:repos:${getClientIp(req)}`, 60, 60); // 60 / min / IP (generous)
+  if (!rl.ok) return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
+
   try {
     const results = await Promise.all(
       REPOS.map((repo) =>

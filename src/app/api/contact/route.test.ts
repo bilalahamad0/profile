@@ -4,10 +4,12 @@ const {
   createTransportMock,
   verifyMock,
   sendMailMock,
+  checkBotIdMock,
 } = vi.hoisted(() => ({
   createTransportMock: vi.fn(),
   verifyMock: vi.fn(),
   sendMailMock: vi.fn(),
+  checkBotIdMock: vi.fn(),
 }));
 
 vi.mock("nodemailer", () => ({
@@ -16,16 +18,26 @@ vi.mock("nodemailer", () => ({
   },
 }));
 
-import { POST } from "./route";
+vi.mock("botid/server", () => ({
+  checkBotId: checkBotIdMock,
+}));
 
-function makeRequest(body: unknown): Request {
-  return new Request("http://localhost/api/contact", {
+import { POST } from "./route";
+import { issueSession } from "@/lib/security/session";
+
+let validCookie = "";
+
+// `Cookie` is a forbidden request header that the Fetch spec / happy-dom strip
+// from a JS-constructed Request, so we duck-type one whose headers.get("cookie")
+// actually returns the token (the platform delivers it for real in production).
+function makeRequest(body: unknown, cookie: string | null = validCookie): Request {
+  return {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      get: (name: string) => (name.toLowerCase() === "cookie" ? cookie : null),
     },
-    body: JSON.stringify(body),
-  });
+    json: async () => body,
+  } as unknown as Request;
 }
 
 function applyBaseSmtpEnv() {
@@ -41,17 +53,54 @@ function applyBaseSmtpEnv() {
 describe("POST /api/contact", () => {
   const originalEnv = { ...process.env };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
     process.env = { ...originalEnv };
     applyBaseSmtpEnv();
+    process.env.SESSION_SECRET = "test-session-secret-at-least-16-chars";
+    // Keep rate limiting fail-open (no KV) so the tests are deterministic.
+    delete process.env.KV_REST_API_URL;
+    delete process.env.KV_REST_API_TOKEN;
+    delete process.env.UPSTASH_REDIS_REST_URL;
+    delete process.env.UPSTASH_REDIS_REST_TOKEN;
+    validCookie = `ba_entry=${(await issueSession("America/Los_Angeles")).token}`;
 
+    checkBotIdMock.mockResolvedValue({ isBot: false });
     verifyMock.mockResolvedValue(undefined);
     sendMailMock.mockResolvedValue({ messageId: "test-id" });
     createTransportMock.mockReturnValue({
       verify: verifyMock,
       sendMail: sendMailMock,
     });
+  });
+
+  it("returns 403 when BotID flags the request as a bot", async () => {
+    checkBotIdMock.mockResolvedValueOnce({ isBot: true });
+
+    const response = await POST(
+      makeRequest({ name: "Bilal", email: "bilal@example.com", message: "Hello" })
+    );
+
+    expect(response.status).toBe(403);
+    expect(createTransportMock).not.toHaveBeenCalled();
+  });
+
+  it("returns 403 without a valid entry session token", async () => {
+    const response = await POST(
+      makeRequest({ name: "Bilal", email: "bilal@example.com", message: "Hello" }, null)
+    );
+
+    expect(response.status).toBe(403);
+    expect(createTransportMock).not.toHaveBeenCalled();
+  });
+
+  it("returns 400 for a malformed email even with a valid session", async () => {
+    const response = await POST(
+      makeRequest({ name: "Bilal", email: "not-an-email", message: "Hello" })
+    );
+
+    expect(response.status).toBe(400);
+    expect(createTransportMock).not.toHaveBeenCalled();
   });
 
   it("returns 400 when required fields are missing", async () => {
@@ -131,7 +180,7 @@ describe("POST /api/contact", () => {
     });
   });
 
-  it("returns 500 with the thrown Error message", async () => {
+  it("returns a generic 500 (no internal details) on transporter error", async () => {
     verifyMock.mockRejectedValueOnce(new Error("SMTP unavailable"));
 
     const response = await POST(
@@ -144,7 +193,7 @@ describe("POST /api/contact", () => {
 
     expect(response.status).toBe(500);
     await expect(response.json()).resolves.toEqual({
-      error: "SMTP unavailable",
+      error: "Failed to send message",
     });
     expect(sendMailMock).not.toHaveBeenCalled();
   });
