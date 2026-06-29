@@ -87,6 +87,7 @@ export const metadata: Metadata = {
  * show decision.
  */
 const ENTRY_PRELAUNCH = `(function(){try{
+if(navigator.webdriver)return;
 var ua=navigator.userAgent||"";
 if(/bot|crawl|spider|slurp|googlebot|bingbot|duckduckbot|baiduspider|yandex|headless|lighthouse|facebookexternalhit|embedly|preview|whatsapp|telegram|slackbot|discordbot/i.test(ua))return;
 var r=null;try{r=localStorage.getItem("ba_entered")}catch(e){}

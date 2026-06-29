@@ -43,7 +43,9 @@ export function EntryGate() {
     // If we won't show the splash, drop the pre-paint cover so the page isn't
     // stuck behind it (matches the inline script's skip conditions).
     const clearCover = () => document.documentElement.classList.remove("ba-prelaunch");
-    if (isLikelyBot(navigator.userAgent)) return clearCover();
+    // Skip automated browsers (Playwright/Puppeteer/Selenium set navigator.webdriver)
+    // and known bots — they shouldn't see the splash and it must not block E2E/a11y.
+    if (navigator.webdriver || isLikelyBot(navigator.userAgent)) return clearCover();
     if (hasEntered()) return clearCover();
     const r = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
     reducedRef.current = r;
