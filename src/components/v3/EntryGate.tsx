@@ -40,8 +40,11 @@ export function EntryGate() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (isLikelyBot(navigator.userAgent)) return;
-    if (hasEntered()) return;
+    // If we won't show the splash, drop the pre-paint cover so the page isn't
+    // stuck behind it (matches the inline script's skip conditions).
+    const clearCover = () => document.documentElement.classList.remove("ba-prelaunch");
+    if (isLikelyBot(navigator.userAgent)) return clearCover();
+    if (hasEntered()) return clearCover();
     const r = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
     reducedRef.current = r;
     setReduced(r);
@@ -53,12 +56,21 @@ export function EntryGate() {
       if (already) return already;
       void ensureSession();
       markEntered();
-      const dur = reducedRef.current ? 220 : 1150;
+      const dur = reducedRef.current ? 200 : 950;
       const start = performance.now();
       const tick = (now: number) => {
         igniteRef.current = Math.min(1, (now - start) / dur);
-        if (igniteRef.current < 1) requestAnimationFrame(tick);
-        else window.setTimeout(() => setShow(false), 240);
+        if (igniteRef.current < 1) {
+          requestAnimationFrame(tick);
+        } else {
+          // Hand off to the home page: drop the cover, start its entrance, then
+          // let the splash zoom-and-dissolve over the top (cross-dissolve, not a cut).
+          const root = document.documentElement;
+          root.classList.remove("ba-prelaunch");
+          root.classList.add("ba-revealing");
+          window.setTimeout(() => root.classList.remove("ba-revealing"), 1300);
+          setShow(false);
+        }
       };
       requestAnimationFrame(tick);
       return true;
@@ -315,9 +327,21 @@ export function EntryGate() {
           aria-label="Welcome to bilalahamad.com — select enter to continue"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          exit={{
+            opacity: 0,
+            scale: reduced ? 1 : 1.14,
+            transition: { duration: reduced ? 0.25 : 0.85, ease: [0.4, 0, 0.2, 1] },
+          }}
           transition={{ duration: reduced ? 0.2 : 0.6, ease: "easeInOut" }}
-          style={{ position: "fixed", inset: 0, zIndex: 200, background: "#09090b", overflow: "hidden" }}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 200,
+            background: "#09090b",
+            overflow: "hidden",
+            transformOrigin: "50% 46%",
+            willChange: "opacity, transform",
+          }}
         >
           <style>{`@keyframes ba-shimmer{to{background-position:-200% center}}`}</style>
           {!reduced && (

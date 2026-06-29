@@ -78,6 +78,22 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Runs before the body paints (first child of <body>). For a human who hasn't
+ * entered yet, it instantly drops an opaque #09090b cover (via the
+ * `html.ba-prelaunch` rule in globals.css) so the home page never flashes before
+ * the entry splash mounts. Skipped for bots and returning visitors, so crawlers
+ * still get the full page and repeat visitors see no cover. Mirrors EntryGate's
+ * show decision.
+ */
+const ENTRY_PRELAUNCH = `(function(){try{
+var ua=navigator.userAgent||"";
+if(/bot|crawl|spider|slurp|googlebot|bingbot|duckduckbot|baiduspider|yandex|headless|lighthouse|facebookexternalhit|embedly|preview|whatsapp|telegram|slackbot|discordbot/i.test(ua))return;
+var r=null;try{r=localStorage.getItem("ba_entered")}catch(e){}
+if(r){var t=Number(r);if(isFinite(t)&&Date.now()-t<2592000000)return;}
+document.documentElement.classList.add("ba-prelaunch");
+}catch(e){}})();`;
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -89,6 +105,9 @@ export default function RootLayout({
           "font-sans bg-[#09090b] text-foreground antialiased"
         )}
       >
+        {/* Pre-paint cover to prevent the home page flashing before the splash. */}
+        <script dangerouslySetInnerHTML={{ __html: ENTRY_PRELAUNCH }} />
+
         {/* Skip to main content — WCAG 2.4.1 */}
         <a href="#main-content" className="skip-link">
           Skip to main content
