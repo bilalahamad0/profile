@@ -1,6 +1,6 @@
 "use client";
 
-import { Mail, Send, Linkedin, Github } from "lucide-react";
+import { Mail, Send, Linkedin, Github, CalendarClock } from "lucide-react";
 import { useState } from "react";
 import { ensureSession } from "@/lib/security/client";
 
@@ -48,6 +48,20 @@ export function ContactSection() {
                 <p className="text-muted-foreground max-w-xl mx-auto">
                     Interested in discussing a project or opportunity? Send me a message and let&apos;s create something amazing together.
                 </p>
+
+                {/* Prefer a live conversation? Jump to the embedded scheduler below. */}
+                <div className="mt-6 flex flex-col items-center gap-2">
+                    <a
+                        href="#book"
+                        className="group inline-flex items-center gap-2.5 rounded-full bg-white/5 border border-white/10 px-6 py-3 font-semibold text-white transition-all hover:bg-white/[0.08] hover:border-blue-500/40"
+                    >
+                        <CalendarClock className="w-4 h-4 text-blue-400" aria-hidden="true" />
+                        Book a Call
+                    </a>
+                    <span className="t-caption text-zinc-500">
+                        Prefer to talk? Grab a 1:1 slot below.
+                    </span>
+                </div>
             </div>
 
             <div className="grid md:grid-cols-2 gap-12 items-start">

@@ -1,9 +1,35 @@
 "use client";
 
+import { useEffect } from "react";
 import { ContactSection } from "@/components/sections/contact";
+import { BookingEmbed } from "@/components/sections/booking-embed";
 import { motion } from "framer-motion";
 
 export default function ContactPage() {
+  // "Book a Call" from the home CTA / footer lands on /contact#book, but the
+  // global ScrollToTop and the entry cover can beat the browser's native hash
+  // scroll. So once we arrive with #book in the URL, poll until the section is
+  // laid out and nothing is covering the page, then jump to it. Uses setTimeout
+  // (not requestAnimationFrame) so it still fires if the tab is backgrounded.
+  useEffect(() => {
+    if (window.location.hash !== "#book") return;
+    let timer = 0;
+    let tries = 0;
+    const scrollToBook = () => {
+      const covered =
+        document.documentElement.classList.contains("ba-prelaunch") ||
+        document.body.style.overflow === "hidden"; // entry cover / splash up
+      const el = document.getElementById("book");
+      if (el && !covered) {
+        el.scrollIntoView({ block: "start" });
+        return;
+      }
+      if (tries++ < 60) timer = window.setTimeout(scrollToBook, 50); // retry ~3s
+    };
+    timer = window.setTimeout(scrollToBook, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
+
   return (
     <main className="min-h-screen bg-[#09090b] text-white">
 
@@ -39,6 +65,9 @@ export default function ContactPage() {
           <ContactSection />
         </div>
       </section>
+
+      {/* Inline Booking Section — embedded Google scheduler */}
+      <BookingEmbed />
 
       {/* Additional Info Section */}
       <section className="py-12 md:py-20 lg:py-24 px-6 text-center border-t border-white/5 bg-white/[0.02]">
