@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Github, Linkedin, Mail, ArrowUpRight, MapPin } from "lucide-react";
+import { Github, Linkedin, Mail, ArrowUpRight, MapPin, CalendarClock } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { BOOKING_ANCHOR } from "@/lib/contact";
 
 const navLinks = [
   { href: "/experience", label: "Experience" },
@@ -99,6 +100,17 @@ export function Footer() {
               Connect
             </p>
             <ul className="space-y-3">
+              {/* Inline scheduler on /contact. Full-page nav (not next/link) so
+                  the browser reliably scrolls to #book on arrival. */}
+              <li>
+                <a
+                  href={BOOKING_ANCHOR}
+                  className="flex items-center gap-2.5 text-sm font-medium text-zinc-400 hover:text-white transition-colors group"
+                >
+                  <CalendarClock className="w-4 h-4 shrink-0 text-zinc-400 group-hover:text-blue-400 transition-colors" />
+                  Book a Call
+                </a>
+              </li>
               {socialLinks.map(({ href, label, icon: Icon }) => (
                 <li key={href}>
                   <a

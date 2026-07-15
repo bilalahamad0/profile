@@ -10,7 +10,10 @@ export function ScrollToTop() {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Use instant scroll to avoid fighting Lenis animation on route change
+    // Preserve hash-target navigation (e.g. /contact#book): if the URL carries a
+    // hash, let the browser / the target page scroll to that element instead of
+    // yanking back to the top. Only plain route changes reset to the top.
+    if (window.location.hash) return;
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [pathname]);
 

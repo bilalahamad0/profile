@@ -4,9 +4,10 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import {
   ArrowRight, Sparkles, BookOpen, Terminal,
-  FileText, Linkedin,
+  FileText, Linkedin, CalendarClock,
 } from "lucide-react";
 import { linkedInPosts } from "@/data/portfolio";
+import { BOOKING_ANCHOR } from "@/lib/contact";
 
 /* ================================================================
    Shared animation variants
@@ -265,6 +266,16 @@ export function ContactCTA() {
               Get in Touch
               <Terminal className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
+            {/* Full-page nav (not next/link) so the browser reliably scrolls to
+                the #book section on arrival — client-side hash scroll is flaky. */}
+            <a
+              href={BOOKING_ANCHOR}
+              className="group flex items-center gap-3 px-8 py-4 rounded-full bg-white/[0.05] border border-white/10 text-white font-bold hover:bg-white/[0.1] hover:border-white/20 transition-all"
+            >
+              <CalendarClock className="w-4 h-4 text-blue-400" />
+              Book a Call
+              <ArrowRight className="w-4 h-4 text-zinc-400 group-hover:translate-x-1 transition-transform" />
+            </a>
           </motion.div>
 
         </motion.div>
