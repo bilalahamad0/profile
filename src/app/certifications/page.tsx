@@ -42,7 +42,12 @@ type SpecializationChild = {
   step: number;
   title: string;
   url: string;
-  badge: CredlyBadgeRef;
+  /** Per-course Credly badge — present on specs whose courses each earn one. */
+  badge?: CredlyBadgeRef;
+  /** Colored course icon shown in the list layout when there is no per-course badge. */
+  icon?: string;
+  /** Course earned beyond the core specialization path — rendered set apart with a Bonus tag. */
+  bonus?: boolean;
 };
 
 type SpecializationData = {
@@ -65,6 +70,8 @@ type SpecializationData = {
   badgeHalo: string;
   /** Drop-shadow glow on the parent badge image, matched to the halo tint. */
   badgeShadow: string;
+  /** Thumbnail ribbon — defaults to the AI Skills ribbon when omitted. */
+  ribbon?: { emoji: string; label: string };
   children: SpecializationChild[];
 };
 
@@ -105,6 +112,75 @@ function openBadgeUrl(
 
 const SPECIALIZATIONS: SpecializationData[] = [
   // Reverse chronology — newer / more advanced first.
+  {
+    id: "spec-google-project-management",
+    headingId: "specialization-path-heading-pm",
+    testId: "specialization-courses-list-pm",
+    titleLines: ["Google Project Management Certificate", "7-Course Journey"],
+    issuer: "Google · Coursera",
+    date: "2026",
+    url: "https://www.coursera.org/account/accomplishments/professional-cert/RFCXEHN5D07B",
+    logo: "/logos/google.png",
+    description:
+      "Google's career certificate in project management — a hands-on progression through project foundations, initiation, planning, execution, and Agile delivery, capped by a real-world capstone and a bonus AI-powered job-search course, with each course backed by its own verified credential.",
+    totalCourses: 7,
+    image: "/certificates/google_project_management_certificate_thumb.jpg",
+    gradient: "from-blue-600/25 via-sky-500/15 to-amber-500/25",
+    badgeHalo: "bg-amber-300/35",
+    badgeShadow: "drop-shadow-[0_8px_30px_rgba(245,158,11,0.55)]",
+    ribbon: { emoji: "🎯", label: "PM Skills" },
+    childrenLayout: "list",
+    parentBadge: {
+      image: "/badges/google-project-management-certificate.png",
+      credlyUrl:
+        "https://www.credly.com/badges/00d274f5-2041-409e-803c-963f299371ab/public_url",
+    },
+    children: [
+      {
+        step: 1,
+        title: "Foundations of Project Management",
+        url: "https://www.coursera.org/account/accomplishments/records/MX7DVBTMZZ82",
+        icon: "/logos/gpm/gpm-course-1-foundations.png",
+      },
+      {
+        step: 2,
+        title: "Project Initiation: Starting a Successful Project",
+        url: "https://www.coursera.org/account/accomplishments/records/EW5OQ1F4S4KO",
+        icon: "/logos/gpm/gpm-course-2-initiation.png",
+      },
+      {
+        step: 3,
+        title: "Project Planning: Putting It All Together",
+        url: "https://www.coursera.org/account/accomplishments/records/I8FI69UC4QQ5",
+        icon: "/logos/gpm/gpm-course-3-planning.png",
+      },
+      {
+        step: 4,
+        title: "Project Execution: Running the Project",
+        url: "https://www.coursera.org/account/accomplishments/records/80FDIULPFE44",
+        icon: "/logos/gpm/gpm-course-4-execution.png",
+      },
+      {
+        step: 5,
+        title: "Agile Project Management",
+        url: "https://www.coursera.org/account/accomplishments/records/MHYXX9OT22C7",
+        icon: "/logos/gpm/gpm-course-5-agile.png",
+      },
+      {
+        step: 6,
+        title: "Capstone: Applying Project Management in the Real World",
+        url: "https://www.coursera.org/account/accomplishments/records/N4W9DXG8Z2DE",
+        icon: "/logos/gpm/gpm-course-6-capstone.png",
+      },
+      {
+        step: 7,
+        title: "Accelerate Your Job Search with AI",
+        url: "https://www.coursera.org/account/accomplishments/records/YB5RHDDOM6IM",
+        icon: "/logos/gpm/gpm-course-7-ai-job-search.png",
+        bonus: true,
+      },
+    ],
+  },
   {
     id: "spec-google-ai-professional",
     headingId: "specialization-path-heading-professional",
@@ -479,62 +555,67 @@ const ChildBadgesGrid = ({
       data-testid={spec.testId}
       className="m-0 grid w-full max-w-[460px] list-none grid-cols-6 place-items-center gap-x-0 gap-y-4 p-0 md:gap-y-5"
     >
-      {spec.children.map((child, index) => (
-        <motion.li
-          key={child.step}
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: index * 0.04, duration: 0.3 }}
-          className={cn(
-            "flex flex-col items-center gap-2",
-            PRO_CERT_GRID_POSITIONS[index]
-          )}
-        >
-          <button
-            type="button"
-            onClick={() =>
-              openBadgeUrl(child.badge.credlyUrl, {
-                title: child.title,
-                specialization: spec.titleLines[0],
-                step: child.step,
-              })
-            }
-            aria-label={`View ${child.title} verified badge on Credly`}
-            className="group/badge relative h-[76px] w-[76px] shrink-0 rounded-full transition-transform duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70 md:h-[112px] md:w-[112px]"
+      {spec.children.map((child, index) => {
+        const { badge } = child;
+        if (!badge) return null;
+        return (
+          <motion.li
+            key={child.step}
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.04, duration: 0.3 }}
+            className={cn(
+              "flex flex-col items-center gap-2",
+              PRO_CERT_GRID_POSITIONS[index]
+            )}
           >
-            <Image
-              src={child.badge.image}
-              alt={`${child.title} verified badge`}
-              fill
-              sizes="(max-width: 768px) 76px, 112px"
-              className="object-contain drop-shadow-[0_4px_16px_rgba(16,185,129,0.25)]"
-            />
-          </button>
-          <button
-            type="button"
-            onClick={() =>
-              openVerifyUrl(child.url, {
-                title: child.title,
-                issuer: spec.issuer,
-                step: child.step,
-                specialization: spec.titleLines[0],
-              })
-            }
-            aria-label={`Verify ${child.title} certificate on Coursera`}
-            className="group/verify inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 t-label font-bold uppercase tracking-wider text-emerald-300 transition-colors hover:border-emerald-300/60 hover:bg-emerald-500/20 hover:text-emerald-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70"
-          >
-            Verify
-            <ExternalLink className="h-3 w-3 transition-transform group-hover/verify:translate-x-0.5" />
-          </button>
-        </motion.li>
-      ))}
+            <button
+              type="button"
+              onClick={() =>
+                openBadgeUrl(badge.credlyUrl, {
+                  title: child.title,
+                  specialization: spec.titleLines[0],
+                  step: child.step,
+                })
+              }
+              aria-label={`View ${child.title} verified badge on Credly`}
+              className="group/badge relative h-[76px] w-[76px] shrink-0 rounded-full transition-transform duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70 md:h-[112px] md:w-[112px]"
+            >
+              <Image
+                src={badge.image}
+                alt={`${child.title} verified badge`}
+                fill
+                sizes="(max-width: 768px) 76px, 112px"
+                className="object-contain drop-shadow-[0_4px_16px_rgba(16,185,129,0.25)]"
+              />
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                openVerifyUrl(child.url, {
+                  title: child.title,
+                  issuer: spec.issuer,
+                  step: child.step,
+                  specialization: spec.titleLines[0],
+                })
+              }
+              aria-label={`Verify ${child.title} certificate on Coursera`}
+              className="group/verify inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 t-label font-bold uppercase tracking-wider text-emerald-300 transition-colors hover:border-emerald-300/60 hover:bg-emerald-500/20 hover:text-emerald-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70"
+            >
+              Verify
+              <ExternalLink className="h-3 w-3 transition-transform group-hover/verify:translate-x-0.5" />
+            </button>
+          </motion.li>
+        );
+      })}
     </ol>
   );
 };
 
 const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
   const totalLabel = String(spec.totalCourses).padStart(2, "0");
+  const ribbon = spec.ribbon ?? { emoji: "🌟", label: "AI Skills" };
   return (
     <section aria-labelledby={spec.headingId}>
       {/* Section header — title is split into two lines (name / N-Course Journey).
@@ -612,11 +693,11 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
                   className="object-cover transition-transform duration-700 group-hover/thumb:scale-105"
                   sizes="(max-width: 768px) 100vw, 32rem"
                 />
-                {/* AI Skills ribbon */}
+                {/* Skills ribbon (AI Skills by default, per-spec override) */}
                 <div className="pointer-events-none absolute right-4 top-4 z-20 flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-gradient-to-r from-amber-500/95 via-yellow-400/95 to-amber-500/95 px-3 py-1 shadow-[0_4px_20px_-4px_rgba(251,191,36,0.6)] backdrop-blur-sm">
-                  <span className="text-xs leading-none" aria-hidden>🌟</span>
+                  <span className="text-xs leading-none" aria-hidden>{ribbon.emoji}</span>
                   <span className="t-label font-black uppercase tracking-wider text-amber-950">
-                    AI Skills
+                    {ribbon.label}
                   </span>
                 </div>
                 {/* Hover overlay */}
@@ -732,15 +813,37 @@ const SpecializationSection = ({ spec }: { spec: SpecializationData }) => {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: index * 0.05, duration: 0.3 }}
-                      className="group/sub flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2.5 backdrop-blur-sm transition-colors hover:border-purple-500/30 hover:bg-white/[0.04] md:px-4 md:py-3"
+                      className={cn(
+                        "group/sub flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2.5 backdrop-blur-sm transition-colors hover:border-purple-500/30 hover:bg-white/[0.04] md:px-4 md:py-3",
+                        child.bonus &&
+                          "relative mt-3 before:absolute before:-top-[7px] before:left-2 before:right-2 before:border-t before:border-white/10 before:content-['']"
+                      )}
                     >
-                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-purple-500/40 bg-[#09090b] t-label font-bold text-white shadow-[0_0_15px_-5px_rgba(168,85,247,0.35)] md:h-8 md:w-8">
-                        {child.step}
-                      </div>
+                      {child.icon ? (
+                        <div className="relative h-9 w-9 shrink-0 md:h-10 md:w-10">
+                          <Image
+                            src={child.icon}
+                            alt=""
+                            fill
+                            sizes="40px"
+                            className="object-contain"
+                          />
+                        </div>
+                      ) : (
+                        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-purple-500/40 bg-[#09090b] t-label font-bold text-white shadow-[0_0_15px_-5px_rgba(168,85,247,0.35)] md:h-8 md:w-8">
+                          {child.step}
+                        </div>
+                      )}
 
                       <h4 className="min-w-0 flex-1 truncate text-sm font-semibold leading-snug text-white">
                         {child.title}
                       </h4>
+
+                      {child.bonus && (
+                        <span className="shrink-0 rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 t-label font-bold uppercase tracking-wider text-amber-300">
+                          Bonus
+                        </span>
+                      )}
 
                       <button
                         type="button"

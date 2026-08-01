@@ -6,7 +6,7 @@ import { certifications } from "@/data/portfolio";
 export const metadata: Metadata = {
   title: "Certifications",
   description:
-    "Professional certifications of Bilal Ahamad — ISTQB CTFL, AI/ML testing, leadership & Scrum. 18+ years advancing firmware quality & test automation.",
+    "Professional certifications of Bilal Ahamad — Google Project Management, ISTQB CTFL, AI/ML testing, leadership & Scrum. 18+ years advancing firmware quality & test automation.",
   alternates: { canonical: "/certifications" },
   openGraph: {
     type: "website",

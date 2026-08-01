@@ -191,6 +191,7 @@ export const certifications: Certification[] = [
   { title: "Software Testing Foundations: Integrating AI into Quality Process (2026)", category: "ai" },
   { title: "AI Coding Agents with GitHub Copilot and Cursor (2025)", category: "ai" },
   { title: "ISTQB Certified Tester Foundation Level (CTFL)", category: "testing" },
+  { title: "Google Project Management Certificate — 7 Courses (Google · Coursera, 2026)", category: "leadership" },
   { title: "Project Management Foundations (2023)", category: "leadership" },
   { title: "Scrum: Advanced (2021)", category: "leadership" },
   { title: "How to Master Your Executive Presence (2023)", category: "leadership" },
