@@ -18,6 +18,16 @@ const ESSENTIALS_TITLES = [
   'Stay Ahead of the AI Curve',
 ];
 
+const PM_TITLES = [
+  'Foundations of Project Management',
+  'Project Initiation: Starting a Successful Project',
+  'Project Planning: Putting It All Together',
+  'Project Execution: Running the Project',
+  'Agile Project Management',
+  'Capstone: Applying Project Management in the Real World',
+  'Accelerate Your Job Search with AI',
+];
+
 async function spyOnWindowOpen(page: import('@playwright/test').Page) {
   await page.evaluate(() => {
     // @ts-expect-error attach probe state for the test
@@ -51,6 +61,25 @@ test.describe('Certifications — Page-level layout', () => {
     );
     expect(ids).toEqual([
       'specialization-path-heading-professional',
+      'specialization-path-heading',
+    ]);
+  });
+
+  test('all four specialization sections render in reverse chronology (PM Certificate first)', async ({ page }) => {
+    await page.goto('/certifications');
+
+    const sections = page.locator(
+      'section[aria-labelledby^="specialization-path-heading"]',
+    );
+    await expect(sections).toHaveCount(4);
+
+    const ids = await sections.evaluateAll((els) =>
+      els.map((el) => el.getAttribute('aria-labelledby')),
+    );
+    expect(ids).toEqual([
+      'specialization-path-heading-pm',
+      'specialization-path-heading-professional',
+      'specialization-path-heading-prompting',
       'specialization-path-heading',
     ]);
   });
@@ -336,5 +365,108 @@ test.describe('Certifications — Google AI Professional Certificate specializat
     await expect(description).toBeVisible();
     await expect(description).toContainText(/real workplace use cases/i);
     await expect(description).toContainText(/app building/i);
+  });
+});
+
+test.describe('Certifications — Google Project Management Certificate specialization path', () => {
+  const SECTION_SELECTOR = 'section[aria-labelledby="specialization-path-heading-pm"]';
+
+  test('header heading splits into two lines with a PM Skills ribbon on the thumbnail', async ({ page }) => {
+    await page.goto('/certifications');
+
+    const section = page.locator(SECTION_SELECTOR);
+    await expect(section).toBeVisible();
+
+    const heading = section.getByRole('heading', { level: 2 });
+    await expect(heading).toBeVisible();
+    await expect(heading.locator('span').nth(0)).toHaveText(
+      'Google Project Management Certificate',
+    );
+    await expect(heading.locator('span').nth(1)).toHaveText('7-Course Journey');
+
+    // Ribbon says PM Skills (not the default AI Skills) inside this section.
+    await expect(section.getByText('PM Skills', { exact: true })).toBeVisible();
+    await expect(section.getByText('AI Skills', { exact: true })).toHaveCount(0);
+  });
+
+  test('7-course list renders every course with its colored icon, verify linker, and a Bonus tag on course 7', async ({ page }) => {
+    await page.goto('/certifications');
+
+    const list = page.getByTestId('specialization-courses-list-pm');
+    const items = list.locator('li');
+    await expect(items).toHaveCount(7);
+
+    for (const title of PM_TITLES) {
+      await expect(list.getByText(title, { exact: true })).toBeVisible();
+      await expect(
+        list.getByRole('button', { name: new RegExp(`verify certificate for ${title}`, 'i') }),
+      ).toBeVisible();
+    }
+
+    // Each of the 7 rows carries a colored course icon instead of a step number.
+    await expect(list.locator('img')).toHaveCount(7);
+
+    // The bonus AI course is set apart with a Bonus tag.
+    await expect(list.getByText('Bonus', { exact: true })).toBeVisible();
+  });
+
+  test('thumbnail click opens the Coursera professional-cert verification URL (RFCXEHN5D07B)', async ({ page }) => {
+    await page.goto('/certifications');
+
+    const section = page.locator(SECTION_SELECTOR);
+    await section.scrollIntoViewIfNeeded();
+    const thumbBtn = section.getByRole('button', {
+      name: /view google project management certificate certificate on coursera/i,
+    });
+    await thumbBtn.scrollIntoViewIfNeeded();
+
+    await spyOnWindowOpen(page);
+    await thumbBtn.click();
+    const calls = await readOpenCalls(page);
+    expect(calls).toHaveLength(1);
+    expect(calls[0].url).toContain(
+      'coursera.org/account/accomplishments/professional-cert/RFCXEHN5D07B',
+    );
+    expect(calls[0].target).toBe('_blank');
+  });
+
+  test('parent badge click opens the Credly public_url for the PM Certificate', async ({ page }) => {
+    await page.goto('/certifications');
+
+    const section = page.locator(SECTION_SELECTOR);
+    await section.scrollIntoViewIfNeeded();
+    const parentBadge = section.getByRole('button', {
+      name: /view google project management certificate parent badge on credly/i,
+    });
+    await parentBadge.scrollIntoViewIfNeeded();
+
+    await spyOnWindowOpen(page);
+    await parentBadge.click();
+    const calls = await readOpenCalls(page);
+    expect(calls).toHaveLength(1);
+    expect(calls[0].url).toContain(
+      'credly.com/badges/00d274f5-2041-409e-803c-963f299371ab/public_url',
+    );
+    expect(calls[0].target).toBe('_blank');
+  });
+
+  test('VERIFY linker on a course row opens that course\'s Coursera record URL', async ({ page }) => {
+    await page.goto('/certifications');
+
+    const list = page.getByTestId('specialization-courses-list-pm');
+    await list.scrollIntoViewIfNeeded();
+    const verifyBtn = list.getByRole('button', {
+      name: /verify certificate for foundations of project management/i,
+    });
+    await verifyBtn.scrollIntoViewIfNeeded();
+
+    await spyOnWindowOpen(page);
+    await verifyBtn.click();
+    const calls = await readOpenCalls(page);
+    expect(calls).toHaveLength(1);
+    expect(calls[0].url).toContain(
+      'coursera.org/account/accomplishments/records/MX7DVBTMZZ82',
+    );
+    expect(calls[0].target).toBe('_blank');
   });
 });
