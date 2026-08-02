@@ -407,3 +407,17 @@ html.ba-revealing #main-content {
     animation: none;
   }
 }
+/* Collapsed credential panels on /certifications must print fully expanded —
+   the content is always in the DOM, only its height is animated shut.
+   The descendant reset matters: framer-motion stamps collapsed children with
+   inline opacity/transform, which would otherwise print as blank boxes. */
+@media print {
+  [data-collapsible] {
+    height: auto !important;
+  }
+  [data-collapsible],
+  [data-collapsible] * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
