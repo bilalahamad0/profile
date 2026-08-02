@@ -25,6 +25,7 @@
 //   node scripts/sync-ai-metrics.mjs            # update ./ai-metrics.json (profile)
 //   node scripts/sync-ai-metrics.mjs --check    # dry run: show the diff, write nothing
 //   node scripts/sync-ai-metrics.mjs --report    # fetch/clone every repo, print canonical values
+//   node scripts/sync-ai-metrics.mjs --report --fresh   # ignore sidecars, clone + recompute
 //   node scripts/sync-ai-metrics.mjs --tokens    # measure Claude Code usage per project
 //
 // Fields are split into:
@@ -43,7 +44,7 @@ import {
   createReadStream,
 } from 'node:fs';
 import { tmpdir, homedir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import readline from 'node:readline';
 
 const GITHUB_USER = 'bilalahamad0';
@@ -241,13 +242,20 @@ const cloneAndCompute = (repo) => {
   }
 };
 
-const report = async () => {
+const report = async ({ fresh = false } = {}) => {
   console.log('\nCanonical metrics per project (this is what STATIC_FALLBACK should mirror):\n');
   for (const [id, repo] of Object.entries(REPO_MAP)) {
     try {
       let result;
       if (id === LOCAL_PROJECT) {
         result = { data: computeDerived(process.cwd()), source: 'local recompute' };
+      } else if (fresh) {
+        // --fresh: don't trust the sidecar. Each repo refreshes its own derived fields on a
+        // weekly schedule, and GitHub disables scheduled workflows in repos that go quiet —
+        // so a sidecar can serve months-old counts. Reporting those would launder the
+        // staleness straight into the page.
+        console.log(`  ${id} (${repo}): --fresh — cloning to recompute derived fields…`);
+        result = cloneAndCompute(repo);
       } else {
         result = await fetchSidecar(repo);
         if (!result) {
@@ -283,18 +291,33 @@ const report = async () => {
 // only; other agents' token figures stay curated in each sidecar.
 
 const TRANSCRIPT_ROOT = join(homedir(), '.claude', 'projects');
-const REPO_ROOT = join(homedir(), 'git_repo');
+
+// Where the sibling project repos are checked out. The transcript dir name is derived from
+// each repo's ABSOLUTE path, so this has to match the machine — and it differs between them
+// (~/git_repo on one, ~/Documents/GitHub on another). Deriving it from THIS repo's own
+// checkout keeps --tokens working anywhere instead of silently reporting "no transcripts".
+// Order matters only for readability; every root is tried.
+const REPO_ROOTS = [
+  ...(process.env.AI_METRICS_REPO_ROOT ? [process.env.AI_METRICS_REPO_ROOT] : []),
+  dirname(process.cwd()), // sibling repos live next to this one
+  join(homedir(), 'git_repo'), // legacy layout
+].filter((root, i, all) => all.indexOf(root) === i);
 
 const transcriptDirsFor = (repo, allDirs) => {
   // Claude Code names the dir after the absolute path with EVERY non-alphanumeric
   // character → '-' (so /Users/x/git_repo/profile → -Users-x-git-repo-profile).
-  const prefix = join(REPO_ROOT, repo).replace(/[^a-zA-Z0-9]/g, '-');
+  const prefixes = REPO_ROOTS.map((root) => join(root, repo).replace(/[^a-zA-Z0-9]/g, '-'));
   // Exact match or a worktree variant — a bare startsWith(prefix) would wrongly pull in
   // lookalike siblings (profile → profile-ai-studio).
-  return allDirs.filter((d) => d === prefix || d.startsWith(`${prefix}--claude-worktrees-`));
+  return allDirs.filter((d) =>
+    prefixes.some((p) => d === p || d.startsWith(`${p}--claude-worktrees-`))
+  );
 };
 
-const measureProject = async (dirs) => {
+// `since` is a YYYY-MM-DD date — the day the currently-published figure was measured.
+// Entries from that day or earlier are already baked into it, so they're accumulated
+// separately (`t.since`) and only the strictly-newer usage counts as the delta to add.
+const measureProject = async (dirs, since = null) => {
   const t = {
     apiCalls: 0,
     input: 0,
@@ -305,6 +328,9 @@ const measureProject = async (dirs) => {
     models: {},
     first: null,
     last: null,
+    // usage strictly newer than `since` — the part not yet reflected in the sidecar
+    since: { apiCalls: 0, input: 0, output: 0, cacheWrite: 0, cacheRead: 0 },
+    undated: 0,
   };
   const seen = new Set();
   for (const dir of dirs) {
@@ -337,6 +363,19 @@ const measureProject = async (dirs) => {
         const m = obj.message.model;
         if (m && m !== '<synthetic>') t.models[m] = (t.models[m] ?? 0) + 1;
         const ts = obj.timestamp;
+        // An entry counts toward the delta only if it is provably newer than the baseline.
+        // Undated entries are left out (and tallied) rather than assumed new — the whole
+        // point of the delta is that it must never double-count.
+        if (since) {
+          if (!ts) t.undated++;
+          else if (ts.slice(0, 10) > since) {
+            t.since.apiCalls++;
+            t.since.input += u.input_tokens ?? 0;
+            t.since.output += u.output_tokens ?? 0;
+            t.since.cacheWrite += u.cache_creation_input_tokens ?? 0;
+            t.since.cacheRead += u.cache_read_input_tokens ?? 0;
+          }
+        }
         if (ts) {
           if (!t.first || ts < t.first) t.first = ts;
           if (!t.last || ts > t.last) t.last = ts;
@@ -348,6 +387,23 @@ const measureProject = async (dirs) => {
 };
 
 const fmt = (x) => x.toLocaleString('en-US');
+
+// The published figure is CUMULATIVE, but transcripts are not kept forever — Claude Code
+// prunes old session logs, so a re-measurement covers only the sessions that still exist.
+// Overwriting with that raw total would silently erase real usage (tmo measured 12.8M in
+// Aug 2026 against 121M already published). So the sidecar's own `lastUpdated` is treated
+// as the baseline date and only strictly-newer usage is ADDED to the published figure:
+// monotonic, no double-counting, and correct across pruning.
+const loadSidecar = async (id, repo) => {
+  if (id === LOCAL_PROJECT) {
+    try {
+      return JSON.parse(readFileSync(join(process.cwd(), 'ai-metrics.json'), 'utf8'));
+    } catch {
+      return null;
+    }
+  }
+  return (await fetchSidecar(repo))?.data ?? null;
+};
 
 const tokensReport = async () => {
   if (!existsSync(TRANSCRIPT_ROOT)) {
@@ -362,8 +418,11 @@ const tokensReport = async () => {
       console.log(`  ${id.padEnd(9)} no transcripts — token fields stay curated\n`);
       continue;
     }
-    const t = await measureProject(dirs);
+    const sidecar = await loadSidecar(id, repo);
+    const baseline = sidecar?.lastUpdated ?? null;
+    const t = await measureProject(dirs, baseline);
     const total = t.input + t.output + t.cacheWrite + t.cacheRead;
+    const delta = t.since.input + t.since.output + t.since.cacheWrite + t.since.cacheRead;
     const models = Object.entries(t.models)
       .sort((a, b) => b[1] - a[1])
       .map(([m, c]) => `${m} (${c})`)
@@ -377,25 +436,37 @@ const tokensReport = async () => {
     );
     console.log(`    models: ${models || '—'}`);
     console.log(`    span:   ${t.first?.slice(0, 10) ?? '?'} → ${t.last?.slice(0, 10) ?? '?'}`);
-    if (id === LOCAL_PROJECT) {
-      try {
-        const sidecar = JSON.parse(readFileSync(join(process.cwd(), 'ai-metrics.json'), 'utf8'));
-        const curated = (sidecar.agents ?? [])
-          .filter((a) => a.name !== 'Claude Code')
-          .reduce((s, a) => s + (a.tokens ?? 0), 0);
-        console.log(
-          `    apply:  Claude Code agent tokens=${fmt(total)}; totalTokens=${fmt(curated + total)}` +
-            ` (${fmt(curated)} curated + measured)`
-        );
-      } catch {
-        /* sidecar unreadable — skip the suggestion */
-      }
+
+    if (!sidecar) {
+      console.log('    ⚠ no sidecar found — cannot compute a delta; treat TOTAL as the value\n');
+      continue;
     }
+    const cc = (sidecar.agents ?? []).find((a) => a.name === 'Claude Code');
+    const published = cc?.tokens ?? 0;
+    const curated = (sidecar.agents ?? [])
+      .filter((a) => a.name !== 'Claude Code')
+      .reduce((s, a) => s + (a.tokens ?? 0), 0);
+    const newCC = published + delta;
+    console.log(
+      `    delta:  +${fmt(delta)} since ${baseline} (${fmt(t.since.apiCalls)} calls)` +
+        (t.undated ? ` [${t.undated} undated entries excluded]` : '')
+    );
+    if (total < published) {
+      console.log(
+        `    note:   surviving transcripts (${fmt(total)}) < published (${fmt(published)}) —` +
+          ' older sessions pruned, so ADD the delta; never overwrite.'
+      );
+    }
+    console.log(
+      `    apply:  Claude Code agent tokens=${fmt(newCC)} (${fmt(published)} published + ${fmt(delta)} new);` +
+        ` totalTokens=${fmt(curated + newCC)}`
+    );
     console.log('');
   }
   console.log(
-    "Apply: set each sidecar's Claude Code agent tokens to TOTAL and totalTokens to\n" +
-      'curated-agents + TOTAL (sibling repos via `gh api` PUT — see the update-ai-page skill).'
+    "Apply: ADD each project's delta to its sidecar's Claude Code agent tokens, then set\n" +
+      'totalTokens = curated agents + that figure (sibling repos via `gh api` PUT — see the\n' +
+      'update-ai-page skill). Re-running is safe: the next baseline is the new lastUpdated.'
   );
 };
 
@@ -405,7 +476,7 @@ const args = process.argv.slice(2);
 if (args.includes('--tokens')) {
   await tokensReport();
 } else if (args.includes('--report')) {
-  await report();
+  await report({ fresh: args.includes('--fresh') });
 } else {
   updateLocal({ check: args.includes('--check') });
 }

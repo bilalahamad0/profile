@@ -305,7 +305,7 @@ export const projectsData = [
     isAI: true,
     aiTools: ["Claude Code (Opus 4.7)"],
     aiContribution: 95,
-    impact: "Published on the Chrome Web Store · auto-pauses media across every Chrome tab at Adhan time · cross-tab prayer-focus mode · 179 tests, 13 suites",
+    impact: "Published on the Chrome Web Store · auto-pauses media across every Chrome tab at Adhan time · cross-tab prayer-focus mode · 189 tests, 14 suites",
     gradient: "from-emerald-600/20 via-emerald-500/10 to-transparent",
     accent: "emerald",
     relatedPosts: [
