@@ -136,7 +136,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: \${{ secrets.GH_PAT }}
+          # Fall back to the run's own token: not every repo has GH_PAT, and without a
+          # fallback the bootstrapped workflow can't check out or push there at all.
+          token: \${{ secrets.GH_PAT || github.token }}
 
       - name: Update ai-metrics.json
         run: |
