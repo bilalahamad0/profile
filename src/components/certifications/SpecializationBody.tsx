@@ -24,7 +24,7 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
   const itemVariants = reduceMotion ? undefined : panelItemVariants;
 
   return (
-    <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-8">
+    <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] md:gap-8">
       {/* ─────────── LEFT COLUMN — visual ─────────── */}
       <div className="flex flex-col gap-5">
         <button
@@ -100,11 +100,9 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
             <ArrowRight className="h-3 w-3 transition-transform group-hover/details:translate-x-1" />
           </button>
         </div>
-      </div>
 
-      {/* ─────────── RIGHT COLUMN — info + credentials ─────────── */}
-      <div className="flex flex-col gap-5">
-        {/* Description + parent badge with its halo bloom */}
+        {/* Summary + parent badge — lives under the certificate so the left
+            column carries the story and the right column stays pure courses */}
         <div className="flex flex-col gap-4 rounded-2xl border border-white/5 bg-white/[0.02] p-4 lg:flex-row lg:items-center lg:gap-6 lg:p-5">
           <p className="min-w-0 flex-1 t-small text-zinc-300">
             {spec.description}
@@ -119,7 +117,7 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
             }
             aria-label={`View ${spec.titleLines[0]} parent badge on Credly`}
             data-testid={`${spec.testId}-parent-badge`}
-            className="group/parent relative h-28 w-28 shrink-0 self-center rounded-full transition-transform duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70 md:h-32 md:w-32 lg:h-36 lg:w-36 lg:self-auto"
+            className="group/parent relative h-28 w-28 shrink-0 self-center rounded-full transition-transform duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70 md:h-32 md:w-32 lg:h-32 lg:w-32"
           >
             <motion.span
               aria-hidden
@@ -133,19 +131,25 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
               src={spec.parentBadge.image}
               alt={`${spec.titleLines[0]} verified parent badge`}
               fill
-              sizes="(max-width: 1024px) 128px, 144px"
+              sizes="128px"
               className={cn("relative object-contain", spec.badgeShadow)}
             />
           </button>
         </div>
+      </div>
 
+      {/* ─────────── RIGHT COLUMN — course credentials only ─────────── */}
+      <div className="flex flex-col gap-5">
         <div className="flex items-center gap-2 self-start rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1.5 t-label font-bold uppercase tracking-wider text-emerald-300">
           <CheckCircle2 className="h-3.5 w-3.5" aria-hidden />
           All {spec.totalCourses} course credentials
         </div>
 
         {spec.childrenLayout === "list" ? (
-          <ol className="m-0 flex list-none flex-col gap-3 p-0" data-testid={spec.testId}>
+          <ol
+            className="m-0 flex flex-1 list-none flex-col justify-center gap-3 p-0"
+            data-testid={spec.testId}
+          >
             {spec.children.map((child) => (
               <motion.li
                 key={child.step}
@@ -207,7 +211,7 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
             ))}
           </ol>
         ) : (
-          <div className="flex items-center justify-center">
+          <div className="flex flex-1 items-center justify-center">
             <ChildBadgesGrid spec={spec} />
           </div>
         )}
