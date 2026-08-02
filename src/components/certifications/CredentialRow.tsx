@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { CheckCircle2, ExternalLink, Sparkles } from "lucide-react";
+import { CheckCircle2, ChevronDown, ExternalLink, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   credentialSlug,
@@ -18,28 +18,26 @@ import { openVerifyUrl } from "./verify";
 
 const DISCLOSURE_SPRING = { type: "spring", stiffness: 380, damping: 28 } as const;
 
-/** Morphing plus → × disclosure indicator. Decorative: the h3 toggle button
- *  is the accessible control. */
+/** Chevron disclosure indicator — points down (expand) when collapsed and
+ *  rotates to point up (collapse) when open. Decorative: the h3 toggle
+ *  button is the accessible control. */
 const Disclosure = ({ open, accent }: { open: boolean; accent: GroupAccent }) => {
   const reduceMotion = useReducedMotion();
   return (
     <span
       aria-hidden
       className={cn(
-        "relative grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 transition-colors",
+        "grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 transition-colors",
         open && accent.disclosureOpen
       )}
     >
       <motion.span
-        className="absolute h-[2px] w-4 rounded-full bg-white/70"
-        animate={{ rotate: open ? 135 : 0 }}
+        className="grid place-items-center"
+        animate={{ rotate: open ? 180 : 0 }}
         transition={reduceMotion ? { duration: 0 } : DISCLOSURE_SPRING}
-      />
-      <motion.span
-        className="absolute h-[2px] w-4 rounded-full bg-white/70"
-        animate={{ rotate: open ? 135 : 90 }}
-        transition={reduceMotion ? { duration: 0 } : DISCLOSURE_SPRING}
-      />
+      >
+        <ChevronDown className="h-4 w-4 text-white/70" />
+      </motion.span>
     </span>
   );
 };
