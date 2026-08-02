@@ -79,11 +79,13 @@ test.describe('Certifications — Page-level layout', () => {
   test('ATS: every credential and course title is in the raw server HTML with zero interaction', async ({ request }) => {
     const res = await request.get('/certifications');
     expect(res.status()).toBe(200);
+    // Decode &amp; LAST so an encoded sequence like &amp;quot; can never be
+    // double-unescaped (js/double-escaping).
     const decode = (s: string) =>
       s
-        .replace(/&amp;/g, '&')
         .replace(/&#x27;/g, "'")
-        .replace(/&quot;/g, '"');
+        .replace(/&quot;/g, '"')
+        .replace(/&amp;/g, '&');
     const html = decode(await res.text());
     for (const title of [
       ...CREDENTIAL_TITLES,
