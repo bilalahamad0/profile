@@ -38,7 +38,12 @@ jobs:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: node scripts/update-ai-metrics.js
 
+      # always(): the step above fans out to the other project repos and exits non-zero if
+      # any dispatch fails. That must stay visible, but it must NOT strand this repo's own
+      # freshly-computed metrics — an unrelated remote permission error would otherwise
+      # mean the weekly run never commits anything at all.
       - name: Commit and push if metrics changed
+        if: always()
         run: |
           git config user.name "bilalahamad-bot"
           git config user.email "bilal.ahamad@gmail.com"
@@ -51,6 +56,7 @@ jobs:
           fi
 
       - name: Trigger Vercel deployment
+        if: always()
         env:
           HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
         run: |
