@@ -183,15 +183,15 @@ export type Certification = {
 // Mirrors the priority on /certifications so the summary card stays in sync
 // whenever a new credential is added to the gallery.
 // Note: "AI for App Building" is intentionally absent — it's now course #7 of
-// the Google AI Professional Certificate specialization.
+// the Google AI Professional specialization.
 export const certifications: Certification[] = [
-  { title: "Google AI Professional Certificate (2026)", category: "ai" },
-  { title: "Google Prompting Essentials Specialization (2026)", category: "ai" },
-  { title: "Google AI Essentials Specialization (2026)", category: "ai" },
+  { title: "Google AI Professional (2026)", category: "ai" },
+  { title: "Google AI Essentials (2026)", category: "ai" },
+  { title: "Google Prompting Essentials (2026)", category: "ai" },
   { title: "Software Testing Foundations: Integrating AI into Quality Process (2026)", category: "ai" },
   { title: "AI Coding Agents with GitHub Copilot and Cursor (2025)", category: "ai" },
   { title: "ISTQB Certified Tester Foundation Level (CTFL)", category: "testing" },
-  { title: "Google Project Management Certificate (2026)", category: "leadership" },
+  { title: "Google Project Management Professional (2026)", category: "leadership" },
   { title: "Project Management Foundations (2023)", category: "leadership" },
   { title: "Scrum: Advanced (2021)", category: "leadership" },
   { title: "How to Master Your Executive Presence (2023)", category: "leadership" },
