@@ -16,11 +16,15 @@ const ROOT = resolve(__dirname, "..");
 const TODAY = new Date().toISOString().slice(0, 10);
 const GH_USER = "bilalahamad0";
 const GH_PAT = process.env.GH_PAT;
+// Repos this run fans out to via repository_dispatch.
+// adhan-ce is deliberately absent: GH_PAT has no Actions:Write there, so dispatching to it
+// returns 403 and fails the whole weekly run — which is what got this cron disabled the
+// first time. It carries its own `schedule:` in update-ai-metrics.yml instead, so it stays
+// fresh regardless. Re-add it here if the PAT is ever granted Actions:Write on that repo.
 const REMOTE_REPO_MAP = {
   warn: "warn",
   adhan: "adhan-api",
   tmo: "tmo",
-  "adhan-ce": "adhan-ce",
 };
 
 const SOURCE_EXTENSIONS = /\.(ts|tsx|js|jsx|css|mdx)$/;
