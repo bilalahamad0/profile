@@ -42,7 +42,7 @@ const breadcrumb = breadcrumbList([
 const STATIC_FALLBACK: Record<string, AIMetrics> = {
   warn: {
     projectId: "warn",
-    lastUpdated: "2026-08-02",
+    lastUpdated: "2026-08-03",
     aiContribution: 88,
     agents: [
       {
@@ -71,7 +71,7 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
       },
     ],
     totalTokens: 278343352,
-    totalCommits: 343,
+    totalCommits: 344,
     linesOfCode: 40714,
     devCycleDays: 31,
     manualEstimateDays: 155,
@@ -84,7 +84,7 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
   },
   adhan: {
     projectId: "adhan",
-    lastUpdated: "2026-08-02",
+    lastUpdated: "2026-08-03",
     aiContribution: 92,
     agents: [
       {
@@ -113,7 +113,7 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
       },
     ],
     totalTokens: 439427981,
-    totalCommits: 267,
+    totalCommits: 268,
     linesOfCode: 12776,
     devCycleDays: 4,
     manualEstimateDays: 21,
@@ -153,7 +153,7 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
   },
   tmo: {
     projectId: "tmo",
-    lastUpdated: "2026-08-02",
+    lastUpdated: "2026-08-03",
     aiContribution: 75,
     agents: [
       {
@@ -174,7 +174,7 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
       },
     ],
     totalTokens: 133305702,
-    totalCommits: 38,
+    totalCommits: 39,
     linesOfCode: 5485,
     devCycleDays: 3,
     manualEstimateDays: 12,
@@ -187,7 +187,7 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
   },
   profile: {
     projectId: "profile",
-    lastUpdated: "2026-08-02",
+    lastUpdated: "2026-08-03",
     aiContribution: 85,
     agents: [
       {
@@ -216,16 +216,16 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
       },
     ],
     totalTokens: 358226655,
-    totalCommits: 501,
-    linesOfCode: 14774,
+    totalCommits: 503,
+    linesOfCode: 14988,
     devCycleDays: 58,
     manualEstimateDays: 76,
     impact: "Full-stack portfolio deployed to production",
     cycle: "58 active days",
     beforeAI: "Static HTML/CSS resume site",
     afterAI: "AI-native Next.js portfolio with analytics",
-    tests: 173,
-    testSuites: 16,
+    tests: 242,
+    testSuites: 19,
   },
 };
 
