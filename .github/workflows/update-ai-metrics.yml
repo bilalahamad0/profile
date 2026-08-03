@@ -1,9 +1,12 @@
 name: Weekly AI Metrics Update
 
 on:
-  # Scheduled run disabled: the weekly cron failed ~85% of the time (missing
-  # GH_PAT / VERCEL_DEPLOY_HOOK secret), generating noise with no benefit.
-  # Re-add the `schedule:` block once those secrets are configured.
+  # Restored 2026-08-02: the cron was disabled while GH_PAT / VERCEL_DEPLOY_HOOK were
+  # missing, but this job is also the DISPATCHER for every other project repo — with it
+  # off, nothing anywhere recomputed and all five sidecars silently froze for ~2 months.
+  # Both secrets are now configured, so the weekly run is back on its original cadence.
+  schedule:
+    - cron: '0 6 * * 0'   # Sundays 06:00 UTC
   workflow_dispatch:      # allow manual trigger from Actions tab
 
 permissions:
