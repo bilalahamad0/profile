@@ -64,7 +64,7 @@ export const SPECIALIZATIONS: SpecializationData[] = [
     id: "spec-google-project-management",
     headingId: "specialization-path-heading-pm",
     testId: "specialization-courses-list-pm",
-    titleLines: ["Google Project Management Certificate", "7-Course Journey"],
+    titleLines: ["Google Project Management Professional", "7-Course Journey"],
     issuer: "Google · Coursera",
     date: "2026",
     url: "https://www.coursera.org/account/accomplishments/professional-cert/RFCXEHN5D07B",
@@ -133,7 +133,7 @@ export const SPECIALIZATIONS: SpecializationData[] = [
     id: "spec-google-ai-professional",
     headingId: "specialization-path-heading-professional",
     testId: "specialization-courses-list-professional",
-    titleLines: ["Google AI Professional Certificate", "7-Course Journey"],
+    titleLines: ["Google AI Professional", "7-Course Journey"],
     issuer: "Google · Coursera",
     date: "2026",
     url: "https://www.coursera.org/account/accomplishments/specialization/1B8PEYYE6E6R",
@@ -390,7 +390,7 @@ export const AI_CERTIFICATES: GalleryCertificate[] = [
     gradient: "from-blue-600/20 to-purple-600/20"
   },
   // ai-3 (AI for App Building) intentionally removed — it's now child #7 of the
-  // Google AI Professional Certificate specialization above.
+  // Google AI Professional specialization above.
 ];
 
 export const GENERAL_CERTIFICATES: GalleryCertificate[] = [
@@ -531,8 +531,8 @@ export const CREDENTIAL_GROUPS: CredentialGroupDef[] = [
     },
     credentials: [
       bySpecId("spec-google-ai-professional"),
-      bySpecId("spec-google-prompting-essentials"),
       bySpecId("spec-google-ai-essentials"),
+      bySpecId("spec-google-prompting-essentials"),
       byCertId("ai-2"),
       byCertId("ai-1"),
     ],

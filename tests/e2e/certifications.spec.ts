@@ -29,8 +29,8 @@ const PM_TITLES = [
 ];
 
 const CREDENTIAL_TITLES = [
-  'Google Project Management Certificate',
-  'Google AI Professional Certificate',
+  'Google Project Management Professional',
+  'Google AI Professional',
   'Google Prompting Essentials',
   'Google AI Essentials',
   'Software Testing Foundations: Integrating AI into the Quality Process',
@@ -118,7 +118,7 @@ test.describe('Certifications — Page-level layout', () => {
     await expect(page.getByText('Google Specializations', { exact: true })).toBeVisible();
   });
 
-  test('specialization sections keep their aria-labelledby wrappers; AI group orders Pro → Prompting → Essentials, PM lives in Leadership', async ({ page }) => {
+  test('specialization sections keep their aria-labelledby wrappers; AI group orders Pro → Essentials → Prompting, PM lives in Leadership', async ({ page }) => {
     await page.goto('/certifications');
 
     const sections = page.locator(
@@ -131,8 +131,8 @@ test.describe('Certifications — Page-level layout', () => {
     );
     expect(ids).toEqual([
       'specialization-path-heading-professional',
-      'specialization-path-heading-prompting',
       'specialization-path-heading',
+      'specialization-path-heading-prompting',
       'specialization-path-heading-pm',
     ]);
   });
@@ -241,7 +241,7 @@ test.describe('Certifications — collapse/expand behavior', () => {
     await section.scrollIntoViewIfNeeded();
 
     await spyOnWindowOpen(page);
-    await section.getByRole('button', { name: /^verify google project management certificate$/i }).click();
+    await section.getByRole('button', { name: /^verify google project management professional$/i }).click();
 
     const calls = await readOpenCalls(page);
     expect(calls).toHaveLength(1);
@@ -253,7 +253,7 @@ test.describe('Certifications — collapse/expand behavior', () => {
   });
 });
 
-test.describe('Certifications — Google AI Professional Certificate row (default open)', () => {
+test.describe('Certifications — Google AI Professional row (default open)', () => {
   const SECTION = '#spec-google-ai-professional';
 
   test('row header shows title, meta line with journey count, courses chip, and Verified', async ({ page }) => {
@@ -261,7 +261,7 @@ test.describe('Certifications — Google AI Professional Certificate row (defaul
 
     const section = page.locator(SECTION);
     const heading = section.getByRole('heading', { level: 3 }).first();
-    await expect(heading.locator('span').nth(0)).toHaveText('Google AI Professional Certificate');
+    await expect(heading.locator('span').nth(0)).toHaveText('Google AI Professional');
     await expect(heading.locator('span').nth(1)).toContainText('7-Course Journey');
     // Chips are hidden below the sm breakpoint — assert on desktop viewports only.
     if ((page.viewportSize()?.width ?? 1280) >= 640) {
@@ -275,7 +275,7 @@ test.describe('Certifications — Google AI Professional Certificate row (defaul
 
     const section = page.locator(SECTION);
     const parentBadge = section.getByRole('button', {
-      name: /view google ai professional certificate parent badge on credly/i,
+      name: /view google ai professional parent badge on credly/i,
     });
     await expect(parentBadge).toBeVisible();
 
@@ -317,7 +317,7 @@ test.describe('Certifications — Google AI Professional Certificate row (defaul
     await page.goto('/certifications');
 
     const thumbBtn = page.locator(SECTION).getByRole('button', {
-      name: /view google ai professional certificate certificate on coursera/i,
+      name: /view google ai professional certificate on coursera/i,
     });
     await thumbBtn.scrollIntoViewIfNeeded();
 
@@ -385,7 +385,7 @@ test.describe('Certifications — Google AI Essentials row', () => {
   });
 });
 
-test.describe('Certifications — Google Project Management Certificate row', () => {
+test.describe('Certifications — Google Project Management Professional row', () => {
   const SECTION = '#spec-google-project-management';
 
   test('row sits in the Leadership group with a PM Skills chip; expanded body shows the ribbon', async ({ page }) => {
@@ -395,7 +395,7 @@ test.describe('Certifications — Google Project Management Certificate row', ()
     expect(await section.evaluate((el) => Boolean(el.closest('#group-leadership')))).toBe(true);
 
     const heading = section.getByRole('heading', { level: 3 }).first();
-    await expect(heading.locator('span').nth(0)).toHaveText('Google Project Management Certificate');
+    await expect(heading.locator('span').nth(0)).toHaveText('Google Project Management Professional');
     await expect(heading.locator('span').nth(1)).toContainText('7-Course Journey');
 
     await expandRow(page, SECTION);
@@ -432,7 +432,7 @@ test.describe('Certifications — Google Project Management Certificate row', ()
       .getByRole('button', { name: /verify certificate for foundations of project management/i })
       .click();
     const parentBadge = page.locator(SECTION).getByRole('button', {
-      name: /view google project management certificate parent badge on credly/i,
+      name: /view google project management professional parent badge on credly/i,
     });
     await parentBadge.scrollIntoViewIfNeeded();
     await parentBadge.click();
