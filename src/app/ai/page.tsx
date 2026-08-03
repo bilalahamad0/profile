@@ -74,7 +74,7 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
     totalCommits: 344,
     linesOfCode: 40714,
     devCycleDays: 31,
-    manualEstimateDays: 155,
+    manualEstimateDays: 93,
     impact: "Automated 100% of data ingestion and alerting",
     cycle: "31 active days",
     beforeAI: "Manual Excel download, no monitoring",
@@ -116,7 +116,7 @@ const STATIC_FALLBACK: Record<string, AIMetrics> = {
     totalCommits: 270,
     linesOfCode: 12776,
     devCycleDays: 56,
-    manualEstimateDays: 294,
+    manualEstimateDays: 168,
     impact: "Zero-touch prayer-time audio notifications with automated media-state control (Raspberry Pi + Android TV via ADB) · 10 microservices",
     cycle: "56 active days",
     beforeAI: "No automation, manual device control",
@@ -547,8 +547,17 @@ export default async function AILabPage() {
   const totalTokens = Object.values(allMetrics).reduce((sum, m) => sum + m.totalTokens, 0);
   const totalCommits = Object.values(allMetrics).reduce((sum, m) => sum + m.totalCommits, 0);
 
+  // Derived from the same per-project figures the table below renders, rather than asserted
+  // as a fixed string — a hardcoded headline silently goes false the moment any project's
+  // cycle is corrected. Weighted by days (Σ actual ÷ Σ baseline), not a mean of percentages,
+  // so a one-day project can't swing the total.
+  const totalDevDays = Object.values(allMetrics).reduce((sum, m) => sum + m.devCycleDays, 0);
+  const totalManualDays = Object.values(allMetrics).reduce((sum, m) => sum + m.manualEstimateDays, 0);
+  const cycleReduction =
+    totalManualDays > 0 ? Math.round((1 - totalDevDays / totalManualDays) * 100) : 0;
+
   const heroStats = [
-    { label: "Dev Cycle Reduction", value: "75%+" },
+    { label: "Dev Cycle Reduction", value: cycleReduction > 0 ? `${cycleReduction}%` : "—" },
     { label: "Production Systems",  value: String(aiProjects.length) },
     { label: "AI Tokens Processed", value: totalTokens > 0 ? `${formatTokens(totalTokens)}+` : "500k+" },
     { label: "Total Commits",       value: totalCommits > 0 ? String(totalCommits) : "400+" },
