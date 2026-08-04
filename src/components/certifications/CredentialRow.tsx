@@ -58,8 +58,9 @@ const Chip = ({ className, children }: { className: string; children: React.Reac
  *  two colours down the ledger. Emerald stays reserved for verification
  *  affordances (the course VERIFY pills in the expanded body). */
 const CHIP_COURSES = "border-violet-400/25 bg-violet-400/10 text-violet-300";
-const CHIP_SKILLS_AI = "border-purple-500/25 bg-purple-500/10 text-purple-300";
-const CHIP_SKILLS_SPEC = "border-amber-400/30 bg-amber-400/10 text-amber-300";
+/** One amber for every skills chip — AI Skills and PM Skills are the same
+ *  category, so they share a tint and are told apart by their emoji/icon. */
+const CHIP_SKILLS = "border-amber-400/30 bg-amber-400/10 text-amber-300";
 const CHIP_OFFICIAL = "border-blue-400/25 bg-blue-400/10 text-blue-300";
 
 export function CredentialRow({
@@ -174,14 +175,14 @@ export function CredentialRow({
           then Courses, so Courses always sits directly left of Verify. */}
       <span className="hidden items-center gap-2 sm:flex">
         {isSpec && credential.ribbon && (
-          <Chip className={cn("hidden lg:inline-flex", CHIP_SKILLS_SPEC)}>
+          <Chip className={cn("hidden lg:inline-flex", CHIP_SKILLS)}>
             <span aria-hidden>{credential.ribbon.emoji}</span>
             {credential.ribbon.label}
           </Chip>
         )}
         {!isSpec && credential.id.startsWith("ai-") && (
-          <Chip className={cn("hidden lg:inline-flex", CHIP_SKILLS_AI)}>
-            <Sparkles className="h-3 w-3 fill-purple-400/20" aria-hidden />
+          <Chip className={cn("hidden lg:inline-flex", CHIP_SKILLS)}>
+            <Sparkles className="h-3 w-3 fill-amber-400/20" aria-hidden />
             AI Skills
           </Chip>
         )}
