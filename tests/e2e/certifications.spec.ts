@@ -256,7 +256,7 @@ test.describe('Certifications — collapse/expand behavior', () => {
 test.describe('Certifications — Google AI Professional row (default open)', () => {
   const SECTION = '#spec-google-ai-professional';
 
-  test('row header shows title, meta line with journey count, courses chip, and Verified', async ({ page }) => {
+  test('row header shows title, meta line with journey count, courses chip, and a Verify link instead of a Verified pill', async ({ page }) => {
     await page.goto('/certifications');
 
     const section = page.locator(SECTION);
@@ -266,8 +266,14 @@ test.describe('Certifications — Google AI Professional row (default open)', ()
     // Chips are hidden below the sm breakpoint — assert on desktop viewports only.
     if ((page.viewportSize()?.width ?? 1280) >= 640) {
       await expect(section.getByText('7 Courses', { exact: true })).toBeVisible();
-      await expect(section.getByText('Verified', { exact: true })).toBeVisible();
     }
+    // The "Verified" state pill was removed: it rendered identically on every
+    // row, so it distinguished nothing. The Verify link carries the claim and
+    // the group header states "all verified" once.
+    await expect(section.getByText('Verified', { exact: true })).toHaveCount(0);
+    await expect(
+      section.getByRole('button', { name: /^verify google ai professional$/i }),
+    ).toBeVisible();
   });
 
   test('expanded body: 7 child badges in 2-3-2 grid, each with badge + verify buttons; parent badge next to description', async ({ page }) => {
