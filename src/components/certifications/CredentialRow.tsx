@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { CheckCircle2, ChevronDown, ExternalLink, Sparkles } from "lucide-react";
+import { ChevronDown, ExternalLink, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   credentialSlug,
@@ -55,7 +55,8 @@ const Chip = ({ className, children }: { className: string; children: React.Reac
 
 /** Chip tints are keyed to the chip's MEANING, not to the group accent — a
  *  "7 Courses" chip reads violet in every group so the same fact never wears
- *  two colours down the ledger. Emerald stays reserved for Verified. */
+ *  two colours down the ledger. Emerald stays reserved for verification
+ *  affordances (the course VERIFY pills in the expanded body). */
 const CHIP_COURSES = "border-violet-400/25 bg-violet-400/10 text-violet-300";
 const CHIP_SKILLS_AI = "border-purple-500/25 bg-purple-500/10 text-purple-300";
 const CHIP_SKILLS_SPEC = "border-amber-400/30 bg-amber-400/10 text-amber-300";
@@ -170,7 +171,7 @@ export function CredentialRow({
       </h3>
 
       {/* Chips (≥sm) — fixed order across every group: qualifier chips first,
-          then Courses, so Courses always sits directly left of Verified. */}
+          then Courses, so Courses always sits directly left of Verify. */}
       <span className="hidden items-center gap-2 sm:flex">
         {isSpec && credential.ribbon && (
           <Chip className={cn("hidden lg:inline-flex", CHIP_SKILLS_SPEC)}>
@@ -194,16 +195,11 @@ export function CredentialRow({
         )}
       </span>
 
-      {/* Verified — ≥sm only; on phones the Verify link already signals it
-          and the title needs every pixel */}
-      <span className="hidden shrink-0 items-center gap-1 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-1 sm:inline-flex">
-        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" aria-hidden />
-        <span className="t-label font-bold uppercase tracking-wider text-emerald-300">
-          Verified
-        </span>
-      </span>
-
-      {/* Verify — always reachable without expanding */}
+      {/* Verify — always reachable without expanding. There is deliberately no
+          "Verified" state pill beside it: it rendered identically on every row,
+          so it distinguished nothing while implying some rows might not be
+          verified. The group header states "all verified" once, and this link
+          is the stronger claim — it hands over the issuer URL as proof. */}
       {(isSpec || credential.url) && (
         <button
           type="button"
