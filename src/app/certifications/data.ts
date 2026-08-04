@@ -472,11 +472,12 @@ export type Credential =
 
 /** Literal Tailwind class strings per group — Tailwind can't interpolate,
  *  so every accent variant is spelled out in full. Emerald is reserved
- *  exclusively for verification affordances across all groups. */
+ *  exclusively for verification affordances across all groups. Row chips are
+ *  deliberately NOT part of the accent: they are tinted by chip type in
+ *  CredentialRow so "7 Courses" reads identically in every group. */
 export type GroupAccent = {
   eyebrow: string;
   iconTile: string;
-  chip: string;
   hairline: string;
   hoverBorder: string;
   openRing: string;
@@ -522,7 +523,6 @@ export const CREDENTIAL_GROUPS: CredentialGroupDef[] = [
     accent: {
       eyebrow: "text-violet-300",
       iconTile: "border-violet-400/20 bg-violet-500/10 text-violet-300",
-      chip: "border-violet-400/25 bg-violet-400/10 text-violet-300",
       hairline: "from-violet-400/40 via-violet-400/10",
       hoverBorder: "hover:border-violet-400/30",
       openRing:
@@ -545,7 +545,6 @@ export const CREDENTIAL_GROUPS: CredentialGroupDef[] = [
     accent: {
       eyebrow: "text-blue-300",
       iconTile: "border-blue-400/20 bg-blue-500/10 text-blue-300",
-      chip: "border-blue-400/25 bg-blue-400/10 text-blue-300",
       hairline: "from-blue-400/40 via-blue-400/10",
       hoverBorder: "hover:border-blue-400/30",
       openRing:
@@ -562,7 +561,6 @@ export const CREDENTIAL_GROUPS: CredentialGroupDef[] = [
     accent: {
       eyebrow: "text-amber-300",
       iconTile: "border-amber-400/20 bg-amber-500/10 text-amber-300",
-      chip: "border-amber-400/25 bg-amber-400/10 text-amber-300",
       hairline: "from-amber-400/40 via-amber-400/10",
       hoverBorder: "hover:border-amber-400/30",
       openRing:
@@ -584,7 +582,6 @@ export const CREDENTIAL_GROUPS: CredentialGroupDef[] = [
     accent: {
       eyebrow: "text-sky-300",
       iconTile: "border-sky-400/20 bg-sky-500/10 text-sky-300",
-      chip: "border-sky-400/25 bg-sky-400/10 text-sky-300",
       hairline: "from-sky-400/40 via-sky-400/10",
       hoverBorder: "hover:border-sky-400/30",
       openRing:

@@ -53,6 +53,14 @@ const Chip = ({ className, children }: { className: string; children: React.Reac
   </span>
 );
 
+/** Chip tints are keyed to the chip's MEANING, not to the group accent — a
+ *  "7 Courses" chip reads violet in every group so the same fact never wears
+ *  two colours down the ledger. Emerald stays reserved for Verified. */
+const CHIP_COURSES = "border-violet-400/25 bg-violet-400/10 text-violet-300";
+const CHIP_SKILLS_AI = "border-purple-500/25 bg-purple-500/10 text-purple-300";
+const CHIP_SKILLS_SPEC = "border-amber-400/30 bg-amber-400/10 text-amber-300";
+const CHIP_OFFICIAL = "border-blue-400/25 bg-blue-400/10 text-blue-300";
+
 export function CredentialRow({
   credential,
   index,
@@ -161,27 +169,28 @@ export function CredentialRow({
         </button>
       </h3>
 
-      {/* Chips (≥sm) */}
+      {/* Chips (≥sm) — fixed order across every group: qualifier chips first,
+          then Courses, so Courses always sits directly left of Verified. */}
       <span className="hidden items-center gap-2 sm:flex">
-        {isSpec && (
-          <Chip className={accent.chip}>{credential.totalCourses} Courses</Chip>
-        )}
         {isSpec && credential.ribbon && (
-          <Chip className="hidden border-amber-400/30 bg-amber-400/10 text-amber-300 lg:inline-flex">
+          <Chip className={cn("hidden lg:inline-flex", CHIP_SKILLS_SPEC)}>
             <span aria-hidden>{credential.ribbon.emoji}</span>
             {credential.ribbon.label}
           </Chip>
         )}
         {!isSpec && credential.id.startsWith("ai-") && (
-          <Chip className="hidden border-purple-500/25 bg-purple-500/10 text-purple-300 lg:inline-flex">
+          <Chip className={cn("hidden lg:inline-flex", CHIP_SKILLS_AI)}>
             <Sparkles className="h-3 w-3 fill-purple-400/20" aria-hidden />
             AI Skills
           </Chip>
         )}
         {isOfficial && (
-          <Chip className="hidden border-blue-400/25 bg-blue-400/10 text-blue-300 lg:inline-flex">
+          <Chip className={cn("hidden lg:inline-flex", CHIP_OFFICIAL)}>
             Official Badge
           </Chip>
+        )}
+        {isSpec && (
+          <Chip className={CHIP_COURSES}>{credential.totalCourses} Courses</Chip>
         )}
       </span>
 
