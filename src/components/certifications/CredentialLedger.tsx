@@ -44,8 +44,16 @@ export function CredentialLedger() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
-  // Side effects (analytics, URL hash) stay OUT of the state updater — React
-  // is free to re-run updaters, so they must be pure.
+  // Side effects (analytics) stay OUT of the state updater — React is free to
+  // re-run updaters, so they must be pure.
+  //
+  // Expanding deliberately does NOT rewrite the address bar. It used to
+  // replaceState a `#<slug>`, which turned the canonical /certifications URL
+  // into a deep link the moment anyone opened a row — so whatever was then
+  // copied, bookmarked or offered by browser autocomplete carried the hash,
+  // and loading it dropped the visitor ~1500px down the page. Expanding a row
+  // is a view action, not a navigation. Inbound deep links still work (see the
+  // effect above) and the group jump pills still produce shareable anchors.
   const handleToggle = useCallback(
     (slug: string, category: string) => {
       const expanded = !openIds.has(slug);
@@ -58,9 +66,6 @@ export function CredentialLedger() {
         }
         return next;
       });
-      if (expanded) {
-        window.history.replaceState(null, "", `#${slug}`);
-      }
       trackEvent("credential_expand", { id: slug, category, expanded });
     },
     [openIds]
