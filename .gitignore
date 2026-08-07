@@ -46,6 +46,8 @@ next-env.d.ts
 # agent & test scratch artifacts (generated locally / by MCP tools)
 .claude/worktrees/
 .claude/scheduled_tasks.lock
+# Playwright's html reporter output — CI uploads it as a build artifact instead
+/playwright-report/
 .lostpixel/
 .playwright-mcp/
 .antigravityignore
