@@ -140,6 +140,20 @@ describe("projectsData", () => {
     expect(Array.isArray(project.relatedPosts)).toBe(true);
   });
 
+  it("every extended sub-dashboard is well-formed and https", () => {
+    const ids: string[] = [];
+    for (const project of projectsData) {
+      for (const sub of project.subDashboards ?? []) {
+        ids.push(sub.id);
+        expect(sub.region.trim()).not.toBe("");
+        expect(sub.tagline.trim()).not.toBe("");
+        expect(sub.demoLabel.trim()).not.toBe("");
+        expect(isHttps(sub.href)).toBe(true);
+      }
+    }
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
   it("every related blog slug resolves to a real published post", () => {
     const realSlugs = new Set(getAllPosts().map((p) => p.slug));
     const broken: string[] = [];

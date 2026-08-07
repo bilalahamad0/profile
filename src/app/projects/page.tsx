@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {
   Github, ExternalLink, Sparkles, Star, GitFork,
-  Filter, ArrowRight, BookOpen, Zap, ChevronUp, Network,
+  Filter, ArrowRight, BookOpen, Zap, ChevronUp, Network, MapPin,
 } from "lucide-react";
 import { projectsData, type ProjectCategory } from "@/data/portfolio";
 
@@ -274,6 +274,8 @@ export default function ProjectsPage() {
                 const rKey = repoKey[project.id] ?? project.id;
                 const repoData = repos[rKey];
                 const previewFailed = !!failedPreviews[project.id];
+                // Extended sub-group (e.g. California nested under the national US WARN tracker).
+                const subDashboards = project.subDashboards ?? [];
 
                 return (
                   <motion.article
@@ -424,12 +426,15 @@ export default function ProjectsPage() {
                                   />
                                 </div>
                               ) : (
+                                // `--warn-shift` parks the crop window on the national choropleth of the
+                                // US WARN tracker. That dashboard reflows below 640px (taller stat stack
+                                // pushes the map down), hence the two measured offsets.
                                 <iframe
                                   src={(project as any).dashboardSrc}
                                   className={`w-full h-full border-0 origin-top-left ${
-                                    project.id === 'warn' ? '' : 'scale-[0.75] sm:scale-[0.80]'
+                                    project.id === 'warn' ? '[--warn-shift:-790px] sm:[--warn-shift:-675px]' : 'scale-[0.75] sm:scale-[0.80]'
                                   }`}
-                                  style={project.id === 'warn' ? { width: "117%", height: "100%", minHeight: "1200px", pointerEvents: "auto", transform: "scale(0.85) translateY(-675px)" } : { width: "133%", height: "133%", pointerEvents: "auto" }}
+                                  style={project.id === 'warn' ? { width: "117%", height: "100%", minHeight: "1200px", pointerEvents: "auto", transform: "scale(0.85) translateY(var(--warn-shift))" } : { width: "133%", height: "133%", pointerEvents: "auto" }}
                                   loading="lazy"
                                   title={`${project.name} live dashboard`}
                                   sandbox="allow-scripts allow-same-origin"
@@ -453,6 +458,37 @@ export default function ProjectsPage() {
                               )}
                             </div>
                           )}
+                        </div>
+                      )}
+
+                      {/* Extended sub-group — regional deep-dives nested inside this project */}
+                      {subDashboards.length > 0 && (
+                        <div className="mb-6 pl-4 border-l-2 border-blue-500/30 flex flex-col gap-2">
+                          <span className="t-label font-black uppercase tracking-[0.2em] text-zinc-500">
+                            Extended Coverage
+                          </span>
+                          {subDashboards.map((sub) => (
+                            <a
+                              key={sub.id}
+                              href={sub.href}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="group/sub flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 rounded-2xl border border-white/5 bg-white/[0.03] px-4 py-3 hover:border-blue-500/30 hover:bg-white/[0.06] transition-all"
+                            >
+                              <span className="min-w-0">
+                                <span className="flex items-center gap-1.5 text-sm font-bold text-white">
+                                  <MapPin className="w-3.5 h-3.5 text-blue-400 shrink-0" aria-hidden="true" />
+                                  {sub.region}
+                                </span>
+                                <span className="block text-xs text-zinc-500 mt-0.5">{sub.tagline}</span>
+                              </span>
+                              <span className="flex items-center gap-1.5 shrink-0 text-xs font-bold text-blue-300 group-hover/sub:text-blue-200 transition-colors">
+                                <span className="pulse-dot" aria-hidden="true" />
+                                {sub.demoLabel}
+                                <ExternalLink className="w-3 h-3" aria-hidden="true" />
+                              </span>
+                            </a>
+                          ))}
                         </div>
                       )}
 
