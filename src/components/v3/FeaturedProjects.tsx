@@ -37,6 +37,8 @@ const ACCENT_BG: Record<string, string> = {
 
 function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] }) {
   const imgPosition = project.id === "adhan" ? "object-top" : "object-center";
+  // Extended sub-group (e.g. California nested under the national US WARN tracker).
+  const subDashboards = project.subDashboards ?? [];
 
   return (
     <div
@@ -97,6 +99,27 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
 
         <h3 className="text-base font-bold text-white mb-1">{project.name}</h3>
         <p className={`text-sm font-medium ${ACCENT_TEXT[project.accent]} mb-3`}>{project.tagline}</p>
+
+        {/* Extended sub-group — regional deep-dives that live inside this project */}
+        {subDashboards.length > 0 && (
+          <div className="relative z-[2] flex flex-wrap items-center gap-1.5 mb-3">
+            <span className="t-label font-bold uppercase tracking-widest text-zinc-500">Includes</span>
+            {subDashboards.map((sub) => (
+              <a
+                key={sub.id}
+                href={sub.href}
+                target="_blank"
+                rel="noreferrer"
+                title={sub.tagline}
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-bold text-blue-300 hover:bg-blue-500/20 hover:text-blue-200 transition-colors"
+              >
+                {sub.region}
+                <ExternalLink className="w-3 h-3" aria-hidden="true" />
+              </a>
+            ))}
+          </div>
+        )}
+
         <p className="text-sm text-zinc-400 leading-relaxed mb-4 line-clamp-2">{project.description}</p>
 
         <div className="flex items-center justify-between pt-3 border-t border-white/5 mt-auto">

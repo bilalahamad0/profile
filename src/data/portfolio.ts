@@ -206,22 +206,45 @@ export const recommendations = [
 
 export type ProjectCategory = "All" | "IoT & Automation" | "Data & Analytics" | "AI-Powered" | "Web & DevOps";
 
+/**
+ * A regional deep-dive that lives *inside* a parent project — rendered as an
+ * extended sub-group beneath the parent card rather than as its own project.
+ * Today: California (`/warn/ca/`) nested under the national US WARN tracker.
+ */
+export type SubDashboard = {
+  id: string;
+  region: string;
+  tagline: string;
+  href: string;
+  demoLabel: string;
+};
+
 export const projectsData = [
   {
     id: "warn",
-    name: "California Live Layoff Monitoring Dashboard",
-    tagline: "Live layoff intelligence from raw government filings",
-    description: "A fully automated data pipeline for the California WARN Act. Engineered for surgical precision, it transforms raw government filings into live actionable intelligence using ETag caching, MD5 verification, and GitHub Actions CI/CD — running twice daily with zero human intervention.",
+    name: "US Live Layoff Monitoring Dashboard",
+    tagline: "National WARN layoff intelligence, unified from every state agency",
+    description: "A fully automated data pipeline that unifies WARN Act layoff notices from 46 state workforce agencies plus DC into one searchable national dataset with a free JSON API and per-state email alerts. Engineered for surgical precision, it transforms raw government filings into live actionable intelligence using ETag caching, MD5 verification, and GitHub Actions CI/CD — running twice daily with zero human intervention. California ships as an extended sub-dashboard with county, industry, and employer breakdowns.",
     category: "Data & Analytics" as ProjectCategory,
-    tech: ["Python", "GitHub Actions", "Plotly", "ETag Cache", "Pandas"],
+    tech: ["Python", "GitHub Actions", "Plotly", "ETag Cache", "Pandas", "JSON API"],
     repo: "https://github.com/bilalahamad0/warn",
     architecture: "https://bilalahamad0.github.io/warn/architecture.html",
     demo: "https://bilalahamad0.github.io/warn/",
-    demoLabel: "Live Dashboard",
+    demoLabel: "Live US Dashboard",
+    // Extended sub-group: regional deep-dives nested under the national tracker.
+    subDashboards: [
+      {
+        id: "warn-ca",
+        region: "California",
+        tagline: "EDD filings with county, industry & employer breakdowns",
+        href: "https://bilalahamad0.github.io/warn/ca/",
+        demoLabel: "Live CA Dashboard",
+      },
+    ] as SubDashboard[],
     isAI: true,
     aiTools: ["Antigravity", "Gemini 2.5 Flash/Pro", "Cursor", "Claude Sonnet 4"],
     aiContribution: 88,
-    impact: "Automated 100% of data ingestion and alerting",
+    impact: "Automated 100% of data ingestion and alerting across 46 states + DC",
     gradient: "from-blue-600/20 via-blue-500/10 to-transparent",
     accent: "blue",
     relatedPosts: [
@@ -232,7 +255,7 @@ export const projectsData = [
     previewSrc: "https://www.youtube.com/embed/s5pSbdQyYM8",
     dashboardSrc: "https://bilalahamad0.github.io/warn/",
     thumbnail: "/videos/California_Live_Layoff_Monitoring_Dashboard.mp4",
-    thumbnailAlt: "California Live Layoff Monitoring Dashboard — interactive charts",
+    thumbnailAlt: "US Live Layoff Monitoring Dashboard — interactive charts (California sub-dashboard shown)",
     thumbnailType: "video" as const,
   },
   {
