@@ -1,6 +1,7 @@
 import { getPostBySlug, getAllPosts, metaDescription } from "@/lib/blog";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 import Link from "next/link";
 import { ArrowLeft, Clock, Tag, Calendar, BookOpen, Github, Linkedin } from "lucide-react";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -174,7 +175,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <article className="py-16 px-6 lg:px-24">
         <div className="max-w-4xl mx-auto">
           <div className="prose prose-invert max-w-none">
-            <MDXRemote source={post.content} components={mdxComponents} />
+            {/* remark-gfm: without it, markdown pipe tables fall through to
+                remark's core parser and render as literal "| a | b |" text. */}
+            <MDXRemote
+              source={post.content}
+              components={mdxComponents}
+              options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+            />
           </div>
 
           {/* Footer */}
