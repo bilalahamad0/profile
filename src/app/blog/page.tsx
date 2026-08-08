@@ -45,6 +45,7 @@ const slugToThumb: Record<string, string> = {
   "clock-jump-case-study": "/blog-thumbs/iot_clock_jump_thumbnail.png",
   "ai-driven-development": "/blog-thumbs/ai-native-dev.png",
   "california-warn-story": "/blog-thumbs/california-warn.png",
+  "warn-tracker-goes-national": "/blog-thumbs/us-warn-national.png",
   "media-caster-story": "/blog-thumbs/media-caster.png?v=2",
 };
 
@@ -120,8 +121,12 @@ export default function BlogPage() {
                 <div className="relative z-10 max-w-3xl">
                   <div className="flex items-center gap-3 mb-6 flex-wrap">
                     <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20">
-                      <FileText className="w-3.5 h-3.5 text-violet-400" aria-hidden="true" />
-                      <span className="t-label font-black uppercase tracking-wider text-violet-300">Whitepaper</span>
+                      {featured.category === "Whitepaper" ? (
+                        <FileText className="w-3.5 h-3.5 text-violet-400" aria-hidden="true" />
+                      ) : (
+                        <BookOpen className="w-3.5 h-3.5 text-violet-400" aria-hidden="true" />
+                      )}
+                      <span className="t-label font-black uppercase tracking-wider text-violet-300">{featured.category}</span>
                     </div>
                     <span className="text-xs text-zinc-500">{featured.date}</span>
                     <span className="text-xs text-zinc-500 flex items-center gap-1.5">
@@ -134,7 +139,7 @@ export default function BlogPage() {
                   </h2>
                   <p className="t-lead text-zinc-400 mb-8">{featured.description}</p>
                   <div className="flex items-center gap-2 text-sm font-bold text-violet-400 group-hover:gap-3 transition-all">
-                    Read Whitepaper <ArrowRight className="w-4 h-4" />
+                    Read {featured.category} <ArrowRight className="w-4 h-4" />
                   </div>
                 </div>
               </div>

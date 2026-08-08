@@ -1,0 +1,95 @@
+---
+title: "From One State to 47: Taking the WARN Tracker National"
+date: "2026-08-08"
+description: "Scaling a single-state layoff pipeline into a national one — a per-state source registry, change detection that survives 47 different publishers, and why the honest answer to a data gap is to draw it."
+tags: ["Python", "Data Engineering", "GitHub Actions", "Automation", "Plotly"]
+category: "Project Story"
+featured: true
+---
+
+# From One State to 47: Taking the WARN Tracker National
+
+Two years ago I built a pipeline that turned California's WARN Act filings into a live dashboard. It worked — twice-daily runs, no human in the loop, [the whole story is here](/blog/california-warn-story).
+
+But a layoff tracker that stops at the state line answers the wrong question. If Meta cuts 2,550 roles in California, the interesting follow-up is what's happening in Washington, Texas and New York — and no single agency will tell you. So the tracker went national: **46 states plus the District of Columbia, 47 jurisdictions in one dataset**, live at [bilalahamad0.github.io/warn](https://bilalahamad0.github.io/warn/).
+
+Here's what actually made that hard, and it wasn't the scraping.
+
+## The second state is the expensive one
+
+California publishes an `.xlsx` on a stable URL. I had quietly assumed that was normal. It is not. Across the country the same legal filing arrives as:
+
+- **New York** — a CSV export endpoint hanging off a public Tableau workbook
+- **Florida** — a paginated web application at `reactwarn.floridajobs.org`
+- **Ohio, Alaska, DC** — plain HTML pages, frequently one per calendar year
+- **California** — the original spreadsheet, still the most structured feed of the lot
+
+There is no federal WARN registry. Every state workforce agency invented its own publishing habit, and a few change it without warning. So the design question was never "how do I parse this" — it was "how do I add the fiftieth one without touching the other forty-nine."
+
+## A registry where adding a state touches exactly one file
+
+The answer is a package where each jurisdiction is a single module implementing `fetch` and `parse`, and everything downstream — change detection, alert ledgers, snapshot rotation, the cumulative union, aggregation, charts — is shared infrastructure that never learns a state's name.
+
+Modules register themselves. There is no list to update:
+
+```python
+# warn_sources/__init__.py — discovery, not registration
+for _modinfo in pkgutil.iter_modules(__path__):
+    if _modinfo.name in _INFRA_MODULES:
+        continue
+    try:
+        _mod = importlib.import_module(f".{_modinfo.name}", __name__)
+    except Exception as _e:  # isolation boundary by design
+        log.warning(f"Source module '{_modinfo.name}' failed to import: {_e}")
+        continue
+    # ...register every Source subclass the module defines
+```
+
+That `try/except` around the import is the load-bearing line. A state whose module breaks — a dependency it needs, a syntax error I introduced at midnight — gets logged and skipped. It cannot take the other forty-six down with it. When you are fanning out across agencies you do not control, partial success has to be a first-class outcome, not an exception you catch at the top.
+
+Going through `importlib` rather than `import` statements has a small bonus: modules can be named after Python keywords. `in.py` and `or.py` are legal state codes here.
+
+## Change detection that survives forty-seven publishers
+
+The California build leaned on an ETag check — ask the server whether the file changed before downloading it. That trick only pays off when the source is a static file, and most of these aren't. A Tableau endpoint and a paginated web app will happily hand you a fresh, byte-different response that contains identical data.
+
+So the pipeline stopped trusting the transport and started trusting its own history. Two structures carry it:
+
+- **A cumulative store** — the union of every record ever seen. When a state silently truncates its archive to the last 12 months, the dataset doesn't lose a decade.
+- **A notified-keys ledger** — the set of filings subscribers have already been emailed about. A state reshuffling its table doesn't turn into a 3 a.m. inbox event.
+
+Both are plain git-versioned JSON. Every change is a commit, so "when did this record first appear" is answerable with `git log` rather than an audit table.
+
+## The part I'm proudest of: drawing the gaps
+
+Merging 47 jurisdictions produces ragged coverage, and there is a strong pull to hide it. Ohio's archive had a hole from 2023 to 2025. New York's dashboard era was missing April through December 2025. Arkansas publishes nothing machine-readable. Missouri and Texas sit behind anti-bot walls — Texas is fully implemented and disabled, riding along on historical data only.
+
+Two of those I fixed with backfills: 265 Ohio records covering all 36 missing months, 549 New York records for the 2025 gap. The rest can't be fixed by me, and that's the interesting case.
+
+A chart that quietly drops a year it lacks data for is worse than no chart, because it looks complete. So the national dashboard hatches years with missing months instead of hiding them, and states with no public feed are labelled as such in the filter rather than silently absent. If you're going to publish numbers people might make decisions on, the shape of what you *don't* have is part of the data.
+
+## Why California kept its own dashboard
+
+The national view answers *where* and *how much*. It cannot answer *which county, which industry, which employer* for 47 jurisdictions, because 47 agencies don't agree on those fields — many don't publish them at all.
+
+California does, and it's the deepest feed in the set: 16,181 notices covering roughly 1.38 million affected employees. So it kept a dedicated dashboard at [/warn/ca/](https://bilalahamad0.github.io/warn/ca/) with county, industry and layoff-type filters, now nested under the national tracker rather than sitting at the root. The old `/warn/us/` address redirects to `/warn/`.
+
+The general lesson: when one data source is an order of magnitude richer than the others, averaging it down to the common denominator throws away the best thing you have. Give it its own surface.
+
+## What it costs to run
+
+Nothing. There is no server and no database.
+
+GitHub Actions runs the five-stage pipeline at 00:00 and 12:00 UTC. The data layer is git-versioned JSON. Twelve Plotly charts are rebuilt each run and committed as static HTML. GitHub Pages serves it, and the same artifact doubles as a free read-only API at [`/data.json`](https://bilalahamad0.github.io/warn/data.json) and `/ca/data.json` — no key, no rate limit, no account.
+
+The whole thing is walkable in the [animated architecture page](https://bilalahamad0.github.io/warn/architecture.html), which plays a single run through all five stages.
+
+## Where it stands
+
+As of 8 August 2026: **59,910 notices covering 6,459,307 affected employees**, across 46 states and DC, back to 2014. California alone accounts for 1.38 million of those. It updates twice a day whether or not anyone is watching, which was the entire point.
+
+Some state implementations are ported from [Big Local News' Apache-2.0 `warn-scraper`](https://github.com/biglocalnews/warn-scraper) — vendored into the package, never a runtime dependency on someone else's platform.
+
+---
+
+*Live: [US dashboard](https://bilalahamad0.github.io/warn/) · [California dashboard](https://bilalahamad0.github.io/warn/ca/) · [architecture walk-through](https://bilalahamad0.github.io/warn/architecture.html) · [source](https://github.com/bilalahamad0/warn). The original single-state build is written up in [Live Layoff Intelligence from Scratch](/blog/california-warn-story).*
