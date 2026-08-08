@@ -15,6 +15,7 @@ const slugToThumb: Record<string, string> = {
   "adhan-caster-extension-story": "/images/adhan-ce-demo.gif",
   "ai-driven-development": "/blog-thumbs/ai-native-dev.png",
   "california-warn-story": "/blog-thumbs/california-warn.png",
+  "warn-tracker-goes-national": "/blog-thumbs/us-warn-national.png",
   "media-caster-story":    "/blog-thumbs/media-caster.png?v=2",
   "resilient-iot-application": "/blog-thumbs/resilient-iot.png",
   "clock-jump-case-study": "/blog-thumbs/iot_clock_jump_thumbnail.png",

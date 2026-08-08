@@ -224,7 +224,7 @@ export const projectsData = [
     id: "warn",
     name: "US Live Layoff Monitoring Dashboard",
     tagline: "National WARN layoff intelligence, unified from every state agency",
-    description: "A fully automated data pipeline that unifies WARN Act layoff notices from 46 state workforce agencies plus DC into one searchable national dataset with a free JSON API and per-state email alerts. Engineered for surgical precision, it transforms raw government filings into live actionable intelligence using ETag caching, MD5 verification, and GitHub Actions CI/CD — running twice daily with zero human intervention. California ships as an extended sub-dashboard with county, industry, and employer breakdowns.",
+    description: "A fully automated data pipeline that unifies WARN Act layoff notices from 46 states and DC into one searchable national dataset with a free JSON API and per-state email alerts. Engineered for surgical precision, it transforms raw government filings into live actionable intelligence using ETag caching, MD5 verification, and GitHub Actions CI/CD — running twice daily with zero human intervention. California ships as an extended sub-dashboard with county, industry, and employer breakdowns.",
     category: "Data & Analytics" as ProjectCategory,
     tech: ["Python", "GitHub Actions", "Plotly", "ETag Cache", "Pandas", "JSON API"],
     repo: "https://github.com/bilalahamad0/warn",
@@ -248,7 +248,8 @@ export const projectsData = [
     gradient: "from-blue-600/20 via-blue-500/10 to-transparent",
     accent: "blue",
     relatedPosts: [
-      { slug: "california-warn-story", label: "Project Story" },
+      { slug: "warn-tracker-goes-national", label: "Project Story: Going National" },
+      { slug: "california-warn-story", label: "Project Story: California Build" },
     ],
     // YouTube demo + silent looping video thumbnail
     previewType: "youtube" as const,
