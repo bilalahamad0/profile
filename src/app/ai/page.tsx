@@ -263,7 +263,11 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
   const impactText =
     project.id === "adhan" && dm
       ? `Zero-touch prayer-time audio notifications with automated media-state control (Raspberry Pi + Android TV via ADB) · ${dm.microservices ?? 10} microservices`
-      : dm?.impact ?? project.impact;
+      : project.id === "adhan-ce"
+        // The sidecar still says "every Chrome tab"; the extension now ships to
+        // Chrome, Firefox and (in review) Edge, so portfolio.ts wins here.
+        ? project.impact
+        : dm?.impact ?? project.impact;
 
   const beforeAfterFallback: Record<string, { before: string; after: string }> = {
     warn:    { before: "Manual Excel download, no monitoring",  after: "Fully automated pipeline, runs twice daily"   },

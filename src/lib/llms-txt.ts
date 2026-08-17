@@ -21,6 +21,8 @@ export type LlmsProject = {
   repo: string;
   demo?: string | null;
   category: string;
+  /** Browser-marketplace listings (extensions). `url` is null until published. */
+  storeListings?: ReadonlyArray<{ store: string; url: string | null; status: string }>;
 };
 
 export type LlmsPost = {
@@ -87,6 +89,13 @@ export function buildLlmsTxt(input: LlmsTxtInput): string {
     for (const project of input.projects) {
       const url = project.demo ?? project.repo;
       lines.push(`- [${oneLine(project.name)}](${url}) — ${oneLine(project.category)}: ${oneLine(project.tagline)}`);
+      // Extensions ship to several marketplaces; one `url` can only name one.
+      const stores = (project.storeListings ?? []).map((listing) =>
+        listing.url
+          ? `[${oneLine(listing.store)}](${listing.url})`
+          : `${oneLine(listing.store)} (${oneLine(listing.status).replace(/-/g, " ")})`
+      );
+      if (stores.length) lines.push(`  - Available on: ${stores.join(" · ")}`);
     }
   }
 
