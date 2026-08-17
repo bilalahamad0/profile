@@ -276,6 +276,8 @@ export default function ProjectsPage() {
                 const previewFailed = !!failedPreviews[project.id];
                 // Extended sub-group (e.g. California nested under the national US WARN tracker).
                 const subDashboards = project.subDashboards ?? [];
+                // Marketplace availability (browser extensions published to stores).
+                const storeListings = project.storeListings ?? [];
 
                 return (
                   <motion.article
@@ -464,7 +466,7 @@ export default function ProjectsPage() {
                       {/* Extended sub-group — regional deep-dives nested inside this project */}
                       {subDashboards.length > 0 && (
                         <div className="mb-6 pl-4 border-l-2 border-blue-500/30 flex flex-col gap-2">
-                          <span className="t-label font-black uppercase tracking-[0.2em] text-zinc-500">
+                          <span className="t-label font-black uppercase tracking-[0.2em] text-zinc-400">
                             Extended Coverage
                           </span>
                           {subDashboards.map((sub) => (
@@ -489,6 +491,62 @@ export default function ProjectsPage() {
                               </span>
                             </a>
                           ))}
+                        </div>
+                      )}
+
+                      {/* Marketplace availability — one row per browser store.
+                          Twin of the Extended sub-group above: accent rail, t-label
+                          caption, stacked rows; emerald to match this card's accent. */}
+                      {storeListings.length > 0 && (
+                        <div className="mb-6 pl-4 border-l-2 border-emerald-500/30 flex flex-col gap-2">
+                          <span className="t-label font-black uppercase tracking-[0.2em] text-zinc-400">
+                            Available On
+                          </span>
+                          <ul role="list" className="flex flex-col gap-2">
+                            {storeListings.map((listing) =>
+                              listing.status === "live" ? (
+                                <li key={listing.browser}>
+                                  <a
+                                    href={listing.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    title={`${listing.listingName} — v${listing.version} on ${listing.store}`}
+                                    className="group/store flex items-center gap-2 rounded-2xl border border-white/5 bg-white/[0.03] px-3 py-2 hover:border-emerald-500/30 hover:bg-white/[0.06] transition-all"
+                                  >
+                                    <span className="min-w-0 flex-1 truncate t-small font-semibold text-white underline-offset-2 group-hover/store:underline">
+                                      {listing.store}
+                                    </span>
+                                    <span className="flex shrink-0 items-center gap-1.5 whitespace-nowrap t-label font-bold text-emerald-300 group-hover/store:text-emerald-200 transition-colors">
+                                      <span className="pulse-dot" aria-hidden="true" />
+                                      Live · v{listing.version}
+                                      {/* Below 375px the arrow costs the store name its last
+                                          ~12px and truncates it — measured; drop it there. */}
+                                      <ExternalLink className="w-3 h-3 max-[374px]:hidden" aria-hidden="true" />
+                                      <span className="sr-only">
+                                        {" "}— {listing.listingName}, opens in a new tab
+                                      </span>
+                                    </span>
+                                  </a>
+                                </li>
+                              ) : (
+                                <li key={listing.browser}>
+                                  <div
+                                    title={listing.note}
+                                    className="flex items-center gap-2 rounded-2xl border border-dashed border-white/10 bg-white/[0.015] px-3 py-2"
+                                  >
+                                    <span className="min-w-0 flex-1 truncate t-small font-semibold text-zinc-400">
+                                      {listing.store}
+                                    </span>
+                                    <span className="flex shrink-0 items-center gap-1.5 whitespace-nowrap t-label font-bold text-amber-300">
+                                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400/80" aria-hidden="true" />
+                                      In review
+                                      <span className="sr-only">— {listing.note}</span>
+                                    </span>
+                                  </div>
+                                </li>
+                              )
+                            )}
+                          </ul>
                         </div>
                       )}
 

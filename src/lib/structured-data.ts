@@ -104,6 +104,8 @@ export type ProjectLike = {
   tech: string[];
   repo: string;
   demo?: string | null;
+  /** Browser-marketplace listings (extensions). Only published ones carry a URL. */
+  storeListings?: ReadonlyArray<{ url: string | null }>;
 };
 
 /** schema.org CollectionPage with an ItemList of the portfolio's projects (SoftwareSourceCode). */
@@ -118,23 +120,32 @@ export function projectsSchema(projects: ProjectLike[]) {
       "@type": "ItemList",
       name: "Open-source & production projects",
       numberOfItems: projects.length,
-      itemListElement: projects.map((project, i) => ({
-        "@type": "ListItem",
-        position: i + 1,
-        item: {
-          "@type": "SoftwareSourceCode",
-          name: project.name,
-          abstract: project.tagline,
-          description: project.description,
-          codeRepository: project.repo,
-          url: project.demo ?? project.repo,
-          applicationCategory: project.category,
-          programmingLanguage: project.tech,
-          keywords: project.tech.join(", "),
-          author: personRef,
-          creator: personRef,
-        },
-      })),
+      itemListElement: projects.map((project, i) => {
+        // Published marketplace listings — the crawler-visible proof that an
+        // extension ships to more than the one storefront `url` can name.
+        const storeUrls = (project.storeListings ?? [])
+          .map((listing) => listing.url)
+          .filter((url): url is string => url !== null);
+
+        return {
+          "@type": "ListItem",
+          position: i + 1,
+          item: {
+            "@type": "SoftwareSourceCode",
+            name: project.name,
+            abstract: project.tagline,
+            description: project.description,
+            codeRepository: project.repo,
+            url: project.demo ?? project.repo,
+            applicationCategory: project.category,
+            programmingLanguage: project.tech,
+            keywords: project.tech.join(", "),
+            author: personRef,
+            creator: personRef,
+            ...(storeUrls.length > 0 ? { sameAs: storeUrls } : {}),
+          },
+        };
+      }),
     },
   };
 }

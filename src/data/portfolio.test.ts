@@ -154,6 +154,31 @@ describe("projectsData", () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
+  it("every marketplace listing is well-formed for its status", () => {
+    for (const project of projectsData) {
+      const listings = project.storeListings ?? [];
+      const keys: string[] = [];
+      for (const listing of listings) {
+        keys.push(`${project.id}:${listing.browser}`);
+        expect(listing.browser.trim()).not.toBe("");
+        expect(listing.store.trim()).not.toBe("");
+        if (listing.status === "live") {
+          // A published row must link somewhere real and name its version.
+          expect(isHttps(listing.url)).toBe(true);
+          expect(listing.version.trim()).not.toBe("");
+          expect(listing.listingName.trim()).not.toBe("");
+        } else {
+          // An unpublished row must not fake a link or a shipped version.
+          expect(listing.status).toBe("in-review");
+          expect(listing.url).toBeNull();
+          expect(listing.version).toBeNull();
+          expect(listing.note.trim()).not.toBe("");
+        }
+      }
+      expect(new Set(keys).size).toBe(keys.length);
+    }
+  });
+
   it("every related blog slug resolves to a real published post", () => {
     const realSlugs = new Set(getAllPosts().map((p) => p.slug));
     const broken: string[] = [];
