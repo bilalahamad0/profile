@@ -519,6 +519,9 @@ export default function ProjectsPage() {
                                     <span className="flex shrink-0 items-center gap-1.5 whitespace-nowrap t-label font-bold text-emerald-300 group-hover/store:text-emerald-200 transition-colors">
                                       <span className="pulse-dot" aria-hidden="true" />
                                       Live · v{listing.version}
+                                      {/* Below 375px the arrow costs the store name its last
+                                          ~12px and truncates it — measured; drop it there. */}
+                                      <ExternalLink className="w-3 h-3 max-[374px]:hidden" aria-hidden="true" />
                                       <span className="sr-only">
                                         {" "}— {listing.listingName}, opens in a new tab
                                       </span>

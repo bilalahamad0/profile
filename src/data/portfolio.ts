@@ -356,7 +356,7 @@ export const projectsData = [
   },
   {
     id: "adhan-ce",
-    name: "Adhan Caster Pro — Cross-Browser Extension",
+    name: "Adhan Caster — Cross-Browser Extension",
     tagline: "Auto-pauses media in every tab at Adhan time",
     description: "A Manifest V3 browser extension — live on the Chrome Web Store and Firefox Add-ons, with Microsoft Edge in store review — that surfaces upcoming Islamic prayer times with a live countdown, then automatically pauses every playing video/audio across all open tabs at Adhan time, with an opt-in full-screen prayer-focus mode and configurable auto-resume. One MV3 codebase ships to all three stores from tag-driven release pipelines (AMO-signed XPI for Firefox, plain ZIP for Edge). Built end-to-end in a single day with Claude Code (Opus 4.7); pulls schedules from the adhan-api service and resolves locations via Open-Meteo geocoding.",
     category: "AI-Powered" as ProjectCategory,
