@@ -87,7 +87,7 @@ const SEED_METRICS = {
     linesOfCode: 2307,
     devCycleDays: 1,
     manualEstimateDays: 14,
-    impact: "Auto-pauses media across every Chrome tab at Adhan time · cross-tab prayer-focus mode",
+    impact: "Auto-pauses media across every open browser tab at Adhan time · cross-tab prayer-focus mode",
     cycle: "1 day",
     beforeAI: "Manual prayer tracking; media kept playing during Adhan",
     afterAI: "One-click extension pauses every tab at prayer time",
