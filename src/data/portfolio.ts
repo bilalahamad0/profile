@@ -368,9 +368,10 @@ export const projectsData = [
     // Marketplace availability — one row per browser store (see StoreListing).
     // The rows are independent on purpose: stores approve at their own pace, so
     // each keeps the version actually published there rather than the repo's
-    // latest tag. Firefox moved to 2.0.4 on 2026-08-17; Chrome stayed on 2.0.3
-    // because that release changed nothing in its package, and Edge's 2.0.4 is
-    // still in review. Verify against the live listings before editing.
+    // latest tag. Firefox and Edge both moved to 2.0.4 on 2026-08-17; Chrome
+    // stayed on 2.0.3 because that release changed nothing in its package, so
+    // resubmitting would have shipped a byte-identical CRX through a review
+    // cycle. Verify against the live listings before editing.
     storeListings: [
       {
         browser: "Chrome",
@@ -393,7 +394,7 @@ export const projectsData = [
         store: "Edge Add-ons",
         status: "live",
         url: "https://microsoftedge.microsoft.com/addons/detail/adhan-caster-muslim-pray/kapmpaofgphfbkpkmhhiooafplhckblg",
-        version: "2.0.3",
+        version: "2.0.4",
         listingName: "Adhan Caster: Muslim Prayer Times & Auto-Pause",
       },
     ] as StoreListing[],
