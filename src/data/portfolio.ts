@@ -358,7 +358,7 @@ export const projectsData = [
     id: "adhan-ce",
     name: "Adhan Caster — Cross-Browser Extension",
     tagline: "Auto-pauses media in every tab at Adhan time",
-    description: "A Manifest V3 browser extension — live on the Chrome Web Store and Firefox Add-ons, with Microsoft Edge in store review — that surfaces upcoming Islamic prayer times with a live countdown, then automatically pauses every playing video/audio across all open tabs at Adhan time, with an opt-in full-screen prayer-focus mode and configurable auto-resume. One MV3 codebase ships to all three stores from tag-driven release pipelines (AMO-signed XPI for Firefox, plain ZIP for Edge). Built end-to-end in a single day with Claude Code (Opus 4.7); pulls schedules from the adhan-api service and resolves locations via Open-Meteo geocoding.",
+    description: "A Manifest V3 browser extension — live on the Chrome Web Store, Firefox Add-ons and Microsoft Edge Add-ons — that surfaces upcoming Islamic prayer times with a live countdown, then automatically pauses every playing video/audio across all open tabs at Adhan time, with an opt-in full-screen prayer-focus mode and configurable auto-resume. One MV3 codebase ships to all three stores from tag-driven release pipelines (AMO-signed XPI for Firefox, plain ZIP for Edge). Built end-to-end in a single day with Claude Code (Opus 4.7); pulls schedules from the adhan-api service and resolves locations via Open-Meteo geocoding.",
     category: "AI-Powered" as ProjectCategory,
     tech: ["JavaScript", "WebExtensions", "Manifest V3", "Service Worker", "Cross-Browser", "Jest"],
     repo: "https://github.com/bilalahamad0/adhan-ce",
@@ -366,10 +366,9 @@ export const projectsData = [
     demo: "https://chromewebstore.google.com/detail/adhan-caster-muslim-praye/jfjknglldcdminelckmmfdbnlikiogia",
     demoLabel: "Install for Chrome",
     // Marketplace availability — one row per browser store (see StoreListing).
-    // Chrome + Firefox are publicly verifiable at v2.0.3. The Edge row tracks a
-    // Partner Center submission that no public endpoint exposes — flip it to
-    // `status: "live"` with its URL the moment the listing goes public, and
-    // delete the row rather than leave a stale "in review" on the card.
+    // All three listings are publicly verifiable at v2.0.3 (Edge approved
+    // 2026-08-17). A store that falls behind on a release keeps its own
+    // `version` here — the rows are independent, not a single shared version.
     storeListings: [
       {
         browser: "Chrome",
@@ -390,17 +389,16 @@ export const projectsData = [
       {
         browser: "Edge",
         store: "Edge Add-ons",
-        status: "in-review",
-        url: null,
-        version: null,
-        listingName: null,
-        note: "Submitted to Microsoft Partner Center — awaiting store review",
+        status: "live",
+        url: "https://microsoftedge.microsoft.com/addons/detail/adhan-caster-muslim-pray/kapmpaofgphfbkpkmhhiooafplhckblg",
+        version: "2.0.3",
+        listingName: "Adhan Caster: Muslim Prayer Times & Auto-Pause",
       },
     ] as StoreListing[],
     isAI: true,
     aiTools: ["Claude Code (Opus 4.7)"],
     aiContribution: 95,
-    impact: "Live on the Chrome Web Store and Firefox Add-ons (Edge in review) · auto-pauses media across every open tab at Adhan time · cross-tab prayer-focus mode · 192 tests, 14 suites",
+    impact: "Live on the Chrome Web Store, Firefox Add-ons and Edge Add-ons · auto-pauses media across every open tab at Adhan time · cross-tab prayer-focus mode · 192 tests, 14 suites",
     gradient: "from-emerald-600/20 via-emerald-500/10 to-transparent",
     accent: "emerald",
     relatedPosts: [
