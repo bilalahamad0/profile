@@ -366,9 +366,12 @@ export const projectsData = [
     demo: "https://chromewebstore.google.com/detail/adhan-caster-muslim-praye/jfjknglldcdminelckmmfdbnlikiogia",
     demoLabel: "Install for Chrome",
     // Marketplace availability — one row per browser store (see StoreListing).
-    // All three listings are publicly verifiable at v2.0.3 (Edge approved
-    // 2026-08-17). A store that falls behind on a release keeps its own
-    // `version` here — the rows are independent, not a single shared version.
+    // The rows are independent on purpose: stores approve at their own pace, so
+    // each keeps the version actually published there rather than the repo's
+    // latest tag. Firefox and Edge both moved to 2.0.4 on 2026-08-17; Chrome
+    // stayed on 2.0.3 because that release changed nothing in its package, so
+    // resubmitting would have shipped a byte-identical CRX through a review
+    // cycle. Verify against the live listings before editing.
     storeListings: [
       {
         browser: "Chrome",
@@ -383,7 +386,7 @@ export const projectsData = [
         store: "Firefox Add-ons",
         status: "live",
         url: "https://addons.mozilla.org/en-US/firefox/addon/adhan-caster-prayer-times/",
-        version: "2.0.3",
+        version: "2.0.4",
         listingName: "Adhan Caster: Prayer Times",
       },
       {
@@ -391,14 +394,14 @@ export const projectsData = [
         store: "Edge Add-ons",
         status: "live",
         url: "https://microsoftedge.microsoft.com/addons/detail/adhan-caster-muslim-pray/kapmpaofgphfbkpkmhhiooafplhckblg",
-        version: "2.0.3",
+        version: "2.0.4",
         listingName: "Adhan Caster: Muslim Prayer Times & Auto-Pause",
       },
     ] as StoreListing[],
     isAI: true,
     aiTools: ["Claude Code (Opus 4.7)"],
     aiContribution: 95,
-    impact: "Live on the Chrome Web Store, Firefox Add-ons and Edge Add-ons · auto-pauses media across every open tab at Adhan time · cross-tab prayer-focus mode · 192 tests, 14 suites",
+    impact: "Live on the Chrome Web Store, Firefox Add-ons and Edge Add-ons · auto-pauses media across every open tab at Adhan time · cross-tab prayer-focus mode · 194 tests, 14 suites",
     gradient: "from-emerald-600/20 via-emerald-500/10 to-transparent",
     accent: "emerald",
     relatedPosts: [
