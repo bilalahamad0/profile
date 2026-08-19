@@ -411,7 +411,7 @@ export const projectsData = [
     previewType: "image" as const,
     previewSrc: "/images/adhan-ce-demo.gif",
     thumbnail: "/images/adhan-ce-demo.gif",
-    thumbnailAlt: "Adhan Caster Pro — in-page countdown, cross-tab media pause, and full-screen prayer-focus flow",
+    thumbnailAlt: "Adhan Caster — in-page countdown, cross-tab media pause, and full-screen prayer-focus flow",
     thumbnailType: "screenshot" as const,
   },
   {

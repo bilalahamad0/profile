@@ -11,7 +11,7 @@ Building a smart home IoT application sounds deceivingly simple on paper. The ta
 
 However, moving from a weekend script to a 24/7, highly reliable, zero-latency system on a Raspberry Pi reveals the hidden complexities of network topologies, hardware quirks, and compute constraints.
 
-Through engineering the Adhan Caster Pro, I tackled several "gotchas" that are prevalent in the IoT space. Here are the core industry-standard practices and performance optimizations required to build truly efficient, production-grade IoT functionality.
+Through engineering the Adhan Caster, I tackled several "gotchas" that are prevalent in the IoT space. Here are the core industry-standard practices and performance optimizations required to build truly efficient, production-grade IoT functionality.
 
 ## 1. The mDNS Discovery Trap (and State Caching)
 
@@ -79,6 +79,6 @@ If the smoke test fails, the application refuses to boot and alerts the deployme
 
 Building robust IoT applications requires shifting your mindset from "How do I trigger this action?" to "How do I guarantee this action happens precisely, safely, and recovers gracefully when the environment inevitably fails?"
 
-By implementing aggressive state caching, asynchronous pre-flight windows, hardware awareness, and independent auditing, the Adhan Caster Pro achieves a 99.9% success rate with zero perceptible latency.
+By implementing aggressive state caching, asynchronous pre-flight windows, hardware awareness, and independent auditing, the Adhan Caster achieves a 99.9% success rate with zero perceptible latency.
 
 If you're building in the IoT, smart home, or edge computing space, I’d love to hear how you handle network latency and hardware state management in your projects!
