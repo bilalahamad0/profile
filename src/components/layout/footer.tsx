@@ -7,6 +7,7 @@ import { BOOKING_ANCHOR } from "@/lib/contact";
 
 const navLinks = [
   { href: "/experience", label: "Experience" },
+  { href: "/resume", label: "Resume" },
   { href: "/certifications", label: "Certifications" },
   { href: "/projects", label: "Projects" },
   { href: "/ai", label: "AI Lab" },
@@ -146,8 +147,12 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-400">
-          <p>
-            &copy; {year} Bilal Ahamad · All rights reserved
+          <p className="flex flex-wrap items-center justify-center gap-x-1.5 gap-y-1 sm:justify-start">
+            <span>&copy; {year} Bilal Ahamad · All rights reserved</span>
+            <span aria-hidden="true">·</span>
+            <Link href="/privacy" className="hover:text-white transition-colors">
+              Privacy
+            </Link>
           </p>
           <p className="flex items-center gap-1.5">
             Built using AI

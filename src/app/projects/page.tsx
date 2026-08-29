@@ -194,7 +194,7 @@ export default function ProjectsPage() {
     : null;
 
   return (
-    <main className="min-h-screen bg-[#09090b] text-white">
+    <div className="min-h-screen bg-[#09090b] text-white">
       {videoLightboxPortal}
       {/* Header */}
       <section className="pt-24 pb-10 md:pt-28 md:pb-12 lg:pt-36 lg:pb-16 px-6 lg:px-24 border-b border-white/5 relative overflow-hidden">
@@ -666,6 +666,6 @@ export default function ProjectsPage() {
           </a>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

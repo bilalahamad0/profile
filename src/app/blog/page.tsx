@@ -87,7 +87,7 @@ export default function BlogPage() {
   return (
     <>
       <JsonLd data={[breadcrumb, blogLd]} />
-    <main className="min-h-screen bg-[#09090b] text-white" id="top">
+    <div className="min-h-screen bg-[#09090b] text-white" id="top">
 
       {/* Header — static, server-rendered, paints instantly */}
       <section className="pt-24 pb-10 md:pt-28 md:pb-12 lg:pt-36 lg:pb-16 px-6 lg:px-24 border-b border-white/5 relative overflow-hidden" aria-labelledby="blog-heading">
@@ -154,7 +154,7 @@ export default function BlogPage() {
       {/* Lazy-loaded interactive filter + grid — client component */}
       <BlogGridClient mdxPosts={mdxPosts} linkedInPosts={linkedInPosts} />
 
-    </main>
+    </div>
     </>
   );
 }

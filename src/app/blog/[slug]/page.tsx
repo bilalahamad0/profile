@@ -122,7 +122,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   };
 
   return (
-    <main className="min-h-screen bg-[#09090b] text-white">
+    <div className="min-h-screen bg-[#09090b] text-white">
       <JsonLd data={[breadcrumbLd, articleLd]} />
 
       {/* Header */}
@@ -222,6 +222,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </Link>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

@@ -203,8 +203,10 @@ export function ResumeReel() {
     <div ref={containerRef} className="md:hidden w-full flex flex-col items-center py-12 px-6 gap-6">
       {/* Label */}
       <div className="text-center">
-        <p className="t-label font-black uppercase tracking-[0.3em] text-zinc-400 mb-2">Career Reel</p>
-        <h2 className="t-small text-white/80 tracking-tight">Tap sides · Auto-plays · Swipe</h2>
+        {/* The section's name is the heading; the gesture hint is a caption, not
+            an outline entry — it used to be the first h2 in the home DOM. */}
+        <h2 className="t-label font-black uppercase tracking-[0.3em] text-zinc-400 mb-2">Career Reel</h2>
+        <p className="t-small text-white/80 tracking-tight">Tap sides · Auto-plays · Swipe</p>
       </div>
 
       {/* Phone Frame */}

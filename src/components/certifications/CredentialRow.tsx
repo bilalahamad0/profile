@@ -103,7 +103,7 @@ export function CredentialRow({
       {/* Continuous ledger index 01…12 — decorative ordering cue */}
       <span
         aria-hidden
-        className="hidden w-7 shrink-0 t-label tabular-nums text-white/25 transition-colors group-hover/row:text-white/[0.45] sm:block"
+        className="hidden w-7 shrink-0 t-label tabular-nums text-white/50 transition-colors group-hover/row:text-white/70 sm:block"
       >
         {String(index + 1).padStart(2, "0")}
       </span>
@@ -134,7 +134,7 @@ export function CredentialRow({
           />
           <Image
             src={credential.officialBadge as string}
-            alt=""
+            alt={`${title} official issuer badge`}
             fill
             sizes="64px"
             className="relative object-contain drop-shadow-[0_6px_22px_rgba(37,99,235,0.55)]"

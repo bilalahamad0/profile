@@ -368,11 +368,11 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
         {timeline && (
           <div className="mb-6 grid grid-cols-2 gap-3">
             <div className="p-4 rounded-2xl bg-red-500/5 border border-red-500/15">
-              <span className="t-label font-black uppercase tracking-widest text-red-400/70 block mb-2">Before AI</span>
+              <span className="t-label font-black uppercase tracking-widest text-red-400 block mb-2">Before AI</span>
               <p className="text-xs text-zinc-400 leading-relaxed">{timeline.before}</p>
             </div>
             <div className={`p-4 rounded-2xl ${colors.bg} border ${colors.border}`}>
-              <span className={`t-label font-black uppercase tracking-widest ${colors.text} opacity-70 block mb-2`}>After AI</span>
+              <span className={`t-label font-black uppercase tracking-widest ${colors.text} block mb-2`}>After AI</span>
               <p className="text-xs text-zinc-300 leading-relaxed">{timeline.after}</p>
             </div>
           </div>
@@ -385,7 +385,7 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-wrap gap-2">
             {project.tech.map((t) => (
-              <span key={t} className={`px-2.5 py-1 rounded-lg ${colors.bg} border ${colors.border} t-label font-bold ${colors.text} opacity-80 uppercase tracking-widest`}>
+              <span key={t} className={`px-2.5 py-1 rounded-lg ${colors.bg} border ${colors.border} t-label font-bold ${colors.text} uppercase tracking-widest`}>
                 {t}
               </span>
             ))}
@@ -566,7 +566,7 @@ export default async function AILabPage() {
   return (
     <>
       <JsonLd data={breadcrumb} />
-    <main className="min-h-screen bg-[#09090b] text-white relative" id="top">
+    <div className="min-h-screen bg-[#09090b] text-white relative" id="top">
       <HashScrollHandler />
       <NeuralBackground />
 
@@ -660,7 +660,7 @@ export default async function AILabPage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
     </>
   );
 }

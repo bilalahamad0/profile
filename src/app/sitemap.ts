@@ -16,11 +16,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: SITE_URL,                      priority: 1.0, changeFrequency: "weekly",  lastModified: newestPost },
     { url: `${SITE_URL}/experience`,      priority: 0.9, changeFrequency: "monthly" },
+    { url: `${SITE_URL}/resume`,          priority: 0.9, changeFrequency: "monthly" },
     { url: `${SITE_URL}/projects`,        priority: 0.9, changeFrequency: "monthly" },
     { url: `${SITE_URL}/certifications`,  priority: 0.8, changeFrequency: "monthly" },
     { url: `${SITE_URL}/ai`,              priority: 0.8, changeFrequency: "monthly" },
     { url: `${SITE_URL}/blog`,            priority: 0.8, changeFrequency: "weekly",  lastModified: newestPost },
     { url: `${SITE_URL}/contact`,         priority: 0.7, changeFrequency: "yearly"  },
+    { url: `${SITE_URL}/privacy`,         priority: 0.3, changeFrequency: "yearly"  },
   ];
 
   const blogRoutes: MetadataRoute.Sitemap = posts.map((p) => ({
