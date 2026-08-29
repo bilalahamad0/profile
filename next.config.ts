@@ -37,6 +37,18 @@ const nextConfig: NextConfig = {
         destination: "/blog/media-caster-story",
         permanent: true,
       },
+      // The AI Lab page was merged into /projects (2026-08). /ai stays indexed
+      // and linked from a published blog post, so it 301s rather than 404s.
+      //
+      // The destination is DELIBERATELY bare. A fragment on the destination
+      // would replace the incoming one; with none, browsers carry the original
+      // fragment over — so `/ai#adhan-ce` (content/blog/adhan-caster-extension-story.mdx)
+      // resolves to `/projects#adhan-ce`, which is that project's card.
+      {
+        source: "/ai",
+        destination: "/projects",
+        permanent: true,
+      },
       {
         source: "/docs/Bilal_Ahamad_Resume.pdf",
         destination: "/Bilal_Ahamad_Resume.pdf",

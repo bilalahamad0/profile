@@ -23,7 +23,8 @@ const PROJECT_CATEGORIES = new Set([
   "AI-Powered",
   "Web & DevOps",
 ]);
-// Accent keys the AI Lab card maps to color classes (src/app/ai/page.tsx).
+// Accent keys the AI build breakdown maps to color classes
+// (src/components/projects/AIBuildBreakdown.tsx).
 const ACCENTS = new Set(["emerald", "blue", "pink", "violet"]);
 
 function startTimestamp(duration: string): number {

@@ -1,22 +1,29 @@
 ---
 name: update-ai-page
-description: Refresh the metrics on the /ai page (https://bilalahamad.com/ai) from their real sources — each project's GitHub `ai-metrics.json`, plus this repo's own git/test/LOC. TRIGGER whenever the user asks to update/refresh the AI page or AI Lab, sync ai-metrics, update "Metrics at a Glance", or update the "AI-Augmented Systems" cards — e.g. "update the ai page", "refresh AI metrics", "/update-ai-page". The agent does everything: recompute, measure, fetch every repo, reconcile the fallback, verify, build. Never ask the user for token/model/AI-usage numbers — Claude Code usage is measured from session transcripts (`--tokens`) and everything else is pulled from each repo automatically.
+description: Refresh the AI Lab metrics on the Projects page (https://bilalahamad.com/projects#ai-lab, formerly the standalone /ai page) from their real sources — each project's GitHub `ai-metrics.json`, plus this repo's own git/test/LOC. TRIGGER whenever the user asks to update/refresh the AI page or AI Lab, sync ai-metrics, update "Metrics at a Glance", or update the per-project "AI Build Breakdown" cards — e.g. "update the ai page", "refresh AI metrics", "/update-ai-page". The agent does everything: recompute, measure, fetch every repo, reconcile the fallback, verify, build. Never ask the user for token/model/AI-usage numbers — Claude Code usage is measured from session transcripts (`--tokens`) and everything else is pulled from each repo automatically.
 ---
 
-# Update the /ai page metrics (fully automated, source-driven)
+# Update the AI Lab metrics (fully automated, source-driven)
 
-The `/ai` page renders two metric surfaces, both from the same per-project data:
-- **Metrics at a Glance** — the comparison table (AI %, Tokens, Commits, LOC, Cycle, Saved, Tests).
-- **AI-Augmented Systems** — the project cards (agents, models, tokens, before/after, tests).
+> **Moved 2026-08:** the AI Lab was a standalone `/ai` page; it is now the `#ai-lab`
+> section of **`/projects`** and `/ai` 301s there (`next.config.ts`). Same data, same
+> pipeline — only the files that render it changed.
+
+The AI Lab renders two metric surfaces, both from the same per-project data:
+- **Metrics at a Glance** — the comparison table (AI %, Tokens, Commits, LOC, Cycle, Saved, Tests),
+  in [`src/components/projects/AILabSection.tsx`](../../../src/components/projects/AILabSection.tsx).
+- **AI Build Breakdown** — the collapsible per-project detail (agents, models, tokens, before/after,
+  tests) inside each card on `/projects`, in
+  [`src/components/projects/AIBuildBreakdown.tsx`](../../../src/components/projects/AIBuildBreakdown.tsx).
 
 ## How the data flows (audit this first if anything looks off)
 
-`src/app/ai/page.tsx` → `getAIMetricsMap()` in [`src/lib/ai-metrics.ts`](../../../src/lib/ai-metrics.ts)
+`src/app/projects/page.tsx` (a Server Component) → `getAIMetricsMap()` in [`src/lib/ai-metrics.ts`](../../../src/lib/ai-metrics.ts)
 fetches each project's `ai-metrics.json` **live from its own GitHub repo**
 (`raw.githubusercontent.com/bilalahamad0/<repo>/main/ai-metrics.json`). `REPO_MAP` there is the
 project→repo mapping: `warn→warn`, `adhan→adhan-api`, `profile→profile`, `tmo→tmo`,
-`adhan-ce→adhan-ce`. `STATIC_FALLBACK` in `page.tsx` is a build-time mirror used **only** when a
-fetch fails — so on the live site the fallback is invisible unless GitHub is unreachable.
+`adhan-ce→adhan-ce`. `STATIC_FALLBACK` in [`src/lib/ai-metrics-fallback.ts`](../../../src/lib/ai-metrics-fallback.ts)
+is a build-time mirror used **only** when a fetch fails — so on the live site the fallback is invisible unless GitHub is unreachable.
 
 **Source of truth per project = that repo's `ai-metrics.json`.** Two consequences:
 - `profile` is THIS repo — its sidecar (`./ai-metrics.json`) is the live source, so we recompute it
@@ -103,7 +110,7 @@ gh api -X PUT "repos/bilalahamad0/<repo>/contents/ai-metrics.json" \
 Actions in those repos only rewrite `totalCommits`/`linesOfCode`/`lastUpdated`, so measured token
 fields survive. Verify each raw URL serves the new JSON afterwards.
 
-### 4. Reconcile `STATIC_FALLBACK` in `src/app/ai/page.tsx`
+### 4. Reconcile `STATIC_FALLBACK` in `src/lib/ai-metrics-fallback.ts`
 For each project, set the **derived** fields to match the `--report` output. Keep curated fields as
 they are in the live sidecar (for `profile`, mirror your freshly-written `./ai-metrics.json` exactly
 so the fallback never drifts from the source). Edit field-by-field; don't rewrite curated prose
@@ -136,18 +143,20 @@ or clear stale worktrees first.)
 
 ### 8. Verify the rendered page
 Start the app and confirm the table + cards show the new numbers at desktop + mobile widths
-(`mcp__playwright__*` or the preview MCP against `/ai`). Spot-check that AI %, Tokens, Commits, LOC,
+(`mcp__playwright__*` or the preview MCP against `/projects#ai-lab`; expand a card's
+"AI Build Breakdown" to check the per-project agents). Spot-check that AI %, Tokens, Commits, LOC,
 and Tests match the sources. **Nuance:** the page fetches `profile`'s sidecar from GitHub `main`, so
 locally-edited profile values keep rendering the old data until the PR merges — verify profile via
 `STATIC_FALLBACK` correctness + the other projects' live rows.
 
 ### 9. Commit
-Branch off `main`, commit `chore(ai): refresh /ai metrics from repo sources (<date>)`, push, offer a PR.
+Branch off `main`, commit `chore(ai): refresh AI Lab metrics from repo sources (<date>)`, push, offer a PR.
 
 ## Notes
 - The engine is `scripts/sync-ai-metrics.mjs` — derived-metric computation, a multi-repo report, and
   transcript token measurement (`--tokens`). It writes only `./ai-metrics.json` (derived fields) and
-  never invents AI data: tokens are measured, narrative fields stay curated. The `page.tsx` fallback
-  edits and sibling-sidecar `gh api` pushes are done by you, guided by `--report` / `--tokens`.
+  never invents AI data: tokens are measured, narrative fields stay curated. The
+  `ai-metrics-fallback.ts` edits and sibling-sidecar `gh api` pushes are done by you, guided by
+  `--report` / `--tokens`.
 - If `REPO_MAP` changes in `src/lib/ai-metrics.ts`, mirror it in the script's `REPO_MAP`.
 - tmo's commit count can legitimately *drop* (history was squashed) — mirror the sidecar regardless.

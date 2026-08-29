@@ -86,7 +86,7 @@ export function AILabPreview() {
           {/* CTA */}
           <motion.div variants={fadeUp} transition={{ duration: 0.5 }} className="flex justify-center">
             <Link
-              href="/ai"
+              href="/projects#ai-lab"
               className="group flex items-center gap-3 px-8 py-3.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-white font-bold hover:bg-violet-500/20 hover:border-violet-500/40 transition-all"
             >
               <Sparkles className="w-4 h-4 text-violet-400" />

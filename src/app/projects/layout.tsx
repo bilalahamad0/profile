@@ -6,13 +6,13 @@ import { projectsData } from "@/data/portfolio";
 export const metadata: Metadata = {
   title: "Projects",
   description:
-    "Production-grade open source projects — automation pipelines, IoT systems, AI-powered tools, and web applications by Bilal Ahamad.",
+    "Production-grade open source projects — automation pipelines, IoT systems, AI-powered tools, and web applications by Bilal Ahamad, with the AI Lab build metrics behind each one.",
   alternates: { canonical: "/projects" },
   openGraph: {
     type: "website",
     title: "Projects | Bilal Ahamad",
     description:
-      "Production-grade open source projects — automation pipelines, IoT systems, AI-powered tools, and web applications by Bilal Ahamad.",
+      "Production-grade open source projects — automation pipelines, IoT systems, AI-powered tools, and web applications by Bilal Ahamad, with the AI Lab build metrics behind each one.",
     url: "https://bilalahamad.com/projects",
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Bilal Ahamad — Projects" }],
   },
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Projects | Bilal Ahamad",
     description:
-      "Production-grade open source projects — automation pipelines, IoT systems, AI-powered tools, and web applications by Bilal Ahamad.",
+      "Production-grade open source projects — automation pipelines, IoT systems, AI-powered tools, and web applications by Bilal Ahamad, with the AI Lab build metrics behind each one.",
     images: ["/og-image.png"],
   },
 };

@@ -15,8 +15,9 @@ const PAGES = [
   { path: '/', name: 'home' },
   { path: '/certifications', name: 'certifications' },
   { path: '/experience', name: 'experience' },
+  // /projects now also carries the AI Lab section (formerly the /ai page), so this
+  // sweep covers both surfaces in one route.
   { path: '/projects', name: 'projects' },
-  { path: '/ai', name: 'ai' },
   { path: '/blog', name: 'blog' },
   { path: '/contact', name: 'contact' },
 ];
