@@ -79,7 +79,7 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
             <p className="truncate t-caption font-bold uppercase tracking-widest text-blue-400">
               {spec.issuer}
             </p>
-            <p className="flex items-center gap-1.5 t-label uppercase tracking-tighter text-white/30">
+            <p className="flex items-center gap-1.5 t-label uppercase tracking-tighter text-white/60">
               <Calendar className="h-3 w-3" aria-hidden />
               {spec.date}
             </p>
@@ -94,7 +94,7 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
               })
             }
             aria-label={`View ${spec.titleLines[0]} details on Coursera`}
-            className="group/details inline-flex shrink-0 items-center gap-1 t-label font-semibold tracking-wider text-white/40 transition-colors hover:text-blue-400 focus:outline-none focus-visible:text-blue-400"
+            className="group/details inline-flex shrink-0 items-center gap-1 t-label font-semibold tracking-wider text-white/60 transition-colors hover:text-blue-400 focus:outline-none focus-visible:text-blue-400"
           >
             VIEW DETAILS
             <ArrowRight className="h-3 w-3 transition-transform group-hover/details:translate-x-1" />

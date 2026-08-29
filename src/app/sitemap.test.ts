@@ -5,11 +5,13 @@ const BASE = "https://bilalahamad.com";
 const STATIC = [
   BASE,
   `${BASE}/experience`,
+  `${BASE}/resume`,
   `${BASE}/projects`,
   `${BASE}/certifications`,
   `${BASE}/ai`,
   `${BASE}/blog`,
   `${BASE}/contact`,
+  `${BASE}/privacy`,
 ];
 
 describe("sitemap", () => {

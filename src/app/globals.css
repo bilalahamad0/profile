@@ -431,3 +431,53 @@ html.ba-revealing #main-content {
     transform: none !important;
   }
 }
+
+/* ============================================================
+   RESUME DOCUMENT (/resume)
+   The same route is the on-screen resume and the source Chromium prints in
+   scripts/generate-resume-pdf.mjs — so the PDF cannot drift from the site.
+   Page margins live here (not in the sheet's padding) so the printed document
+   gets real Letter margins on every page, including page 2.
+   ============================================================ */
+@page {
+  size: Letter;
+  margin: 0.7in 0.75in;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    color: #1a1a1a !important;
+  }
+
+  /* Site chrome never belongs in the printed document — but the resume sheet
+     has its own <header> (the name block), so exclude its descendants or the
+     PDF loses its title. */
+  header:not(.resume-sheet *),
+  nav:not(.resume-sheet *),
+  footer:not(.resume-sheet *),
+  .skip-link,
+  [role="dialog"] {
+    display: none !important;
+  }
+
+  /* The sheet becomes the page: @page owns the margins, so drop its padding,
+     width cap and screen-only shadow. */
+  .resume-sheet {
+    max-width: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+
+  .resume-sheet a {
+    text-decoration: none;
+  }
+
+  /* Never orphan a heading from the entry it introduces. */
+  .resume-sheet h2,
+  .resume-sheet h3 {
+    break-after: avoid;
+  }
+}

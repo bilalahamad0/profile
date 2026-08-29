@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Linkedin, Clock, ArrowRight, Filter, FileText, Tag } from "lucide-react";
+import { LazyLoopVideo } from "@/components/media/LazyLoopVideo";
 import type { mdxPosts as MdxPostsType } from "@/app/blog/page";
 import type { LinkedInPost } from "@/data/portfolio";
 
@@ -18,6 +19,14 @@ const categoryColors: Record<string, { text: string; bg: string; border: string 
   "Whitepaper":    { text: "text-violet-400", bg: "bg-violet-500/10", border: "border-violet-500/20" },
   "LinkedIn":      { text: "text-sky-400",    bg: "bg-sky-500/10",    border: "border-sky-500/20"    },
   "Tutorial":      { text: "text-emerald-400",bg: "bg-emerald-500/10",border: "border-emerald-500/20"},
+};
+
+// Still frame for each video thumbnail. The card paints the poster (a few KB)
+// and LazyLoopVideo only streams the clip once the card is actually on screen —
+// the .mp4 thumbnails sit well below the fold, so eager autoplay downloaded
+// hundreds of KB nobody saw.
+const thumbnailPosters: Record<string, string> = {
+  "/images/adhan-ce-demo.mp4": "/images/adhan-ce-poster.jpg",
 };
 
 interface BlogGridProps {
@@ -102,13 +111,10 @@ export function BlogGrid({ mdxPosts, linkedInPosts }: BlogGridProps) {
                     {post.thumbnail && (
                       <div className="relative w-full h-44 overflow-hidden bg-black/40">
                         {post.thumbnail.endsWith(".mp4") ? (
-                          <video
+                          <LazyLoopVideo
                             src={post.thumbnail}
+                            poster={thumbnailPosters[post.thumbnail]}
                             className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                            autoPlay
-                            muted
-                            loop
-                            playsInline
                           />
                         ) : (
                           <Image

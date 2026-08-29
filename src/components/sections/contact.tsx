@@ -1,15 +1,39 @@
 "use client";
 
 import { Mail, Send, Linkedin, Github, CalendarClock } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ensureSession } from "@/lib/security/client";
+
+// An entry token lives 2h server-side. Re-use a token minted in the last 10
+// minutes; anything older is re-minted at submit so a form left open all
+// afternoon can never post against a lapsed token.
+const SESSION_WARM_MS = 10 * 60 * 1000;
+
+const GENERIC_ERROR = "Couldn't send that — please try again, or email me directly.";
 
 export function ContactSection() {
     const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+    const [errorMessage, setErrorMessage] = useState("");
+
+    // The anti-automation handshake. Kicked off on FIRST INTERACTION with the
+    // form (not on page load) and awaited — never raced — at submit, so a fast
+    // typist who focuses and hits Send immediately still waits for the token.
+    const session = useRef<{ at: number; promise: Promise<boolean> } | null>(null);
+
+    const warmSession = (): Promise<boolean> => {
+        const now = Date.now();
+        if (session.current && now - session.current.at < SESSION_WARM_MS) {
+            return session.current.promise;
+        }
+        const entry = { at: now, promise: ensureSession() };
+        session.current = entry;
+        return entry.promise;
+    };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setStatus("sending");
+        setErrorMessage("");
 
         const form = e.currentTarget;
         const formData = new FormData(form);
@@ -20,7 +44,13 @@ export function ContactSection() {
         try {
             // Ensure a fresh entry token (the contact endpoint requires it). Returning
             // visitors whose 2h token lapsed re-mint silently here — no splash needed.
-            await ensureSession();
+            // Usually already settled from the focus warm-up below; if that attempt
+            // failed (offline blip, rate limit) mint again rather than posting an
+            // unauthenticated request the endpoint would reject.
+            if (!(await warmSession())) {
+                session.current = null;
+                await warmSession();
+            }
 
             const res = await fetch("/api/contact", {
                 method: "POST",
@@ -28,12 +58,17 @@ export function ContactSection() {
                 body: JSON.stringify({ name, email, message }),
             });
 
-            if (!res.ok) throw new Error("Failed to send");
+            if (!res.ok) {
+                // The API returns actionable copy (expired session, rate limit,
+                // invalid email) — show it instead of failing silently.
+                const data = (await res.json().catch(() => null)) as { error?: unknown } | null;
+                throw new Error(typeof data?.error === "string" ? data.error : GENERIC_ERROR);
+            }
 
             setStatus("success");
             form.reset();
         } catch (error) {
-            console.error("Submission error:", error);
+            setErrorMessage(error instanceof Error && error.message ? error.message : GENERIC_ERROR);
             setStatus("error");
         } finally {
             // Reset after 3 seconds
@@ -106,7 +141,14 @@ export function ContactSection() {
                 </div>
 
                 {/* Form */}
-                <form onSubmit={handleSubmit} className="space-y-4">
+                {/* React's onFocus is focusin, so this fires the moment any field
+                    inside the form is first focused — that's when the handshake
+                    starts, keeping it off the initial page load. */}
+                <form
+                    onSubmit={handleSubmit}
+                    onFocus={() => { void warmSession(); }}
+                    className="space-y-4"
+                >
                     <div className="space-y-2">
                         <input
                             type="text"
@@ -145,6 +187,12 @@ export function ContactSection() {
                         </span>
                         {status === "idle" && <Send className="h-4 w-4" />}
                     </button>
+
+                    {status === "error" && (
+                        <p role="alert" className="t-small text-red-400">
+                            {errorMessage || GENERIC_ERROR}
+                        </p>
+                    )}
                 </form>
             </div>
         </section>

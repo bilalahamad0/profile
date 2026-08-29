@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import {
   Car, Cpu, Shield, Zap, Terminal,
-  ChevronRight, Network, GitBranch, CheckSquare
+  ChevronRight, Network, GitBranch, CheckSquare, Download
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -263,6 +263,15 @@ export function HeroPortfolio() {
             Full Career Roadmap
             <Terminal className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
           </Link>
+
+          <a
+            href="/Bilal_Ahamad_Resume.pdf"
+            download
+            className="group flex items-center gap-3 px-8 py-3.5 rounded-full border border-white/15 bg-white/5 text-white font-bold hover:bg-white/10 transition-all hover:scale-105 active:scale-95"
+          >
+            Download Resume
+            <Download className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
+          </a>
 
           <a
             href="https://linkedin.com/in/bilalahamad"

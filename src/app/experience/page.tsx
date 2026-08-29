@@ -1,4 +1,4 @@
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Download } from "lucide-react";
 import Link from "next/link";
 import { ExperienceTimeline } from "@/components/experience/ExperienceTimeline";
 import { ExperienceRightColumn } from "@/components/experience/ExperienceRightColumn";
@@ -6,7 +6,7 @@ import { ShareButton } from "@/components/experience/ShareButton";
 
 export default function ExperiencePage() {
   return (
-    <main className="min-h-screen bg-[#09090b] text-white">
+    <div className="min-h-screen bg-[#09090b] text-white">
       {/* Header */}
       <section className="pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-36 lg:pb-12 px-6 lg:px-24 border-b border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-8">
@@ -21,6 +21,13 @@ export default function ExperiencePage() {
           </div>
 
           <div className="flex flex-wrap gap-4">
+            <a
+              href="/Bilal_Ahamad_Resume.pdf"
+              download
+              className="flex items-center gap-2 px-6 py-3 rounded-xl border bg-white/5 border-white/10 text-white hover:bg-white/10 transition-all"
+            >
+              <Download className="w-5 h-5" aria-hidden="true" /> Download Resume
+            </a>
             <ShareButton />
           </div>
         </div>
@@ -52,6 +59,6 @@ export default function ExperiencePage() {
           <ArrowLeft className="w-5 h-5 rotate-180" aria-hidden="true" />
         </Link>
       </section>
-    </main>
+    </div>
   );
 }

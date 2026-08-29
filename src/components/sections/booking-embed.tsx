@@ -1,4 +1,7 @@
-import { CalendarClock, ExternalLink } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { CalendarClock, ExternalLink, Play } from "lucide-react";
 import { SCHEDULING_URL, SCHEDULING_EMBED_URL } from "@/lib/contact";
 
 /**
@@ -8,9 +11,19 @@ import { SCHEDULING_URL, SCHEDULING_EMBED_URL } from "@/lib/contact";
  * concession is `frame-src https://calendar.google.com`. A same-origin fallback
  * link keeps booking reachable if the frame is blocked (ad-blocker, CSP, etc.).
  *
+ * The frame is mounted CLICK-TO-LOAD, mirroring DashboardFacade: Google's
+ * booking view pulls ~1.4MB of its own JS/CSS/reCAPTCHA/Material-Icons the
+ * moment it mounts (even with loading="lazy", because it sits inside the
+ * viewport-adjacent flow), which made /contact the heaviest page on the site.
+ * Until the visitor asks for it, we render a themed dark glass placeholder —
+ * which also removes the big blank white rectangle the raw embed painted into
+ * an otherwise dark page.
+ *
  * `id="book"` is the scroll target every "Book a Call" affordance points to.
  */
 export function BookingEmbed() {
+  const [loaded, setLoaded] = useState(false);
+
   return (
     <section
       id="book"
@@ -32,12 +45,31 @@ export function BookingEmbed() {
         </div>
 
         <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm p-2 sm:p-3">
-          <iframe
-            src={SCHEDULING_EMBED_URL}
-            title="Book a 1:1 call with Bilal Ahamad"
-            loading="lazy"
-            className="w-full h-[640px] sm:h-[700px] rounded-2xl border-0 bg-white"
-          />
+          {loaded ? (
+            <iframe
+              src={SCHEDULING_EMBED_URL}
+              title="Book a 1:1 call with Bilal Ahamad"
+              loading="lazy"
+              className="w-full h-[640px] sm:h-[700px] rounded-2xl border-0 bg-white"
+            />
+          ) : (
+            <button
+              type="button"
+              onClick={() => setLoaded(true)}
+              aria-label="Load booking calendar — book a 1:1 call with Bilal Ahamad"
+              className="group/facade flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border border-white/5 bg-gradient-to-br from-zinc-900/90 via-zinc-900/70 to-zinc-800/60 px-6 py-16 sm:py-20 text-center transition-colors hover:from-zinc-900/80 hover:via-zinc-900/60 hover:to-zinc-800/50"
+            >
+              <CalendarClock className="w-8 h-8 text-blue-400" aria-hidden="true" />
+              <span className="t-small font-bold text-white">Book a 1:1 call</span>
+              <span className="t-caption text-zinc-400">
+                Google Calendar scheduler — loads on demand to keep this page light
+              </span>
+              <span className="mt-1 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-500/80 backdrop-blur-md border border-white/20 t-small font-black uppercase tracking-widest text-white shadow-xl transition-all group-hover/facade:bg-blue-500 group-hover/facade:scale-105">
+                <Play className="w-4 h-4 fill-current" aria-hidden="true" />
+                Load booking calendar
+              </span>
+            </button>
+          )}
         </div>
 
         <p className="text-center t-caption text-zinc-400 mt-4">

@@ -71,7 +71,7 @@ export default function CertificationsPage() {
               >
                 <Icon className={cn("h-3.5 w-3.5", group.accent.eyebrow)} aria-hidden />
                 {group.title}
-                <span className="text-white/30">· {group.credentials.length}</span>
+                <span className="text-white/50">· {group.credentials.length}</span>
               </a>
             );
           })}
