@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { Linkedin, Clock, ArrowRight, Filter, FileText, Tag } from "lucide-react";
 import type { mdxPosts as MdxPostsType } from "@/app/blog/page";
@@ -100,13 +101,25 @@ export function BlogGrid({ mdxPosts, linkedInPosts }: BlogGridProps) {
                     {/* Thumbnail */}
                     {post.thumbnail && (
                       <div className="relative w-full h-44 overflow-hidden bg-black/40">
-                        <img
-                          src={post.thumbnail}
-                          alt={post.title}
-                          className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                          loading="lazy"
-                          decoding="async"
-                        />
+                        {post.thumbnail.endsWith(".mp4") ? (
+                          <video
+                            src={post.thumbnail}
+                            className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                          />
+                        ) : (
+                          <Image
+                            src={post.thumbnail}
+                            alt={post.title}
+                            fill
+                            className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                            sizes="(min-width: 1024px) 400px, (min-width: 768px) 50vw, 100vw"
+                            loading="lazy"
+                          />
+                        )}
                         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/70" />
                         {isLinkedIn && (
                           <div className="absolute top-2 right-2 px-2 py-1 rounded-full bg-sky-600/80 border border-sky-500/40 t-label font-black uppercase tracking-widest text-white flex items-center gap-1">

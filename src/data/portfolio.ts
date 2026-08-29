@@ -407,10 +407,10 @@ export const projectsData = [
     relatedPosts: [
       { slug: "adhan-caster-extension-story", label: "Project Story" },
     ],
-    // Animated demo GIF (from repo docs/demo.gif) as the looping thumbnail
+    // Animated demo (MP4 re-encode of repo docs/demo.gif — ~40% of the GIF's bytes)
     previewType: "image" as const,
-    previewSrc: "/images/adhan-ce-demo.gif",
-    thumbnail: "/images/adhan-ce-demo.gif",
+    previewSrc: "/images/adhan-ce-demo.mp4",
+    thumbnail: "/images/adhan-ce-demo.mp4",
     thumbnailAlt: "Adhan Caster — in-page countdown, cross-tab media pause, and full-screen prayer-focus flow",
     thumbnailType: "screenshot" as const,
   },

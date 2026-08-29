@@ -39,7 +39,6 @@ export function ExperienceTimeline() {
                   width={40}
                   height={40}
                   className={`w-full h-full object-contain ${exp.invertLogo ? "filter invert brightness-200" : ""}`}
-                  unoptimized
                 />
               </div>
               {idx !== experienceData.length - 1 && (
