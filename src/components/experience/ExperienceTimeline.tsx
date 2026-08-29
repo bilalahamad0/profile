@@ -14,14 +14,14 @@ export function ExperienceTimeline() {
         <Briefcase className="w-32 h-32" />
       </div>
 
-      <h2 className="t-h3 text-zinc-900 dark:text-white mb-8 flex items-center gap-2">
-        <Briefcase className="w-6 h-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />
+      <h2 className="t-h3 text-ink mb-8 flex items-center gap-2">
+        <Briefcase className="w-6 h-6 text-blue-700 dark:text-blue-400" aria-hidden="true" />
         Professional Career Timeline
       </h2>
 
       <ol className="flex flex-col justify-between flex-1 gap-6 relative z-10">
         {experienceData.map((exp, idx) => (
-          <li key={exp.company + idx} className="flex gap-4 group border border-transparent rounded-xl hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300 pr-2">
+          <li key={exp.company + idx} className="flex gap-4 group border border-transparent rounded-xl hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 pr-2">
             {/* Logo + timeline connector */}
             <div className="flex flex-col items-center">
               <div
@@ -30,7 +30,7 @@ export function ExperienceTimeline() {
                     ? "bg-amber-500/10 border-amber-500/30 shadow-[0_0_15px_rgba(249,115,22,0.15)]"
                     : (exp as { isStealth?: boolean }).isStealth
                       ? "bg-violet-500/10 border-violet-500/40 shadow-[0_0_20px_rgba(139,92,246,0.2)]"
-                      : "bg-black/5 dark:bg-white/5 border-black/10 dark:border-white/10"
+                      : "bg-ink/5 border-line/10"
                   }`}
               >
                 <Image
@@ -38,7 +38,7 @@ export function ExperienceTimeline() {
                   alt={exp.company}
                   width={40}
                   height={40}
-                  className={`w-full h-full object-contain ${exp.invertLogo ? "filter invert brightness-200" : ""}`}
+                  className={`w-full h-full object-contain ${exp.invertLogo ? "dark:invert dark:brightness-200" : ""}`}
                 />
               </div>
               {idx !== experienceData.length - 1 && (
@@ -49,15 +49,15 @@ export function ExperienceTimeline() {
             {/* Job details */}
             <div className="pb-4 pt-1">
               <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
-                <h3 className="text-lg font-semibold text-zinc-900 dark:text-white leading-tight whitespace-pre-line">
+                <h3 className="text-lg font-semibold text-ink leading-tight whitespace-pre-line">
                   {exp.role}
                 </h3>
-                <span className="font-medium tracking-tight text-emerald-600 dark:text-emerald-400 hover:opacity-80 transition-opacity duration-200">
+                <span className="font-medium tracking-tight text-emerald-700 dark:text-emerald-400 hover:opacity-80 transition-opacity duration-200">
                   {exp.company}
                 </span>
               </div>
 
-              <p className="text-xs text-zinc-400 dark:text-zinc-400 mb-2 mt-1 flex items-center gap-2">
+              <p className="text-xs text-ink-muted mb-2 mt-1 flex items-center gap-2">
                 <time>{exp.duration}</time>
                 <span className="opacity-30" aria-hidden="true">•</span>
                 <span className="flex items-center gap-1">
@@ -66,7 +66,7 @@ export function ExperienceTimeline() {
                 </span>
               </p>
 
-              <p className="text-sm text-zinc-400 dark:text-zinc-400 leading-relaxed max-w-md mb-3">
+              <p className="text-sm text-ink-muted leading-relaxed max-w-md mb-3">
                 {exp.desc}
               </p>
 
@@ -74,8 +74,8 @@ export function ExperienceTimeline() {
                 (exp as { highlights?: string[] }).highlights!.length > 0 && (
                   <ul className="space-y-1.5 max-w-md">
                     {(exp as { highlights: string[] }).highlights.map((h, hi) => (
-                      <li key={hi} className="flex items-start gap-2 text-xs text-zinc-400 dark:text-zinc-400 leading-relaxed hover:text-white/90 transition-colors duration-200">
-                        <Check className="w-3 h-3 text-emerald-500 shrink-0 mt-0.5" aria-hidden="true" />
+                      <li key={hi} className="flex items-start gap-2 text-xs text-ink-muted leading-relaxed hover:text-ink/90 transition-colors duration-200">
+                        <Check className="w-3 h-3 text-emerald-600 dark:text-emerald-500 shrink-0 mt-0.5" aria-hidden="true" />
                         <span>{h}</span>
                       </li>
                     ))}

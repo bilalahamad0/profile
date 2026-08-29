@@ -24,10 +24,10 @@ const ACCENT_BORDER: Record<string, string> = {
   violet: "group-hover:border-violet-500/30",
 };
 const ACCENT_TEXT: Record<string, string> = {
-  blue: "text-blue-400",
-  emerald: "text-emerald-400",
-  pink: "text-pink-400",
-  violet: "text-violet-400",
+  blue: "text-blue-700 dark:text-blue-400",
+  emerald: "text-emerald-700 dark:text-emerald-400",
+  pink: "text-pink-700 dark:text-pink-400",
+  violet: "text-violet-700 dark:text-violet-400",
 };
 const ACCENT_BG: Record<string, string> = {
   blue: "bg-blue-500/5",
@@ -43,7 +43,7 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
 
   return (
     <div
-      className={`group relative h-full flex flex-col rounded-3xl border border-white/5 bg-white/[0.02] overflow-hidden hover:bg-white/[0.04] transition-all duration-500 ${ACCENT_BORDER[project.accent]}`}
+      className={`group relative h-full flex flex-col rounded-3xl border border-line/10 dark:border-line/5 bg-surface-card dark:bg-ink/[0.02] overflow-hidden hover:bg-ink/[0.04] transition-all duration-500 ${ACCENT_BORDER[project.accent]}`}
     >
       {/* Stretched link for card-level navigation */}
       <Link
@@ -64,7 +64,7 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
             poster={(project as unknown as { thumbnailPoster?: string }).thumbnailPoster}
             className={`w-full h-full object-cover ${imgPosition} opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700`}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/60 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-transparent pointer-events-none" />
           {/* Only promise a full video when one exists — mp4 thumbnails alone just loop inline */}
           {(project as unknown as { thumbnailType?: string }).thumbnailType === "video" && (
             <div className="absolute top-2 right-2 px-2.5 py-1 rounded-full bg-blue-500/80 backdrop-blur-md border border-white/20 t-label font-black uppercase tracking-widest text-white shadow-lg flex items-center gap-1.5 z-10 pointer-events-none">
@@ -83,7 +83,7 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
             sizes="(max-width: 768px) 100vw, 33vw"
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-transparent" />
         </div>
       ) : null}
 
@@ -92,19 +92,19 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
         <div className="flex items-center gap-2 mb-4 flex-wrap">
           {project.isAI && (
             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-violet-500/10 border border-violet-500/20">
-              <Sparkles className="w-3 h-3 text-violet-400" />
-              <span className="text-xs font-bold uppercase tracking-wider text-violet-300">AI-Built</span>
+              <Sparkles className="w-3 h-3 text-violet-700 dark:text-violet-400" />
+              <span className="text-xs font-bold uppercase tracking-wider text-violet-700 dark:text-violet-300">AI-Built</span>
             </div>
           )}
         </div>
 
-        <h3 className="text-base font-bold text-white mb-1">{project.name}</h3>
+        <h3 className="text-base font-bold text-ink mb-1">{project.name}</h3>
         <p className={`text-sm font-medium ${ACCENT_TEXT[project.accent]} mb-3`}>{project.tagline}</p>
 
         {/* Extended sub-group — regional deep-dives that live inside this project */}
         {subDashboards.length > 0 && (
           <div className="relative z-[2] flex flex-wrap items-center gap-1.5 mb-3">
-            <span className="t-label font-bold uppercase tracking-widest text-zinc-400">Includes</span>
+            <span className="t-label font-bold uppercase tracking-widest text-ink-muted">Includes</span>
             {subDashboards.map((sub) => (
               <a
                 key={sub.id}
@@ -112,7 +112,7 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
                 target="_blank"
                 rel="noreferrer"
                 title={sub.tagline}
-                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-bold text-blue-300 hover:bg-blue-500/20 hover:text-blue-200 transition-colors"
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-bold text-blue-700 dark:text-blue-300 hover:bg-blue-500/20 hover:text-blue-800 dark:hover:text-blue-200 transition-colors"
               >
                 {sub.region}
                 <ExternalLink className="w-3 h-3" aria-hidden="true" />
@@ -121,10 +121,10 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
           </div>
         )}
 
-        <p className="text-sm text-zinc-400 leading-relaxed mb-4 line-clamp-2">{project.description}</p>
+        <p className="text-sm text-ink-muted leading-relaxed mb-4 line-clamp-2">{project.description}</p>
 
-        <div className="flex items-center justify-between pt-3 border-t border-white/5 mt-auto">
-          <span className="text-xs text-zinc-400">{project.tech.slice(0, 2).join(" · ")}</span>
+        <div className="flex items-center justify-between pt-3 border-t border-line/10 dark:border-line/5 mt-auto">
+          <span className="text-xs text-ink-muted">{project.tech.slice(0, 2).join(" · ")}</span>
           <div className="flex gap-3 relative z-[2]">
             {project.demo && (
               <a
@@ -140,7 +140,7 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
               href={project.repo}
               target="_blank"
               rel="noreferrer"
-              className="text-xs font-bold text-zinc-400 hover:text-white transition-colors flex items-center gap-1"
+              className="text-xs font-bold text-ink-muted hover:text-ink transition-colors flex items-center gap-1"
             >
               <Github className="w-3.5 h-3.5" /> GitHub
             </a>
@@ -166,9 +166,9 @@ export function FeaturedProjectsSection() {
           <motion.div variants={fadeUp} transition={{ duration: 0.5 }}>
             <div className="flex items-end justify-between mb-12">
               <div>
-                <h2 id="proj-heading" className="t-h2 text-white">
+                <h2 id="proj-heading" className="t-h2 text-ink">
                   Featured{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Projects</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-700 dark:from-blue-400 dark:to-cyan-400">Projects</span>
                 </h2>
               </div>
             </div>
@@ -190,9 +190,9 @@ export function FeaturedProjectsSection() {
           <motion.div variants={fadeUp} transition={{ duration: 0.5 }} className="mt-8 flex justify-center">
             <Link
               href="/projects"
-              className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 border border-white/10 text-sm font-semibold text-zinc-300 hover:bg-white/10 hover:text-white transition-all"
+              className="flex items-center gap-2 px-6 py-3 rounded-full bg-ink/5 border border-line/10 text-sm font-semibold text-body hover:bg-ink/10 hover:text-ink transition-all"
             >
-              <Sparkles className="w-4 h-4 text-blue-400" />
+              <Sparkles className="w-4 h-4 text-blue-700 dark:text-blue-400" />
               View All Projects
               <ArrowRight className="w-4 h-4" />
             </Link>

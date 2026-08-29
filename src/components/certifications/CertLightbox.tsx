@@ -82,7 +82,7 @@ export function CertLightbox({
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
-            className="glass relative flex w-full max-w-5xl flex-col overflow-hidden rounded-3xl border border-white/10 shadow-2xl focus:outline-none md:flex-row"
+            className="glass relative flex w-full max-w-5xl flex-col overflow-hidden rounded-3xl border border-line/10 shadow-2xl focus:outline-none md:flex-row"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button Mobile */}
@@ -109,10 +109,10 @@ export function CertLightbox({
             </div>
 
             {/* Content Area */}
-            <div className="flex flex-1 flex-col bg-white/[0.02] p-8 md:p-12">
+            <div className="flex flex-1 flex-col bg-ink/[0.03] p-8 md:p-12">
               <button
                 onClick={onClose}
-                className="mb-10 hidden items-center gap-2 t-caption font-bold uppercase tracking-widest text-white/40 transition-colors hover:text-white md:flex"
+                className="mb-10 hidden items-center gap-2 t-caption font-bold uppercase tracking-widest text-ink-subtle transition-colors hover:text-ink dark:text-ink/40 md:flex"
               >
                 <ChevronLeft className="h-4 w-4" />
                 Back to Album
@@ -120,22 +120,24 @@ export function CertLightbox({
 
               <div className="space-y-6">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 p-2">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-line/10 bg-ink/5 p-2">
                     <Image src={cert.logo} alt={cert.issuer} width={30} height={30} className="object-contain" />
                   </div>
                   <div>
-                    <p className="t-caption font-bold uppercase tracking-widest text-blue-400">{cert.issuer}</p>
-                    <p className="t-label uppercase tracking-tighter text-white/30">{cert.date}</p>
+                    <p className="t-caption font-bold uppercase tracking-widest text-blue-700 dark:text-blue-400">{cert.issuer}</p>
+                    {/* 30% white reads at 2.6:1 on the dark panel — same date
+                        line, same 60% fix as the row body. */}
+                    <p className="t-label uppercase tracking-tighter text-ink-subtle dark:text-ink/60">{cert.date}</p>
                   </div>
                 </div>
 
-                <h3 className="t-h3 text-white">
+                <h3 className="t-h3 text-ink">
                   {cert.title}
                 </h3>
 
-                <div className="h-px w-full bg-gradient-to-r from-white/10 to-transparent" />
+                <div className="h-px w-full bg-gradient-to-r from-line/10 to-transparent" />
 
-                <p className="t-body text-white/50">
+                <p className="t-body text-ink-muted dark:text-ink/50">
                   {cert.description}
                 </p>
 
@@ -149,15 +151,15 @@ export function CertLightbox({
                         title: cert.title,
                         issuer: cert.issuer
                       })}
-                      className="group relative inline-flex items-center gap-3 rounded-2xl bg-white px-8 py-4 font-bold text-black transition-all hover:scale-[1.02] active:scale-[0.98]"
+                      className="group relative inline-flex items-center gap-3 rounded-2xl bg-ink px-8 py-4 font-bold text-surface transition-all hover:scale-[1.02] active:scale-[0.98]"
                     >
                       <span className="relative z-10">Verify Certificate</span>
                       <ExternalLink className="h-4 w-4" />
                       <div className="absolute inset-x-0 bottom-0 h-full rotate-2 translate-y-2 rounded-2xl bg-blue-400 opacity-0 transition-all group-hover:opacity-10" />
                     </Link>
                   ) : (
-                    <div className="inline-block rounded-xl border border-white/10 bg-white/5 px-6 py-4">
-                      <span className="t-caption font-bold uppercase tracking-widest text-white/40">Internal Verification Only</span>
+                    <div className="inline-block rounded-xl border border-line/10 bg-ink/5 px-6 py-4">
+                      <span className="t-caption font-bold uppercase tracking-widest text-ink-subtle dark:text-ink/40">Internal Verification Only</span>
                     </div>
                   )}
                 </div>

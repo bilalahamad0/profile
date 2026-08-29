@@ -205,11 +205,12 @@ export function ResumeReel() {
       <div className="text-center">
         {/* The section's name is the heading; the gesture hint is a caption, not
             an outline entry — it used to be the first h2 in the home DOM. */}
-        <h2 className="t-label font-black uppercase tracking-[0.3em] text-zinc-400 mb-2">Career Reel</h2>
-        <p className="t-small text-white/80 tracking-tight">Tap sides · Auto-plays · Swipe</p>
+        <h2 className="t-label font-black uppercase tracking-[0.3em] text-ink-muted mb-2">Career Reel</h2>
+        <p className="t-small text-ink/80 tracking-tight">Tap sides · Auto-plays · Swipe</p>
       </div>
 
-      {/* Phone Frame */}
+      {/* Phone Frame — a device mockup: the bezel and everything inside the screen
+          stay dark in BOTH themes (that is the artwork, not the page chrome). */}
       <div
         className="relative w-full max-w-[320px] rounded-[40px] overflow-hidden shadow-2xl border-[6px] border-zinc-800 bg-black mx-auto"
         style={{ height: "calc(min(75vh, 600px))", touchAction: "pan-y" }}
@@ -372,8 +373,8 @@ export function ResumeReel() {
 
       {/* CTA below reel */}
       <div className="flex flex-col items-center gap-3 text-center">
-        <p className="text-xs text-zinc-400">Desktop view has the full interactive experience</p>
-        <Link href="/experience" className="flex items-center gap-1.5 text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors">
+        <p className="text-xs text-ink-muted">Desktop view has the full interactive experience</p>
+        <Link href="/experience" className="flex items-center gap-1.5 text-xs font-bold text-cyan-700 dark:text-cyan-400 hover:text-cyan-800 dark:hover:text-cyan-300 transition-colors">
           Full Timeline <ChevronRight className="w-3.5 h-3.5" />
         </Link>
       </div>

@@ -27,7 +27,7 @@ const Disclosure = ({ open, accent }: { open: boolean; accent: GroupAccent }) =>
     <span
       aria-hidden
       className={cn(
-        "grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 transition-colors",
+        "grid h-9 w-9 shrink-0 place-items-center rounded-full border border-line/10 bg-ink/5 transition-colors",
         open && accent.disclosureOpen
       )}
     >
@@ -36,7 +36,7 @@ const Disclosure = ({ open, accent }: { open: boolean; accent: GroupAccent }) =>
         animate={{ rotate: open ? 180 : 0 }}
         transition={reduceMotion ? { duration: 0 } : DISCLOSURE_SPRING}
       >
-        <ChevronDown className="h-4 w-4 text-white/70" />
+        <ChevronDown className="h-4 w-4 text-ink/70" />
       </motion.span>
     </span>
   );
@@ -57,11 +57,11 @@ const Chip = ({ className, children }: { className: string; children: React.Reac
  *  "7 Courses" chip reads violet in every group so the same fact never wears
  *  two colours down the ledger. Emerald stays reserved for verification
  *  affordances (the course VERIFY pills in the expanded body). */
-const CHIP_COURSES = "border-violet-400/25 bg-violet-400/10 text-violet-300";
+const CHIP_COURSES = "border-violet-400/25 bg-violet-400/10 text-violet-700 dark:text-violet-300";
 /** One amber for every skills chip — AI Skills and PM Skills are the same
  *  category, so they share a tint and are told apart by their emoji/icon. */
-const CHIP_SKILLS = "border-amber-400/30 bg-amber-400/10 text-amber-300";
-const CHIP_OFFICIAL = "border-blue-400/25 bg-blue-400/10 text-blue-300";
+const CHIP_SKILLS = "border-amber-400/30 bg-amber-400/10 text-amber-800 dark:text-amber-300";
+const CHIP_OFFICIAL = "border-blue-400/25 bg-blue-400/10 text-blue-700 dark:text-blue-300";
 
 export function CredentialRow({
   credential,
@@ -103,7 +103,7 @@ export function CredentialRow({
       {/* Continuous ledger index 01…12 — decorative ordering cue */}
       <span
         aria-hidden
-        className="hidden w-7 shrink-0 t-label tabular-nums text-white/50 transition-colors group-hover/row:text-white/70 sm:block"
+        className="hidden w-7 shrink-0 t-label tabular-nums text-ink-subtle transition-colors group-hover/row:text-ink/70 sm:block dark:text-ink/50"
       >
         {String(index + 1).padStart(2, "0")}
       </span>
@@ -141,7 +141,7 @@ export function CredentialRow({
           />
         </span>
       ) : (
-        <span className="relative h-11 w-16 shrink-0 overflow-hidden rounded-lg bg-black/20 ring-1 ring-white/10 md:h-14 md:w-[76px]">
+        <span className="relative h-11 w-16 shrink-0 overflow-hidden rounded-lg bg-black/20 ring-1 ring-line/10 md:h-14 md:w-[76px]">
           <Image
             src={credential.image}
             alt=""
@@ -160,12 +160,12 @@ export function CredentialRow({
           aria-expanded={open}
           aria-controls={panelId}
           onClick={onToggle}
-          className="block w-full min-w-0 rounded-lg text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+          className="block w-full min-w-0 rounded-lg text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-line/40"
         >
-          <span className="t-h3 text-white/90 transition-colors line-clamp-2 md:line-clamp-1 group-hover/row:text-white">
+          <span className="t-h3 text-ink/90 transition-colors line-clamp-2 md:line-clamp-1 group-hover/row:text-ink">
             {title}
           </span>
-          <span className="mt-0.5 block truncate t-caption text-white/55">
+          <span className="mt-0.5 block truncate t-caption text-ink-muted dark:text-ink/55">
             {metaLine}
           </span>
         </button>
@@ -213,7 +213,7 @@ export function CredentialRow({
             })
           }
           aria-label={`Verify ${title}`}
-          className="inline-flex h-10 w-10 shrink-0 items-center justify-center gap-1 rounded-full text-blue-400 transition-colors hover:bg-white/[0.04] hover:text-blue-300 md:w-auto md:px-3"
+          className="inline-flex h-10 w-10 shrink-0 items-center justify-center gap-1 rounded-full text-blue-700 transition-colors hover:bg-ink/[0.04] hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 md:w-auto md:px-3"
         >
           <span className="hidden t-label font-semibold uppercase tracking-wider md:inline">
             Verify
@@ -228,7 +228,7 @@ export function CredentialRow({
 
   const body = (
     <CollapsePanel id={panelId} labelledBy={headingId} open={open}>
-      <div className="border-t border-white/5 px-4 pb-5 pt-4 md:px-6 md:pb-7 md:pt-5">
+      <div className="border-t border-line/10 px-4 pb-5 pt-4 md:px-6 md:pb-7 md:pt-5">
         {isSpec ? (
           <SpecializationBody spec={credential} />
         ) : (
@@ -242,7 +242,7 @@ export function CredentialRow({
     <div
       data-open={open}
       className={cn(
-        "group/row glass-card relative overflow-hidden rounded-2xl border border-white/10 transition-colors",
+        "group/row glass-card relative overflow-hidden rounded-2xl border border-line/10 transition-colors",
         accent.hoverBorder,
         accent.openRing,
         isOfficial && !open && "border-blue-400/20"

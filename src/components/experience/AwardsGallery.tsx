@@ -29,15 +29,15 @@ const AWARDS = [
 const DESCRIPTIONS = [
   {
     bg: "bg-yellow-500/5 border-yellow-500/20",
-    hover: "hover:border-yellow-500/40 hover:bg-white/5",
-    iconColor: "text-yellow-400",
+    hover: "hover:border-yellow-500/40 hover:bg-ink/5",
+    iconColor: "text-yellow-700 dark:text-yellow-400",
     title: "Annual Best Performer · Excellent Performance Award · L&T Infotech 2010–11",
     body: "Architected test automation infrastructure for Motorola ODC, validating multiple mobile platforms. Reduced man-hours by 25% through innovative automation of cumbersome stability testing procedures.",
   },
   {
     bg: "bg-blue-500/5 border-blue-500/20",
-    hover: "hover:border-blue-500/40 hover:bg-white/5",
-    iconColor: "text-blue-400",
+    hover: "hover:border-blue-500/40 hover:bg-ink/5",
+    iconColor: "text-blue-700 dark:text-blue-400",
     title: "Annual Best Managed Project · Eagle Award · L&T Infotech 2010–11",
     body: "Led the Development project for Motorola Mobility System Testing, achieving remarkable productivity growth.",
   },
@@ -153,7 +153,7 @@ export function AwardsGallery() {
 
       {/* Stage photo */}
       <button
-        className="relative w-full mb-6 rounded-2xl overflow-hidden border border-white/10 cursor-zoom-in group text-left block"
+        className="relative w-full mb-6 rounded-2xl overflow-hidden border border-line/10 bg-zinc-900 dark:bg-transparent cursor-zoom-in group text-left block"
         onClick={() => setLightbox("/awards/award_stage.jpg")}
       >
         <div className="relative w-full h-52">
@@ -180,7 +180,7 @@ export function AwardsGallery() {
         {AWARDS.map((award) => (
           <button
             key={award.src}
-            className={`group relative rounded-2xl overflow-hidden border ${award.borderColor} ${award.hoverBorderColor} transition-all cursor-zoom-in text-left`}
+            className={`group relative rounded-2xl overflow-hidden border bg-zinc-900 dark:bg-transparent ${award.borderColor} ${award.hoverBorderColor} transition-all cursor-zoom-in text-left`}
             onClick={() => setLightbox(award.src)}
           >
             <div className="relative w-full h-52">
@@ -209,7 +209,7 @@ export function AwardsGallery() {
               <span className={`${d.iconColor} text-lg shrink-0`} aria-hidden="true">⭐</span>
               <div>
                 <p className="text-sm font-bold text-zinc-800 dark:text-zinc-200">{d.title}</p>
-                <p className="text-xs text-zinc-400 dark:text-zinc-400 mt-1 leading-relaxed">{d.body}</p>
+                <p className="text-xs text-ink-muted mt-1 leading-relaxed">{d.body}</p>
               </div>
             </div>
           </div>

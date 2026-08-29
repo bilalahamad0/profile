@@ -19,7 +19,11 @@ const inter = Inter({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#09090b",
+  // Browser chrome follows the theme on mobile.
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
+    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
+  ],
   width: "device-width",
   initialScale: 1,
 };
@@ -99,11 +103,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="dark">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
           inter.variable,
-          "font-sans bg-[#09090b] text-foreground antialiased"
+          "font-sans bg-surface text-ink antialiased"
         )}
       >
         {/* Pre-paint cover to prevent the home page flashing before the splash. */}
@@ -121,7 +125,7 @@ export default function RootLayout({
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
-          forcedTheme="dark"
+          enableSystem
           disableTransitionOnChange
         >
           {/* Scroll-to-top on every route change */}

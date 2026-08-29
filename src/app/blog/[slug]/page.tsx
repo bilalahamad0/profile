@@ -51,41 +51,41 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 const mdxComponents = {
-  h1: (props: any) => <h1 className="t-h2 text-white mt-12 mb-6 first:mt-0" {...props} />,
-  h2: (props: any) => <h2 className="t-h3 text-white mt-10 mb-4 border-b border-white/5 pb-3" {...props} />,
-  h3: (props: any) => <h3 className="t-h3 text-white/90 mt-8 mb-3" {...props} />,
-  p: (props: any) => <p className="t-body text-zinc-400 mb-5" {...props} />,
+  h1: (props: any) => <h1 className="t-h2 text-ink mt-12 mb-6 first:mt-0" {...props} />,
+  h2: (props: any) => <h2 className="t-h3 text-ink mt-10 mb-4 border-b border-line/10 dark:border-line/5 pb-3" {...props} />,
+  h3: (props: any) => <h3 className="t-h3 text-ink/90 mt-8 mb-3" {...props} />,
+  p: (props: any) => <p className="t-body text-ink-muted mb-5" {...props} />,
   ul: (props: any) => <ul className="space-y-2 mb-5 ml-4" {...props} />,
   ol: (props: any) => <ol className="space-y-2 mb-5 ml-4 list-decimal list-inside" {...props} />,
-  li: (props: any) => <li className="text-zinc-400 leading-relaxed flex gap-2 items-start"><span className="text-blue-500 mt-1.5 shrink-0">▪</span><span {...props} /></li>,
+  li: (props: any) => <li className="text-ink-muted leading-relaxed flex gap-2 items-start"><span className="text-blue-600 dark:text-blue-500 mt-1.5 shrink-0">▪</span><span {...props} /></li>,
   code: (props: any) => (
-    <code className="px-1.5 py-0.5 rounded-md bg-white/5 border border-white/10 text-blue-300 text-sm font-mono" {...props} />
+    <code className="px-1.5 py-0.5 rounded-md bg-ink/5 border border-line/10 text-blue-700 dark:text-blue-300 text-sm font-mono" {...props} />
   ),
   pre: (props: any) => (
-    <pre className="bg-zinc-900 border border-white/10 rounded-2xl p-6 overflow-x-auto mb-6 text-sm font-mono text-zinc-300 leading-relaxed" {...props} />
+    <pre className="bg-zinc-100 dark:bg-zinc-900 border border-line/10 rounded-2xl p-6 overflow-x-auto mb-6 text-sm font-mono text-zinc-800 dark:text-zinc-300 leading-relaxed" {...props} />
   ),
   blockquote: (props: any) => (
-    <blockquote className="border-l-4 border-blue-500 pl-6 my-6 italic text-zinc-400" {...props} />
+    <blockquote className="border-l-4 border-blue-500 pl-6 my-6 italic text-ink-muted" {...props} />
   ),
   a: (props: any) => (
-    <a className="text-blue-400 hover:text-blue-300 underline underline-offset-2 transition-colors" target="_blank" rel="noreferrer" {...props} />
+    <a className="text-blue-700 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline underline-offset-2 transition-colors" target="_blank" rel="noreferrer" {...props} />
   ),
   table: (props: any) => (
     <div className="overflow-x-auto mb-6">
       <table className="w-full border-collapse text-sm" {...props} />
     </div>
   ),
-  th: (props: any) => <th className="px-4 py-3 text-left font-bold text-white/80 border-b border-white/10 text-xs uppercase tracking-widest" {...props} />,
-  td: (props: any) => <td className="px-4 py-3 text-zinc-400 border-b border-white/5" {...props} />,
-  hr: () => <hr className="border-white/10 my-10" />,
-  strong: (props: any) => <strong className="text-white font-bold" {...props} />,
+  th: (props: any) => <th className="px-4 py-3 text-left font-bold text-ink/80 border-b border-line/10 text-xs uppercase tracking-widest" {...props} />,
+  td: (props: any) => <td className="px-4 py-3 text-ink-muted border-b border-line/10 dark:border-line/5" {...props} />,
+  hr: () => <hr className="border-line/10 my-10" />,
+  strong: (props: any) => <strong className="text-ink font-bold" {...props} />,
 };
 
 const categoryColors: Record<string, string> = {
-  "Project Story": "text-blue-400 bg-blue-500/10 border-blue-500/20",
-  "Whitepaper": "text-violet-400 bg-violet-500/10 border-violet-500/20",
-  "LinkedIn": "text-sky-400 bg-sky-500/10 border-sky-500/20",
-  "Tutorial": "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
+  "Project Story": "text-blue-700 dark:text-blue-400 bg-blue-500/10 border-blue-500/20",
+  "Whitepaper": "text-violet-700 dark:text-violet-400 bg-violet-500/10 border-violet-500/20",
+  "LinkedIn": "text-sky-700 dark:text-sky-400 bg-sky-500/10 border-sky-500/20",
+  "Tutorial": "text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
 };
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -122,20 +122,22 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   };
 
   return (
-    <div className="min-h-screen bg-[#09090b] text-white">
+    <div className="min-h-screen bg-surface text-ink">
       <JsonLd data={[breadcrumbLd, articleLd]} />
 
       {/* Header */}
-      <section className="pt-32 pb-16 px-6 lg:px-24 border-b border-white/5 relative overflow-hidden">
+      <section className="pt-32 pb-16 px-6 lg:px-24 border-b border-line/10 dark:border-line/5 relative overflow-hidden">
         {image && (
-          <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
+          /* The hero art sits behind dark ink in the light theme, so it is held
+             further back there; the dark theme keeps its original 40%. */
+          <div className="absolute inset-0 z-0 opacity-20 dark:opacity-40 pointer-events-none">
             <Image src={image} alt={post.title} fill className="object-cover" sizes="100vw" priority />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-transparent" />
           </div>
         )}
         <div className="absolute top-0 left-0 w-[500px] h-[400px] bg-indigo-500/5 blur-[150px] rounded-full pointer-events-none z-0" />
         <div className="max-w-4xl mx-auto relative z-10">
-          <Link href="/blog" className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors group mb-10">
+          <Link href="/blog" className="inline-flex items-center gap-2 text-ink-muted hover:text-ink transition-colors group mb-10">
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             Back to Blog
           </Link>
@@ -145,25 +147,25 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               <BookOpen className="w-3.5 h-3.5" />
               {post.category}
             </span>
-            <span className="flex items-center gap-1.5 text-xs text-zinc-400">
+            <span className="flex items-center gap-1.5 text-xs text-ink-muted">
               <Calendar className="w-3.5 h-3.5" />
               {post.date}
             </span>
-            <span className="flex items-center gap-1.5 text-xs text-zinc-400">
+            <span className="flex items-center gap-1.5 text-xs text-ink-muted">
               <Clock className="w-3.5 h-3.5" />
               {post.readingTime} min read
             </span>
           </div>
 
-          <h1 className="t-h1 text-white mb-6">
+          <h1 className="t-h1 text-ink mb-6">
             {post.title}
           </h1>
 
-          <p className="t-lead text-zinc-400 mb-8">{post.description}</p>
+          <p className="t-lead text-ink-muted mb-8">{post.description}</p>
 
           <div className="flex flex-wrap gap-2">
             {post.tags.map((tag) => (
-              <span key={tag} className="flex items-center gap-1 t-label font-semibold text-zinc-400 px-2.5 py-1 rounded-lg bg-white/5 border border-white/10">
+              <span key={tag} className="flex items-center gap-1 t-label font-semibold text-ink-muted px-2.5 py-1 rounded-lg bg-ink/5 border border-line/10">
                 <Tag className="w-3 h-3" />
                 {tag}
               </span>
@@ -186,10 +188,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </div>
 
           {/* Footer */}
-          <div className="mt-16 pt-10 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="mt-16 pt-10 border-t border-line/10 dark:border-line/5 flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
-              <p className="text-zinc-400 text-sm">Written by Bilal Ahamad</p>
-              <p className="text-zinc-400 text-xs mt-1">Technical QA Lead & AI-Driven Engineer</p>
+              <p className="text-ink-muted text-sm">Written by Bilal Ahamad</p>
+              <p className="text-ink-muted text-xs mt-1">Technical QA Lead & AI-Driven Engineer</p>
             </div>
             <div className="flex gap-4">
               {post.linkedinUrl && (
@@ -200,7 +202,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 </a>
               )}
               <a href="https://github.com/bilalahamad0" target="_blank" rel="noreferrer"
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm font-bold text-zinc-400 hover:text-white hover:border-white/20 transition-all">
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-ink/5 border border-line/10 text-sm font-bold text-ink-muted hover:text-ink hover:border-line/20 transition-all">
                 <Github className="w-4 h-4" />
                 GitHub
               </a>
@@ -214,9 +216,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       </article>
 
       {/* Related Posts Nav */}
-      <section className="py-12 px-6 lg:px-24 border-t border-white/5 bg-white/[0.01]">
+      <section className="py-12 px-6 lg:px-24 border-t border-line/10 dark:border-line/5 bg-ink/[0.01]">
         <div className="max-w-4xl mx-auto text-center">
-          <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-bold text-zinc-400 hover:text-white transition-colors">
+          <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-bold text-ink-muted hover:text-ink transition-colors">
             <ArrowLeft className="w-4 h-4" />
             All Posts
           </Link>

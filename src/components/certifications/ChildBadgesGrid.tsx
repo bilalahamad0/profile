@@ -86,7 +86,7 @@ export const ChildBadgesGrid = ({ spec }: { spec: SpecializationData }) => {
                 })
               }
               aria-label={`Verify ${child.title} certificate on Coursera`}
-              className="group/verify inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 t-label font-bold uppercase tracking-wider text-emerald-300 transition-colors hover:border-emerald-300/60 hover:bg-emerald-500/20 hover:text-emerald-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70"
+              className="group/verify inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 t-label font-bold uppercase tracking-wider text-emerald-700 transition-colors hover:border-emerald-300/60 hover:bg-emerald-500/20 hover:text-emerald-800 dark:text-emerald-300 dark:hover:text-emerald-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70"
             >
               Verify
               <ExternalLink className="h-3 w-3 transition-transform group-hover/verify:translate-x-0.5" />

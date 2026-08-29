@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Bilal Ahamad",
+  // The root layout's title template appends " | Bilal Ahamad".
+  title: "Privacy Policy",
   description:
     "What bilalahamad.com collects, why, how long it is kept, and how to exercise your privacy rights.",
   alternates: { canonical: "https://bilalahamad.com/privacy" },
@@ -13,17 +14,17 @@ const EFFECTIVE_DATE = "29 August 2026";
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-[#09090b] text-white">
-      <section className="border-b border-white/5 px-6 pt-24 pb-8 md:pt-28 md:pb-10 lg:px-24 lg:pt-36">
+    <div className="min-h-screen bg-surface text-ink">
+      <section className="border-b border-line/10 dark:border-line/5 px-6 pt-24 pb-8 md:pt-28 md:pb-10 lg:px-24 lg:pt-36">
         <div className="mx-auto max-w-3xl space-y-4">
           <h1 className="t-h1">
-            Privacy <span className="text-blue-400">Policy</span>
+            Privacy <span className="text-blue-700 dark:text-blue-400">Policy</span>
           </h1>
-          <p className="t-lead font-light text-zinc-400">
+          <p className="t-lead font-light text-ink-muted">
             This is a personal portfolio run by one individual. It collects as little as it can,
             sells nothing, and shows no advertising.
           </p>
-          <p className="t-caption text-zinc-400">Effective {EFFECTIVE_DATE}</p>
+          <p className="t-caption text-ink-muted">Effective {EFFECTIVE_DATE}</p>
         </div>
       </section>
 
@@ -33,7 +34,7 @@ export default function PrivacyPage() {
             <P>
               Bilal Ahamad is the data controller for this site. For any privacy question or
               request, use the{" "}
-              <Link href="/contact" className="text-blue-400 hover:text-blue-300">
+              <Link href="/contact" className="text-blue-700 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
                 contact form
               </Link>{" "}
               and say what you would like done.
@@ -49,9 +50,13 @@ export default function PrivacyPage() {
               copy of your email address is held briefly in memory to rate-limit submissions.
             </Item>
             <Item label="Spam protection">
-              The contact form uses Google reCAPTCHA to distinguish humans from bots. Google
-              receives request data for that purpose under its own privacy policy. On this site the
-              reCAPTCHA script loads only once you start interacting with the form.
+              There is no CAPTCHA here — nothing for you to solve. Instead a submission has to pass
+              three quiet checks. Vercel BotID runs an invisible bot check on the request; Vercel,
+              not Google, is the processor for it, and its challenge script loads only when a
+              protected request is actually made. The submission must also carry the signed entry
+              cookie described below, which the form requests as soon as you focus one of its
+              fields. Finally, submissions are rate-limited — by network address, and by a hashed
+              copy of the email address given.
             </Item>
             <Item label="Entry check">
               A first visit sets a short-lived signed cookie named <Code>ba_entry</Code> (about two
@@ -76,7 +81,7 @@ export default function PrivacyPage() {
                 href="https://tools.google.com/dlpage/gaoptout"
                 target="_blank"
                 rel="noreferrer"
-                className="text-blue-400 hover:text-blue-300"
+                className="text-blue-700 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
               >
                 opt-out add-on
               </a>
@@ -109,9 +114,10 @@ export default function PrivacyPage() {
 
           <Block title="Who else processes it">
             <P>
-              Vercel (hosting, analytics), Google (reCAPTCHA and Google Analytics), and the email
-              provider that delivers contact messages. These providers may process data outside your
-              country, including in the United States, under their own transfer safeguards.
+              Vercel (hosting, analytics, and the contact form&apos;s bot check), Google (Google
+              Analytics), and the email provider that delivers contact messages. These providers may
+              process data outside your country, including in the United States, under their own
+              transfer safeguards.
             </P>
           </Block>
 
@@ -130,7 +136,7 @@ export default function PrivacyPage() {
             </P>
             <P>
               Requests go through the{" "}
-              <Link href="/contact" className="text-blue-400 hover:text-blue-300">
+              <Link href="/contact" className="text-blue-700 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
                 contact form
               </Link>
               . There is no charge, and you will get a reply.
@@ -168,28 +174,28 @@ export default function PrivacyPage() {
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="space-y-3">
-      <h2 className="t-h3 text-white">{title}</h2>
+      <h2 className="t-h3 text-ink">{title}</h2>
       {children}
     </section>
   );
 }
 
 function P({ children }: { children: React.ReactNode }) {
-  return <p className="t-body leading-relaxed text-zinc-300">{children}</p>;
+  return <p className="t-body leading-relaxed text-ink/88">{children}</p>;
 }
 
 function Item({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-5">
-      <h3 className="t-small mb-1.5 font-bold text-white">{label}</h3>
-      <p className="t-small leading-relaxed text-zinc-300">{children}</p>
+    <div className="rounded-2xl border border-line/10 dark:border-line/5 bg-surface-card dark:bg-ink/[0.02] p-5">
+      <h3 className="t-small mb-1.5 font-bold text-ink">{label}</h3>
+      <p className="t-small leading-relaxed text-ink/88">{children}</p>
     </div>
   );
 }
 
 function Code({ children }: { children: React.ReactNode }) {
   return (
-    <code className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-[0.85em] text-zinc-200">
+    <code className="rounded bg-ink/10 px-1.5 py-0.5 font-mono text-[0.85em] text-ink dark:text-zinc-200">
       {children}
     </code>
   );

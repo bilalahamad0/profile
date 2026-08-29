@@ -8,10 +8,35 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ============================================================
+   THEME SURFACES — the only colours that flip between themes.
+   Components reference these through the semantic utilities below
+   (bg-surface, text-ink, border-line/5 …) rather than hardcoding
+   #09090b / white, so a theme switch is a token swap, not a rewrite.
+   ============================================================ */
+@theme inline {
+  --color-surface: rgb(var(--surface));
+  --color-surface-card: rgb(var(--surface-card));
+  --color-ink: rgb(var(--ink));
+  --color-ink-muted: rgb(var(--ink-muted));
+  --color-ink-subtle: rgb(var(--ink-subtle));
+  --color-line: rgb(var(--line));
+}
+
+/* ============================================================
    DESIGN TOKENS
    ============================================================ */
 @layer base {
   :root {
+    /* ── Theme surfaces — LIGHT is the bare :root so an un-themed render is
+       a valid page. .dark below re-declares the same names. Contrast on the
+       light ground: ink 15.9:1, ink-muted 7.0:1, ink-subtle 4.8:1. ── */
+    --surface:       250 250 250;   /* zinc-50  — page ground        */
+    --surface-card:  255 255 255;   /* white    — raised card fill   */
+    --ink:            24  24  27;   /* zinc-900 — primary text       */
+    --ink-muted:      82  82  91;   /* zinc-600 — secondary text     */
+    --ink-subtle:    113 113 122;   /* zinc-500 — meta / fine print  */
+    --line:           24  24  27;   /* ink, used with an alpha       */
+
     /* Semantic surface tokens */
     --background:        9 9 11;          /* #09090b — ONE canonical dark bg */
     --foreground:        244 244 245;     /* zinc-100 */
@@ -53,6 +78,14 @@
   }
 
   .dark {
+    /* ── Theme surfaces — DARK (the site's signature look). ── */
+    --surface:         9   9  11;
+    --surface-card:   18  18  20;
+    --ink:           255 255 255;
+    --ink-muted:     161 161 170;   /* zinc-400 — 5.9:1 on the dark ground */
+    --ink-subtle:    113 113 122;   /* zinc-500 — 4.8:1 on the dark ground */
+    --line:          255 255 255;
+
     --background:        9 9 11;
     --foreground:        244 244 245;
     --card:              18 18 20;
@@ -80,7 +113,7 @@
    ============================================================ */
 @layer base {
   * {
-    border-color: rgba(var(--border) / 0.07);
+    border-color: rgb(var(--line) / 0.08);
     border-style: solid;
     box-sizing: border-box;
   }
@@ -91,8 +124,8 @@
   }
 
   body {
-    background-color: rgb(9 9 11);   /* canonical #09090b */
-    color: rgb(var(--foreground));
+    background-color: rgb(var(--surface));
+    color: rgb(var(--ink));
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "rlig" 1, "calt" 1;
@@ -156,12 +189,12 @@
    ============================================================ */
 @layer utilities {
   /* ✅ PASS — use for primary body text, heading subtitles */
-  .text-body      { color: rgb(212 212 212);  } /* zinc-300 — 9.0:1  */
-  .text-secondary { color: rgb(161 161 170);  } /* zinc-400 — 5.9:1 ✅ AA */
+  .text-body      { color: rgb(var(--ink) / 0.88); }
+  .text-secondary { color: rgb(var(--ink-muted)); }
   /* zinc-500's 4.8:1 only holds on the bare #09090b body — composited over the
      rgba(18,18,20,.7) glass cards it measures 3.8-4.1:1 and fails AA, so
      captions use zinc-400 too (2026-08 audit). */
-  .text-caption   { color: rgb(161 161 170);  } /* zinc-400 — ≥5.9:1 ✅ AA */
+  .text-caption   { color: rgb(var(--ink-muted)); }
   /* Use text-zinc-600 (#52525b) only for decorative dividers, NEVER body text */
 }
 
@@ -173,8 +206,8 @@
   .glass {
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    background-color: rgba(9, 9, 11, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: rgb(var(--surface) / 0.75);
+    border: 1px solid rgb(var(--line) / 0.10);
     box-shadow:
       0 4px 24px 0 rgba(0, 0, 0, 0.4),
       inset 0 1px 0 rgba(255, 255, 255, 0.06);
@@ -184,8 +217,8 @@
   .glass-card {
     backdrop-filter: blur(12px) saturate(140%);
     -webkit-backdrop-filter: blur(12px) saturate(140%);
-    background-color: rgba(18, 18, 20, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background-color: rgb(var(--surface-card) / 0.7);
+    border: 1px solid rgb(var(--line) / 0.08);
     box-shadow:
       0 1px 3px 0 rgba(0, 0, 0, 0.1),
       0 20px 40px -12px rgba(0, 0, 0, 0.35);
@@ -193,8 +226,8 @@
 
   /* Sticky filter bar */
   .filter-bar {
-    background-color: rgb(9 9 11);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    background-color: rgb(var(--surface));
+    border-bottom: 1px solid rgb(var(--line) / 0.08);
   }
 }
 

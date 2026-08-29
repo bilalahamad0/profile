@@ -6,15 +6,15 @@ import { ShareButton } from "@/components/experience/ShareButton";
 
 export default function ExperiencePage() {
   return (
-    <div className="min-h-screen bg-[#09090b] text-white">
+    <div className="min-h-screen bg-surface text-ink">
       {/* Header */}
-      <section className="pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-36 lg:pb-12 px-6 lg:px-24 border-b border-white/5">
+      <section className="pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-36 lg:pb-12 px-6 lg:px-24 border-b border-line/10 dark:border-line/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div className="space-y-4">
             <h1 className="t-h1">
-              Technical <span className="text-blue-400">Roadmap</span>
+              Technical <span className="text-blue-700 dark:text-blue-400">Roadmap</span>
             </h1>
-            <p className="t-lead text-zinc-400 font-light max-w-2xl">
+            <p className="t-lead text-ink-muted font-light max-w-2xl">
               A comprehensive chronicle of 18+ years in engineering, test automation, and IoT
               orchestration across the global tech ecosystem.
             </p>
@@ -24,7 +24,7 @@ export default function ExperiencePage() {
             <a
               href="/Bilal_Ahamad_Resume.pdf"
               download
-              className="flex items-center gap-2 px-6 py-3 rounded-xl border bg-white/5 border-white/10 text-white hover:bg-white/10 transition-all"
+              className="flex items-center gap-2 px-6 py-3 rounded-xl border bg-ink/5 border-line/10 text-ink hover:bg-ink/10 transition-all"
             >
               <Download className="w-5 h-5" aria-hidden="true" /> Download Resume
             </a>
@@ -49,7 +49,7 @@ export default function ExperiencePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-12 md:py-20 lg:py-24 px-6 text-center border-t border-white/5">
+      <section className="py-12 md:py-20 lg:py-24 px-6 text-center border-t border-line/10 dark:border-line/5">
         <h2 className="t-h2 mb-8">Ready to build something together?</h2>
         <Link
           href="/contact"
