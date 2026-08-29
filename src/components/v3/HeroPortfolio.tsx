@@ -85,7 +85,7 @@ function HeroBackground() {
         <motion.div
           animate={{ scale: [1, 1.1, 1], opacity: [0.5, 1, 0.5] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-          className="absolute top-[40%] left-[1.5%] text-zinc-500/30"
+          className="absolute top-[40%] left-[1.5%] text-zinc-400/30"
         >
           <GitBranch size={88} aria-hidden="true" />
         </motion.div>

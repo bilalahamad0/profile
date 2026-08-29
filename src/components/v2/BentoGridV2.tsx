@@ -451,18 +451,18 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                               {exp.company}
                             </span>
                           </div>
-                          <p className="text-xs sm:text-xs text-zinc-500 dark:text-zinc-500 mb-2 mt-1 flex items-center gap-2 whitespace-nowrap">
+                          <p className="text-xs sm:text-xs text-zinc-400 dark:text-zinc-400 mb-2 mt-1 flex items-center gap-2 whitespace-nowrap">
                             <span className="shrink-0">{exp.duration}</span>
                             <span className="opacity-30 shrink-0">•</span>
                             {/* @ts-ignore */}
                             <span className="flex items-center gap-1 truncate"><MapPin className="w-3 h-3 shrink-0" /> {exp.location}</span>
                           </p>
-                          <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-md mb-3">{exp.desc}</p>
+                          <p className="text-sm text-zinc-400 dark:text-zinc-400 leading-relaxed max-w-md mb-3">{exp.desc}</p>
                           {/* Achievement bullets */}
                           {"highlights" in exp && Array.isArray((exp as any).highlights) && (exp as any).highlights.length > 0 && (
                             <ul className="space-y-1.5 max-w-md">
                               {(exp as any).highlights.map((h: string, hi: number) => (
-                                <li key={hi} className="flex items-start gap-2 text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                                <li key={hi} className="flex items-start gap-2 text-xs text-zinc-400 dark:text-zinc-400 leading-relaxed">
                                   <Check className="w-3 h-3 text-emerald-500 shrink-0 mt-0.5" />
                                   <span>{h}</span>
                                 </li>
@@ -564,7 +564,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                       <p className="text-sm text-zinc-700 dark:text-zinc-300">
                         Electronics and Telecommunications Engineering
                       </p>
-                      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                      <p className="text-sm text-zinc-400 dark:text-zinc-400">
                         Biju Patnaik University of Technology
                       </p>
                       <p className="text-xs font-medium uppercase tracking-wider text-indigo-700 dark:text-indigo-300">
@@ -581,10 +581,10 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                     transition={{ duration: 0.4, delay: 0.09 }}
                     className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col"
                   >
-                    <Settings className="absolute -right-8 -bottom-8 w-48 h-48 text-zinc-500 dark:text-zinc-500/5 pointer-events-none" />
+                    <Settings className="absolute -right-8 -bottom-8 w-48 h-48 text-zinc-400 dark:text-zinc-400/5 pointer-events-none" />
                     <div className="flex items-center justify-between mb-5 relative z-10">
                       <h2 className="t-h3 text-zinc-900 dark:text-white flex items-center gap-2">
-                        <Settings className="w-6 h-6 text-zinc-600 dark:text-zinc-400" />
+                        <Settings className="w-6 h-6 text-zinc-400 dark:text-zinc-400" />
                         Certifications
                       </h2>
                       <Link href="/certifications" className="flex items-center gap-1.5 t-label font-bold text-blue-500 hover:text-blue-400 transition-colors uppercase tracking-widest">
@@ -653,7 +653,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                       <span className="text-2xl">🏆</span>
                       Awards &amp; Recognition
                     </h2>
-                    <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6 relative z-10">L&amp;T Infotech (2010–2011)</p>
+                    <p className="text-sm text-zinc-400 dark:text-zinc-400 mb-6 relative z-10">L&amp;T Infotech (2010–2011)</p>
 
                     <button
                       className="relative w-full mb-6 rounded-2xl overflow-hidden border border-white/10 cursor-zoom-in group text-left block"
@@ -703,7 +703,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                           <span className="text-yellow-400 text-lg shrink-0">⭐</span>
                           <div>
                             <p className="text-sm font-bold text-zinc-800 dark:text-zinc-200">Annual Best Performer · Excellent Performance Award · L&amp;T Infotech 2010–11</p>
-                            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">Architected test automation infrastructure for Motorola ODC, validating multiple mobile platforms. Reduced man-hours by 25% through innovative automation of cumbersome stability testing procedures.</p>
+                            <p className="text-xs text-zinc-400 dark:text-zinc-400 mt-1 leading-relaxed">Architected test automation infrastructure for Motorola ODC, validating multiple mobile platforms. Reduced man-hours by 25% through innovative automation of cumbersome stability testing procedures.</p>
                           </div>
                         </div>
                       </div>
@@ -712,7 +712,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                           <span className="text-blue-400 text-lg shrink-0">⭐</span>
                           <div>
                             <p className="text-sm font-bold text-zinc-800 dark:text-zinc-200">Annual Best Managed Project · Eagle Award · L&amp;T Infotech 2010–11</p>
-                            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">Led the Development project for Motorola Mobility System Testing, achieving remarkable productivity growth.</p>
+                            <p className="text-xs text-zinc-400 dark:text-zinc-400 mt-1 leading-relaxed">Led the Development project for Motorola Mobility System Testing, achieving remarkable productivity growth.</p>
                           </div>
                         </div>
                       </div>
@@ -738,13 +738,13 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                         </div>
                         Google Developer Profile
                       </h2>
-                      <a href="https://developers.google.com/profile/u/bahamad" target="_blank" rel="noreferrer" className="text-zinc-600 dark:text-zinc-400 hover:text-blue-600 dark:text-blue-400 font-medium mb-6 font-mono text-sm underline underline-offset-4 decoration-zinc-700 inline-block w-fit transition-colors">
+                      <a href="https://developers.google.com/profile/u/bahamad" target="_blank" rel="noreferrer" className="text-zinc-400 dark:text-zinc-400 hover:text-blue-600 dark:text-blue-400 font-medium mb-6 font-mono text-sm underline underline-offset-4 decoration-zinc-700 inline-block w-fit transition-colors">
                         g.dev/bahamad
                       </a>
                       <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed mb-8">
                         Recognized participant in the Google Developer Ecosystem. Attended multiple flagship events in Mountain View, earning badges for technical integrations and Platform mastery.
                       </p>
-                      <h3 className="t-label font-bold text-zinc-500 dark:text-zinc-500 uppercase tracking-widest mb-4">I/O Attendance & Badges</h3>
+                      <h3 className="t-label font-bold text-zinc-400 dark:text-zinc-400 uppercase tracking-widest mb-4">I/O Attendance & Badges</h3>
                       <div className="flex flex-wrap gap-2.5 mb-8">
                         <span className="px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 t-label font-medium text-zinc-700 dark:text-zinc-300">I/O 2023-25 Attendee</span>
                         <span className="px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 t-label font-semibold text-emerald-600 dark:text-emerald-400">{badgeCount} Badges</span>
@@ -833,7 +833,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                     <Layout className="w-8 h-8 text-blue-500" />
                     Featured Public Projects
                   </h2>
-                  <p className="text-zinc-500 dark:text-zinc-400 mt-2 font-medium">Spotlight on high-impact open source tools and IoT orchestration.</p>
+                  <p className="text-zinc-400 dark:text-zinc-400 mt-2 font-medium">Spotlight on high-impact open source tools and IoT orchestration.</p>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-bold text-blue-500 uppercase tracking-widest animate-pulse">
@@ -860,7 +860,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                           <h3 className="t-h3 text-zinc-900 dark:text-white">California Live Layoff Monitoring Dashboard</h3>
                           <div className="flex gap-3 mt-1">
                             {repos.find(r => r.name === 'warn') && (
-                              <div className="flex gap-3 text-xs text-zinc-500 font-bold uppercase tracking-widest">
+                              <div className="flex gap-3 text-xs text-zinc-400 font-bold uppercase tracking-widest">
                                 <span className="flex items-center gap-1.5"><Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" /> {repos.find(r => r.name === 'warn')?.stargazers_count}</span>
                                 <span className="flex items-center gap-1.5"><GitFork className="w-3.5 h-3.5" /> {repos.find(r => r.name === 'warn')?.forks_count}</span>
                               </div>
@@ -873,13 +873,13 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                       </a>
                     </div>
 
-                    <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed max-w-xl">
+                    <p className="text-zinc-400 dark:text-zinc-400 text-sm leading-relaxed max-w-xl">
                       A best-of-class, fully automated data pipeline for the <span className="text-zinc-900 dark:text-zinc-200 font-bold">California WARN Act</span>. Engineered for surgical precision, it transforms raw government filings into live actionable intelligence—leveraging ETag caching and MD5 verification to track economic trends as they happen.
                     </p>
 
                     <div className="flex flex-wrap gap-2">
                       {['Python', 'GitHub Actions', 'ETag Cache', 'Data Visualization', 'MD5 Verification'].map(tag => (
-                        <span key={tag} className="px-3 py-1 rounded-full bg-white/5 border border-white/10 t-label font-bold text-zinc-500 uppercase tracking-widest">{tag}</span>
+                        <span key={tag} className="px-3 py-1 rounded-full bg-white/5 border border-white/10 t-label font-bold text-zinc-400 uppercase tracking-widest">{tag}</span>
                       ))}
                     </div>
 
@@ -928,7 +928,7 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                           <h3 className="t-h3 text-zinc-900 dark:text-white">Smart-Home IoT Media Caster</h3>
                           <div className="flex gap-3 mt-1">
                             {repos.find(r => r.name === 'adhan-api') && (
-                              <div className="flex gap-3 text-xs text-zinc-500 font-bold uppercase tracking-widest">
+                              <div className="flex gap-3 text-xs text-zinc-400 font-bold uppercase tracking-widest">
                                 <span className="flex items-center gap-1.5"><Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" /> {repos.find(r => r.name === 'adhan-api')?.stargazers_count}</span>
                                 <span className="flex items-center gap-1.5"><GitFork className="w-3.5 h-3.5" /> {repos.find(r => r.name === 'adhan-api')?.forks_count}</span>
                               </div>
@@ -941,13 +941,13 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                       </a>
                     </div>
 
-                    <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed max-w-xl">
+                    <p className="text-zinc-400 dark:text-zinc-400 text-sm leading-relaxed max-w-xl">
                       An advanced <span className="text-zinc-900 dark:text-zinc-200 font-bold">IoT Orchestration Layer</span> for automated prayer-time notifications. It integrates Raspberry Pi with Sony Android TV via ADB, managing media states and low-level system commands for a seamless home-automation experience.
                     </p>
 
                     <div className="flex flex-wrap gap-2">
                       {['Node.js', 'ADB', 'Android TV', 'Raspberry Pi', 'IoT', 'Shell'].map(tag => (
-                        <span key={tag} className="px-3 py-1 rounded-full bg-white/5 border border-white/10 t-label font-bold text-zinc-500 uppercase tracking-widest">{tag}</span>
+                        <span key={tag} className="px-3 py-1 rounded-full bg-white/5 border border-white/10 t-label font-bold text-zinc-400 uppercase tracking-widest">{tag}</span>
                       ))}
                     </div>
 
@@ -1016,15 +1016,15 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                             </span>
                           )}
                         </div>
-                        <div className="flex gap-3 text-xs text-zinc-500 dark:text-zinc-500 font-medium shrink-0">
+                        <div className="flex gap-3 text-xs text-zinc-400 dark:text-zinc-400 font-medium shrink-0">
                           <span className="flex items-center gap-1"><Star className="w-3 h-3 fill-zinc-600" /> {repo.stargazers_count}</span>
                           <span className="flex items-center gap-1"><GitFork className="w-3 h-3" /> {repo.forks_count}</span>
                         </div>
                       </div>
-                      <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">{repo.description || "No description provided."}</p>
+                      <p className="text-xs text-zinc-400 dark:text-zinc-400 leading-relaxed">{repo.description || "No description provided."}</p>
                     </a>
                   )) : (
-                    <div className="flex items-center justify-center p-8 text-zinc-500 dark:text-zinc-500 text-sm border border-black/5 dark:border-white/5 rounded-xl border-dashed">
+                    <div className="flex items-center justify-center p-8 text-zinc-400 dark:text-zinc-400 text-sm border border-black/5 dark:border-white/5 rounded-xl border-dashed">
                       Loading community contributions...
                     </div>
                   )}

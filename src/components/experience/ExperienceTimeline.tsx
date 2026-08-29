@@ -57,7 +57,7 @@ export function ExperienceTimeline() {
                 </span>
               </div>
 
-              <p className="text-xs text-zinc-500 dark:text-zinc-500 mb-2 mt-1 flex items-center gap-2">
+              <p className="text-xs text-zinc-400 dark:text-zinc-400 mb-2 mt-1 flex items-center gap-2">
                 <time>{exp.duration}</time>
                 <span className="opacity-30" aria-hidden="true">•</span>
                 <span className="flex items-center gap-1">
@@ -66,7 +66,7 @@ export function ExperienceTimeline() {
                 </span>
               </p>
 
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-md mb-3">
+              <p className="text-sm text-zinc-400 dark:text-zinc-400 leading-relaxed max-w-md mb-3">
                 {exp.desc}
               </p>
 
@@ -74,7 +74,7 @@ export function ExperienceTimeline() {
                 (exp as { highlights?: string[] }).highlights!.length > 0 && (
                   <ul className="space-y-1.5 max-w-md">
                     {(exp as { highlights: string[] }).highlights.map((h, hi) => (
-                      <li key={hi} className="flex items-start gap-2 text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed hover:text-white/90 transition-colors duration-200">
+                      <li key={hi} className="flex items-start gap-2 text-xs text-zinc-400 dark:text-zinc-400 leading-relaxed hover:text-white/90 transition-colors duration-200">
                         <Check className="w-3 h-3 text-emerald-500 shrink-0 mt-0.5" aria-hidden="true" />
                         <span>{h}</span>
                       </li>

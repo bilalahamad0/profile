@@ -114,7 +114,7 @@ export default function BlogPage() {
       {featured && (
         <section className="px-6 lg:px-24 py-10 md:py-12 lg:py-16 border-b border-white/5" aria-label="Featured post">
           <div className="max-w-7xl mx-auto">
-            <p className="t-label font-black uppercase tracking-[0.3em] text-zinc-600 mb-6">Featured Post</p>
+            <p className="t-label font-black uppercase tracking-[0.3em] text-zinc-400 mb-6">Featured Post</p>
             <Link href={`/blog/${featured.slug}`}>
               <div className="group relative rounded-3xl border border-violet-500/20 bg-gradient-to-br from-violet-600/10 via-white/[0.02] to-transparent overflow-hidden p-8 md:p-14 hover:border-violet-500/40 transition-all duration-300 cursor-pointer">
                 <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-violet-500/5 blur-[100px] rounded-full pointer-events-none group-hover:bg-violet-500/10 transition-all" />
@@ -128,8 +128,8 @@ export default function BlogPage() {
                       )}
                       <span className="t-label font-black uppercase tracking-wider text-violet-300">{featured.category}</span>
                     </div>
-                    <span className="text-xs text-zinc-500">{featured.date}</span>
-                    <span className="text-xs text-zinc-500 flex items-center gap-1.5">
+                    <span className="text-xs text-zinc-400">{featured.date}</span>
+                    <span className="text-xs text-zinc-400 flex items-center gap-1.5">
                       <Clock className="w-3.5 h-3.5" aria-hidden="true" />
                       {featured.readingTime} min read
                     </span>

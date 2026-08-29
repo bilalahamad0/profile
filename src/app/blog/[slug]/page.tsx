@@ -135,7 +135,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         )}
         <div className="absolute top-0 left-0 w-[500px] h-[400px] bg-indigo-500/5 blur-[150px] rounded-full pointer-events-none z-0" />
         <div className="max-w-4xl mx-auto relative z-10">
-          <Link href="/blog" className="inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors group mb-10">
+          <Link href="/blog" className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors group mb-10">
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             Back to Blog
           </Link>
@@ -145,11 +145,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               <BookOpen className="w-3.5 h-3.5" />
               {post.category}
             </span>
-            <span className="flex items-center gap-1.5 text-xs text-zinc-500">
+            <span className="flex items-center gap-1.5 text-xs text-zinc-400">
               <Calendar className="w-3.5 h-3.5" />
               {post.date}
             </span>
-            <span className="flex items-center gap-1.5 text-xs text-zinc-500">
+            <span className="flex items-center gap-1.5 text-xs text-zinc-400">
               <Clock className="w-3.5 h-3.5" />
               {post.readingTime} min read
             </span>
@@ -163,7 +163,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           <div className="flex flex-wrap gap-2">
             {post.tags.map((tag) => (
-              <span key={tag} className="flex items-center gap-1 t-label font-semibold text-zinc-500 px-2.5 py-1 rounded-lg bg-white/5 border border-white/10">
+              <span key={tag} className="flex items-center gap-1 t-label font-semibold text-zinc-400 px-2.5 py-1 rounded-lg bg-white/5 border border-white/10">
                 <Tag className="w-3 h-3" />
                 {tag}
               </span>
@@ -188,8 +188,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           {/* Footer */}
           <div className="mt-16 pt-10 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
-              <p className="text-zinc-500 text-sm">Written by Bilal Ahamad</p>
-              <p className="text-zinc-600 text-xs mt-1">Technical QA Lead & AI-Driven Engineer</p>
+              <p className="text-zinc-400 text-sm">Written by Bilal Ahamad</p>
+              <p className="text-zinc-400 text-xs mt-1">Technical QA Lead & AI-Driven Engineer</p>
             </div>
             <div className="flex gap-4">
               {post.linkedinUrl && (
@@ -216,7 +216,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       {/* Related Posts Nav */}
       <section className="py-12 px-6 lg:px-24 border-t border-white/5 bg-white/[0.01]">
         <div className="max-w-4xl mx-auto text-center">
-          <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-bold text-zinc-500 hover:text-white transition-colors">
+          <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-bold text-zinc-400 hover:text-white transition-colors">
             <ArrowLeft className="w-4 h-4" />
             All Posts
           </Link>

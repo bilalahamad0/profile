@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { projectsData, type ProjectCategory } from "@/data/portfolio";
 import { DashboardFacade } from "@/components/projects/DashboardFacade";
+import { LazyLoopVideo } from "@/components/media/LazyLoopVideo";
 
 const CATEGORIES: ProjectCategory[] = ["All", "IoT & Automation", "Data & Analytics", "AI-Powered", "Web & DevOps"];
 
@@ -33,7 +34,7 @@ function AIContributionBar({ pct, color }: { pct: number; color: string }) {
   return (
     <div className="mt-4" role="meter" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} aria-label={`AI contribution: ${pct}%`}>
       <div className="flex items-center justify-between mb-1.5">
-        <span className="text-xs font-bold uppercase tracking-widest text-zinc-500">AI Contribution</span>
+        <span className="text-xs font-bold uppercase tracking-widest text-zinc-400">AI Contribution</span>
         <span className="text-xs font-bold text-zinc-400">{pct}%</span>
       </div>
       <div className="h-1.5 w-full rounded-full bg-white/5">
@@ -231,7 +232,7 @@ export default function ProjectsPage() {
             ].map(({ label, value }) => (
               <div key={label} className="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
                 <span className="block text-2xl md:text-3xl font-black text-white mb-1">{value}</span>
-                <span className="block t-label font-bold text-zinc-500 uppercase tracking-widest">{label}</span>
+                <span className="block t-label font-bold text-zinc-400 uppercase tracking-widest">{label}</span>
               </div>
             ))}
           </motion.div>
@@ -248,7 +249,7 @@ export default function ProjectsPage() {
         aria-label="Filter projects"
       >
         <div className="max-w-7xl mx-auto flex items-center gap-3 flex-wrap">
-          <Filter className="w-4 h-4 text-zinc-600 shrink-0" aria-hidden="true" />
+          <Filter className="w-4 h-4 text-zinc-400 shrink-0" aria-hidden="true" />
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
@@ -331,13 +332,10 @@ export default function ProjectsPage() {
                                     className="relative w-full h-full cursor-pointer group/vid"
                                     onClick={() => setVideoLightbox((project as any).previewSrc)}
                                   >
-                                    <video
+                                    <LazyLoopVideo
                                       src={project.thumbnail!}
+                                      poster={(project as unknown as { thumbnailPoster?: string }).thumbnailPoster}
                                       className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                                      autoPlay
-                                      loop
-                                      muted
-                                      playsInline
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
                                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -350,13 +348,10 @@ export default function ProjectsPage() {
                                 ) : (
                                   // MP4 thumbnail with no full-length video behind it — loop inline, no lightbox
                                   <div className="relative w-full h-full">
-                                    <video
+                                    <LazyLoopVideo
                                       src={project.thumbnail!}
+                                      poster={(project as unknown as { thumbnailPoster?: string }).thumbnailPoster}
                                       className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                                      autoPlay
-                                      loop
-                                      muted
-                                      playsInline
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
                                   </div>
@@ -397,7 +392,7 @@ export default function ProjectsPage() {
                                 <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-zinc-900 via-zinc-900/90 to-zinc-800">
                                   <div className="text-center px-4">
                                     <p className="text-sm font-bold text-zinc-200">{project.name}</p>
-                                    <p className="text-xs text-zinc-500 mt-1">Preview unavailable - open repo for details</p>
+                                    <p className="text-xs text-zinc-400 mt-1">Preview unavailable - open repo for details</p>
                                   </div>
                                 </div>
                               )}
@@ -514,7 +509,7 @@ export default function ProjectsPage() {
                                   <MapPin className="w-3.5 h-3.5 text-blue-400 shrink-0" aria-hidden="true" />
                                   {sub.region}
                                 </span>
-                                <span className="block text-xs text-zinc-500 mt-0.5">{sub.tagline}</span>
+                                <span className="block text-xs text-zinc-400 mt-0.5">{sub.tagline}</span>
                               </span>
                               <span className="flex items-center gap-1.5 shrink-0 text-xs font-bold text-blue-300 group-hover/sub:text-blue-200 transition-colors">
                                 <span className="pulse-dot" aria-hidden="true" />
@@ -601,19 +596,19 @@ export default function ProjectsPage() {
                       )}
 
                       {/* Footer */}
-                      <div className="mt-6 pt-6 border-t border-white/5 flex items-start justify-between gap-4">
-                        <div className="flex-1 min-w-0 flex items-start gap-4 text-xs text-zinc-500">
+                      <div className="mt-6 pt-6 border-t border-white/5 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                        <div className="flex-1 min-w-0 flex items-start gap-4 text-xs text-zinc-400">
                           <span className="flex items-start gap-1.5">
                             <Zap className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" aria-hidden="true" />
-                            <span className="leading-relaxed text-justify sm:text-left">{project.impact}</span>
+                            <span className="leading-relaxed text-left">{project.impact}</span>
                           </span>
                         </div>
-                        <div className="flex flex-col items-start sm:items-start gap-2.5 shrink-0">
+                        <div className="flex flex-col items-start gap-1.5 shrink-0">
                           <a
                             href={project.repo}
                             target="_blank"
                             rel="noreferrer"
-                            className="flex items-center gap-1.5 text-xs font-bold text-zinc-500 hover:text-white transition-colors whitespace-nowrap"
+                            className="flex items-center gap-1.5 py-1 text-xs font-bold text-zinc-400 hover:text-white transition-colors whitespace-nowrap"
                           >
                             <Github className="w-3.5 h-3.5 shrink-0" aria-hidden="true" /> GitHub
                           </a>
@@ -622,7 +617,7 @@ export default function ProjectsPage() {
                             target="_blank"
                             rel="noreferrer"
                             title="Architecture & system design diagram"
-                            className="flex items-center gap-1.5 text-xs font-bold text-zinc-500 hover:text-cyan-400 transition-colors whitespace-nowrap"
+                            className="flex items-center gap-1.5 py-1 text-xs font-bold text-zinc-400 hover:text-cyan-400 transition-colors whitespace-nowrap"
                           >
                             <Network className="w-3.5 h-3.5 shrink-0" aria-hidden="true" /> Architecture
                           </a>
@@ -630,14 +625,14 @@ export default function ProjectsPage() {
                             <Link
                               key={post.slug}
                               href={`/blog/${post.slug}`}
-                              className="flex items-center gap-1.5 text-xs font-bold text-zinc-500 hover:text-blue-400 transition-colors whitespace-nowrap"
+                              className="flex items-center gap-1.5 py-1 text-xs font-bold text-zinc-400 hover:text-blue-400 transition-colors whitespace-nowrap"
                             >
                               <BookOpen className="w-3.5 h-3.5 shrink-0" aria-hidden="true" /> {post.label}
                             </Link>
                           ))}
                           <Link
                             href={`/ai#${project.id}`}
-                            className="flex items-center gap-1.5 text-xs font-bold text-zinc-500 hover:text-violet-400 transition-colors whitespace-nowrap"
+                            className="flex items-center gap-1.5 py-1 text-xs font-bold text-zinc-400 hover:text-violet-400 transition-colors whitespace-nowrap"
                           >
                             <Sparkles className="w-3.5 h-3.5 shrink-0" aria-hidden="true" /> AI Details
                           </Link>

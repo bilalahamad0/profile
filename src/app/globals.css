@@ -108,7 +108,7 @@
     top: 0;
     z-index: 9999;
     padding: 0.75rem 1.5rem;
-    background: rgb(var(--primary));
+    background: #1d4ed8; /* blue-700 — 6.0:1 with white (blue-500 was 3.68:1) */
     color: #fff;
     font-weight: 700;
     font-size: 0.875rem;
@@ -158,7 +158,10 @@
   /* ✅ PASS — use for primary body text, heading subtitles */
   .text-body      { color: rgb(212 212 212);  } /* zinc-300 — 9.0:1  */
   .text-secondary { color: rgb(161 161 170);  } /* zinc-400 — 5.9:1 ✅ AA */
-  .text-caption   { color: rgb(113 113 122);  } /* zinc-500 — 4.8:1 ✅ AA */
+  /* zinc-500's 4.8:1 only holds on the bare #09090b body — composited over the
+     rgba(18,18,20,.7) glass cards it measures 3.8-4.1:1 and fails AA, so
+     captions use zinc-400 too (2026-08 audit). */
+  .text-caption   { color: rgb(161 161 170);  } /* zinc-400 — ≥5.9:1 ✅ AA */
   /* Use text-zinc-600 (#52525b) only for decorative dividers, NEVER body text */
 }
 
@@ -407,7 +410,7 @@ html.ba-prelaunch::before {
   }
 }
 html.ba-revealing #main-content {
-  animation: ba-reveal 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: ba-reveal 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 @media (prefers-reduced-motion: reduce) {
   html.ba-revealing #main-content {

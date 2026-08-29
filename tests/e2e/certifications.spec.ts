@@ -63,13 +63,13 @@ async function readOpenCalls(page: Page) {
 }
 
 /** Expand a credential row via its heading toggle button. */
+/** Ensures a row is open, whether it starts collapsed or default-expanded. */
 async function expandRow(page: Page, rowSelector: string) {
-  const toggle = page
-    .locator(rowSelector)
-    .getByRole('button', { expanded: false })
-    .first();
-  await toggle.scrollIntoViewIfNeeded();
-  await toggle.click();
+  const collapsed = page.locator(rowSelector).getByRole('button', { expanded: false }).first();
+  if (await collapsed.count()) {
+    await collapsed.scrollIntoViewIfNeeded();
+    await collapsed.click();
+  }
   await expect(
     page.locator(rowSelector).locator('[aria-expanded="true"]').first(),
   ).toBeVisible();
@@ -156,34 +156,40 @@ test.describe('Certifications — Page-level layout', () => {
 });
 
 test.describe('Certifications — collapse/expand behavior', () => {
-  test('only the Google AI Professional row starts expanded; collapsed content stays attached but hidden', async ({ page }) => {
+  test('both flagship specializations start expanded; collapsed content stays attached but hidden', async ({ page }) => {
     await page.goto('/certifications');
 
-    const proToggle = page.locator('#spec-google-ai-professional [aria-expanded]');
-    await expect(proToggle).toHaveAttribute('aria-expanded', 'true');
+    // DEFAULT_OPEN_IDS — the flagship of each track opens on load.
+    for (const id of ['#spec-google-ai-professional', '#spec-google-project-management']) {
+      await expect(page.locator(`${id} [aria-expanded]`)).toHaveAttribute('aria-expanded', 'true');
+      await expect(page.locator(`${id} [data-collapsible]`)).not.toHaveAttribute('inert', '');
+    }
 
-    const pmToggle = page.locator('#spec-google-project-management [aria-expanded]');
-    await expect(pmToggle).toHaveAttribute('aria-expanded', 'false');
-
-    // Collapsed course list is in the DOM (ATS) but not visible; its panel is inert.
-    const pmList = page.getByTestId('specialization-courses-list-pm');
-    await expect(pmList).toBeAttached();
+    // A non-default row stays collapsed: its course list is in the DOM (ATS)
+    // but not visible, and its panel is inert.
+    const promptingToggle = page.locator('#spec-google-prompting-essentials [aria-expanded]');
+    await expect(promptingToggle).toHaveAttribute('aria-expanded', 'false');
+    await expect(page.getByTestId('specialization-courses-list-prompting')).toBeAttached();
     await expect(
-      page.locator('#spec-google-project-management [data-collapsible]'),
+      page.locator('#spec-google-prompting-essentials [data-collapsible]'),
     ).toHaveAttribute('inert', '');
-    await expect(
-      page.locator('#spec-google-ai-professional [data-collapsible]'),
-    ).not.toHaveAttribute('inert', '');
   });
 
   test('clicking a row heading expands and collapses its panel', async ({ page }) => {
     await page.goto('/certifications');
 
+    // The PM row is default-expanded, so the round trip runs collapse → expand.
     const section = page.locator('#spec-google-project-management');
     const toggle = section.locator('button[aria-expanded]');
     await toggle.scrollIntoViewIfNeeded();
 
     const panel = section.locator('[data-collapsible]');
+    await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+
+    await toggle.click();
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    // Collapsed panel animates back to height 0 → empty bounding box.
+    await expect(panel).not.toBeVisible();
 
     await toggle.click();
     await expect(toggle).toHaveAttribute('aria-expanded', 'true');
@@ -191,11 +197,6 @@ test.describe('Certifications — collapse/expand behavior', () => {
     // since Playwright visibility ignores opacity.
     await expect(panel).toBeVisible();
     await expect(page.getByTestId('specialization-courses-list-pm')).toBeVisible();
-
-    await toggle.click();
-    await expect(toggle).toHaveAttribute('aria-expanded', 'false');
-    // Collapsed panel animates back to height 0 → empty bounding box.
-    await expect(panel).not.toBeVisible();
   });
 
   test('keyboard: Enter on the focused heading toggle expands the row', async ({ page }) => {
@@ -239,6 +240,12 @@ test.describe('Certifications — collapse/expand behavior', () => {
 
     const section = page.locator('#spec-google-project-management');
     await section.scrollIntoViewIfNeeded();
+
+    // The PM row is default-expanded — collapse it first so this exercises
+    // header Verify against a genuinely collapsed row.
+    const toggle = section.locator('button[aria-expanded]');
+    await toggle.click();
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false');
 
     await spyOnWindowOpen(page);
     await section.getByRole('button', { name: /^verify google project management professional$/i }).click();

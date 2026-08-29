@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { trackEvent } from "@/components/analytics/google-analytics";
 import {
   CREDENTIAL_GROUPS,
-  DEFAULT_OPEN_ID,
+  DEFAULT_OPEN_IDS,
   credentialSlug,
   type CredentialGroupDef,
   type GalleryCertificate,
@@ -24,7 +24,7 @@ const GROUP_START_INDEXES = CREDENTIAL_GROUPS.map((_, i) =>
 export function CredentialLedger() {
   // Multi-open by design — expanding one credential never closes another.
   const [openIds, setOpenIds] = useState<ReadonlySet<string>>(
-    () => new Set([DEFAULT_OPEN_ID])
+    () => new Set(DEFAULT_OPEN_IDS)
   );
   const [inspected, setInspected] = useState<GalleryCertificate | null>(null);
 

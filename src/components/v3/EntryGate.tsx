@@ -58,7 +58,7 @@ export function EntryGate() {
       if (already) return already;
       void ensureSession();
       markEntered();
-      const dur = reducedRef.current ? 200 : 950;
+      const dur = reducedRef.current ? 200 : 350;
       const start = performance.now();
       const tick = (now: number) => {
         igniteRef.current = Math.min(1, (now - start) / dur);
@@ -70,7 +70,7 @@ export function EntryGate() {
           const root = document.documentElement;
           root.classList.remove("ba-prelaunch");
           root.classList.add("ba-revealing");
-          window.setTimeout(() => root.classList.remove("ba-revealing"), 1300);
+          window.setTimeout(() => root.classList.remove("ba-revealing"), 700);
           setShow(false);
         }
       };
@@ -87,6 +87,12 @@ export function EntryGate() {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape" || (e.key === "Enter" && document.activeElement !== buttonRef.current)) {
         handleEnter();
+      }
+      // The dialog has a single focusable control — keep Tab from escaping into
+      // the covered page behind the overlay (aria-modal alone doesn't trap).
+      if (e.key === "Tab") {
+        e.preventDefault();
+        buttonRef.current?.focus();
       }
     };
     window.addEventListener("keydown", onKey);
@@ -332,7 +338,7 @@ export function EntryGate() {
           exit={{
             opacity: 0,
             scale: reduced ? 1 : 1.14,
-            transition: { duration: reduced ? 0.25 : 0.85, ease: [0.4, 0, 0.2, 1] },
+            transition: { duration: reduced ? 0.25 : 0.45, ease: [0.4, 0, 0.2, 1] },
           }}
           transition={{ duration: reduced ? 0.2 : 0.6, ease: "easeInOut" }}
           style={{

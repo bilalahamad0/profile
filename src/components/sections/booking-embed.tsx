@@ -40,7 +40,7 @@ export function BookingEmbed() {
           />
         </div>
 
-        <p className="text-center t-caption text-zinc-500 mt-4">
+        <p className="text-center t-caption text-zinc-400 mt-4">
           Scheduler not loading?{" "}
           <a
             href={SCHEDULING_URL}

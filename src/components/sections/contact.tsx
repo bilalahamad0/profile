@@ -58,7 +58,7 @@ export function ContactSection() {
                         <CalendarClock className="w-4 h-4 text-blue-400" aria-hidden="true" />
                         Book a Call
                     </a>
-                    <span className="t-caption text-zinc-500">
+                    <span className="t-caption text-zinc-400">
                         Prefer to talk? Grab a 1:1 slot below.
                     </span>
                 </div>
