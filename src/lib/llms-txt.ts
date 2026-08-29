@@ -50,7 +50,7 @@ const PAGES: ReadonlyArray<{ name: string; path: string; note: string }> = [
   {
     name: "Projects",
     path: "/projects",
-    note: "Open-source automation, IoT, and AI tools, plus the AI Lab (/projects#ai-lab) — AI-native engineering metrics per system.",
+    note: "Open-source automation, IoT, and AI tools, with per-system AI-native engineering metrics at /projects#ai-lab.",
   },
   { name: "Certifications", path: "/certifications", note: "Professional credentials." },
   { name: "Blog", path: "/blog", note: "Project stories and technical whitepapers." },
