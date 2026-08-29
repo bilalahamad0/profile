@@ -65,13 +65,13 @@ export function DashboardFacade({ title, label, note, children }: DashboardFacad
       ref={ref}
       type="button"
       onClick={() => setLoaded(true)}
-      className="absolute inset-0 z-[5] flex w-full flex-col items-center justify-center gap-3 bg-gradient-to-br from-ink/[0.07] via-ink/[0.05] to-ink/[0.03] backdrop-blur-sm px-6 text-center dark:from-zinc-900/90 dark:via-zinc-900/70 dark:to-zinc-800/60"
+      className="absolute inset-0 z-[5] flex w-full flex-col items-center justify-center gap-3 bg-gradient-to-br from-zinc-900/90 via-zinc-900/70 to-zinc-800/60 backdrop-blur-sm px-6 text-center"
       aria-label={`${label} — ${title}`}
     >
-      <MonitorPlay className="w-8 h-8 text-blue-700 dark:text-blue-400" aria-hidden="true" />
-      <span className="t-small font-bold text-ink">{title}</span>
-      {note && <span className="t-caption text-ink-muted">{note}</span>}
-      <span className="t-caption text-ink-subtle" role="status">
+      <MonitorPlay className="w-8 h-8 text-blue-400" aria-hidden="true" />
+      <span className="t-small font-bold text-white">{title}</span>
+      {note && <span className="t-caption text-zinc-400">{note}</span>}
+      <span className="t-caption text-zinc-400" role="status">
         Loading live dashboard…
       </span>
     </button>
