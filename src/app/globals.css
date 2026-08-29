@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* Tailwind v4 ignores tailwind.config.js `darkMode: 'class'` — without this,
+   every `dark:` variant compiles to a prefers-color-scheme media query and
+   light-mode-OS visitors get light-theme text on the hardcoded dark background
+   (job titles on /experience at ~1.07:1 contrast). Key `dark:` off the static
+   <html class="dark"> instead. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ============================================================
    DESIGN TOKENS
    ============================================================ */
