@@ -128,7 +128,7 @@ export const experienceData = [
     duration: "Oct 2009 - Dec 2014",
     desc: "Headed NPI and system validation for Moto X, Moto G and the Moto 360 smartwatch, architecting a 3-tier Bluetooth qualification framework.",
     highlights: [
-      "Architected a 3-tier Bluetooth qualification framework, enhancing code reusability 3x and reducing test preparation LOE by 70%.",
+      "Architected a 3-tier Bluetooth qualification framework standardizing qualification across the handset portfolio.",
       "Resolved high-priority customer defects including Bluetooth call-audio glitches and car-kit media sync failures using automation.",
       "Re-designed the System Test automation framework to scale across an expanding Android smartphone portfolio.",
     ],

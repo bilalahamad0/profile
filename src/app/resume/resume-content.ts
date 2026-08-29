@@ -20,7 +20,7 @@ export const RESUME_HEADLINE = "Lead Embedded Firmware & Systems QA Engineer";
 export const RESUME_LOCATION = "Sunnyvale, CA";
 
 export const RESUME_SUMMARY =
-  "Systems validation architect with 18+ years building embedded software validation ecosystems for safety-critical systems — firmware, IoT and wearables, mobile handsets, AI video pipelines, and autonomous driving. Takes products from NPI bring-up to enterprise-scale release: test automation, Software-in-the-Loop environments, test strategy, and lab infrastructure that cuts risk and accelerates feedback.";
+  "Systems validation architect with 18+ years building embedded validation ecosystems for safety-critical systems — firmware, IoT, wearables, AI video, and autonomous driving. Takes products from NPI bring-up to enterprise release through test automation, SIL environments, and test strategy.";
 
 /**
  * The real number is deliberately absent: this sheet is downloadable from a
@@ -46,22 +46,17 @@ export const RESUME_CONTACT: ReadonlyArray<{ label: string; href?: string }> = [
 export const RESUME_SKILL_GROUPS: ReadonlyArray<{ label: string; items: string }> = [
   {
     label: "Languages & Automation",
-    items: "Python, Shell, C/C++, JavaScript, Pytest, Selenium, Appium",
+    items: "Python, Shell, C/C++, JavaScript · Pytest, Selenium, Appium",
   },
   {
-    label: "OS & Embedded Hardware",
+    label: "Embedded, OS & Protocols",
     items:
-      "Embedded Linux, RTOS, QNX, Android/AAOS, iOS, ADB, ARM, ESP32, Raspberry Pi, Arduino",
-  },
-  {
-    label: "Wireless, Protocols & Diagnostics",
-    items:
-      "BLE, LTE/Wi-Fi, Wi-Fi Alliance (WFA) certification, QXDM, RTSP/RTP, TLS, UART/SPI/I2C, CAN/CAN FD, Automotive Ethernet, V2X, Wireshark/PCAP replay",
+      "Embedded Linux, RTOS, QNX, Android/AAOS, ARM, ESP32, Raspberry Pi · BLE, LTE/Wi-Fi, WFA certification, RTSP/RTP, TLS, UART/SPI/I2C, CAN FD, Automotive Ethernet, V2X, Wireshark/PCAP",
   },
   {
     label: "Infrastructure & Observability",
     items:
-      "CI/CD (GitLab CI, GitHub Actions, Buildkite, Jenkins), SIL (Docker/QEMU), HIL benches, Bazel, Git, JIRA, Splunk, Grafana, Datadog, Databricks",
+      "CI/CD (GitLab, GitHub Actions, Buildkite, Jenkins) · SIL (Docker/QEMU), HIL benches · Splunk, Grafana, Datadog",
   },
 ];
 
@@ -81,7 +76,6 @@ export const RESUME_CERT_TITLES: ReadonlyArray<string> = [
   "Google AI Professional (2026)",
   "Google Project Management Professional (2026)",
   "ISTQB Certified Tester Foundation Level (CTFL)",
-  "AI Coding Agents with GitHub Copilot and Cursor (2025)",
 ];
 
 /**
