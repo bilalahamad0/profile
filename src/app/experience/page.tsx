@@ -1,4 +1,4 @@
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Download } from "lucide-react";
 import Link from "next/link";
 import { ExperienceTimeline } from "@/components/experience/ExperienceTimeline";
 import { ExperienceRightColumn } from "@/components/experience/ExperienceRightColumn";
@@ -21,6 +21,13 @@ export default function ExperiencePage() {
           </div>
 
           <div className="flex flex-wrap gap-4">
+            <a
+              href="/Bilal_Ahamad_Resume.pdf"
+              download
+              className="flex items-center gap-2 px-6 py-3 rounded-xl border bg-white/5 border-white/10 text-white hover:bg-white/10 transition-all"
+            >
+              <Download className="w-5 h-5" aria-hidden="true" /> Download Resume
+            </a>
             <ShareButton />
           </div>
         </div>
