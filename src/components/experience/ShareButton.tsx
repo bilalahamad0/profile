@@ -36,8 +36,8 @@ export function ShareButton() {
       aria-label="Share this page"
       className={`flex items-center gap-2 px-6 py-3 rounded-xl border transition-all ${
         isCopied
-          ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-400"
-          : "bg-white/5 border-white/10 text-white hover:bg-white/10"
+          ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-800 dark:text-emerald-400"
+          : "bg-ink/5 border-line/10 text-ink hover:bg-ink/10"
       }`}
     >
       {isCopied ? (

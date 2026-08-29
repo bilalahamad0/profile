@@ -33,24 +33,24 @@ export default async function ProjectsPage() {
     .map((p) => ({ id: p.id, name: p.name, aiContribution: p.aiContribution }));
 
   return (
-    <div className="min-h-screen bg-[#09090b] text-white">
+    <div className="min-h-screen bg-surface text-ink">
       <ProjectsExplorer metrics={metrics} />
 
       {/* AI Lab — the site-wide AI engineering metrics, formerly /ai */}
       <AILabSection projects={aiProjects} metrics={metrics} />
 
       {/* GitHub CTA */}
-      <section className="py-12 md:py-20 lg:py-24 px-6 text-center border-t border-white/5 bg-white/[0.01]">
+      <section className="py-12 md:py-20 lg:py-24 px-6 text-center border-t border-line/10 dark:border-line/5 bg-ink/[0.01]">
         <div className="max-w-2xl mx-auto space-y-6">
           <h2 className="t-h2">See All Repositories</h2>
-          <p className="text-zinc-400">
+          <p className="text-ink-muted">
             Explore the complete collection of public work, contributions, and experiments.
           </p>
           <a
             href="https://github.com/bilalahamad0"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-black font-bold hover:bg-zinc-200 transition-all hover:scale-105 shadow-2xl"
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-ink text-surface font-bold hover:bg-ink/85 dark:hover:bg-zinc-200 transition-all hover:scale-105 shadow-2xl"
           >
             <Github className="w-5 h-5" aria-hidden="true" />
             View GitHub Profile

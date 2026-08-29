@@ -36,10 +36,12 @@ function AIContributionBar({ pct, color }: { pct: number; color: string }) {
   return (
     <div className="mt-4" role="meter" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} aria-label={`AI contribution: ${pct}%`}>
       <div className="flex items-center justify-between mb-1.5">
-        <span className="text-xs font-bold uppercase tracking-widest text-zinc-400">AI Contribution</span>
-        <span className="text-xs font-bold text-zinc-400">{pct}%</span>
+        <span className="text-xs font-bold uppercase tracking-widest text-ink-muted">AI Contribution</span>
+        <span className="text-xs font-bold text-ink-muted">{pct}%</span>
       </div>
-      <div className="h-1.5 w-full rounded-full bg-white/5">
+      {/* Meter track: 5% ink is invisible on the white card, so the light base
+          is 10%; dark keeps the original 5% (ink === white there). */}
+      <div className="h-1.5 w-full rounded-full bg-ink/10 dark:bg-ink/5">
         <div
           className={`h-full rounded-full transition-all duration-1000 ease-out ${colorMap[color] ?? "bg-blue-500"}`}
           style={{ width: `${width}%` }}
@@ -226,21 +228,25 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
     <>
       {videoLightboxPortal}
       {/* Header */}
-      <section className="pt-24 pb-10 md:pt-28 md:pb-12 lg:pt-36 lg:pb-16 px-6 lg:px-24 border-b border-white/5 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[400px] bg-blue-500/5 blur-[120px] rounded-full pointer-events-none" aria-hidden="true" />
+      <section className="pt-24 pb-10 md:pt-28 md:pb-12 lg:pt-36 lg:pb-16 px-6 lg:px-24 border-b border-line/10 dark:border-line/5 relative overflow-hidden">
+        {/* Decorative glow — held back on the light ground so it does not tint
+            the page grey-blue; dark is untouched. */}
+        <div className="absolute top-0 right-0 w-[600px] h-[400px] bg-blue-500/5 blur-[120px] rounded-full pointer-events-none opacity-50 dark:opacity-100" aria-hidden="true" />
         <div className="max-w-7xl mx-auto relative">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 mb-6">
-              <Github className="w-4 h-4 text-blue-400" aria-hidden="true" />
-              <span className="text-xs font-black uppercase tracking-[0.2em] text-blue-300">Open Source</span>
+              <Github className="w-4 h-4 text-blue-700 dark:text-blue-400" aria-hidden="true" />
+              <span className="text-xs font-black uppercase tracking-[0.2em] text-blue-700 dark:text-blue-300">Open Source</span>
             </div>
             <h1 className="t-h1 mb-6">
               Featured{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-400">
+              {/* Gradient TEXT — the stops are the type colour, so light gets its
+                  own 600 ramp; dark keeps the original 400s verbatim. */}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-violet-600 dark:from-blue-400 dark:to-violet-400">
                 Projects
               </span>
             </h1>
-            <p className="t-lead text-zinc-400 font-light max-w-2xl">
+            <p className="t-lead text-ink-muted font-light max-w-2xl">
               Production-grade systems built at the intersection of automation, data engineering, and
               AI-native development.
             </p>
@@ -259,17 +265,19 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
               { label: "Languages",     value: "5+" },
               { label: "Deployed Live", value: "5" },
             ].map(({ label, value }) => (
-              <div key={label} className="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
-                <span className="block text-2xl md:text-3xl font-black text-white mb-1">{value}</span>
-                <span className="block t-label font-bold text-zinc-400 uppercase tracking-widest">{label}</span>
+              <div key={label} className="p-4 rounded-2xl bg-surface-card dark:bg-ink/[0.03] border border-line/10 dark:border-line/[0.06]">
+                <span className="block text-2xl md:text-3xl font-black text-ink mb-1">{value}</span>
+                <span className="block t-label font-bold text-ink-muted uppercase tracking-widest">{label}</span>
               </div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Top Mask Overlay — darkens content (0% opacity) behind filter bar and navbar */}
-      <div className="mask-top-dark" aria-hidden="true" />
+      {/* Top Mask Overlay — hides content behind the filter bar and navbar.
+          .mask-top-dark still hard-codes rgb(9 9 11); bg-surface! re-points it at
+          the theme ground (identical in dark, correct in light). */}
+      <div className="mask-top-dark bg-surface!" aria-hidden="true" />
 
       {/* The filter bar sticks only for as long as there is a grid to filter.
           This wrapper is its containing block, so it releases at the end of the
@@ -283,7 +291,7 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
         aria-label="Filter projects"
       >
         <div className="max-w-7xl mx-auto flex items-center gap-3 flex-wrap">
-          <Filter className="w-4 h-4 text-zinc-400 shrink-0" aria-hidden="true" />
+          <Filter className="w-4 h-4 text-ink-muted shrink-0" aria-hidden="true" />
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
@@ -291,8 +299,8 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
               aria-pressed={active === cat}
               className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${
                 active === cat
-                  ? "bg-white text-black"
-                  : "bg-white/5 text-zinc-400 hover:bg-white/10 hover:text-white"
+                  ? "bg-ink text-surface"
+                  : "bg-ink/5 text-ink-muted hover:bg-ink/10 hover:text-ink"
               }`}
             >
               {cat}
@@ -325,7 +333,7 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.97 }}
                     transition={{ duration: 0.25 }}
-                    className={`relative rounded-3xl border border-white/5 bg-white/[0.02] overflow-hidden group transition-all duration-500 scroll-mt-32 ${accentBorder[project.accent]}`}
+                    className={`relative rounded-3xl border border-line/10 dark:border-line/5 bg-surface-card dark:bg-ink/[0.02] overflow-hidden group transition-all duration-500 scroll-mt-32 ${accentBorder[project.accent]}`}
                   >
                     {/* Gradient bg */}
                     <div
@@ -339,26 +347,26 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                         <div className="flex-1">
                           {project.isAI && (
                             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 mb-3">
-                              <Sparkles className="w-3 h-3 text-violet-400 fill-violet-400/30" aria-hidden="true" />
-                              <span className="text-xs font-bold uppercase tracking-wider text-violet-300">AI-Built</span>
+                              <Sparkles className="w-3 h-3 text-violet-700 fill-violet-700/30 dark:text-violet-400 dark:fill-violet-400/30" aria-hidden="true" />
+                              <span className="text-xs font-bold uppercase tracking-wider text-violet-700 dark:text-violet-300">AI-Built</span>
                             </div>
                           )}
-                          <h2 className="t-h3 text-white">
+                          <h2 className="t-h3 text-ink">
                             {project.name}
                           </h2>
-                          <p className="text-sm text-zinc-400 mt-1">{project.tagline}</p>
+                          <p className="text-sm text-ink-muted mt-1">{project.tagline}</p>
                         </div>
                       </div>
 
                       {/* Description */}
-                      <p className="text-sm text-zinc-400 leading-relaxed mb-6">{project.description}</p>
+                      <p className="text-sm text-ink-muted leading-relaxed mb-6">{project.description}</p>
 
                       {/* Previews (Video & Dashboard Sub-cards) */}
                       {((project as any).previewType !== "none" || (project as any).dashboardSrc) && (
                         <div className="flex flex-col gap-4 mb-6">
                           {/* Video Sub-card */}
                           {(project as any).previewType !== "none" && (
-                            <div className={`relative w-full overflow-hidden bg-black/40 rounded-2xl border border-white/5 ${
+                            <div className={`relative w-full overflow-hidden bg-ink/5 dark:bg-black/40 rounded-2xl border border-line/10 dark:border-line/5 ${
                               (project as any).dashboardSrc ? "h-[200px] sm:h-[250px]" : "h-[250px] sm:h-[300px]"
                             }`}>
                               {!previewFailed && ((project as any).previewType === "youtube" || (project as any).thumbnailType === "video" || project.thumbnail?.endsWith('.mp4')) ? (
@@ -372,7 +380,11 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                                       poster={(project as unknown as { thumbnailPoster?: string }).thumbnailPoster}
                                       className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
+                                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-surface/40 pointer-events-none" />
+                                    {/* Play pill: text-white and border-white/20 are
+                                        fixed contrast against the opaque blue fill
+                                        it sits on (over video, not the page ground),
+                                        so both stay as-is in either theme. */}
                                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                                        <div className="px-6 py-3 rounded-full bg-blue-500/80 backdrop-blur-md border border-white/20 font-black uppercase tracking-widest text-white shadow-xl flex items-center gap-2 group-hover/vid:scale-105 group-hover/vid:bg-blue-500 transition-all">
                                          <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -388,7 +400,7 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                                       poster={(project as unknown as { thumbnailPoster?: string }).thumbnailPoster}
                                       className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
+                                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-surface/40 pointer-events-none" />
                                   </div>
                                 )
                               ) : !previewFailed && (project as any).previewType === "iframe" ? (
@@ -408,7 +420,7 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                                       setFailedPreviews((prev) => ({ ...prev, [project.id]: true }));
                                     }}
                                   />
-                                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
+                                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-surface/40 pointer-events-none" />
                                 </DashboardFacade>
                               ) : !previewFailed ? (
                                 <>
@@ -421,23 +433,29 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                                       setFailedPreviews((prev) => ({ ...prev, [project.id]: true }));
                                     }}
                                   />
-                                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
+                                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-surface/40 pointer-events-none" />
                                 </>
                               ) : (
-                                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-zinc-900 via-zinc-900/90 to-zinc-800">
+                                /* Media-well placeholder. Same treatment as
+                                   DashboardFacade: an ink wash on the light
+                                   ground, the original zinc-900 ramp in dark,
+                                   so the label reads on both (14.7:1 / 14.0:1). */
+                                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-ink/[0.07] via-ink/[0.05] to-ink/[0.03] dark:from-zinc-900 dark:via-zinc-900/90 dark:to-zinc-800">
                                   <div className="text-center px-4">
-                                    <p className="text-sm font-bold text-zinc-200">{project.name}</p>
-                                    <p className="text-xs text-zinc-400 mt-1">Preview unavailable - open repo for details</p>
+                                    <p className="text-sm font-bold text-ink dark:text-zinc-200">{project.name}</p>
+                                    <p className="text-xs text-ink-muted mt-1">Preview unavailable - open repo for details</p>
                                   </div>
                                 </div>
                               )}
                               
                               {project.demo && !(project as any).dashboardSrc && !previewFailed && (
+                                /* text-white stays: it labels a filled emerald
+                                   badge floating over the media, not the page. */
                                 <a
                                   href={project.demo}
                                   target="_blank"
                                   rel="noreferrer"
-                                  className="absolute top-2 right-2 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-600/80 border border-emerald-500/40 text-xs font-bold text-white hover:bg-emerald-500 transition-colors z-10"
+                                  className="absolute top-2 right-2 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-700 dark:bg-emerald-600/80 border border-emerald-500/40 text-xs font-bold text-white hover:bg-emerald-500 transition-colors z-10"
                                 >
                                   <span className="pulse-dot" aria-hidden="true" />
                                   {project.demoLabel || "Live"}
@@ -450,8 +468,8 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                           {/* Dashboard Sub-card */}
                           {(project as any).dashboardSrc && (
                             <div className={`relative w-full overflow-hidden ${
-                              project.id === 'adhan' ? 'bg-transparent' : 'bg-black/40'
-                            } rounded-2xl border border-white/5 ${
+                              project.id === 'adhan' ? 'bg-transparent' : 'bg-ink/5 dark:bg-black/40'
+                            } rounded-2xl border border-line/10 dark:border-line/5 ${
                               (project as any).previewType !== "none" ? "h-[200px] sm:h-[250px]" : "h-[416px] sm:h-[516px]"
                             }`}>
                               {project.id === 'adhan' ? (
@@ -507,13 +525,14 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                                   />
                                 </DashboardFacade>
                               )}
-                              {project.id !== 'adhan' && <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/20 pointer-events-none" />}
+                              {project.id !== 'adhan' && <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-surface/20 pointer-events-none" />}
                               {project.demo && (
+                                /* text-white stays — filled emerald badge over the dashboard. */
                                 <a
                                   href={project.demo}
                                   target="_blank"
                                   rel="noreferrer"
-                                  className="absolute top-2 right-2 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-600/80 border border-emerald-500/40 text-xs font-bold text-white hover:bg-emerald-500 transition-colors z-10 shadow-lg backdrop-blur-md"
+                                  className="absolute top-2 right-2 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-700 dark:bg-emerald-600/80 border border-emerald-500/40 text-xs font-bold text-white hover:bg-emerald-500 transition-colors z-10 shadow-lg backdrop-blur-md"
                                 >
                                   <span className="pulse-dot" aria-hidden="true" />
                                   {project.demoLabel || "Live Dashboard"}
@@ -528,7 +547,7 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                       {/* Extended sub-group — regional deep-dives nested inside this project */}
                       {subDashboards.length > 0 && (
                         <div className="mb-6 pl-4 border-l-2 border-blue-500/30 flex flex-col gap-2">
-                          <span className="t-label font-black uppercase tracking-[0.2em] text-zinc-400">
+                          <span className="t-label font-black uppercase tracking-[0.2em] text-ink-muted">
                             Extended Coverage
                           </span>
                           {subDashboards.map((sub) => (
@@ -537,16 +556,16 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                               href={sub.href}
                               target="_blank"
                               rel="noreferrer"
-                              className="group/sub flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 rounded-2xl border border-white/5 bg-white/[0.03] px-4 py-3 hover:border-blue-500/30 hover:bg-white/[0.06] transition-all"
+                              className="group/sub flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 rounded-2xl border border-line/10 dark:border-line/5 bg-ink/[0.03] px-4 py-3 hover:border-blue-500/30 hover:bg-ink/[0.06] transition-all"
                             >
                               <span className="min-w-0">
-                                <span className="flex items-center gap-1.5 text-sm font-bold text-white">
-                                  <MapPin className="w-3.5 h-3.5 text-blue-400 shrink-0" aria-hidden="true" />
+                                <span className="flex items-center gap-1.5 text-sm font-bold text-ink">
+                                  <MapPin className="w-3.5 h-3.5 text-blue-700 dark:text-blue-400 shrink-0" aria-hidden="true" />
                                   {sub.region}
                                 </span>
-                                <span className="block text-xs text-zinc-400 mt-0.5">{sub.tagline}</span>
+                                <span className="block text-xs text-ink-muted mt-0.5">{sub.tagline}</span>
                               </span>
-                              <span className="flex items-center gap-1.5 shrink-0 text-xs font-bold text-blue-300 group-hover/sub:text-blue-200 transition-colors">
+                              <span className="flex items-center gap-1.5 shrink-0 text-xs font-bold text-blue-700 group-hover/sub:text-blue-800 dark:text-blue-300 dark:group-hover/sub:text-blue-200 transition-colors">
                                 <span className="pulse-dot" aria-hidden="true" />
                                 {sub.demoLabel}
                                 <ExternalLink className="w-3 h-3" aria-hidden="true" />
@@ -561,7 +580,7 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                           caption, stacked rows; emerald to match this card's accent. */}
                       {storeListings.length > 0 && (
                         <div className="mb-6 pl-4 border-l-2 border-emerald-500/30 flex flex-col gap-2">
-                          <span className="t-label font-black uppercase tracking-[0.2em] text-zinc-400">
+                          <span className="t-label font-black uppercase tracking-[0.2em] text-ink-muted">
                             Available On
                           </span>
                           <ul role="list" className="flex flex-col gap-2">
@@ -573,12 +592,12 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                                     target="_blank"
                                     rel="noreferrer"
                                     title={`${listing.listingName} — v${listing.version} on ${listing.store}`}
-                                    className="group/store flex items-center gap-2 rounded-2xl border border-white/5 bg-white/[0.03] px-3 py-2 hover:border-emerald-500/30 hover:bg-white/[0.06] transition-all"
+                                    className="group/store flex items-center gap-2 rounded-2xl border border-line/10 dark:border-line/5 bg-ink/[0.03] px-3 py-2 hover:border-emerald-500/30 hover:bg-ink/[0.06] transition-all"
                                   >
-                                    <span className="min-w-0 flex-1 truncate t-small font-semibold text-white underline-offset-2 group-hover/store:underline">
+                                    <span className="min-w-0 flex-1 truncate t-small font-semibold text-ink underline-offset-2 group-hover/store:underline">
                                       {listing.store}
                                     </span>
-                                    <span className="flex shrink-0 items-center gap-1.5 whitespace-nowrap t-label font-bold text-emerald-300 group-hover/store:text-emerald-200 transition-colors">
+                                    <span className="flex shrink-0 items-center gap-1.5 whitespace-nowrap t-label font-bold text-emerald-700 group-hover/store:text-emerald-800 dark:text-emerald-300 dark:group-hover/store:text-emerald-200 transition-colors">
                                       <span className="pulse-dot" aria-hidden="true" />
                                       Live · v{listing.version}
                                       {/* Below 375px the arrow costs the store name its last
@@ -594,13 +613,13 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                                 <li key={listing.browser}>
                                   <div
                                     title={listing.note}
-                                    className="flex items-center gap-2 rounded-2xl border border-dashed border-white/10 bg-white/[0.015] px-3 py-2"
+                                    className="flex items-center gap-2 rounded-2xl border border-dashed border-line/15 dark:border-line/10 bg-ink/[0.03] dark:bg-ink/[0.015] px-3 py-2"
                                   >
-                                    <span className="min-w-0 flex-1 truncate t-small font-semibold text-zinc-400">
+                                    <span className="min-w-0 flex-1 truncate t-small font-semibold text-ink-muted">
                                       {listing.store}
                                     </span>
-                                    <span className="flex shrink-0 items-center gap-1.5 whitespace-nowrap t-label font-bold text-amber-300">
-                                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400/80" aria-hidden="true" />
+                                    <span className="flex shrink-0 items-center gap-1.5 whitespace-nowrap t-label font-bold text-amber-700 dark:text-amber-300">
+                                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600/80 dark:bg-amber-400/80" aria-hidden="true" />
                                       In review
                                       <span className="sr-only">— {listing.note}</span>
                                     </span>
@@ -618,7 +637,7 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                           <span
                             key={t}
                             role="listitem"
-                            className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-xs font-bold text-zinc-400 uppercase tracking-widest"
+                            className="px-2.5 py-1 rounded-lg bg-ink/5 border border-line/10 text-xs font-bold text-ink-muted uppercase tracking-widest"
                           >
                             {t}
                           </span>
@@ -644,10 +663,10 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                       )}
 
                       {/* Footer */}
-                      <div className="mt-6 pt-6 border-t border-white/5 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                        <div className="flex-1 min-w-0 flex items-start gap-4 text-xs text-zinc-400">
+                      <div className="mt-6 pt-6 border-t border-line/10 dark:border-line/5 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                        <div className="flex-1 min-w-0 flex items-start gap-4 text-xs text-ink-muted">
                           <span className="flex items-start gap-1.5">
-                            <Zap className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" aria-hidden="true" />
+                            <Zap className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-500 shrink-0 mt-0.5" aria-hidden="true" />
                             <span className="leading-relaxed text-left">{project.impact}</span>
                           </span>
                         </div>
@@ -656,7 +675,7 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                             href={project.repo}
                             target="_blank"
                             rel="noreferrer"
-                            className="flex items-center gap-1.5 py-1 text-xs font-bold text-zinc-400 hover:text-white transition-colors whitespace-nowrap"
+                            className="flex items-center gap-1.5 py-1 text-xs font-bold text-ink-muted hover:text-ink transition-colors whitespace-nowrap"
                           >
                             <Github className="w-3.5 h-3.5 shrink-0" aria-hidden="true" /> GitHub
                           </a>
@@ -665,7 +684,7 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                             target="_blank"
                             rel="noreferrer"
                             title="Architecture & system design diagram"
-                            className="flex items-center gap-1.5 py-1 text-xs font-bold text-zinc-400 hover:text-cyan-400 transition-colors whitespace-nowrap"
+                            className="flex items-center gap-1.5 py-1 text-xs font-bold text-ink-muted hover:text-cyan-700 dark:hover:text-cyan-400 transition-colors whitespace-nowrap"
                           >
                             <Network className="w-3.5 h-3.5 shrink-0" aria-hidden="true" /> Architecture
                           </a>
@@ -673,7 +692,7 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                             <Link
                               key={post.slug}
                               href={`/blog/${post.slug}`}
-                              className="flex items-center gap-1.5 py-1 text-xs font-bold text-zinc-400 hover:text-blue-400 transition-colors whitespace-nowrap"
+                              className="flex items-center gap-1.5 py-1 text-xs font-bold text-ink-muted hover:text-blue-700 dark:hover:text-blue-400 transition-colors whitespace-nowrap"
                             >
                               <BookOpen className="w-3.5 h-3.5 shrink-0" aria-hidden="true" /> {post.label}
                             </Link>
@@ -681,7 +700,7 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                           {project.isAI && (
                             <a
                               href="#ai-lab"
-                              className="flex items-center gap-1.5 py-1 text-xs font-bold text-zinc-400 hover:text-violet-400 transition-colors whitespace-nowrap"
+                              className="flex items-center gap-1.5 py-1 text-xs font-bold text-ink-muted hover:text-violet-700 dark:hover:text-violet-400 transition-colors whitespace-nowrap"
                             >
                               <Sparkles className="w-3.5 h-3.5 shrink-0" aria-hidden="true" /> AI Metrics
                             </a>

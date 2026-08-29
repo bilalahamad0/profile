@@ -79,7 +79,7 @@ export function GoogleDevCarousel() {
             href={item.href}
             target="_blank"
             rel="noreferrer"
-            className="relative w-40 h-52 min-w-[10rem] flex-shrink-0 rounded-xl border-2 border-zinc-800 bg-zinc-900 snap-center group shadow-lg overflow-hidden"
+            className="relative w-40 h-52 min-w-[10rem] flex-shrink-0 rounded-xl border-2 border-line/10 dark:border-zinc-800 bg-ink/5 dark:bg-zinc-900 snap-center group shadow-lg overflow-hidden"
           >
             <Image
               src={item.img}

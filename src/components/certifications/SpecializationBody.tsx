@@ -37,7 +37,7 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
             })
           }
           aria-label={`View ${spec.titleLines[0]} certificate on Coursera`}
-          className="group/thumb relative block aspect-[1.4/1] w-full cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-black/20 ring-1 ring-white/5 transition-transform duration-300 hover:scale-[1.01]"
+          className="group/thumb relative block aspect-[1.4/1] w-full cursor-pointer overflow-hidden rounded-2xl border border-line/10 bg-black/20 ring-1 ring-line/10 transition-transform duration-300 hover:scale-[1.01]"
         >
           <Image
             src={spec.image}
@@ -53,8 +53,11 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
               {ribbon.label}
             </span>
           </div>
-          {/* Hover overlay */}
-          <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover/thumb:opacity-100">
+          {/* Hover overlay — the scrim, not the theme, is the background for
+              this label: certificates are near-white, so 40% black left the
+              white text at ~2.5:1 on the real pixels. 65% holds it at 5.5:1
+              over a white certificate and 7.0:1 on the composited ground. */}
+          <div className="absolute inset-0 flex items-center justify-center bg-black/65 opacity-0 transition-opacity duration-300 group-hover/thumb:opacity-100">
             <div className="flex translate-y-4 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2.5 backdrop-blur-md transition-transform duration-300 group-hover/thumb:translate-y-0">
               <ExternalLink className="h-4 w-4 text-white" aria-hidden />
               <span className="t-label font-semibold uppercase tracking-wider text-white">
@@ -66,7 +69,7 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
 
         {/* Logo + issuer + date + VIEW DETAILS (mobile-friendly CTA) */}
         <div className="flex items-center gap-3">
-          <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/5 p-1.5">
+          <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-line/10 bg-ink/5 p-1.5">
             <Image
               src={spec.logo}
               alt="Google"
@@ -76,10 +79,10 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
             />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="truncate t-caption font-bold uppercase tracking-widest text-blue-400">
+            <p className="truncate t-caption font-bold uppercase tracking-widest text-blue-700 dark:text-blue-400">
               {spec.issuer}
             </p>
-            <p className="flex items-center gap-1.5 t-label uppercase tracking-tighter text-white/60">
+            <p className="flex items-center gap-1.5 t-label uppercase tracking-tighter text-ink/60">
               <Calendar className="h-3 w-3" aria-hidden />
               {spec.date}
             </p>
@@ -94,7 +97,7 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
               })
             }
             aria-label={`View ${spec.titleLines[0]} details on Coursera`}
-            className="group/details inline-flex shrink-0 items-center gap-1 t-label font-semibold tracking-wider text-white/60 transition-colors hover:text-blue-400 focus:outline-none focus-visible:text-blue-400"
+            className="group/details inline-flex shrink-0 items-center gap-1 t-label font-semibold tracking-wider text-ink/60 transition-colors hover:text-blue-700 focus:outline-none focus-visible:text-blue-700 dark:hover:text-blue-400 dark:focus-visible:text-blue-400"
           >
             VIEW DETAILS
             <ArrowRight className="h-3 w-3 transition-transform group-hover/details:translate-x-1" />
@@ -103,8 +106,8 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
 
         {/* Summary + parent badge — lives under the certificate so the left
             column carries the story and the right column stays pure courses */}
-        <div className="flex flex-col gap-4 rounded-2xl border border-white/5 bg-white/[0.02] p-4 lg:flex-row lg:items-center lg:gap-6 lg:p-5">
-          <p className="min-w-0 flex-1 t-small text-zinc-300">
+        <div className="flex flex-col gap-4 rounded-2xl border border-line/10 bg-ink/[0.03] p-4 lg:flex-row lg:items-center lg:gap-6 lg:p-5">
+          <p className="min-w-0 flex-1 t-small text-ink/88">
             {spec.description}
           </p>
           <button
@@ -140,7 +143,7 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
 
       {/* ─────────── RIGHT COLUMN — course credentials only ─────────── */}
       <div className="flex flex-col gap-5">
-        <div className="flex items-center gap-2 self-start rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1.5 t-label font-bold uppercase tracking-wider text-emerald-300">
+        <div className="flex items-center gap-2 self-start rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1.5 t-label font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-300">
           <CheckCircle2 className="h-3.5 w-3.5" aria-hidden />
           All {spec.totalCourses} course credentials
         </div>
@@ -155,9 +158,9 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
                 key={child.step}
                 variants={itemVariants}
                 className={cn(
-                  "group/sub flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2.5 backdrop-blur-sm transition-colors hover:border-purple-500/30 hover:bg-white/[0.04] md:px-4 md:py-3",
+                  "group/sub flex items-center gap-3 rounded-xl border border-line/10 bg-ink/[0.03] px-3 py-2.5 backdrop-blur-sm transition-colors hover:border-purple-500/30 hover:bg-ink/[0.06] md:px-4 md:py-3",
                   child.bonus &&
-                    "relative mt-3 before:absolute before:-top-[7px] before:left-2 before:right-2 before:border-t before:border-white/10 before:content-['']"
+                    "relative mt-3 before:absolute before:-top-[7px] before:left-2 before:right-2 before:border-t before:border-line/10 before:content-['']"
                 )}
               >
                 {child.icon ? (
@@ -171,17 +174,17 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
                     />
                   </div>
                 ) : (
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-purple-500/40 bg-[#09090b] t-label font-bold text-white shadow-[0_0_15px_-5px_rgba(168,85,247,0.35)] md:h-8 md:w-8">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-purple-500/40 bg-surface t-label font-bold text-ink shadow-[0_0_15px_-5px_rgba(168,85,247,0.35)] md:h-8 md:w-8">
                     {child.step}
                   </div>
                 )}
 
-                <h4 className="min-w-0 flex-1 truncate t-small font-semibold text-white">
+                <h4 className="min-w-0 flex-1 truncate t-small font-semibold text-ink">
                   {child.title}
                 </h4>
 
                 {child.bonus && (
-                  <span className="shrink-0 rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 t-label font-bold uppercase tracking-wider text-amber-300">
+                  <span className="shrink-0 rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 t-label font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300">
                     Bonus
                   </span>
                 )}
@@ -197,14 +200,14 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
                     })
                   }
                   aria-label={`Verify certificate for ${child.title}`}
-                  className="group/vc inline-flex shrink-0 items-center gap-1 t-label font-semibold uppercase tracking-wider text-blue-400 transition-colors hover:text-blue-300"
+                  className="group/vc inline-flex shrink-0 items-center gap-1 t-label font-semibold uppercase tracking-wider text-blue-700 transition-colors hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
                 >
                   <span className="hidden sm:inline">Verify</span>
                   <ExternalLink className="h-3 w-3 transition-transform group-hover/vc:translate-x-0.5" />
                 </button>
 
                 <CheckCircle2
-                  className="h-4 w-4 shrink-0 text-emerald-400"
+                  className="h-4 w-4 shrink-0 text-emerald-700 dark:text-emerald-400"
                   aria-hidden
                 />
               </motion.li>

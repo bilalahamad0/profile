@@ -26,16 +26,17 @@ const BASE = process.env.RESUME_BASE_URL ?? "http://localhost:3000";
 const CHECK = process.argv.includes("--check");
 
 /**
- * Chromium stamps /CreationDate and /ID into every PDF, so two renders of
- * identical content are never byte-identical. Compare extractable text instead
- * — that is what a reader, a recruiter's CRM and an ATS actually consume.
+ * Chromium's PDF output is not byte-deterministic — font subsetting and object
+ * ordering shift between runs even when the page is identical, so comparing the
+ * binary (even with dates and /ID stripped) raises false alarms. What actually
+ * matters is whether the CONTENT drifted from portfolio.ts, so the check
+ * compares the text of the /resume route against a snapshot written beside the
+ * PDF whenever it is generated.
  */
-function pdfTextSignature(buffer) {
-  return buffer
-    .toString("latin1")
-    .replace(/\/(CreationDate|ModDate)\s*\([^)]*\)/g, "")
-    .replace(/\/ID\s*\[[^\]]*\]/g, "")
-    .replace(/\s+/g, " ");
+const SNAPSHOT = resolve(ROOT, "scripts/resume.snapshot.txt");
+
+function normalise(text) {
+  return text.replace(/\s+/g, " ").trim();
 }
 
 async function render() {
@@ -65,35 +66,45 @@ async function render() {
     const sheet = await page.$(".resume-sheet");
     if (!sheet) throw new Error("/resume rendered without a .resume-sheet element");
 
+    const text = normalise(await sheet.innerText());
+
     // preferCSSPageSize honours the @page rule in globals.css, which is where
     // the Letter size and the page margins are defined.
-    return await page.pdf({ printBackground: true, preferCSSPageSize: true });
+    const pdf = await page.pdf({ printBackground: true, preferCSSPageSize: true });
+    return { pdf, text };
   } finally {
     await browser.close();
   }
 }
 
-const pdf = await render();
+const { pdf, text } = await render();
 
 if (CHECK) {
-  let committed;
+  let snapshot;
   try {
-    committed = await readFile(OUT);
+    snapshot = normalise(await readFile(SNAPSHOT, "utf8"));
   } catch {
-    console.error(`✗ ${OUT} is missing. Run: node scripts/generate-resume-pdf.mjs`);
+    console.error(`\u2717 ${SNAPSHOT} is missing. Run: node scripts/generate-resume-pdf.mjs`);
     process.exit(1);
   }
-  if (pdfTextSignature(committed) !== pdfTextSignature(pdf)) {
+  try {
+    await readFile(OUT);
+  } catch {
+    console.error(`\u2717 ${OUT} is missing. Run: node scripts/generate-resume-pdf.mjs`);
+    process.exit(1);
+  }
+  if (snapshot !== text) {
     console.error(
-      "✗ Resume PDF is out of sync with /resume.\n" +
+      "\u2717 Resume PDF is out of sync with /resume.\n" +
         "  Career data changed without regenerating the PDF.\n" +
         "  Fix: npm run start, then node scripts/generate-resume-pdf.mjs"
     );
     process.exit(1);
   }
-  console.log("✓ Resume PDF is in sync with /resume");
+  console.log("\u2713 Resume PDF is in sync with /resume");
 } else {
   await mkdir(dirname(OUT), { recursive: true });
   await writeFile(OUT, pdf);
-  console.log(`✓ Wrote ${OUT} (${(pdf.length / 1024).toFixed(1)} KB)`);
+  await writeFile(SNAPSHOT, text + "\n");
+  console.log(`\u2713 Wrote ${OUT} (${(pdf.length / 1024).toFixed(1)} KB) and its content snapshot`);
 }
