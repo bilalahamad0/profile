@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Briefcase, Mail, Award, FolderKanban, Sparkles, BookOpen, Home } from "lucide-react";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -40,20 +41,20 @@ export function NavbarV2() {
           "glass rounded-full px-1 sm:px-5 py-2.5 flex items-center justify-between sm:justify-start gap-0 sm:gap-1 pointer-events-auto",
           "w-full max-w-7xl sm:w-auto transition-all duration-300",
           scrolled
-            ? "shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
-            : "shadow-[0_4px_16px_rgba(0,0,0,0.3)]"
+            ? "shadow-[0_8px_32px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
+            : "shadow-[0_4px_16px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_16px_rgba(0,0,0,0.3)]"
         )}
       >
         {/* Wordmark */}
         <Link
           href="/"
           aria-label="Bilal Ahamad — home"
-          className="shrink-0 flex flex-col items-start pr-2 sm:pr-4 border-r border-white/10 hover:text-emerald-400 transition-colors"
+          className="shrink-0 flex flex-col items-start pr-2 sm:pr-4 border-r border-line/10 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors"
         >
-          <span className="text-[9.5px] sm:text-[13px] font-black tracking-widest uppercase text-white leading-none">
+          <span className="text-[9.5px] sm:text-[13px] font-black tracking-widest uppercase text-ink leading-none">
             BILAL
           </span>
-          <span className="text-[6.5px] sm:text-[9px] font-semibold tracking-[0.2em] uppercase text-zinc-400 leading-none mt-0.5">
+          <span className="text-[6.5px] sm:text-[9px] font-semibold tracking-[0.2em] uppercase text-ink-muted leading-none mt-0.5">
             AHAMAD
           </span>
         </Link>
@@ -73,14 +74,14 @@ export function NavbarV2() {
                 "px-0.5 sm:px-3 py-1.5 rounded-xl transition-all duration-200",
                 "group whitespace-nowrap shrink-0 flex-1 sm:flex-none",
                 isActive
-                  ? "bg-white/10 text-white"
-                  : "text-zinc-400 hover:text-white hover:bg-white/5"
+                  ? "bg-ink/10 text-ink"
+                  : "text-ink-muted hover:text-ink hover:bg-ink/5"
               )}
             >
               <Icon
                 className={cn(
                   "w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 transition-colors",
-                  isActive ? "text-blue-400" : "text-zinc-400 group-hover:text-zinc-300"
+                  isActive ? "text-blue-700 dark:text-blue-400" : "text-ink-muted group-hover:text-zinc-700 dark:group-hover:text-zinc-300"
                 )}
                 aria-hidden="true"
               />
@@ -90,6 +91,15 @@ export function NavbarV2() {
             </Link>
           );
         })}
+
+        {/* Theme control — right end of the pill, fenced off by the same hairline
+            the wordmark uses. Held back to md: at 375px the pill is already
+            full-width (359px) with five of the seven links pinned at their 40.1px
+            floor, so a ninth target would squeeze them to 27px. Measured fit at
+            768px: the pill goes 596.9px → 695.9px inside a 720px container. */}
+        <div className="hidden md:flex items-center shrink-0 ml-1.5 pl-1.5 border-l border-line/10">
+          <ThemeToggle />
+        </div>
       </nav>
     </motion.header>
   );

@@ -281,7 +281,7 @@ export default function HomePage() {
   return (
     <>
       <JsonLd data={[personSchema, websiteSchema()]} />
-      <div className="flex flex-col overflow-x-hidden dark" id="top">
+      <div className="flex flex-col overflow-x-hidden" id="top">
       {/* ── Hero ───────────────────────────────────────── */}
       <HeroPortfolio />
 

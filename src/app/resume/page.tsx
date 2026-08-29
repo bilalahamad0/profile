@@ -13,7 +13,10 @@ import {
 } from "./resume-content";
 
 export const metadata: Metadata = {
-  title: "Resume | Bilal Ahamad",
+  // The root layout's title template appends " | Bilal Ahamad" — so the tab
+  // title must NOT carry the suffix itself. openGraph.title below is not run
+  // through the template, so that one keeps the full string.
+  title: "Resume",
   description:
     "Resume of Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer with 18+ years across Amazon Lab126, Google, Rivian, Cruise, and Samsara. Download as PDF.",
   alternates: { canonical: "https://bilalahamad.com/resume" },
@@ -32,7 +35,9 @@ const FULL_DETAIL_ROLES = 6;
 /**
  * The resume document — one page, two representations.
  *
- * On screen it is a paper sheet on the site's dark ground. In print (and in
+ * On screen it is a paper sheet on the site's ground — the sheet itself stays
+ * white with dark ink in both themes, only the surrounding chrome flips. In
+ * print (and in
  * `scripts/generate-resume-pdf.mjs`, which renders this very route through
  * Chromium) the chrome drops away and the sheet becomes the PDF. Because every
  * fact is read from portfolio.ts at build time, the PDF cannot drift from the
@@ -44,12 +49,15 @@ export default function ResumePage() {
   ).filter((p): p is (typeof projectsData)[number] => Boolean(p));
 
   return (
-    <div className="min-h-screen bg-[#09090b] px-4 py-24 md:py-28 print:bg-white print:p-0">
+    <div className="min-h-screen bg-surface px-4 py-24 md:py-28 print:bg-white print:p-0">
       {/* Screen-only actions — hidden in print and in the generated PDF */}
       <div className="mx-auto mb-6 flex max-w-[8.5in] flex-wrap items-center justify-between gap-4 print:hidden">
-        <p className="t-small text-zinc-400">
+        <p className="t-small text-ink-muted">
           Printable resume — the same content as{" "}
-          <a href="/experience" className="text-blue-400 hover:text-blue-300">
+          <a
+            href="/experience"
+            className="text-blue-700 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+          >
             the full career timeline
           </a>
           .
@@ -57,13 +65,18 @@ export default function ResumePage() {
         <a
           href="/Bilal_Ahamad_Resume.pdf"
           download
-          className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-6 py-3 text-white transition-all hover:bg-white/10"
+          className="flex items-center gap-2 rounded-xl border border-line/10 bg-ink/5 px-6 py-3 text-ink transition-all hover:bg-ink/10"
         >
           <Download className="h-5 w-5" aria-hidden="true" /> Download PDF
         </a>
       </div>
 
-      <article className="resume-sheet mx-auto max-w-[8.5in] bg-white px-[0.75in] py-[0.7in] text-[#1a1a1a] shadow-2xl print:max-w-none print:shadow-none">
+      {/* Phone screens get a comfortable padding; the Letter-page inches take
+          over from `sm` up, which is where the sheet has the width to spend
+          them. Print is unaffected either way — globals.css zeroes
+          `.resume-sheet` padding with `!important` and lets @page own the
+          margins, and the PDF renders at desktop width regardless. */}
+      <article className="resume-sheet mx-auto max-w-[8.5in] bg-white px-6 py-8 sm:px-[0.75in] sm:py-[0.7in] text-[#1a1a1a] shadow-2xl print:max-w-none print:shadow-none">
         <header className="mb-3 border-b-2 border-[#1a1a1a] pb-2">
           <h1 className="text-3xl font-bold tracking-wide">BILAL AHAMAD</h1>
           <p className="mt-0.5 text-base font-semibold text-[#1a56a0]">{RESUME_HEADLINE}</p>

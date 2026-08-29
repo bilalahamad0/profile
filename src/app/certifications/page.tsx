@@ -18,7 +18,7 @@ const STATS = [
 
 export default function CertificationsPage() {
   return (
-    <div className="min-h-screen bg-[#09090b] aurora-gradient relative overflow-x-hidden">
+    <div className="min-h-screen bg-surface aurora-gradient relative overflow-x-hidden">
       <div className="bg-noise" aria-hidden="true" />
 
       {/* Scroll to Top helper for SmoothScroll compatibility */}
@@ -27,16 +27,16 @@ export default function CertificationsPage() {
       {/* Header Section */}
       <section className="relative mx-auto max-w-7xl px-6 pt-24 pb-8 md:pt-32 md:pb-10 lg:pt-40">
         <div className="flex flex-col items-center space-y-6 text-center">
-          <div className="glass inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 shadow-xl">
-            <Award className="h-4 w-4 text-blue-400" />
-            <span className="t-caption font-bold uppercase tracking-[0.2em] text-white/70">Professional Credentials</span>
+          <div className="glass inline-flex items-center gap-2 rounded-full border border-line/10 px-4 py-2 shadow-xl">
+            <Award className="h-4 w-4 text-blue-700 dark:text-blue-400" />
+            <span className="t-caption font-bold uppercase tracking-[0.2em] text-ink/70">Professional Credentials</span>
           </div>
 
-          <h1 className="t-h1 text-white">
-            Knowledge <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">Album.</span>
+          <h1 className="t-h1 text-ink">
+            Knowledge <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 dark:from-blue-400 dark:via-purple-400 dark:to-indigo-400 bg-clip-text text-transparent">Album.</span>
           </h1>
 
-          <p className="t-lead max-w-2xl text-zinc-400">
+          <p className="t-lead max-w-2xl text-ink-muted">
             A curated collection of my professional certifications, specialized training,
             and continuous education in QA, Development, and Artificial Intelligence.
           </p>
@@ -45,13 +45,15 @@ export default function CertificationsPage() {
         {/* At-a-glance stats — computed from the data, never hardcoded.
             flex-col-reverse keeps conforming dt→dd source order while
             rendering the number above its label. */}
-        <dl className="glass-card mx-auto mt-8 grid max-w-4xl grid-cols-2 gap-y-4 rounded-2xl border border-white/10 px-2 py-4 md:mt-10 md:flex md:items-stretch md:justify-center md:divide-x md:divide-white/10">
+        <dl className="glass-card mx-auto mt-8 grid max-w-4xl grid-cols-2 gap-y-4 rounded-2xl border border-line/10 px-2 py-4 md:mt-10 md:flex md:items-stretch md:justify-center md:divide-x md:divide-line/10">
           {STATS.map((stat) => (
             <div key={stat.label} className="flex flex-col-reverse px-4 text-center md:px-8">
-              <dt className="mt-1 t-label font-bold uppercase tracking-wider text-white/55">
+              {/* The dark theme's 55% ink is too pale on the light card, so the
+                  light ground gets 70% — same weight of voice, legible on both. */}
+              <dt className="mt-1 t-label font-bold uppercase tracking-wider text-ink/70 dark:text-ink/55">
                 {stat.label}
               </dt>
-              <dd className="t-h2 text-white">{stat.value}</dd>
+              <dd className="t-h2 text-ink">{stat.value}</dd>
             </div>
           ))}
         </dl>
@@ -67,11 +69,13 @@ export default function CertificationsPage() {
               <a
                 key={group.id}
                 href={`#${group.id}`}
-                className="inline-flex shrink-0 snap-start items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 t-label font-bold uppercase tracking-wider text-white/60 transition-colors hover:border-white/25 hover:text-white"
+                className="inline-flex shrink-0 snap-start items-center gap-2 rounded-full border border-line/10 bg-ink/[0.05] dark:bg-ink/[0.03] px-4 py-2 t-label font-bold uppercase tracking-wider text-ink/70 dark:text-ink/60 transition-colors hover:border-line/25 hover:text-ink"
               >
                 <Icon className={cn("h-3.5 w-3.5", group.accent.eyebrow)} aria-hidden />
                 {group.title}
-                <span className="text-white/50">· {group.credentials.length}</span>
+                {/* 60% ink lands at 4.4:1 on the light pill fill — one notch
+                    down from the label but still clear of AA at 65%. */}
+                <span className="text-ink/65 dark:text-ink/50">· {group.credentials.length}</span>
               </a>
             );
           })}

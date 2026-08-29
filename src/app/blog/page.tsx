@@ -87,23 +87,23 @@ export default function BlogPage() {
   return (
     <>
       <JsonLd data={[breadcrumb, blogLd]} />
-    <div className="min-h-screen bg-[#09090b] text-white" id="top">
+    <div className="min-h-screen bg-surface text-ink" id="top">
 
       {/* Header — static, server-rendered, paints instantly */}
-      <section className="pt-24 pb-10 md:pt-28 md:pb-12 lg:pt-36 lg:pb-16 px-6 lg:px-24 border-b border-white/5 relative overflow-hidden" aria-labelledby="blog-heading">
+      <section className="pt-24 pb-10 md:pt-28 md:pb-12 lg:pt-36 lg:pb-16 px-6 lg:px-24 border-b border-line/10 dark:border-line/5 relative overflow-hidden" aria-labelledby="blog-heading">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/5 blur-[150px] rounded-full pointer-events-none" aria-hidden="true" />
         <div className="max-w-7xl mx-auto relative">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-6">
-            <BookOpen className="w-4 h-4 text-indigo-400" aria-hidden="true" />
-            <span className="text-xs font-black uppercase tracking-[0.2em] text-indigo-300">Writing &amp; Insights</span>
+            <BookOpen className="w-4 h-4 text-indigo-700 dark:text-indigo-400" aria-hidden="true" />
+            <span className="text-xs font-black uppercase tracking-[0.2em] text-indigo-700 dark:text-indigo-300">Writing &amp; Insights</span>
           </div>
           <h1 id="blog-heading" className="t-h1 mb-6">
             The{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-400">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400">
               Lab Notes
             </span>
           </h1>
-          <p className="t-lead text-zinc-400 font-light max-w-2xl">
+          <p className="t-lead text-ink-muted font-light max-w-2xl">
             Project stories, technical whitepapers, and thoughts on AI-native engineering. Published posts from LinkedIn and
             original deep-dives.
           </p>
@@ -112,33 +112,33 @@ export default function BlogPage() {
 
       {/* Featured Post Hero — static HTML, instant paint */}
       {featured && (
-        <section className="px-6 lg:px-24 py-10 md:py-12 lg:py-16 border-b border-white/5" aria-label="Featured post">
+        <section className="px-6 lg:px-24 py-10 md:py-12 lg:py-16 border-b border-line/10 dark:border-line/5" aria-label="Featured post">
           <div className="max-w-7xl mx-auto">
-            <p className="t-label font-black uppercase tracking-[0.3em] text-zinc-400 mb-6">Featured Post</p>
+            <p className="t-label font-black uppercase tracking-[0.3em] text-ink-muted mb-6">Featured Post</p>
             <Link href={`/blog/${featured.slug}`}>
-              <div className="group relative rounded-3xl border border-violet-500/20 bg-gradient-to-br from-violet-600/10 via-white/[0.02] to-transparent overflow-hidden p-8 md:p-14 hover:border-violet-500/40 transition-all duration-300 cursor-pointer">
+              <div className="group relative rounded-3xl border border-violet-500/20 bg-gradient-to-br from-violet-600/10 via-ink/[0.03] dark:via-white/[0.02] to-transparent overflow-hidden p-8 md:p-14 hover:border-violet-500/40 transition-all duration-300 cursor-pointer">
                 <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-violet-500/5 blur-[100px] rounded-full pointer-events-none group-hover:bg-violet-500/10 transition-all" />
                 <div className="relative z-10 max-w-3xl">
                   <div className="flex items-center gap-3 mb-6 flex-wrap">
                     <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20">
                       {featured.category === "Whitepaper" ? (
-                        <FileText className="w-3.5 h-3.5 text-violet-400" aria-hidden="true" />
+                        <FileText className="w-3.5 h-3.5 text-violet-700 dark:text-violet-400" aria-hidden="true" />
                       ) : (
-                        <BookOpen className="w-3.5 h-3.5 text-violet-400" aria-hidden="true" />
+                        <BookOpen className="w-3.5 h-3.5 text-violet-700 dark:text-violet-400" aria-hidden="true" />
                       )}
-                      <span className="t-label font-black uppercase tracking-wider text-violet-300">{featured.category}</span>
+                      <span className="t-label font-black uppercase tracking-wider text-violet-700 dark:text-violet-300">{featured.category}</span>
                     </div>
-                    <span className="text-xs text-zinc-400">{featured.date}</span>
-                    <span className="text-xs text-zinc-400 flex items-center gap-1.5">
+                    <span className="text-xs text-ink-muted">{featured.date}</span>
+                    <span className="text-xs text-ink-muted flex items-center gap-1.5">
                       <Clock className="w-3.5 h-3.5" aria-hidden="true" />
                       {featured.readingTime} min read
                     </span>
                   </div>
-                  <h2 className="t-h2 text-white mb-4 group-hover:text-violet-200 transition-colors">
+                  <h2 className="t-h2 text-ink mb-4 group-hover:text-violet-700 dark:group-hover:text-violet-200 transition-colors">
                     {featured.title}
                   </h2>
-                  <p className="t-lead text-zinc-400 mb-8">{featured.description}</p>
-                  <div className="flex items-center gap-2 text-sm font-bold text-violet-400 group-hover:gap-3 transition-all">
+                  <p className="t-lead text-ink-muted mb-8">{featured.description}</p>
+                  <div className="flex items-center gap-2 text-sm font-bold text-violet-700 dark:text-violet-400 group-hover:gap-3 transition-all">
                     Read {featured.category} <ArrowRight className="w-4 h-4" />
                   </div>
                 </div>
@@ -148,8 +148,10 @@ export default function BlogPage() {
         </section>
       )}
 
-      {/* Top Mask Overlay — darkens content behind filter bar */}
-      <div className="mask-top-dark" aria-hidden="true" />
+      {/* Top Mask Overlay — hides content behind the sticky filter bar.
+          .mask-top-dark still hard-codes rgb(9 9 11); bg-surface! re-points it at
+          the theme ground (identical in dark, correct in light). */}
+      <div className="mask-top-dark bg-surface!" aria-hidden="true" />
 
       {/* Lazy-loaded interactive filter + grid — client component */}
       <BlogGridClient mdxPosts={mdxPosts} linkedInPosts={linkedInPosts} />
