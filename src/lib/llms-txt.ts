@@ -47,8 +47,11 @@ const PAGES: ReadonlyArray<{ name: string; path: string; note: string }> = [
   { name: "Home", path: "", note: "Overview, featured projects, and highlights." },
   { name: "Experience", path: "/experience", note: "Full 18-year career timeline." },
   { name: "Resume", path: "/resume", note: "One-page resume; PDF at /Bilal_Ahamad_Resume.pdf." },
-  { name: "Projects", path: "/projects", note: "Open-source automation, IoT, and AI tools." },
-  { name: "AI Lab", path: "/ai", note: "AI-native engineering metrics and systems." },
+  {
+    name: "Projects",
+    path: "/projects",
+    note: "Open-source automation, IoT, and AI tools, plus the AI Lab (/projects#ai-lab) — AI-native engineering metrics per system.",
+  },
   { name: "Certifications", path: "/certifications", note: "Professional credentials." },
   { name: "Blog", path: "/blog", note: "Project stories and technical whitepapers." },
   { name: "Contact", path: "/contact", note: "Hiring and consulting enquiries." },

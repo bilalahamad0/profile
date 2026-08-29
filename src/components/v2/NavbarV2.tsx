@@ -4,7 +4,7 @@ import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Briefcase, Mail, Award, FolderKanban, Sparkles, BookOpen, Home } from "lucide-react";
+import { Briefcase, Mail, Award, FolderKanban, BookOpen, Home } from "lucide-react";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { cn } from "@/lib/utils";
 
@@ -13,7 +13,6 @@ const navLinks = [
   { href: "/experience",    label: "Experience",     icon: Briefcase    },
   { href: "/certifications", label: "Certifications", icon: Award        },
   { href: "/projects",      label: "Projects",       icon: FolderKanban },
-  { href: "/ai",            label: "AI Lab",         icon: Sparkles     },
   { href: "/blog",          label: "Blog",           icon: BookOpen     },
   { href: "/contact",       label: "Contact",        icon: Mail         },
 ];

@@ -126,7 +126,7 @@ The site is built securely on Vercel utilizing automatic GitHub CI/CD deployment
 | **Cost Savings** | 99.9% | 99.8% | **99.9%** |
 | **ROI** | 1,500x | 400x | **714x** |
 
-> **Phase 4 measured usage (Claude Code):** 158.1M tokens processed, measured from session logs — input + output + cache writes + cache reads (≈4.6M excluding cache reads). Not included in the estimate table above; live per-project numbers are on [bilalahamad.com/ai](https://bilalahamad.com/ai).
+> **Phase 4 measured usage (Claude Code):** 158.1M tokens processed, measured from session logs — input + output + cache writes + cache reads (≈4.6M excluding cache reads). Not included in the estimate table above; live per-project numbers are in the AI Lab on [bilalahamad.com/projects](https://bilalahamad.com/projects#ai-lab).
 
 <details>
 <summary><strong>Cost methodology</strong></summary>

@@ -8,7 +8,6 @@ const STATIC = [
   `${BASE}/resume`,
   `${BASE}/projects`,
   `${BASE}/certifications`,
-  `${BASE}/ai`,
   `${BASE}/blog`,
   `${BASE}/contact`,
   `${BASE}/privacy`,
@@ -22,8 +21,14 @@ describe("sitemap", () => {
     .map((p) => (p.lastModified as Date).getTime())
     .filter((t) => !Number.isNaN(t));
 
-  it("includes all seven canonical static routes", () => {
+  it("includes every canonical static route", () => {
     for (const url of STATIC) expect(byUrl(url)).toBeDefined();
+  });
+
+  it("omits /ai, which 301s to /projects#ai-lab", () => {
+    // A sitemap entry that redirects is a soft error in Search Console. The AI
+    // Lab content now lives on /projects; see next.config.ts for the redirect.
+    expect(byUrl(`${BASE}/ai`)).toBeUndefined();
   });
 
   it("uses absolute https URLs on the canonical host everywhere", () => {
@@ -59,7 +64,7 @@ describe("sitemap", () => {
     expect((byUrl(`${BASE}/blog`)?.lastModified as Date).getTime()).toBe(newest);
   });
 
-  it("has exactly the seven static routes plus one entry per blog post", () => {
+  it("has exactly the canonical static routes plus one entry per blog post", () => {
     expect(routes).toHaveLength(STATIC.length + blogPosts.length);
   });
 });

@@ -19,7 +19,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/resume`,          priority: 0.9, changeFrequency: "monthly" },
     { url: `${SITE_URL}/projects`,        priority: 0.9, changeFrequency: "monthly" },
     { url: `${SITE_URL}/certifications`,  priority: 0.8, changeFrequency: "monthly" },
-    { url: `${SITE_URL}/ai`,              priority: 0.8, changeFrequency: "monthly" },
+    // No /ai entry: the AI Lab is now the #ai-lab section of /projects, and /ai
+    // 301s there (next.config.ts). Listing a redirecting URL would be a soft error.
     { url: `${SITE_URL}/blog`,            priority: 0.8, changeFrequency: "weekly",  lastModified: newestPost },
     { url: `${SITE_URL}/contact`,         priority: 0.7, changeFrequency: "yearly"  },
     { url: `${SITE_URL}/privacy`,         priority: 0.3, changeFrequency: "yearly"  },

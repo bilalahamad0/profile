@@ -1,12 +1,14 @@
 #!/usr/bin/env node
-// sync-ai-metrics.mjs — keep the /ai page's metrics in sync with their real sources.
+// sync-ai-metrics.mjs — keep the AI Lab metrics in sync with their real sources.
 //
-// The /ai page (src/app/ai/page.tsx) renders two things from per-project metrics:
-//   • "Metrics at a Glance" comparison table
-//   • the "AI-Augmented Systems" project cards
+// The AI Lab lives on /projects (src/app/projects/page.tsx) — it was its own /ai page
+// until 2026-08. It renders two things from per-project metrics:
+//   • the "Metrics at a Glance" comparison table (src/components/projects/AILabSection.tsx)
+//   • the per-project "AI Build Breakdown" inside each project card
+//     (src/components/projects/AIBuildBreakdown.tsx)
 // Each project's numbers come from an `ai-metrics.json` sidecar fetched live from its
-// own GitHub repo (see src/lib/ai-metrics.ts → getAIMetricsMap). STATIC_FALLBACK in the
-// page is a build-time mirror used only when that fetch fails.
+// own GitHub repo (see src/lib/ai-metrics.ts → getAIMetricsMap). STATIC_FALLBACK in
+// src/lib/ai-metrics-fallback.ts is a build-time mirror used only when that fetch fails.
 //
 // This script is the engine behind the `update-ai-page` skill. It NEVER invents AI data:
 // Claude Code token usage is *measured* from session transcripts (--tokens), derived fields
@@ -275,7 +277,7 @@ const report = async ({ fresh = false } = {}) => {
     }
   }
   console.log(
-    '\nApply these to STATIC_FALLBACK in src/app/ai/page.tsx (derived fields only; keep curated AI/token data).'
+    '\nApply these to STATIC_FALLBACK in src/lib/ai-metrics-fallback.ts (derived fields only; keep curated AI/token data).'
   );
 };
 
