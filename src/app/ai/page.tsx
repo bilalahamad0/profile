@@ -313,7 +313,7 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
           {metrics.map(({ icon: Icon, label, value }) => (
             <div key={label} className={`p-3 rounded-2xl ${colors.bg} border ${colors.border}`}>
               <Icon className={`w-4 h-4 ${colors.text} mb-1.5`} />
-              <span className="block t-label font-bold text-zinc-500 uppercase tracking-widest">{label}</span>
+              <span className="block t-label font-bold text-zinc-400 uppercase tracking-widest">{label}</span>
               <span className="block text-xs font-semibold text-zinc-300 mt-0.5 leading-tight">{value}</span>
             </div>
           ))}
@@ -324,7 +324,7 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
           <div className="mb-6">
             <div className={`p-3 rounded-2xl ${colors.bg} border ${colors.border}`}>
               <Server className={`w-4 h-4 ${colors.text} mb-1.5`} />
-              <span className="block t-label font-bold text-zinc-500 uppercase tracking-widest">
+              <span className="block t-label font-bold text-zinc-400 uppercase tracking-widest">
                 Microservices
               </span>
               <span className="block text-xs font-semibold text-zinc-300 mt-0.5">
@@ -337,14 +337,14 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
         {/* Agent Cards — only when sidecar data is available */}
         {dm && dm.agents.length > 0 && (
           <div className="mb-6">
-            <span className="block t-label font-black uppercase tracking-widest text-zinc-500 mb-3">AI Agents</span>
+            <span className="block t-label font-black uppercase tracking-widest text-zinc-400 mb-3">AI Agents</span>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {dm.agents.map((agent) => (
                 <div key={agent.name} className={`p-4 rounded-2xl ${colors.bg} border ${colors.border}`}>
                   <div className="flex items-center gap-2 mb-2">
                     <Bot className={`w-4 h-4 ${colors.text}`} />
                     <span className="text-sm font-bold text-white">{agent.name}</span>
-                    <span className="t-label text-zinc-500 ml-auto">{agent.period}</span>
+                    <span className="t-label text-zinc-400 ml-auto">{agent.period}</span>
                   </div>
                   <p className="t-label text-zinc-400 mb-1">{agent.provider}</p>
                   <div className="flex flex-wrap gap-1.5 mb-2">
@@ -354,7 +354,7 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
                       </span>
                     ))}
                   </div>
-                  <div className="flex items-center justify-between t-label text-zinc-500">
+                  <div className="flex items-center justify-between t-label text-zinc-400">
                     <span>{formatTokens(agent.tokens)} tokens</span>
                     <span>{agent.role}</span>
                   </div>
@@ -414,10 +414,10 @@ function AIProjectCard({ project, index }: { project: ProjectWithMetrics; index:
         {/* Last updated badge */}
         {dm && (
           <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between">
-            <span className="t-label text-zinc-600">
-              Dynamic data from <code className="text-zinc-500">ai-metrics.json</code>
+            <span className="t-label text-zinc-400">
+              Dynamic data from <code className="text-zinc-400">ai-metrics.json</code>
             </span>
-            <span className="t-label text-zinc-600">Updated {dm.lastUpdated}</span>
+            <span className="t-label text-zinc-400">Updated {dm.lastUpdated}</span>
           </div>
         )}
       </div>
@@ -456,36 +456,36 @@ function MetricsAtAGlance({ projects }: { projects: ProjectWithMetrics[] }) {
             <thead>
               <tr className="border-b border-white/[0.06]">
                 <th className="px-5 py-3">
-                  <div className="t-label font-black uppercase tracking-widest text-zinc-500">Project</div>
-                  <div className="t-label text-zinc-600 mt-0.5">Jumps to card</div>
+                  <div className="t-label font-black uppercase tracking-widest text-zinc-400">Project</div>
+                  <div className="t-label text-zinc-400 mt-0.5">Jumps to card</div>
                 </th>
                 <th className="px-4 py-3">
-                  <div className="t-label font-black uppercase tracking-widest text-zinc-500">AI %</div>
-                  <div className="t-label text-zinc-600 mt-0.5">AI Contribution</div>
+                  <div className="t-label font-black uppercase tracking-widest text-zinc-400">AI %</div>
+                  <div className="t-label text-zinc-400 mt-0.5">AI Contribution</div>
                 </th>
                 <th className="px-4 py-3">
-                  <div className="t-label font-black uppercase tracking-widest text-zinc-500">Tokens</div>
-                  <div className="t-label text-zinc-600 mt-0.5">Total processed</div>
+                  <div className="t-label font-black uppercase tracking-widest text-zinc-400">Tokens</div>
+                  <div className="t-label text-zinc-400 mt-0.5">Total processed</div>
                 </th>
                 <th className="px-4 py-3">
-                  <div className="t-label font-black uppercase tracking-widest text-zinc-500">Commits</div>
-                  <div className="t-label text-zinc-600 mt-0.5">Total commits</div>
+                  <div className="t-label font-black uppercase tracking-widest text-zinc-400">Commits</div>
+                  <div className="t-label text-zinc-400 mt-0.5">Total commits</div>
                 </th>
                 <th className="px-4 py-3">
-                  <div className="t-label font-black uppercase tracking-widest text-zinc-500">LOC</div>
-                  <div className="t-label text-zinc-600 mt-0.5">Lines of code</div>
+                  <div className="t-label font-black uppercase tracking-widest text-zinc-400">LOC</div>
+                  <div className="t-label text-zinc-400 mt-0.5">Lines of code</div>
                 </th>
                 <th className="px-4 py-3">
-                  <div className="t-label font-black uppercase tracking-widest text-zinc-500">Cycle</div>
-                  <div className="t-label text-zinc-600 mt-0.5">Dev cycle days</div>
+                  <div className="t-label font-black uppercase tracking-widest text-zinc-400">Cycle</div>
+                  <div className="t-label text-zinc-400 mt-0.5">Dev cycle days</div>
                 </th>
                 <th className="px-4 py-3">
-                  <div className="t-label font-black uppercase tracking-widest text-zinc-500">Saved</div>
-                  <div className="t-label text-zinc-600 mt-0.5">Estimated days saved</div>
+                  <div className="t-label font-black uppercase tracking-widest text-zinc-400">Saved</div>
+                  <div className="t-label text-zinc-400 mt-0.5">Estimated days saved</div>
                 </th>
                 <th className="px-4 py-3">
-                  <div className="t-label font-black uppercase tracking-widest text-zinc-500">Tests</div>
-                  <div className="t-label text-zinc-600 mt-0.5">Counts (+ suites)</div>
+                  <div className="t-label font-black uppercase tracking-widest text-zinc-400">Tests</div>
+                  <div className="t-label text-zinc-400 mt-0.5">Counts (+ suites)</div>
                 </th>
               </tr>
             </thead>
@@ -519,12 +519,12 @@ function MetricsAtAGlance({ projects }: { projects: ProjectWithMetrics[] }) {
                 <span className="t-label font-bold text-purple-400">{r.aiPct}% AI</span>
               </div>
               <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 t-label">
-                <span className="text-zinc-500">Tokens</span><span className="text-zinc-300 text-right">{r.tokens}</span>
-                <span className="text-zinc-500">Commits</span><span className="text-zinc-300 text-right">{r.commits}</span>
-                <span className="text-zinc-500">LOC</span><span className="text-zinc-300 text-right">{r.loc}</span>
-                <span className="text-zinc-500">Cycle</span><span className="text-zinc-300 text-right">{r.cycle}</span>
-                <span className="text-zinc-500">Saved</span><span className="text-zinc-300 text-right">{r.saved}</span>
-                <span className="text-zinc-500">Tests</span><span className="text-zinc-300 text-right">{r.tests}</span>
+                <span className="text-zinc-400">Tokens</span><span className="text-zinc-300 text-right">{r.tokens}</span>
+                <span className="text-zinc-400">Commits</span><span className="text-zinc-300 text-right">{r.commits}</span>
+                <span className="text-zinc-400">LOC</span><span className="text-zinc-300 text-right">{r.loc}</span>
+                <span className="text-zinc-400">Cycle</span><span className="text-zinc-300 text-right">{r.cycle}</span>
+                <span className="text-zinc-400">Saved</span><span className="text-zinc-300 text-right">{r.saved}</span>
+                <span className="text-zinc-400">Tests</span><span className="text-zinc-300 text-right">{r.tests}</span>
               </div>
             </a>
           ))}
@@ -596,7 +596,7 @@ export default async function AILabPage() {
             {heroStats.map(({ label, value }) => (
               <div key={label} className="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
                 <span className="block text-2xl md:text-3xl font-black text-white mb-1">{value}</span>
-                <span className="t-label font-bold text-zinc-500 uppercase tracking-widest">{label}</span>
+                <span className="t-label font-bold text-zinc-400 uppercase tracking-widest">{label}</span>
               </div>
             ))}
           </div>
@@ -617,7 +617,7 @@ export default async function AILabPage() {
               </div>
               <h2 id="systems-heading" className="t-h2">AI-Augmented Systems</h2>
             </div>
-            <Link href="/projects" className="inline-flex items-center gap-2 text-sm font-bold text-zinc-500 hover:text-white transition-colors">
+            <Link href="/projects" className="inline-flex items-center gap-2 text-sm font-bold text-zinc-400 hover:text-white transition-colors">
               View All Projects
               <ChevronRight className="w-4 h-4" />
             </Link>

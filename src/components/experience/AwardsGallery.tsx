@@ -209,7 +209,7 @@ export function AwardsGallery() {
               <span className={`${d.iconColor} text-lg shrink-0`} aria-hidden="true">⭐</span>
               <div>
                 <p className="text-sm font-bold text-zinc-800 dark:text-zinc-200">{d.title}</p>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">{d.body}</p>
+                <p className="text-xs text-zinc-400 dark:text-zinc-400 mt-1 leading-relaxed">{d.body}</p>
               </div>
             </div>
           </div>

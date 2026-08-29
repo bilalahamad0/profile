@@ -80,7 +80,7 @@ export function NavbarV2() {
               <Icon
                 className={cn(
                   "w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 transition-colors",
-                  isActive ? "text-blue-400" : "text-zinc-500 group-hover:text-zinc-300"
+                  isActive ? "text-blue-400" : "text-zinc-400 group-hover:text-zinc-300"
                 )}
                 aria-hidden="true"
               />

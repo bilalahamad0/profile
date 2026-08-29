@@ -592,9 +592,13 @@ export const CREDENTIAL_GROUPS: CredentialGroupDef[] = [
   },
 ];
 
-/** Row that starts expanded on load — the newest flagship specialization.
+/** Rows that start expanded on load — the flagship specialization of each
+ *  track (AI & Prompt Engineering, Leadership & Project Management).
  *  SSR-deterministic so there is never a hydration mismatch. */
-export const DEFAULT_OPEN_ID = "spec-google-ai-professional";
+export const DEFAULT_OPEN_IDS = [
+  "spec-google-ai-professional",
+  "spec-google-project-management",
+] as const;
 
 // --- SUMMARY STATS (always computed, never hardcoded) ---
 

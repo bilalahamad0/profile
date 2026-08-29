@@ -38,7 +38,7 @@ export function DashboardFacade({ title, label, note, children }: DashboardFacad
     >
       <MonitorPlay className="w-8 h-8 text-blue-400" aria-hidden="true" />
       <span className="t-small font-bold text-white">{title}</span>
-      {note && <span className="t-caption text-zinc-500">{note}</span>}
+      {note && <span className="t-caption text-zinc-400">{note}</span>}
       <span className="mt-1 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-500/80 backdrop-blur-md border border-white/20 t-small font-black uppercase tracking-widest text-white shadow-xl transition-all group-hover/facade:bg-blue-500 group-hover/facade:scale-105">
         <Play className="w-4 h-4 fill-current" aria-hidden="true" />
         {label}

@@ -106,7 +106,7 @@ export function ExperienceRightColumn() {
             <p className="text-sm text-zinc-700 dark:text-zinc-300">
               Electronics and Telecommunications Engineering
             </p>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">
+            <p className="text-sm text-zinc-400 dark:text-zinc-400">
               Biju Patnaik University of Technology
             </p>
             <p className="text-xs font-medium uppercase tracking-wider text-indigo-700 dark:text-indigo-300">
@@ -125,7 +125,7 @@ export function ExperienceRightColumn() {
           <BadgeCheck className="absolute bottom-4 right-4 w-20 h-20 opacity-[0.04] text-zinc-400 pointer-events-none z-0" aria-hidden="true" />
           <div className="flex items-center justify-between mb-5 relative z-10">
             <h2 className="t-h3 text-zinc-900 dark:text-white flex items-center gap-2">
-              <Settings className="w-6 h-6 text-zinc-600 dark:text-zinc-400" aria-hidden="true" />
+              <Settings className="w-6 h-6 text-zinc-400 dark:text-zinc-400" aria-hidden="true" />
               Certifications
             </h2>
             <Link
@@ -235,7 +235,7 @@ export function ExperienceRightColumn() {
             <span className="text-2xl" aria-hidden="true">🏆</span>
             Awards &amp; Recognition
           </h2>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6 relative z-10">
+          <p className="text-sm text-zinc-400 dark:text-zinc-400 mb-6 relative z-10">
             L&amp;T Infotech (2010–2011)
           </p>
           <div className="relative z-10">
@@ -267,14 +267,14 @@ export function ExperienceRightColumn() {
               href="https://developers.google.com/profile/u/bahamad"
               target="_blank"
               rel="noreferrer"
-              className="text-zinc-600 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-blue-400 font-medium mb-6 font-mono text-sm underline underline-offset-4 decoration-zinc-700 inline-block w-fit transition-colors"
+              className="text-zinc-400 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-blue-400 font-medium mb-6 font-mono text-sm underline underline-offset-4 decoration-zinc-700 inline-block w-fit transition-colors"
             >
               g.dev/bahamad
             </a>
             <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed mb-8">
               Recognized participant in the Google Developer Ecosystem. Attended multiple flagship events in Mountain View, earning badges for technical integrations and Platform mastery.
             </p>
-            <h3 className="t-label font-bold text-zinc-500 uppercase tracking-widest mb-4">
+            <h3 className="t-label font-bold text-zinc-400 uppercase tracking-widest mb-4">
               I/O Attendance &amp; Badges
             </h3>
             <div className="flex flex-wrap gap-2.5 mb-8">

@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Sparkles, Github, ArrowRight, ExternalLink } from "lucide-react";
 import { projectsData } from "@/data/portfolio";
+import { LazyLoopVideo } from "@/components/media/LazyLoopVideo";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -58,13 +59,10 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
       {/* Thumbnail / live dashboard preview */}
       {(project as any).thumbnailType === "video" || project.thumbnail?.endsWith('.mp4') ? (
         <div className={`relative w-full h-40 overflow-hidden ${ACCENT_BG[project.accent]}`}>
-          <video
+          <LazyLoopVideo
             src={project.thumbnail!}
+            poster={(project as unknown as { thumbnailPoster?: string }).thumbnailPoster}
             className={`w-full h-full object-cover ${imgPosition} opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700`}
-            autoPlay
-            loop
-            muted
-            playsInline
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/60 to-transparent pointer-events-none" />
           {/* Only promise a full video when one exists — mp4 thumbnails alone just loop inline */}
@@ -106,7 +104,7 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
         {/* Extended sub-group — regional deep-dives that live inside this project */}
         {subDashboards.length > 0 && (
           <div className="relative z-[2] flex flex-wrap items-center gap-1.5 mb-3">
-            <span className="t-label font-bold uppercase tracking-widest text-zinc-500">Includes</span>
+            <span className="t-label font-bold uppercase tracking-widest text-zinc-400">Includes</span>
             {subDashboards.map((sub) => (
               <a
                 key={sub.id}
@@ -126,7 +124,7 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
         <p className="text-sm text-zinc-400 leading-relaxed mb-4 line-clamp-2">{project.description}</p>
 
         <div className="flex items-center justify-between pt-3 border-t border-white/5 mt-auto">
-          <span className="text-xs text-zinc-500">{project.tech.slice(0, 2).join(" · ")}</span>
+          <span className="text-xs text-zinc-400">{project.tech.slice(0, 2).join(" · ")}</span>
           <div className="flex gap-3 relative z-[2]">
             {project.demo && (
               <a
@@ -142,7 +140,7 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
               href={project.repo}
               target="_blank"
               rel="noreferrer"
-              className="text-xs font-bold text-zinc-500 hover:text-white transition-colors flex items-center gap-1"
+              className="text-xs font-bold text-zinc-400 hover:text-white transition-colors flex items-center gap-1"
             >
               <Github className="w-3.5 h-3.5" /> GitHub
             </a>

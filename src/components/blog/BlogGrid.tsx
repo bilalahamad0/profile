@@ -56,7 +56,7 @@ export function BlogGrid({ mdxPosts, linkedInPosts }: BlogGridProps) {
         aria-label="Filter posts"
       >
         <div className="max-w-7xl mx-auto flex items-center gap-3 flex-wrap">
-          <Filter className="w-4 h-4 text-zinc-600 shrink-0" aria-hidden="true" />
+          <Filter className="w-4 h-4 text-zinc-400 shrink-0" aria-hidden="true" />
           {FILTERS.map((f) => (
             <button
               key={f}
@@ -72,7 +72,7 @@ export function BlogGrid({ mdxPosts, linkedInPosts }: BlogGridProps) {
               {f === "LinkedIn" && <span className="ml-1.5 text-sky-400">↗</span>}
             </button>
           ))}
-          <span className="ml-auto text-xs text-zinc-600">{filtered.length} posts</span>
+          <span className="ml-auto text-xs text-zinc-400">{filtered.length} posts</span>
         </div>
       </section>
 
@@ -140,7 +140,7 @@ export function BlogGrid({ mdxPosts, linkedInPosts }: BlogGridProps) {
                         {isLinkedIn && (
                           <span className="t-label font-bold text-sky-500 uppercase tracking-widest">↗ LinkedIn</span>
                         )}
-                        <span className="ml-auto t-label text-zinc-600">{post.date}</span>
+                        <span className="ml-auto t-label text-zinc-400">{post.date}</span>
                       </div>
 
                       {/* Title */}
@@ -149,14 +149,14 @@ export function BlogGrid({ mdxPosts, linkedInPosts }: BlogGridProps) {
                       </h3>
 
                       {/* Excerpt */}
-                      <p className="text-sm text-zinc-500 leading-relaxed mb-4 flex-grow line-clamp-3">
+                      <p className="text-sm text-zinc-400 leading-relaxed mb-4 flex-grow line-clamp-3">
                         {post.description}
                       </p>
 
                       {/* Tags */}
                       <div className="flex flex-wrap gap-1.5 mb-4">
                         {post.tags.slice(0, 3).map((tag) => (
-                          <span key={tag} className="flex items-center gap-1 t-label font-semibold text-zinc-600 px-2 py-0.5 rounded-md bg-white/[0.04]">
+                          <span key={tag} className="flex items-center gap-1 t-label font-semibold text-zinc-400 px-2 py-0.5 rounded-md bg-white/[0.04]">
                             <Tag className="w-2.5 h-2.5" />
                             {String(tag).replace("#", "")}
                           </span>
@@ -165,7 +165,7 @@ export function BlogGrid({ mdxPosts, linkedInPosts }: BlogGridProps) {
 
                       {/* Footer */}
                       <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                        <span className="flex items-center gap-1.5 text-xs text-zinc-600">
+                        <span className="flex items-center gap-1.5 text-xs text-zinc-400">
                           <Clock className="w-3.5 h-3.5" />
                           {post.readingTime} min read
                         </span>

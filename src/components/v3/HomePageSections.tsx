@@ -153,7 +153,7 @@ export function BlogPreview({ posts }: { posts: BlogPostPreview[] }) {
                       <span className="px-3 py-1 rounded-full bg-violet-500/15 border border-violet-500/25 t-label font-bold uppercase tracking-widest text-violet-300">
                         {featured.category}
                       </span>
-                      <span className="text-xs text-zinc-500">{featured.readingTime} min read</span>
+                      <span className="text-xs text-zinc-400">{featured.readingTime} min read</span>
                     </div>
                     <h3 className="t-h3 text-white mb-3 group-hover:text-violet-200 transition-colors">
                       {featured.title}
@@ -178,10 +178,10 @@ export function BlogPreview({ posts }: { posts: BlogPostPreview[] }) {
                   <div className="flex items-center gap-2 mb-3">
                     <FileText className="w-3.5 h-3.5 text-blue-400" />
                     <span className="t-label font-bold uppercase tracking-widest text-blue-400">{post.category}</span>
-                    <span className="t-label text-zinc-600 ml-auto">{post.readingTime} min</span>
+                    <span className="t-label text-zinc-400 ml-auto">{post.readingTime} min</span>
                   </div>
                   <h3 className="text-sm font-bold text-white mb-2 group-hover:text-blue-300 transition-colors line-clamp-2">{post.title}</h3>
-                  <p className="text-xs text-zinc-500 line-clamp-2">{post.description}</p>
+                  <p className="text-xs text-zinc-400 line-clamp-2">{post.description}</p>
                 </Link>
               ))}
               {!hasRecentPosts && latestLinkedIn.map((post) => (
@@ -197,7 +197,7 @@ export function BlogPreview({ posts }: { posts: BlogPostPreview[] }) {
                     <span className="t-label font-bold uppercase tracking-widest text-blue-400">LinkedIn</span>
                   </div>
                   <h3 className="text-sm font-bold text-white mb-2 group-hover:text-blue-300 transition-colors line-clamp-2">{post.title}</h3>
-                  <p className="text-xs text-zinc-500 line-clamp-2">{post.excerpt}</p>
+                  <p className="text-xs text-zinc-400 line-clamp-2">{post.excerpt}</p>
                 </a>
               ))}
             </motion.div>
