@@ -9,6 +9,27 @@ import {
   ExternalLink, Target, Cpu, Trophy, BadgeCheck, MessageSquareQuote, User,
 } from "lucide-react";
 import { skills, recommendations, certifications } from "@/data/portfolio";
+import {
+  MOBILE_COLLAPSIBLE,
+  MOBILE_COLLAPSIBLE_INNER,
+  MobileCollapseToggle,
+} from "@/components/experience/MobileCollapseToggle";
+
+/** Anchor targets for the mobile jump index on /experience. Exported so
+ *  `app/experience/page.tsx` and this column can never drift apart. */
+export const EXPERIENCE_SECTIONS = [
+  { id: "exp-core-focus", label: "Core Focus" },
+  { id: "exp-skills", label: "Technical Arsenal" },
+  { id: "exp-education", label: "Education" },
+  { id: "exp-certifications", label: "Certifications" },
+  { id: "exp-recommendations", label: "Recommendations" },
+  { id: "exp-awards", label: "Awards" },
+  { id: "exp-google", label: "Google Dev Profile" },
+] as const;
+
+/** One offset for every in-page anchor: clears the fixed navbar plus the
+ *  sticky mobile jump rail, and just the navbar once the rail is gone at `lg`. */
+const ANCHOR_OFFSET = "scroll-mt-40 lg:scroll-mt-28";
 
 const CORE_FOCUS_TAGS = [
   "FIRMWARE QUALITY GOVERNANCE",
@@ -34,8 +55,9 @@ export function ExperienceRightColumn() {
       {/* Core Focus */}
       <AnimatedSection delay={0} className="flex-auto flex flex-col">
         <section
+          id="exp-core-focus"
           aria-label="Core Focus Areas"
-          className="glass-card rounded-3xl p-8 flex flex-col justify-between h-full relative hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300"
+          className={`glass-card rounded-3xl p-8 flex flex-col justify-between h-full relative hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 ${ANCHOR_OFFSET}`}
         >
           <Target className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-ink-muted pointer-events-none z-0" aria-hidden="true" />
           <h2 className="t-h3 text-ink mb-5 flex items-center gap-2 relative z-10">
@@ -63,8 +85,9 @@ export function ExperienceRightColumn() {
       {/* Technical Arsenal */}
       <AnimatedSection delay={0.05} className="flex-auto flex flex-col">
         <section
+          id="exp-skills"
           aria-label="Technical Arsenal"
-          className="glass-card rounded-3xl p-8 flex flex-col justify-between h-full relative hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300"
+          className={`glass-card rounded-3xl p-8 flex flex-col justify-between h-full relative hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 ${ANCHOR_OFFSET}`}
         >
           <Cpu className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-ink-muted pointer-events-none z-0" aria-hidden="true" />
           <h2 className="t-h3 text-ink mb-5 flex items-center gap-2 relative z-10">
@@ -91,8 +114,9 @@ export function ExperienceRightColumn() {
       {/* Education */}
       <AnimatedSection delay={0.1} className="flex-auto flex flex-col">
         <section
+          id="exp-education"
           aria-label="Education"
-          className="glass-card rounded-3xl p-8 flex flex-col h-full relative hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300"
+          className={`glass-card rounded-3xl p-8 flex flex-col h-full relative hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 ${ANCHOR_OFFSET}`}
         >
           <GraduationCap className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-ink-muted pointer-events-none z-0" aria-hidden="true" />
           <h2 className="t-h3 text-ink mb-5 flex items-center gap-2 relative z-10">
@@ -119,8 +143,9 @@ export function ExperienceRightColumn() {
       {/* Certifications */}
       <AnimatedSection delay={0.15} className="flex-auto flex flex-col">
         <section
+          id="exp-certifications"
           aria-label="Certifications"
-          className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col justify-between h-full hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300"
+          className={`glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col justify-between h-full hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 ${ANCHOR_OFFSET}`}
         >
           <BadgeCheck className="absolute bottom-4 right-4 w-20 h-20 opacity-[0.04] text-ink-muted pointer-events-none z-0" aria-hidden="true" />
           <div className="flex items-center justify-between mb-5 relative z-10">
@@ -192,8 +217,9 @@ export function ExperienceRightColumn() {
       {/* LinkedIn Recommendations */}
       <AnimatedSection delay={0.2} className="flex-auto flex flex-col">
         <section
+          id="exp-recommendations"
           aria-label="LinkedIn Recommendations"
-          className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col h-full hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300"
+          className={`glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col h-full hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 ${ANCHOR_OFFSET}`}
         >
           <MessageSquareQuote className="absolute bottom-4 right-4 w-20 h-20 opacity-[0.04] text-ink-muted pointer-events-none z-0" aria-hidden="true" />
           <h2 className="t-h3 text-ink mb-5 flex items-center gap-2 relative z-10">
@@ -227,8 +253,9 @@ export function ExperienceRightColumn() {
       {/* Awards & Recognition */}
       <AnimatedSection delay={0.25} className="flex-auto flex flex-col">
         <section
+          id="exp-awards"
           aria-label="Awards and Recognition"
-          className="glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col justify-between h-full hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300"
+          className={`glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col justify-between h-full hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 ${ANCHOR_OFFSET}`}
         >
           <Trophy className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-ink-muted pointer-events-none z-0" aria-hidden="true" />
           <h2 className="t-h3 text-ink mb-2 flex items-center gap-2 relative z-10">
@@ -238,8 +265,22 @@ export function ExperienceRightColumn() {
           <p className="text-sm text-ink-muted mb-6 relative z-10">
             L&amp;T Infotech (2010–2011)
           </p>
+          {/* The gallery is ~1,000px of certificate photography on a phone —
+              the single densest scroll-per-fact block on the page. Below `lg`
+              it collapses behind a disclosure; the award titles and citations
+              stay in the DOM either way, and desktop is untouched. */}
           <div className="relative z-10">
-            <AwardsGallery />
+            <MobileCollapseToggle
+              controls="exp-awards-gallery"
+              showLabel="Show award photos and citations"
+              hideLabel="Hide award photos and citations"
+              className="mb-2"
+            />
+            <div id="exp-awards-gallery" className={MOBILE_COLLAPSIBLE}>
+              <div className={MOBILE_COLLAPSIBLE_INNER}>
+                <AwardsGallery />
+              </div>
+            </div>
           </div>
         </section>
       </AnimatedSection>
@@ -247,8 +288,9 @@ export function ExperienceRightColumn() {
       {/* Google Developer Profile */}
       <AnimatedSection delay={0.3} className="flex-auto flex flex-col">
         <section
+          id="exp-google"
           aria-label="Google Developer Profile"
-          className="glass-card rounded-3xl p-8 relative flex flex-col gap-8 h-full overflow-hidden hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300"
+          className={`glass-card rounded-3xl p-8 relative flex flex-col gap-8 h-full overflow-hidden hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 ${ANCHOR_OFFSET}`}
         >
           {/* Google logo watermark */}
           <div className="absolute top-4 right-4 pointer-events-none opacity-[0.035] z-0" aria-hidden="true">

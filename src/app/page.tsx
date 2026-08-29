@@ -74,8 +74,9 @@ const personSchema = {
   hasOccupation: [
     {
       "@type": "Role",
-      roleName: "Founding System Architect & Technical QA Lead",
+      roleName: "System Architect & Technical QA Lead",
       startDate: "2025-09",
+      endDate: "2026-08",
       occupiedBy: { "@type": "Organization", name: "Stealth Mode Startup" },
     },
     {

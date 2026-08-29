@@ -29,8 +29,13 @@ export const metadata: Metadata = {
   },
 };
 
-/** Roles that carry their full bullet set; older roles condense to one line. */
-const FULL_DETAIL_ROLES = 6;
+/**
+ * A one-page first-look resume: the six most recent roles each keep their
+ * single strongest (metric-led) bullet, and everything before 2016 collapses
+ * into one "Earlier" line. The full record lives on /experience — this sheet
+ * exists to survive a 30-second scan, not to be complete.
+ */
+const DETAILED_ROLES = 6;
 
 /**
  * The resume document — one page, two representations.
@@ -47,6 +52,14 @@ export default function ResumePage() {
   const projects = RESUME_PROJECT_IDS.map((id) =>
     projectsData.find((p) => p.id === id)
   ).filter((p): p is (typeof projectsData)[number] => Boolean(p));
+
+  // Everything before the detailed roles, folded into a single line so the
+  // sheet stays one page without dropping the employers entirely.
+  const earlier = experienceData.slice(DETAILED_ROLES);
+  const earlierLine = earlier.map((r) => r.company).join(" · ");
+  const earlierRange = earlier.length
+    ? `${earlier[earlier.length - 1].duration.split(" - ")[0].split(" ").pop()}–${earlier[0].duration.split(" - ")[1].split(" ").pop()}`
+    : "";
 
   return (
     <div className="min-h-screen bg-surface px-4 py-24 md:py-28 print:bg-white print:p-0">
@@ -77,17 +90,21 @@ export default function ResumePage() {
           `.resume-sheet` padding with `!important` and lets @page own the
           margins, and the PDF renders at desktop width regardless. */}
       <article className="resume-sheet mx-auto max-w-[8.5in] bg-white px-6 py-8 sm:px-[0.75in] sm:py-[0.7in] text-[#1a1a1a] shadow-2xl print:max-w-none print:shadow-none">
-        <header className="mb-3 border-b-2 border-[#1a1a1a] pb-2">
+        <header className="mb-2 border-b-2 border-[#1a1a1a] pb-1.5">
           <h1 className="text-3xl font-bold tracking-wide">BILAL AHAMAD</h1>
           <p className="mt-0.5 text-base font-semibold text-[#1a56a0]">{RESUME_HEADLINE}</p>
           <p className="mt-1 text-xs text-[#333]">
             {RESUME_LOCATION}
             {RESUME_CONTACT.map((c) => (
-              <span key={c.href}>
+              <span key={c.label}>
                 {"  ·  "}
-                <a href={c.href} className="text-[#1a56a0]">
-                  {c.label}
-                </a>
+                {c.href ? (
+                  <a href={c.href} className="text-[#1a56a0]">
+                    {c.label}
+                  </a>
+                ) : (
+                  c.label
+                )}
               </span>
             ))}
           </p>
@@ -106,68 +123,48 @@ export default function ResumePage() {
         </ResumeSection>
 
         <ResumeSection title="Experience">
-          {experienceData.map((role, i) => {
-            const condensed = i >= FULL_DETAIL_ROLES;
-            return (
-              <div key={`${role.company}-${role.duration}`} className="mb-2 break-inside-avoid">
-                <div className="flex items-baseline justify-between gap-4">
-                  <h3 className="text-sm font-bold">
-                    {role.role.replace(/\n/g, " ")}{" "}
-                    <span className="font-normal text-[#1a56a0]">— {role.company}</span>
-                  </h3>
-                  <span className="whitespace-nowrap text-xs text-[#444]">
-                    {role.duration} · {role.location}
-                  </span>
-                </div>
-                {!condensed && (
-                  <p className="mt-0.5 text-xs leading-snug text-[#333]">{role.desc}</p>
-                )}
-                <ul className="mt-0.5 ml-4 list-disc">
-                  {(condensed ? role.highlights.slice(0, 1) : role.highlights.slice(0, 2)).map(
-                    (h) => (
-                      <li key={h} className="text-xs leading-snug">
-                        {h}
-                      </li>
-                    )
-                  )}
-                </ul>
+          {experienceData.slice(0, DETAILED_ROLES).map((role) => (
+            <div key={`${role.company}-${role.duration}`} className="mb-1">
+              <div className="flex items-baseline justify-between gap-4">
+                <h3 className="text-sm font-bold">
+                  {role.role.replace(/\n/g, " ")}{" "}
+                  <span className="font-normal text-[#1a56a0]">— {role.company}</span>
+                </h3>
+                <span className="whitespace-nowrap text-xs text-[#444]">
+                  {role.duration} · {role.location}
+                </span>
               </div>
-            );
-          })}
-        </ResumeSection>
-
-        <ResumeSection title="Selected Projects">
-          {projects.map((p) => (
-            <p key={p.id} className="mb-1 text-xs leading-snug">
-              <span className="font-bold">{p.name}</span> — {p.description}
-            </p>
-          ))}
-        </ResumeSection>
-
-        <div className="flex gap-8">
-          {/* Certifications take the wider column: their titles are long enough
-              to wrap to a second line at 50/50, which spilled a page. */}
-          <div className="flex-[1.6]">
-            <ResumeSection title="Certifications">
-              <ul className="ml-4 list-disc">
-                {RESUME_CERT_TITLES.map((c) => (
-                  <li key={c} className="text-xs leading-snug">
-                    {c}
+              <ul className="mt-0.5 ml-4 list-disc">
+                {role.highlights.slice(0, 1).map((h) => (
+                  <li key={h} className="text-xs leading-snug">
+                    {h}
                   </li>
                 ))}
               </ul>
-            </ResumeSection>
-          </div>
-          <div className="flex-1">
-            <ResumeSection title="Education">
-              <p className="text-xs leading-snug">
-                <span className="font-bold">{RESUME_EDUCATION.degree}</span>
-                <br />
-                {RESUME_EDUCATION.school} — {RESUME_EDUCATION.years}
-              </p>
-            </ResumeSection>
-          </div>
-        </div>
+            </div>
+          ))}
+          <p className="mt-1 text-xs leading-snug">
+            <span className="font-bold">Earlier ({earlierRange}):</span> {earlierLine}
+          </p>
+        </ResumeSection>
+
+        <ResumeSection title="Selected Projects">
+          <p className="text-xs leading-snug">
+            {projects.map((p) => p.name).join(" · ")} — shipped, open-source; details at
+            bilalahamad.com/projects
+          </p>
+        </ResumeSection>
+
+        <ResumeSection title="Certifications & Education">
+          <p className="mb-0.5 text-xs leading-snug">
+            <span className="font-bold">Certifications:</span>{" "}
+            {RESUME_CERT_TITLES.join(" · ")}
+          </p>
+          <p className="text-xs leading-snug">
+            <span className="font-bold">{RESUME_EDUCATION.degree}</span> —{" "}
+            {RESUME_EDUCATION.school}, {RESUME_EDUCATION.years}
+          </p>
+        </ResumeSection>
       </article>
     </div>
   );
@@ -175,7 +172,7 @@ export default function ResumePage() {
 
 function ResumeSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="mt-2.5">
+    <section className="mt-1.5">
       <h2 className="mb-1 border-b border-[#b9b9b9] pb-0.5 text-sm font-bold uppercase tracking-[0.12em]">
         {title}
       </h2>
