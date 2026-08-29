@@ -36,7 +36,7 @@ const slides = [
     title: "Samsara\nIoT & AI/ML QA",
     body: experienceData[1]?.highlights?.[0] ?? experienceData[1]?.desc,
     icon: <Zap className="w-10 h-10 text-amber-400" />,
-    stat: { value: "50%", label: "Regression Cycles Reduced" },
+    stat: { value: "5 Days", label: "Regression Cycle (was 2 Weeks)" },
     cta: null,
   },
   /* 2 — Amazon */
@@ -69,7 +69,7 @@ const slides = [
     accent: "#10b981",
     bg: "from-emerald-950 via-slate-950 to-black",
     label: "RIVIAN AUTOMOTIVE · 2021–2022",
-    title: "Rivian\nInfotainment QA",
+    title: "Rivian\nSystem Test Lead",
     body: experienceData[3]?.highlights?.[0] ?? experienceData[3]?.desc,
     icon: <Car className="w-10 h-10 text-emerald-400" />,
     stat: { value: "R1T / R1S", label: "EV Models Shipped" },
@@ -84,7 +84,7 @@ const slides = [
     title: "Motorola\nBluetooth Automation",
     body: experienceData[8]?.highlights?.[0] ?? experienceData[8]?.desc,
     icon: <Cpu className="w-10 h-10 text-violet-400" />,
-    stat: { value: "$2.1M", label: "Revenue via Automation Framework" },
+    stat: { value: "3-Tier", label: "Bluetooth Qualification Framework" },
     cta: null,
   },
   /* 6 — Tech / Skills */

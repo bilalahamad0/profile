@@ -83,11 +83,15 @@ export default function ResumePage() {
           <p className="mt-1 text-xs text-[#333]">
             {RESUME_LOCATION}
             {RESUME_CONTACT.map((c) => (
-              <span key={c.href}>
+              <span key={c.label}>
                 {"  ·  "}
-                <a href={c.href} className="text-[#1a56a0]">
-                  {c.label}
-                </a>
+                {c.href ? (
+                  <a href={c.href} className="text-[#1a56a0]">
+                    {c.label}
+                  </a>
+                ) : (
+                  c.label
+                )}
               </span>
             ))}
           </p>
@@ -109,7 +113,7 @@ export default function ResumePage() {
           {experienceData.map((role, i) => {
             const condensed = i >= FULL_DETAIL_ROLES;
             return (
-              <div key={`${role.company}-${role.duration}`} className="mb-2 break-inside-avoid">
+              <div key={`${role.company}-${role.duration}`} className="mb-1.5">
                 <div className="flex items-baseline justify-between gap-4">
                   <h3 className="text-sm font-bold">
                     {role.role.replace(/\n/g, " ")}{" "}
@@ -175,7 +179,7 @@ export default function ResumePage() {
 
 function ResumeSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="mt-2.5">
+    <section className="mt-2">
       <h2 className="mb-1 border-b border-[#b9b9b9] pb-0.5 text-sm font-bold uppercase tracking-[0.12em]">
         {title}
       </h2>
