@@ -781,8 +781,8 @@ export function BentoGridV2({ showOnlyResume = false }: { showOnlyResume?: boole
                           className="flex flex-row overflow-x-auto gap-4 snap-x snap-mandatory py-2 custom-scrollbar items-center scroll-smooth"
                         >
                           {[
-                            { yr: '2025', img: '/io/1.jpg', badge: 'badge_2025.svg', href: 'io/2025/registered' },
-                            { yr: '2024', img: '/io/2.jpg', badge: 'badge_2024.svg', href: 'io/2024/registered' },
+                            { yr: '2025', img: '/io/1.jpg', badge: 'badge_2025.webp', href: 'io/2025/registered' },
+                            { yr: '2024', img: '/io/2.jpg', badge: 'badge_2024.webp', href: 'io/2024/registered' },
                             { yr: '2023', img: '/io/3.jpg', badge: 'badge_2023.svg', href: 'io/2023/attendee' }
                           ].map((item, i) => (
                             <a key={i} href={`https://developers.google.com/profile/badges/events/${item.href}`} target="_blank" rel="noreferrer" className="relative w-40 h-52 min-w-[10rem] flex-shrink-0 rounded-xl border-2 border-zinc-800 bg-zinc-900 snap-center group shadow-lg overflow-hidden">

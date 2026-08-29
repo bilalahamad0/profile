@@ -5,9 +5,11 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+// 2025/2024 badges are 192px WebP rasters — the original Google SVGs embed the
+// raster data uncompressed (badge_2025.svg alone was 5.85MB for a 48px chip).
 const IO_ITEMS = [
-  { yr: "2025", img: "/io/1.jpg",           badge: "/io/badge_2025.svg", href: "https://developers.google.com/profile/badges/events/io/2025/registered" },
-  { yr: "2024", img: "/io/2.jpg",           badge: "/io/badge_2024.svg", href: "https://developers.google.com/profile/badges/events/io/2024/registered" },
+  { yr: "2025", img: "/io/1.jpg",           badge: "/io/badge_2025.webp", href: "https://developers.google.com/profile/badges/events/io/2025/registered" },
+  { yr: "2024", img: "/io/2.jpg",           badge: "/io/badge_2024.webp", href: "https://developers.google.com/profile/badges/events/io/2024/registered" },
   { yr: "2023", img: "/io/3.jpg",           badge: "/io/badge_2023.svg", href: "https://developers.google.com/profile/badges/events/io/2023/attendee"   },
   { yr: "2022", img: "/io/google-2022.png", badge: "/io/badge_2022.svg", href: "https://developers.google.com/profile/badges/events/io/2022/attendee"   },
 ];

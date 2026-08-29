@@ -14,6 +14,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "bilalahamad0.github.io" },
       { protocol: "https", hostname: "opengraph.githubassets.com" },
       { protocol: "https", hostname: "raw.githubusercontent.com" },
+      { protocol: "https", hostname: "media.licdn.com" },
     ],
   },
 

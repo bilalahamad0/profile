@@ -9,6 +9,7 @@ import {
   Filter, ArrowRight, BookOpen, Zap, ChevronUp, Network, MapPin,
 } from "lucide-react";
 import { projectsData, type ProjectCategory } from "@/data/portfolio";
+import { DashboardFacade } from "@/components/projects/DashboardFacade";
 
 const CATEGORIES: ProjectCategory[] = ["All", "IoT & Automation", "Data & Analytics", "AI-Powered", "Web & DevOps"];
 
@@ -325,28 +326,47 @@ export default function ProjectsPage() {
                               (project as any).dashboardSrc ? "h-[200px] sm:h-[250px]" : "h-[250px] sm:h-[300px]"
                             }`}>
                               {!previewFailed && ((project as any).previewType === "youtube" || (project as any).thumbnailType === "video" || project.thumbnail?.endsWith('.mp4')) ? (
-                                <div 
-                                  className="relative w-full h-full cursor-pointer group/vid"
-                                  onClick={() => setVideoLightbox((project as any).previewSrc)}
-                                >
-                                  <video
-                                    src={project.thumbnail!}
-                                    className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                                    autoPlay
-                                    loop
-                                    muted
-                                    playsInline
-                                  />
-                                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
-                                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                     <div className="px-6 py-3 rounded-full bg-blue-500/80 backdrop-blur-md border border-white/20 font-black uppercase tracking-widest text-white shadow-xl flex items-center gap-2 group-hover/vid:scale-105 group-hover/vid:bg-blue-500 transition-all">
-                                       <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                                       Play Full Video
-                                     </div>
+                                (project as any).previewType === "youtube" ? (
+                                  <div
+                                    className="relative w-full h-full cursor-pointer group/vid"
+                                    onClick={() => setVideoLightbox((project as any).previewSrc)}
+                                  >
+                                    <video
+                                      src={project.thumbnail!}
+                                      className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                                      autoPlay
+                                      loop
+                                      muted
+                                      playsInline
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
+                                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                       <div className="px-6 py-3 rounded-full bg-blue-500/80 backdrop-blur-md border border-white/20 font-black uppercase tracking-widest text-white shadow-xl flex items-center gap-2 group-hover/vid:scale-105 group-hover/vid:bg-blue-500 transition-all">
+                                         <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                         Play Full Video
+                                       </div>
+                                    </div>
                                   </div>
-                                </div>
+                                ) : (
+                                  // MP4 thumbnail with no full-length video behind it — loop inline, no lightbox
+                                  <div className="relative w-full h-full">
+                                    <video
+                                      src={project.thumbnail!}
+                                      className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                                      autoPlay
+                                      loop
+                                      muted
+                                      playsInline
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
+                                  </div>
+                                )
                               ) : !previewFailed && (project as any).previewType === "iframe" ? (
-                                <>
+                                <DashboardFacade
+                                  title={project.name}
+                                  label="Load live preview"
+                                  note="Interactive site embed — loads on demand"
+                                >
                                   <iframe
                                     src={(project as any).previewSrc}
                                     className="w-full h-full border-0 scale-[0.85] origin-top-left"
@@ -359,7 +379,7 @@ export default function ProjectsPage() {
                                     }}
                                   />
                                   <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/40 pointer-events-none" />
-                                </>
+                                </DashboardFacade>
                               ) : !previewFailed ? (
                                 <>
                                   <img
@@ -405,20 +425,49 @@ export default function ProjectsPage() {
                               (project as any).previewType !== "none" ? "h-[200px] sm:h-[250px]" : "h-[416px] sm:h-[516px]"
                             }`}>
                               {project.id === 'adhan' ? (
-                                <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+                                <DashboardFacade
+                                  title={project.name}
+                                  label="Load live dashboard"
+                                  note="Live Plotly + Firestore dashboard — loads on demand"
+                                >
+                                  <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+                                    <iframe
+                                      src={(project as any).dashboardSrc}
+                                      className="border-0 origin-top-left"
+                                      style={{
+                                        width: '133%',
+                                        height: '180%',
+                                        transform: 'scale(0.75) translateY(-80px)',
+                                        transformOrigin: 'top left',
+                                        pointerEvents: 'auto',
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                      }}
+                                      loading="lazy"
+                                      title={`${project.name} live dashboard`}
+                                      sandbox="allow-scripts allow-same-origin"
+                                      onError={() => {
+                                        setFailedPreviews((prev) => ({ ...prev, [`${project.id}-dash`]: true }));
+                                      }}
+                                    />
+                                  </div>
+                                </DashboardFacade>
+                              ) : (
+                                // `--warn-shift` parks the crop window on the national choropleth of the
+                                // US WARN tracker. That dashboard reflows below 640px (taller stat stack
+                                // pushes the map down), hence the two measured offsets.
+                                <DashboardFacade
+                                  title={project.name}
+                                  label="Load live dashboard"
+                                  note="Live Plotly dashboard — loads on demand"
+                                >
                                   <iframe
                                     src={(project as any).dashboardSrc}
-                                    className="border-0 origin-top-left"
-                                    style={{ 
-                                      width: '133%', 
-                                      height: '180%', 
-                                      transform: 'scale(0.75) translateY(-80px)',
-                                      transformOrigin: 'top left',
-                                      pointerEvents: 'auto',
-                                      position: 'absolute',
-                                      top: 0,
-                                      left: 0,
-                                    }}
+                                    className={`w-full h-full border-0 origin-top-left ${
+                                      project.id === 'warn' ? '[--warn-shift:-790px] sm:[--warn-shift:-675px]' : 'scale-[0.75] sm:scale-[0.80]'
+                                    }`}
+                                    style={project.id === 'warn' ? { width: "117%", height: "100%", minHeight: "1200px", pointerEvents: "auto", transform: "scale(0.85) translateY(var(--warn-shift))" } : { width: "133%", height: "133%", pointerEvents: "auto" }}
                                     loading="lazy"
                                     title={`${project.name} live dashboard`}
                                     sandbox="allow-scripts allow-same-origin"
@@ -426,24 +475,7 @@ export default function ProjectsPage() {
                                       setFailedPreviews((prev) => ({ ...prev, [`${project.id}-dash`]: true }));
                                     }}
                                   />
-                                </div>
-                              ) : (
-                                // `--warn-shift` parks the crop window on the national choropleth of the
-                                // US WARN tracker. That dashboard reflows below 640px (taller stat stack
-                                // pushes the map down), hence the two measured offsets.
-                                <iframe
-                                  src={(project as any).dashboardSrc}
-                                  className={`w-full h-full border-0 origin-top-left ${
-                                    project.id === 'warn' ? '[--warn-shift:-790px] sm:[--warn-shift:-675px]' : 'scale-[0.75] sm:scale-[0.80]'
-                                  }`}
-                                  style={project.id === 'warn' ? { width: "117%", height: "100%", minHeight: "1200px", pointerEvents: "auto", transform: "scale(0.85) translateY(var(--warn-shift))" } : { width: "133%", height: "133%", pointerEvents: "auto" }}
-                                  loading="lazy"
-                                  title={`${project.name} live dashboard`}
-                                  sandbox="allow-scripts allow-same-origin"
-                                  onError={() => {
-                                    setFailedPreviews((prev) => ({ ...prev, [`${project.id}-dash`]: true }));
-                                  }}
-                                />
+                                </DashboardFacade>
                               )}
                               {project.id !== 'adhan' && <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]/20 pointer-events-none" />}
                               {project.demo && (

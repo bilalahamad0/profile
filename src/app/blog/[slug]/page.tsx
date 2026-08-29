@@ -2,6 +2,7 @@ import { getPostBySlug, getAllPosts, metaDescription } from "@/lib/blog";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Clock, Tag, Calendar, BookOpen, Github, Linkedin } from "lucide-react";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -13,11 +14,11 @@ export async function generateStaticParams() {
 }
 
 const slugToThumb: Record<string, string> = {
-  "adhan-caster-extension-story": "/images/adhan-ce-demo.gif",
+  "adhan-caster-extension-story": "/images/adhan-ce-poster.jpg",
   "ai-driven-development": "/blog-thumbs/ai-native-dev.png",
   "california-warn-story": "/blog-thumbs/california-warn.png",
   "warn-tracker-goes-national": "/blog-thumbs/us-warn-national.png",
-  "media-caster-story":    "/blog-thumbs/media-caster.png?v=2",
+  "media-caster-story":    "/blog-thumbs/media-caster.png",
   "resilient-iot-application": "/blog-thumbs/resilient-iot.png",
   "clock-jump-case-study": "/blog-thumbs/iot_clock_jump_thumbnail.png",
   "gemma-ollama-raspberry-pi-adhan": "/blog-thumbs/gemma-ollama-raspberry-pi-adhan.png",
@@ -128,7 +129,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <section className="pt-32 pb-16 px-6 lg:px-24 border-b border-white/5 relative overflow-hidden">
         {image && (
           <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
-            <img src={image} alt={post.title} className="w-full h-full object-cover" />
+            <Image src={image} alt={post.title} fill className="object-cover" sizes="100vw" priority />
             <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/60 to-transparent" />
           </div>
         )}
