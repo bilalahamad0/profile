@@ -141,11 +141,8 @@ export function AILabPreview({ metrics = STATIC_FALLBACK }: { metrics?: AILabMet
           <motion.div variants={fadeUp} transition={{ duration: 0.5 }} className="mb-6 md:mb-8 lg:mb-10">
             <div className="p-6 md:p-8 rounded-2xl bg-gradient-to-r from-violet-100/70 to-indigo-100/60 dark:from-violet-950/40 dark:to-indigo-950/40 border border-violet-500/25 dark:border-violet-500/15">
               <p className="t-lead text-body font-light">
-                AI-native from architecture to deployment, and{" "}
-                <span className="text-ink font-medium">measured rather than asserted</span> —{" "}
-                {devDays} active build days against an estimated {manualDays}-day manual baseline.
-                The figures below come from each repository&apos;s own{" "}
-                <span className="font-mono">ai-metrics.json</span>.
+                AI-native from architecture to deployment — and{" "}
+                <span className="text-ink font-medium">measured, not asserted</span>.
               </p>
 
               <dl className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
