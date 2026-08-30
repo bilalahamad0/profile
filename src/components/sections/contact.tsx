@@ -94,7 +94,7 @@ export function ContactSection() {
                         Book a Call
                     </a>
                     <span className="t-caption text-ink-muted">
-                        Prefer to talk? Grab a 1:1 slot below.
+                        Prefer a conversation? Pick a time on my calendar below.
                     </span>
                 </div>
             </div>

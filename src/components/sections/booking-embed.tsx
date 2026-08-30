@@ -60,13 +60,13 @@ export function BookingEmbed() {
               className="group/facade flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border border-line/10 bg-gradient-to-br from-ink/[0.07] via-ink/[0.05] to-ink/[0.03] px-6 py-16 sm:py-20 text-center transition-colors hover:from-ink/[0.10] hover:via-ink/[0.07] hover:to-ink/[0.05] dark:from-zinc-900/90 dark:via-zinc-900/70 dark:to-zinc-800/60 dark:hover:from-zinc-900/80 dark:hover:via-zinc-900/60 dark:hover:to-zinc-800/50"
             >
               <CalendarClock className="w-8 h-8 text-blue-700 dark:text-blue-400" aria-hidden="true" />
-              <span className="t-small font-bold text-ink">Book a 1:1 call</span>
+              <span className="t-small font-bold text-ink">Google Calendar scheduler</span>
               <span className="t-caption text-ink-muted">
-                Google Calendar scheduler — loads on demand to keep this page light
+                Loads on demand, so this page stays light
               </span>
               <span className="mt-1 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-600 backdrop-blur-md border border-white/20 t-small font-black uppercase tracking-widest text-white shadow-xl transition-all group-hover/facade:bg-blue-700 group-hover/facade:scale-105 dark:bg-blue-500/80 dark:group-hover/facade:bg-blue-500">
                 <Play className="w-4 h-4 fill-current" aria-hidden="true" />
-                Load booking calendar
+                Load calendar
               </span>
             </button>
           )}
@@ -80,7 +80,7 @@ export function BookingEmbed() {
             rel="noreferrer noopener"
             className="inline-flex items-center gap-1 text-ink-muted underline underline-offset-2 hover:text-blue-700 dark:hover:text-blue-400 transition-colors"
           >
-            Open the booking page in a new tab
+            Open in a new tab
             <ExternalLink className="w-3 h-3" aria-hidden="true" />
           </a>
         </p>
