@@ -4,7 +4,6 @@
 import type { Metadata } from "next";
 import { HeroPortfolio } from "@/components/v3/HeroPortfolio";
 import { ResumeReelClient } from "@/components/v3/ResumeReelClient";
-import { AboutMe } from "@/components/v3/AboutMe";
 import {
   AILabPreview,
   BlogPreview,
@@ -149,10 +148,6 @@ export default async function HomePage() {
 
       {/* ── Mobile Career Reel — lazy, SSR disabled ──── */}
       <ResumeReelClient />
-
-      {/* ── Who I am ─────────────────────────────────── */}
-      <div className="section-divider" />
-      <AboutMe />
 
       {/* ── Featured Projects ──────────────────────── */}
       <div className="section-divider" />
