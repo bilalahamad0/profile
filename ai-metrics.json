@@ -1,6 +1,6 @@
 {
   "projectId": "profile",
-  "lastUpdated": "2026-08-29",
+  "lastUpdated": "2026-08-30",
   "aiContribution": 85,
   "agents": [
     {
@@ -17,7 +17,7 @@
     {
       "name": "Cursor",
       "provider": "Anthropic",
-      "period": "Apr 2026 \u2013 Present",
+      "period": "Apr 2026 – Present",
       "models": [
         "Claude Opus 4.6",
         "Claude Sonnet 4"
@@ -28,7 +28,7 @@
     {
       "name": "Claude Code",
       "provider": "Anthropic",
-      "period": "Apr 2026 \u2013 Present",
+      "period": "Apr 2026 – Present",
       "models": [
         "Claude Opus 4.7",
         "Claude Opus 4.8",
@@ -41,14 +41,14 @@
     }
   ],
   "totalTokens": 358226655,
-  "totalCommits": 536,
-  "linesOfCode": 16846,
+  "totalCommits": 551,
+  "linesOfCode": 17479,
   "devCycleDays": 58,
   "manualEstimateDays": 76,
   "impact": "Full-stack portfolio deployed to production",
   "cycle": "58 active days",
   "beforeAI": "Static HTML/CSS resume site",
   "afterAI": "AI-native Next.js portfolio with analytics",
-  "tests": 244,
-  "testSuites": 19
+  "tests": 261,
+  "testSuites": 20
 }
