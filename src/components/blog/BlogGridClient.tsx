@@ -8,6 +8,7 @@ type MdxPost = (typeof MdxPostsType)[number];
 interface Props {
   mdxPosts: MdxPost[];
   linkedInPosts: LinkedInPost[];
+  featuredSlug?: string;
 }
 
 const BlogGridInner = dynamic(
@@ -26,6 +27,12 @@ const BlogGridInner = dynamic(
   }
 );
 
-export function BlogGridClient({ mdxPosts, linkedInPosts }: Props) {
-  return <BlogGridInner mdxPosts={mdxPosts} linkedInPosts={linkedInPosts} />;
+export function BlogGridClient({ mdxPosts, linkedInPosts, featuredSlug }: Props) {
+  return (
+    <BlogGridInner
+      mdxPosts={mdxPosts}
+      linkedInPosts={linkedInPosts}
+      featuredSlug={featuredSlug}
+    />
+  );
 }

@@ -38,7 +38,7 @@ const specialisms: Specialism[] = [
     label: "Safety Critical",
     Icon: Shield,
     size: 72,
-    anchor: "top-[28%] right-[32%]",
+    anchor: "top-[35%] right-[20%]",
     iconTone: "text-cyan-600/40 dark:text-cyan-400/40",
     labelTone: "text-cyan-800 dark:text-cyan-300",
     labelGap: "mt-2",
@@ -51,7 +51,7 @@ const specialisms: Specialism[] = [
     label: "Firmware",
     Icon: Cpu,
     size: 64,
-    anchor: "bottom-[38%] right-[20%]",
+    anchor: "bottom-[38%] right-[14%]",
     iconTone: "text-violet-600/40 dark:text-violet-400/40",
     labelTone: "text-violet-800 dark:text-violet-300",
     labelGap: "mt-1",
@@ -64,7 +64,7 @@ const specialisms: Specialism[] = [
     label: "Automotive",
     Icon: Car,
     size: 72,
-    anchor: "top-[18%] right-[16%]",
+    anchor: "top-[18%] right-[13%]",
     iconTone: "text-amber-600/40 dark:text-amber-400/40",
     labelTone: "text-amber-800 dark:text-amber-300",
     labelGap: "mt-2",
@@ -175,9 +175,9 @@ function HeroBackground() {
               ? NO_MOTION
               : { duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1.5 }
           }
-          className="absolute top-[40%] left-[1.5%] text-ink-muted/30"
+          className="absolute top-[40%] left-[1%] text-ink-muted/30"
         >
-          <GitBranch size={88} aria-hidden="true" />
+          <GitBranch size={64} aria-hidden="true" />
         </motion.div>
       </div>
     </div>

@@ -154,7 +154,7 @@ export default function BlogPage() {
       <div className="mask-top-dark bg-surface!" aria-hidden="true" />
 
       {/* Lazy-loaded interactive filter + grid — client component */}
-      <BlogGridClient mdxPosts={mdxPosts} linkedInPosts={linkedInPosts} />
+      <BlogGridClient mdxPosts={mdxPosts} linkedInPosts={linkedInPosts} featuredSlug={featured?.slug} />
 
     </div>
     </>

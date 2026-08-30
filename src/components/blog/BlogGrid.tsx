@@ -10,9 +10,18 @@ import type { mdxPosts as MdxPostsType } from "@/app/blog/page";
 import type { LinkedInPost } from "@/data/portfolio";
 
 type MdxPost = (typeof MdxPostsType)[number];
-type FilterType = "All" | "Project Story" | "Whitepaper" | "LinkedIn";
+type FilterType = "Engineering" | "Project Story" | "Whitepaper" | "LinkedIn";
 
-const FILTERS: FilterType[] = ["All", "Project Story", "Whitepaper", "LinkedIn"];
+/**
+ * "Engineering" replaces the old "All" as the landing view.
+ *
+ * The default feed used to interleave eight technical posts with six LinkedIn
+ * excerpts, putting reposted commentary at positions 2, 8, 9, 11, 12 and 14 —
+ * so a reader skimming the first screen met marketing before engineering. This
+ * hides nothing: Engineering and LinkedIn together are the whole corpus, and
+ * LinkedIn is one click away. It is a default, not a deletion.
+ */
+const FILTERS: FilterType[] = ["Engineering", "Project Story", "Whitepaper", "LinkedIn"];
 
 const categoryColors: Record<string, { text: string; bg: string; border: string }> = {
   "Project Story": { text: "text-blue-700 dark:text-blue-400",   bg: "bg-blue-500/10",   border: "border-blue-500/20"   },
@@ -32,10 +41,12 @@ const thumbnailPosters: Record<string, string> = {
 interface BlogGridProps {
   mdxPosts: MdxPost[];
   linkedInPosts: LinkedInPost[];
+  /** Slug already rendered by the Featured Post hero above, so the grid skips it. */
+  featuredSlug?: string;
 }
 
-export function BlogGrid({ mdxPosts, linkedInPosts }: BlogGridProps) {
-  const [active, setActive] = useState<FilterType>("All");
+export function BlogGrid({ mdxPosts, linkedInPosts, featuredSlug }: BlogGridProps) {
+  const [active, setActive] = useState<FilterType>("Engineering");
 
   const allItems = [
     ...mdxPosts.map((p) => ({ ...p, type: "mdx" as const, url: undefined as string | undefined })),
@@ -52,9 +63,16 @@ export function BlogGrid({ mdxPosts, linkedInPosts }: BlogGridProps) {
       url: p.url,
       thumbnail: p.thumbnail,
     })),
-  ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  ]
+    // The featured post owns the hero directly above this grid; rendering it
+    // again gave the same href two cards at feed positions 0 and 1.
+    .filter((i) => i.slug !== featuredSlug)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-  const filtered = active === "All" ? allItems : allItems.filter((i) => i.category === active);
+  const filtered =
+    active === "Engineering"
+      ? allItems.filter((i) => i.category !== "LinkedIn")
+      : allItems.filter((i) => i.category === active);
 
   return (
     <>

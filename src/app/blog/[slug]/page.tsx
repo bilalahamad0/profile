@@ -62,7 +62,13 @@ const mdxComponents = {
     <code className="px-1.5 py-0.5 rounded-md bg-ink/5 border border-line/10 text-blue-700 dark:text-blue-300 text-sm font-mono" {...props} />
   ),
   pre: (props: any) => (
-    <pre className="bg-zinc-100 dark:bg-zinc-900 border border-line/10 rounded-2xl p-6 overflow-x-auto mb-6 text-sm font-mono text-zinc-800 dark:text-zinc-300 leading-relaxed" {...props} />
+    <pre
+      tabIndex={0}
+      role="group"
+      aria-label="Code block, scrollable"
+      className="bg-zinc-100 dark:bg-zinc-900 border border-line/10 rounded-2xl p-6 overflow-x-auto mb-6 text-sm font-mono text-zinc-800 dark:text-zinc-300 leading-relaxed"
+      {...props}
+    />
   ),
   blockquote: (props: any) => (
     <blockquote className="border-l-4 border-blue-500 pl-6 my-6 italic text-ink-muted" {...props} />
@@ -71,7 +77,7 @@ const mdxComponents = {
     <a className="text-blue-700 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline underline-offset-2 transition-colors" target="_blank" rel="noreferrer" {...props} />
   ),
   table: (props: any) => (
-    <div className="overflow-x-auto mb-6">
+    <div tabIndex={0} role="group" aria-label="Table, scrollable" className="overflow-x-auto mb-6">
       <table className="w-full border-collapse text-sm" {...props} />
     </div>
   ),
@@ -95,6 +101,31 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const colors = categoryColors[post.category] ?? categoryColors["Project Story"];
   const image = slugToThumb[slug];
+
+  /**
+   * Related posts, ranked by shared tags then recency.
+   *
+   * The section below was labelled "Related Posts Nav" and contained a single
+   * "All Posts" link — so every post was a dead end, and a reader who finished
+   * the strongest piece on the site had nowhere to go but back. Same-category
+   * posts break ties so there is always something to show even at zero tag
+   * overlap.
+   */
+  const related = getAllPosts()
+    .filter((p) => p.slug !== slug)
+    .map((p) => ({
+      post: p,
+      shared: p.tags.filter((t) => post.tags.includes(t)).length,
+      sameCategory: p.category === post.category ? 1 : 0,
+    }))
+    .sort(
+      (a, b) =>
+        b.shared - a.shared ||
+        b.sameCategory - a.sameCategory ||
+        new Date(b.post.date).getTime() - new Date(a.post.date).getTime()
+    )
+    .slice(0, 3)
+    .map((r) => r.post);
 
   // Structured data — blog post pages are the most-indexed/most-shared URLs.
   // Canonical points at bilalahamad.com (not any LinkedIn cross-post) so the
@@ -215,13 +246,47 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </div>
       </article>
 
-      {/* Related Posts Nav */}
-      <section className="py-12 px-6 lg:px-24 border-t border-line/10 dark:border-line/5 bg-ink/[0.01]">
-        <div className="max-w-4xl mx-auto text-center">
-          <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-bold text-ink-muted hover:text-ink transition-colors">
-            <ArrowLeft className="w-4 h-4" />
-            All Posts
-          </Link>
+      {/* Related Posts */}
+      <section
+        className="py-12 px-6 lg:px-24 border-t border-line/10 dark:border-line/5 bg-ink/[0.01]"
+        aria-labelledby="related-heading"
+      >
+        <div className="max-w-4xl mx-auto">
+          <h2 id="related-heading" className="t-h3 text-ink mb-6">
+            Keep reading
+          </h2>
+
+          <ul className="grid gap-4 md:grid-cols-3">
+            {related.map((r) => (
+              <li key={r.slug}>
+                <Link
+                  href={`/blog/${r.slug}`}
+                  className="group flex h-full flex-col rounded-2xl border border-line/10 bg-surface-card p-5 transition-colors hover:border-line/20"
+                >
+                  <span className="t-label font-black uppercase tracking-wider text-ink-muted">
+                    {r.category}
+                  </span>
+                  <span className="t-body font-semibold text-ink mt-2 leading-snug group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
+                    {r.title}
+                  </span>
+                  <span className="t-caption text-ink-muted mt-auto pt-3 inline-flex items-center gap-1.5">
+                    <Clock className="w-3 h-3" aria-hidden="true" />
+                    {r.readingTime} min read
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <div className="text-center mt-8">
+            <Link
+              href="/blog"
+              className="inline-flex min-h-11 items-center gap-2 t-small font-bold text-ink-muted hover:text-ink transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+              All Posts
+            </Link>
+          </div>
         </div>
       </section>
     </div>

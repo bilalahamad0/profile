@@ -67,8 +67,12 @@ Token measurement methodology (`--tokens` implements this; full write-up in the
   "total tokens processed" (ccusage) convention — keep it consistent across refreshes.
 - The agent entry's `models` come from `message.model` (skip `<synthetic>`); the activity span
   helps sanity-check the curated `period`.
-- Measurements are a **lower bound**: this machine only, Claude Code only. Antigravity/Cursor
-  figures stay curated estimates, and `warn` (no Claude Code transcripts) stays fully curated.
+- Measurements are a **lower bound**: this machine only, Claude Code only. Cursor figures stay
+  curated estimates.
+- `warn` DOES have Claude Code transcripts — they were recorded on another machine, so
+  `--report` run here will not see them and must not overwrite that project's token fields.
+  Treat its Claude Code entry as measured-elsewhere, not curated: do not re-derive it, and do
+  not delete it because a local scan comes back empty.
 
 ## Steps (run all of this yourself, from the repo root)
 
