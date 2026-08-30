@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { MotionConfig } from "framer-motion";
 import { Footer } from "@/components/layout/footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
@@ -128,16 +129,26 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* Scroll-to-top on every route change */}
-          <ScrollToTop />
-          <NavbarV2 />
-          <main id="main-content" className="min-h-screen relative flex flex-col">
-            {children}
-            <Footer />
-          </main>
-          {/* Client-only entry splash + anti-automation handshake. Renders nothing
-              on the server, so the static HTML crawlers read is the full page. */}
-          <EntryGate />
+          {/* Honour prefers-reduced-motion across EVERY framer-motion animation.
+              The `@media (prefers-reduced-motion: reduce)` block in globals.css
+              only zeroes CSS animations; framer-motion drives its values from
+              JavaScript, so it sailed straight past that rule (verified on
+              production: all six floating hero marks kept animating). Setting it
+              here, once, covers the hero, ResumeReel, FeaturedProjects and every
+              future motion component. MotionConfig ships its own "use client"
+              boundary, so the layout stays a Server Component. */}
+          <MotionConfig reducedMotion="user">
+            {/* Scroll-to-top on every route change */}
+            <ScrollToTop />
+            <NavbarV2 />
+            <main id="main-content" className="min-h-screen relative flex flex-col">
+              {children}
+              <Footer />
+            </main>
+            {/* Client-only entry splash + anti-automation handshake. Renders nothing
+                on the server, so the static HTML crawlers read is the full page. */}
+            <EntryGate />
+          </MotionConfig>
         </ThemeProvider>
       </body>
     </html>

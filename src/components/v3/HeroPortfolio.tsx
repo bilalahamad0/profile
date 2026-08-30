@@ -1,15 +1,124 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   Car, Cpu, Shield, Zap, Terminal,
   ChevronRight, Network, GitBranch, CheckSquare, Download
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
+/* ─── Domain specialisms — ONE source, TWO renderings ────────────────────────
+   These five domains are the only enumeration of Bilal's specialisms on the
+   home page, so they must never live only inside decoration. They render as:
+     1. the floating illustrated icons (lg and up) — signature, decorative,
+        aria-hidden, and now motion-preference aware;
+     2. <SpecialismChips /> — a real list in the document flow, visible below
+        lg and announced to assistive tech at every width.
+   Both read this array, so the two renderings can never drift apart. ───────── */
+type Specialism = {
+  label: string;
+  Icon: LucideIcon;
+  /* Float layer (decorative, lg+) */
+  size: number;
+  anchor: string;
+  iconTone: string;
+  labelTone: string;
+  labelGap: string;
+  drift: { y: number[]; x: number[]; rotate: number[] };
+  duration: number;
+  delay: number;
+  /* Chip row (in-flow) — 700/400 pairs, the weights that clear AA on both grounds */
+  chipTone: string;
+};
+
+const specialisms: Specialism[] = [
+  {
+    label: "Safety Critical",
+    Icon: Shield,
+    size: 72,
+    anchor: "top-[28%] right-[32%]",
+    iconTone: "text-cyan-600/40 dark:text-cyan-400/40",
+    labelTone: "text-cyan-800 dark:text-cyan-300",
+    labelGap: "mt-2",
+    drift: { y: [0, -25, 0], x: [0, 15, 0], rotate: [0, 8, 0] },
+    duration: 12,
+    delay: 2,
+    chipTone: "text-cyan-700 dark:text-cyan-400",
+  },
+  {
+    label: "Firmware",
+    Icon: Cpu,
+    size: 64,
+    anchor: "bottom-[38%] right-[20%]",
+    iconTone: "text-violet-600/40 dark:text-violet-400/40",
+    labelTone: "text-violet-800 dark:text-violet-300",
+    labelGap: "mt-1",
+    drift: { y: [0, 25, 0], x: [0, -15, 0], rotate: [0, -5, 0] },
+    duration: 15,
+    delay: 2,
+    chipTone: "text-violet-700 dark:text-violet-400",
+  },
+  {
+    label: "Automotive",
+    Icon: Car,
+    size: 72,
+    anchor: "top-[18%] right-[16%]",
+    iconTone: "text-amber-600/40 dark:text-amber-400/40",
+    labelTone: "text-amber-800 dark:text-amber-300",
+    labelGap: "mt-2",
+    drift: { y: [0, -30, 0], x: [0, 20, 0], rotate: [0, -10, 0] },
+    duration: 14,
+    delay: 0,
+    chipTone: "text-amber-700 dark:text-amber-400",
+  },
+  {
+    label: "IoT Systems",
+    Icon: Network,
+    size: 64,
+    anchor: "bottom-[11%] right-[36%]",
+    iconTone: "text-emerald-600/40 dark:text-emerald-400/40",
+    labelTone: "text-emerald-800 dark:text-emerald-300",
+    labelGap: "mt-1",
+    drift: { y: [0, -25, 0], x: [0, -10, 0], rotate: [0, 5, 0] },
+    duration: 16,
+    delay: 1,
+    chipTone: "text-emerald-700 dark:text-emerald-400",
+  },
+  {
+    label: "Quality",
+    Icon: CheckSquare,
+    size: 64,
+    anchor: "bottom-[10%] right-[14%]",
+    iconTone: "text-blue-600/40 dark:text-blue-400/40",
+    labelTone: "text-blue-800 dark:text-blue-300",
+    labelGap: "mt-2",
+    drift: { y: [0, -20, 0], x: [0, 10, 0], rotate: [0, -12, 0] },
+    duration: 13,
+    delay: 1,
+    chipTone: "text-blue-700 dark:text-blue-400",
+  },
+];
+
+/* The resting frame each float snaps to under prefers-reduced-motion. These are
+   the identity transform values, i.e. exactly what the server already renders,
+   so the reduced branch is a no-op on the markup — no hydration drift. */
+const AT_REST = { y: 0, x: 0, rotate: 0 };
+const AT_REST_PULSE = { scale: 1, opacity: 0.5 };
+const NO_MOTION = { duration: 0 };
+
 /* ─── Animated & Breathing Background ───────────────── */
 function HeroBackground() {
+  /* framer-motion drives these loops from JavaScript, so the
+     `@media (prefers-reduced-motion: reduce)` block in globals.css — which only
+     zeroes CSS animations — can never reach them. Read the preference here and
+     render the resting frame instead of the loop. Belt-and-braces with the
+     <MotionConfig reducedMotion="user"> in app/layout.tsx: MotionConfig alone
+     freezes transforms but keeps opacity animating, which would leave the
+     GitBranch mark pulsing forever. */
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <div
       className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0"
@@ -36,62 +145,68 @@ function HeroBackground() {
         <rect width="100%" height="100%" fill="url(#heroGrid)" />
       </svg>
 
-      {/* Floating domain icons — desktop decorative with breathing animation */}
+      {/* Floating domain icons — desktop decorative with breathing animation.
+          Kept aria-hidden on purpose: <SpecialismChips /> carries the same five
+          labels into the accessibility tree, so announcing them here too would
+          read them twice. */}
       <div className="absolute inset-0 hidden lg:block opacity-100">
-        <motion.div
-          animate={{ y: [0, -25, 0], x: [0, 15, 0], rotate: [0, 8, 0] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="absolute top-[28%] right-[32%] text-cyan-600/40 dark:text-cyan-400/40"
-        >
-          <Shield size={72} aria-hidden="true" />
-          <span className="block t-label mt-2 font-mono opacity-80 uppercase tracking-[0.2em] text-cyan-800 dark:text-cyan-300">Safety Critical</span>
-        </motion.div>
+        {specialisms.map((s) => (
+          <motion.div
+            key={s.label}
+            animate={shouldReduceMotion ? AT_REST : s.drift}
+            transition={
+              shouldReduceMotion
+                ? NO_MOTION
+                : { duration: s.duration, repeat: Infinity, ease: "easeInOut", delay: s.delay }
+            }
+            className={`absolute ${s.anchor} ${s.iconTone}`}
+          >
+            <s.Icon size={s.size} aria-hidden="true" />
+            <span className={`block t-label ${s.labelGap} font-mono opacity-80 uppercase tracking-[0.2em] ${s.labelTone}`}>
+              {s.label}
+            </span>
+          </motion.div>
+        ))}
 
         <motion.div
-          animate={{ y: [0, 25, 0], x: [0, -15, 0], rotate: [0, -5, 0] }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="absolute bottom-[38%] right-[20%] text-violet-600/40 dark:text-violet-400/40"
-        >
-          <Cpu size={64} aria-hidden="true" />
-          <span className="block t-label mt-1 font-mono opacity-80 uppercase tracking-[0.2em] text-violet-800 dark:text-violet-300">Firmware</span>
-        </motion.div>
-
-        <motion.div
-          animate={{ y: [0, -30, 0], x: [0, 20, 0], rotate: [0, -10, 0] }}
-          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[18%] right-[16%] text-amber-600/40 dark:text-amber-400/40"
-        >
-          <Car size={72} aria-hidden="true" />
-          <span className="block t-label mt-2 font-mono opacity-80 uppercase tracking-[0.2em] text-amber-800 dark:text-amber-300">Automotive</span>
-        </motion.div>
-
-        <motion.div
-          animate={{ y: [0, -25, 0], x: [0, -10, 0], rotate: [0, 5, 0] }}
-          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute bottom-[11%] right-[36%] text-emerald-600/40 dark:text-emerald-400/40"
-        >
-          <Network size={64} aria-hidden="true" />
-          <span className="block t-label mt-1 font-mono opacity-80 uppercase tracking-[0.2em] text-emerald-800 dark:text-emerald-300">IoT Systems</span>
-        </motion.div>
-
-        <motion.div
-          animate={{ y: [0, -20, 0], x: [0, 10, 0], rotate: [0, -12, 0] }}
-          transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute bottom-[10%] right-[14%] text-blue-600/40 dark:text-blue-400/40"
-        >
-          <CheckSquare size={64} aria-hidden="true" />
-          <span className="block t-label mt-2 font-mono opacity-80 uppercase tracking-[0.2em] text-blue-800 dark:text-blue-300">Quality</span>
-        </motion.div>
-
-        <motion.div
-          animate={{ scale: [1, 1.1, 1], opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+          animate={shouldReduceMotion ? AT_REST_PULSE : { scale: [1, 1.1, 1], opacity: [0.5, 1, 0.5] }}
+          transition={
+            shouldReduceMotion
+              ? NO_MOTION
+              : { duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1.5 }
+          }
           className="absolute top-[40%] left-[1.5%] text-ink-muted/30"
         >
           <GitBranch size={88} aria-hidden="true" />
         </motion.div>
       </div>
     </div>
+  );
+}
+
+/* ─── Specialism chips — the evidence twin of the floating icons ─────────────
+   The float layer is desktop-only decoration, so on its own it hides the five
+   domains from every phone/tablet visitor and from every screen reader. This
+   list is real content in the document flow: visible below `lg` (where the
+   floats are display:none) and `lg:sr-only` at desktop (where the floats say it
+   visually) — so exactly one of the two is on screen at any width, while the
+   accessibility tree and the static HTML always carry the five labels. ─────── */
+function SpecialismChips() {
+  return (
+    <ul
+      aria-label="Core specialisms"
+      className="flex flex-wrap gap-2 lg:sr-only"
+    >
+      {specialisms.map((s) => (
+        <li
+          key={s.label}
+          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-card/80 dark:bg-black/60 backdrop-blur-xl border border-line/12 dark:border-line/[0.08]"
+        >
+          <s.Icon className={`w-3.5 h-3.5 ${s.chipTone}`} aria-hidden="true" />
+          <span className="t-label font-mono uppercase text-ink-muted">{s.label}</span>
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -249,6 +364,12 @@ export function HeroPortfolio() {
               Currently focusing on hardware-in-the-loop and automation systems.
             </p>
           </motion.div>
+
+          {/* Last child of the space-y-6 stack: below `lg` it picks up the
+              stack's 24px rhythm under the lead paragraph; at `lg` sr-only
+              takes it out of flow entirely, so the desktop composition is
+              byte-for-byte what it was. */}
+          <SpecialismChips />
         </div>
 
         {/* ── Capabilities Sub-grid ── */}

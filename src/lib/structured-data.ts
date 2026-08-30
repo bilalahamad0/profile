@@ -62,6 +62,112 @@ export function websiteSchema() {
   };
 }
 
+/**
+ * One career role, as `experienceData` records it. Only the three fields the
+ * schema needs are required, so the real records — which also carry logos,
+ * highlights and layout flags — satisfy this structurally.
+ */
+export type ExperienceLike = {
+  role: string;
+  company: string;
+  duration: string;
+};
+
+/** ISO `yyyy-MM` bounds of a role. `endDate` is absent for a current role. */
+export type RoleDates = { startDate: string; endDate?: string };
+
+const MONTH_NUMBER: Readonly<Record<string, string>> = {
+  jan: "01", feb: "02", mar: "03", apr: "04", may: "05", jun: "06",
+  jul: "07", aug: "08", sep: "09", oct: "10", nov: "11", dec: "12",
+};
+
+/** `"Sep 2025"` → `"2025-09"`. Null for anything that is not a month + year. */
+function isoMonth(token: string): string | null {
+  const match = /^([A-Za-z]{3,9})\.?\s+(\d{4})$/.exec(token.trim());
+  if (!match) return null;
+  const month = MONTH_NUMBER[match[1].slice(0, 3).toLowerCase()];
+  return month ? `${match[2]}-${month}` : null;
+}
+
+/**
+ * Parse a portfolio `duration` string — `"Dec 2014 - Sep 2015"`,
+ * `"Jun 2021 - Present"` — into ISO dates.
+ *
+ * Returns null when either end is unreadable: the caller then drops the entry
+ * rather than publishing a guessed date. A wrong tenure in machine-readable
+ * markup is worse than a missing one, because search engines and AI assistants
+ * repeat it as fact.
+ */
+export function parseRoleDates(duration: string): RoleDates | null {
+  const parts = duration.split(/\s*[-–—]\s*/);
+  if (parts.length !== 2) return null;
+  const startDate = isoMonth(parts[0]);
+  if (!startDate) return null;
+  if (/^present$/i.test(parts[1].trim())) return { startDate };
+  const endDate = isoMonth(parts[1]);
+  return endDate ? { startDate, endDate } : null;
+}
+
+/** Job titles are stored with hard line breaks for the timeline's layout. */
+function flattenTitle(role: string): string {
+  return role.replace(/\s+/g, " ").trim();
+}
+
+/**
+ * schema.org `hasOccupation` — one Role per career entry, generated from the
+ * very records the visible timeline renders.
+ *
+ * This used to be a hand-maintained array and had drifted from the timeline by
+ * up to 22 months on a single role. Deriving it makes that class of bug
+ * structurally impossible: the markup Google and LinkedIn read cannot disagree
+ * with the page a human reads, because both are the same data.
+ */
+export function occupationList(experience: ExperienceLike[]) {
+  return experience.flatMap((entry) => {
+    const dates = parseRoleDates(entry.duration);
+    if (!dates) return [];
+    return [
+      {
+        "@type": "Role",
+        roleName: flattenTitle(entry.role),
+        ...dates,
+        occupiedBy: { "@type": "Organization", name: entry.company },
+      },
+    ];
+  });
+}
+
+/**
+ * schema.org `jobTitle` — the current headline first, then every distinct title
+ * held, newest to oldest, deduplicated.
+ */
+export function jobTitleList(headline: string, experience: ExperienceLike[]): string[] {
+  return [...new Set([headline, ...experience.map((entry) => flattenTitle(entry.role))])];
+}
+
+/**
+ * schema.org ProfilePage for the one-page resume — the URL a recruiter is most
+ * likely to be sent, and the one that carried no structured data at all. It
+ * points at the same Person `@id` the homepage declares, so a crawler resolves
+ * the sheet to the site's single identity rather than a second, thinner one.
+ */
+export function resumeSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "@id": `${SITE_URL}/resume`,
+    url: `${SITE_URL}/resume`,
+    name: `${PERSON_NAME} — Resume`,
+    description:
+      "One-page resume of Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer with 18+ years across Amazon Lab126, Google, Rivian, Cruise, and Samsara.",
+    inLanguage: "en-US",
+    mainEntity: personRef,
+    about: personRef,
+    // The PDF is Chromium's print of this same route — same facts, one file.
+    relatedLink: absoluteUrl("/Bilal_Ahamad_Resume.pdf"),
+  };
+}
+
 const CREDENTIAL_CATEGORY: Record<Certification["category"], string> = {
   ai: "AI & Machine Learning",
   testing: "Software Testing",

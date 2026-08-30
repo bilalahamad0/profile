@@ -70,13 +70,13 @@ export function ExperienceTimeline() {
     <section
       id={EXPERIENCE_TIMELINE_ID}
       aria-label="Professional Career Timeline"
-      className="glass-card rounded-3xl p-8 relative flex flex-col h-full scroll-mt-40 lg:scroll-mt-28"
+      className="glass-card rounded-3xl p-8 lg:p-12 relative flex flex-col h-full scroll-mt-40 lg:scroll-mt-28"
     >
       <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none" aria-hidden="true">
         <Briefcase className="w-32 h-32" />
       </div>
 
-      <h2 className="t-h3 text-ink mb-8 flex items-center gap-2">
+      <h2 className="t-h3 text-ink mb-8 lg:mb-10 flex items-center gap-2">
         <Briefcase className="w-6 h-6 text-blue-700 dark:text-blue-400" aria-hidden="true" />
         Professional Career Timeline
       </h2>
@@ -84,7 +84,7 @@ export function ExperienceTimeline() {
       {/* One flat <ol> of 10 list items — the disclosure below is an extra
           `lg:hidden` item, so at `lg` the flex container still distributes its
           slack across exactly the same ten roles it always has. */}
-      <ol className="flex flex-col justify-between flex-1 gap-6 relative z-10">
+      <ol className="flex flex-col justify-between flex-1 gap-6 lg:gap-12 relative z-10">
         {experienceData.map((exp, idx) => {
           const isEarlier = firstEarlierIndex >= 0 && idx >= firstEarlierIndex;
           const body = (
@@ -114,7 +114,7 @@ export function ExperienceTimeline() {
               </div>
 
               {/* Job details */}
-              <div className="pb-4 pt-1">
+              <div className="pb-4 lg:pb-6 pt-1">
                 <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
                   <h3 className="text-lg font-semibold text-ink leading-tight whitespace-pre-line">
                     {exp.role}

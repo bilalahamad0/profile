@@ -49,22 +49,26 @@ const TESTING_CERTS = certifications.filter((c) => c.category === "testing").map
 const LEADERSHIP_CERTS = certifications.filter((c) => c.category === "leadership").map((c) => c.title);
 
 export function ExperienceRightColumn() {
+  // `lg:gap-10` only: below `lg` this column is the tall single-scroll stack
+  // the jump index exists to manage, so its height must not grow. At `lg` the
+  // seven cards previously butted together with a 0px gutter and read as one
+  // undifferentiated slab.
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full lg:gap-10">
 
       {/* Core Focus */}
       <AnimatedSection delay={0} className="flex-auto flex flex-col">
         <section
           id="exp-core-focus"
           aria-label="Core Focus Areas"
-          className={`glass-card rounded-3xl p-8 flex flex-col justify-between h-full relative hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 ${ANCHOR_OFFSET}`}
+          className={`glass-card rounded-3xl p-8 lg:p-12 flex flex-col justify-between h-full relative hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 ${ANCHOR_OFFSET}`}
         >
           <Target className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-ink-muted pointer-events-none z-0" aria-hidden="true" />
-          <h2 className="t-h3 text-ink mb-5 flex items-center gap-2 relative z-10">
+          <h2 className="t-h3 text-ink mb-5 lg:mb-6 flex items-center gap-2 relative z-10">
             <Layers className="w-6 h-6 text-blue-700 dark:text-blue-400" aria-hidden="true" />
             Core Focus
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 relative z-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 lg:gap-3 relative z-10">
             {CORE_FOCUS_TAGS.map((tag, idx) => {
               let tone = "bg-blue-500/10 border-blue-500/20 text-blue-700 dark:text-blue-300";
               if (idx >= 3 && idx < 6) tone = "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300";
@@ -87,14 +91,14 @@ export function ExperienceRightColumn() {
         <section
           id="exp-skills"
           aria-label="Technical Arsenal"
-          className={`glass-card rounded-3xl p-8 flex flex-col justify-between h-full relative hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 ${ANCHOR_OFFSET}`}
+          className={`glass-card rounded-3xl p-8 lg:p-12 flex flex-col justify-between h-full relative hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 ${ANCHOR_OFFSET}`}
         >
           <Cpu className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-ink-muted pointer-events-none z-0" aria-hidden="true" />
-          <h2 className="t-h3 text-ink mb-5 flex items-center gap-2 relative z-10">
+          <h2 className="t-h3 text-ink mb-5 lg:mb-6 flex items-center gap-2 relative z-10">
             <Terminal className="w-6 h-6 text-purple-700 dark:text-purple-400" aria-hidden="true" />
             Technical Arsenal
           </h2>
-          <ul className="flex flex-wrap gap-2.5 list-none relative z-10">
+          <ul className="flex flex-wrap gap-2.5 lg:gap-3 list-none relative z-10">
             {skills.map((skill) => (
               <li
                 key={skill.name}
@@ -116,10 +120,10 @@ export function ExperienceRightColumn() {
         <section
           id="exp-education"
           aria-label="Education"
-          className={`glass-card rounded-3xl p-8 flex flex-col h-full relative hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 ${ANCHOR_OFFSET}`}
+          className={`glass-card rounded-3xl p-8 lg:p-12 flex flex-col h-full relative hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 ${ANCHOR_OFFSET}`}
         >
           <GraduationCap className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-ink-muted pointer-events-none z-0" aria-hidden="true" />
-          <h2 className="t-h3 text-ink mb-5 flex items-center gap-2 relative z-10">
+          <h2 className="t-h3 text-ink mb-5 lg:mb-6 flex items-center gap-2 relative z-10">
             <GraduationCap className="w-6 h-6 text-indigo-700 dark:text-indigo-400" aria-hidden="true" />
             Education
           </h2>
@@ -145,10 +149,10 @@ export function ExperienceRightColumn() {
         <section
           id="exp-certifications"
           aria-label="Certifications"
-          className={`glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col justify-between h-full hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 ${ANCHOR_OFFSET}`}
+          className={`glass-card rounded-3xl p-8 lg:p-12 relative overflow-hidden flex flex-col justify-between h-full hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 ${ANCHOR_OFFSET}`}
         >
           <BadgeCheck className="absolute bottom-4 right-4 w-20 h-20 opacity-[0.04] text-ink-muted pointer-events-none z-0" aria-hidden="true" />
-          <div className="flex items-center justify-between mb-5 relative z-10">
+          <div className="flex items-center justify-between mb-5 lg:mb-6 relative z-10">
             <h2 className="t-h3 text-ink flex items-center gap-2">
               <Settings className="w-6 h-6 text-ink-muted" aria-hidden="true" />
               Certifications
@@ -219,18 +223,18 @@ export function ExperienceRightColumn() {
         <section
           id="exp-recommendations"
           aria-label="LinkedIn Recommendations"
-          className={`glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col h-full hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 ${ANCHOR_OFFSET}`}
+          className={`glass-card rounded-3xl p-8 lg:p-12 relative overflow-hidden flex flex-col h-full hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 ${ANCHOR_OFFSET}`}
         >
           <MessageSquareQuote className="absolute bottom-4 right-4 w-20 h-20 opacity-[0.04] text-ink-muted pointer-events-none z-0" aria-hidden="true" />
-          <h2 className="t-h3 text-ink mb-5 flex items-center gap-2 relative z-10">
+          <h2 className="t-h3 text-ink mb-5 lg:mb-6 flex items-center gap-2 relative z-10">
             <MessageSquareQuote className="w-6 h-6 text-emerald-700 dark:text-emerald-400" aria-hidden="true" />
             Recommendations
           </h2>
-          <div className="flex flex-col justify-between flex-1 gap-4 relative z-10">
+          <div className="flex flex-col justify-between flex-1 gap-4 lg:gap-6 relative z-10">
             {recommendations.map((rec) => (
               <div
                 key={rec.name}
-                className="p-5 rounded-xl border border-emerald-500/10 bg-emerald-500/5 hover:border-emerald-500/30 hover:bg-emerald-500/10 transition-all duration-200 cursor-default"
+                className="p-5 lg:p-6 rounded-xl border border-emerald-500/10 bg-emerald-500/5 hover:border-emerald-500/30 hover:bg-emerald-500/10 transition-all duration-200 cursor-default"
               >
                 <p className="text-sm text-body leading-relaxed italic mb-4 font-light">
                   &ldquo;{rec.review}&rdquo;
@@ -255,7 +259,7 @@ export function ExperienceRightColumn() {
         <section
           id="exp-awards"
           aria-label="Awards and Recognition"
-          className={`glass-card rounded-3xl p-8 relative overflow-hidden flex flex-col justify-between h-full hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 ${ANCHOR_OFFSET}`}
+          className={`glass-card rounded-3xl p-8 lg:p-12 relative overflow-hidden flex flex-col justify-between h-full hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 ${ANCHOR_OFFSET}`}
         >
           <Trophy className="absolute top-3 right-3 w-20 h-20 opacity-[0.04] text-ink-muted pointer-events-none z-0" aria-hidden="true" />
           <h2 className="t-h3 text-ink mb-2 flex items-center gap-2 relative z-10">
@@ -290,7 +294,7 @@ export function ExperienceRightColumn() {
         <section
           id="exp-google"
           aria-label="Google Developer Profile"
-          className={`glass-card rounded-3xl p-8 relative flex flex-col gap-8 h-full overflow-hidden hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 ${ANCHOR_OFFSET}`}
+          className={`glass-card rounded-3xl p-8 lg:p-12 relative flex flex-col gap-8 h-full overflow-hidden hover:border-line/20 hover:bg-ink/[0.03] transition-all duration-300 ${ANCHOR_OFFSET}`}
         >
           {/* Google logo watermark */}
           <div className="absolute top-4 right-4 pointer-events-none opacity-[0.035] z-0" aria-hidden="true">

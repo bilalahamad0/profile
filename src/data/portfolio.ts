@@ -430,7 +430,7 @@ export const projectsData = [
     isAI: true,
     aiTools: ["Antigravity", "Gemini 2.5 Flash/Pro", "Cursor", "Claude Code"],
     aiContribution: 85,
-    impact: "Full-stack portfolio deployed to production · 158M+ tokens",
+    impact: "Full-stack portfolio deployed to production · 358M+ tokens",
     gradient: "from-violet-600/20 via-purple-500/10 to-transparent",
     accent: "violet",
     relatedPosts: [],

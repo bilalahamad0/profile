@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Download } from "lucide-react";
 import { experienceData, projectsData } from "@/data/portfolio";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbList, resumeSchema } from "@/lib/structured-data";
 import {
   RESUME_CERT_TITLES,
   RESUME_CONTACT,
@@ -26,8 +28,24 @@ export const metadata: Metadata = {
       "18+ years of firmware QA and test automation — Amazon, Google, Rivian, Cruise, Samsara. Read online or download the PDF.",
     url: "https://bilalahamad.com/resume",
     type: "profile",
+    // Next merges page metadata over the root's shallowly, so declaring
+    // `openGraph` here replaces the root block wholesale — without this the
+    // most-shared URL on the site previewed as a bare text link.
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer",
+      },
+    ],
   },
 };
+
+const breadcrumb = breadcrumbList([
+  { name: "Home", path: "" },
+  { name: "Resume", path: "/resume" },
+]);
 
 /**
  * A one-page first-look resume: the six most recent roles each keep their
@@ -62,7 +80,11 @@ export default function ResumePage() {
     : "";
 
   return (
-    <div className="min-h-screen bg-surface px-4 py-24 md:py-28 print:bg-white print:p-0">
+    <>
+      {/* Outside `.resume-sheet` on purpose — the PDF generator snapshots that
+          element's text, and structured data is for crawlers, not the page. */}
+      <JsonLd data={[breadcrumb, resumeSchema()]} />
+      <div className="min-h-screen bg-surface px-4 py-24 md:py-28 print:bg-white print:p-0">
       {/* Screen-only actions — hidden in print and in the generated PDF */}
       <div className="mx-auto mb-6 flex max-w-[8.5in] flex-wrap items-center justify-between gap-4 print:hidden">
         <p className="t-small text-ink-muted">
@@ -166,7 +188,8 @@ export default function ResumePage() {
           </p>
         </ResumeSection>
       </article>
-    </div>
+      </div>
+    </>
   );
 }
 
