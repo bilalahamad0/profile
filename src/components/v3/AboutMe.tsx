@@ -69,11 +69,14 @@ export function AboutMe() {
 
         <div className="mt-10 space-y-9">
           <Block label="What I own">
-            Quality for a product line, end to end — the test strategy, the
-            automation that enforces it, the release gate, and the sign-off that
-            says it ships. Building the bench is the easy half. The job is
-            defining what &ldquo;ready&rdquo; means, holding that line when a
-            launch date is pushing against it, and owning the consequences either
+            Quality for a product line, end to end — in the order it actually
+            happens. I set the test strategy at NPI bring-up, build the
+            automation that will enforce it, and shape the release roadmap with
+            engineering and program management. Then the cycle runs across SIL
+            and HIL benches, and I hold the gate when the results say hold, give
+            the QA sign-off that ships it, and carry readiness up to senior
+            leadership. Building the bench is the easy half; the job is defining
+            what &ldquo;ready&rdquo; means and owning the consequences either
             way.
           </Block>
 
@@ -102,11 +105,14 @@ export function AboutMe() {
           </Block>
 
           <Block label="Away from the job">
-            I keep building. A Raspberry Pi in my living room casts prayer-time
-            audio to the TV, a browser extension does the same for open tabs, and
-            a public dashboard follows layoff notices across the country. All of
-            it is open source, with the failures written up as plainly as the
-            wins.
+            I run a smart-home IoT ecosystem I built myself — a Raspberry Pi 4
+            orchestrating a Sony Android TV over ADB, a Google Nest Hub Max
+            display and Chromecast Audio, with a Gemma 3 model running locally on
+            the Pi so nothing leaves the house. It holds a 99% cast success rate,
+            and the one time it did not — four prayers firing at once after a
+            system-clock jump — is written up as plainly as the wins. A
+            cross-browser extension and a public dashboard tracking WARN layoff
+            notices across 47 states round it out, all open source.
           </Block>
         </div>
 
