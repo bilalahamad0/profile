@@ -34,7 +34,7 @@ export default function PrivacyPage() {
             <P>
               Bilal Ahamad is the data controller for this site. For any privacy question or
               request, use the{" "}
-              <Link href="/contact" className="text-blue-700 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+              <Link href="/contact" className="text-blue-700 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
                 contact form
               </Link>{" "}
               and say what you would like done.
@@ -81,7 +81,7 @@ export default function PrivacyPage() {
                 href="https://tools.google.com/dlpage/gaoptout"
                 target="_blank"
                 rel="noreferrer"
-                className="text-blue-700 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                className="text-blue-700 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
               >
                 opt-out add-on
               </a>
@@ -136,7 +136,7 @@ export default function PrivacyPage() {
             </P>
             <P>
               Requests go through the{" "}
-              <Link href="/contact" className="text-blue-700 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+              <Link href="/contact" className="text-blue-700 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
                 contact form
               </Link>
               . There is no charge, and you will get a reply.
