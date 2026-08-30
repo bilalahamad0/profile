@@ -25,10 +25,14 @@ import { ArrowRight } from "lucide-react";
  * readiness with 10+ stakeholders". Strategy, roadmap, release gate, sign-off
  * and the people are the story; the bench is how it gets enforced.
  *
- * Each company is named by what was OWNED there, not by an artifact built
- * there. "Motion and sensor-fusion rigs at Google" was a second version of the
- * same mistake: it reduced end-to-end ownership of Daydream VR controller
- * firmware validation, plus Pixel 2/3 release sign-off, to one fixture.
+ * VOICE — the hard part, and the reason this went through four drafts. Fixing
+ * the undervaluing by ADDING ownership verbs, scope and numbers produced the
+ * opposite failure: ASIL-D, NPI, SIL/HIL, "50+ localized SKUs", "10+
+ * stakeholders" — the resume rewritten as paragraphs. An intro is not a
+ * credentials list. The ownership is now carried in plain speech ("I sign the
+ * release — or hold it"), the products are named in words anyone knows
+ * (phones, Alexa devices, cars, dash cams), and the counts live on /experience
+ * where someone who wants evidence will go looking for them.
  *
  * NO "use client" — the prose and every company name are in the static HTML.
  * The full dated career record stays statically rendered on /experience, which
@@ -68,51 +72,34 @@ export function AboutMe() {
         </h2>
 
         <div className="mt-10 space-y-9">
-          <Block label="What I own">
-            Quality for a product line, end to end — in the order it actually
-            happens. I set the test strategy at NPI bring-up, build the
-            automation that will enforce it, and shape the release roadmap with
-            engineering and program management. Then the cycle runs across SIL
-            and HIL benches, and I hold the gate when the results say hold, give
-            the QA sign-off that ships it, and carry readiness up to senior
-            leadership. Building the bench is the easy half; the job is defining
-            what &ldquo;ready&rdquo; means and owning the consequences either
-            way.
+          <Block label="What I do">
+            I decide whether a product is ready for real people to use. My teams
+            build the tests and run them; I set what we are testing for, and I
+            sign the release — or hold it, on the days when everyone would rather
+            I did not.
           </Block>
 
-          <Block label="How I lead">
-            Through the teams that build the thing, not around them. I have led
-            engineers directly and through matrixed reporting, synchronized DSP,
-            acoustic and firmware groups onto one schedule, run three squads on a
-            bi-weekly release train, and carried release readiness to senior
-            leadership and 10+ stakeholders. Most quality problems turn out to be
-            coordination problems wearing a technical costume.
+          <Block label="What I care about">
+            The quiet failures. Not the crash you can see, but the thing that
+            goes wrong at 3am in someone&rsquo;s car, in a language I don&rsquo;t
+            speak, on a device that has been running fine for six months.
+            Catching those before a customer does is the whole job, and almost
+            nobody thanks you for it. I like it anyway.
           </Block>
 
           <Block label="Where I&rsquo;ve done it">
-            At <Name>Google</Name> I owned firmware validation for the Daydream VR
-            controller end to end and held release sign-off across Pixel 2 and
-            Pixel 3. At <Name>Amazon Lab126</Name> I led the quality roadmap for
-            Alexa Voice Service across 50+ localized SKUs. I directed test
-            strategy across <Name>Rivian</Name>&rsquo;s R1T, R1S and commercial
-            fleet, charted the test-delivery roadmap and ASIL-D protocols for{" "}
-            <Name>Cruise</Name>&rsquo;s autonomous compute platform, and owned
-            firmware quality for <Name>Samsara</Name>&rsquo;s dash-cam line —
-            earlier, handsets at <Name>Motorola Mobility</Name> and{" "}
-            <Name>Wistron</Name>. Today I lead architecture and validation for a
-            sensor-integration platform, from LiDAR and radar bring-up through to
-            production release gates.
+            Phones at <Name>Google</Name> and <Name>Motorola</Name>. Alexa
+            devices at <Name>Amazon</Name>. Cars at <Name>Rivian</Name> and{" "}
+            <Name>Cruise</Name>. Dash cams at <Name>Samsara</Name>. These days,
+            sensor platforms for autonomous systems.
           </Block>
 
-          <Block label="Away from the job">
-            I run a smart-home IoT ecosystem I built myself — a Raspberry Pi 4
-            orchestrating a Sony Android TV over ADB, a Google Nest Hub Max
-            display and Chromecast Audio, with a Gemma 3 model running locally on
-            the Pi so nothing leaves the house. It holds a 99% cast success rate,
-            and the one time it did not — four prayers firing at once after a
-            system-clock jump — is written up as plainly as the wins. A
-            cross-browser extension and a public dashboard tracking WARN layoff
-            notices across 47 states round it out, all open source.
+          <Block label="Away from work">
+            I build things for my own house. A Raspberry Pi in my living room
+            runs a small AI model that coordinates a TV, a smart display and a
+            speaker, so the call to prayer plays on time without anyone touching
+            anything. It works about 99% of the time. I wrote up the time it
+            didn&rsquo;t, in detail, because that is the more useful story.
           </Block>
         </div>
 
