@@ -301,8 +301,8 @@ export const projectsData = [
   {
     id: "adhan",
     name: "Smart-Home IoT Media Caster",
-    tagline: "AI-orchestrated IoT prayer time automation",
-    description: "An IoT orchestration layer that casts automated prayer-time notifications to a Sony Android TV, built in 4 days instead of a 3-week engineering cycle with AI pair programming. Integrates a Raspberry Pi over ADB, managing media state and low-level device commands.",
+    tagline: "Embedded Raspberry Pi orchestration for hands-off prayer-time media",
+    description: "An embedded IoT layer running on a Raspberry Pi that drives a Sony Android TV over ADB, managing media state and low-level device commands for hands-off prayer-time notifications. Built in 4 days instead of a 3-week cycle with AI pair programming.",
     category: "IoT & Automation" as ProjectCategory,
     tech: ["Node.js", "ADB", "Raspberry Pi", "Shell", "Android TV"],
     repo: "https://github.com/bilalahamad0/adhan-api",

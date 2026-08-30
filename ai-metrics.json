@@ -4,7 +4,7 @@
   "aiContribution": 85,
   "agents": [
     {
-      "name": "Antigravity",
+      "name": "Cursor",
       "provider": "Google DeepMind",
       "period": "Jul 2025",
       "models": [
@@ -17,7 +17,7 @@
     {
       "name": "Cursor",
       "provider": "Anthropic",
-      "period": "Apr 2026 – Present",
+      "period": "Apr 2026 \u2013 Present",
       "models": [
         "Claude Opus 4.6",
         "Claude Sonnet 4"
@@ -28,7 +28,7 @@
     {
       "name": "Claude Code",
       "provider": "Anthropic",
-      "period": "Apr 2026 – Present",
+      "period": "Apr 2026 \u2013 Present",
       "models": [
         "Claude Opus 4.7",
         "Claude Opus 4.8",

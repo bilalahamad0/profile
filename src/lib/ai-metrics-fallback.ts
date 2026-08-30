@@ -170,7 +170,7 @@ export const STATIC_FALLBACK: Record<string, AIMetrics> = {
     aiContribution: 85,
     agents: [
       {
-        name: "Antigravity",
+        name: "Cursor",
         provider: "Google DeepMind",
         period: "Jul 2025",
         models: ["Gemini 2.5 Flash", "Gemini 2.5 Pro"],
