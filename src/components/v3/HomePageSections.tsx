@@ -333,7 +333,7 @@ export function ContactCTA() {
           <motion.div variants={fadeUp} transition={{ duration: 0.5 }} className="flex justify-center mb-8">
             <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-emerald-500/[0.08] border border-emerald-500/20">
               <span className="pulse-dot" />
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">Available for Opportunities</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-400">Available for Opportunities</span>
             </div>
           </motion.div>
 
