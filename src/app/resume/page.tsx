@@ -69,7 +69,7 @@ export default function ResumePage() {
           Printable resume — the same content as{" "}
           <a
             href="/experience"
-            className="text-blue-700 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+            className="text-blue-700 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
           >
             the full career timeline
           </a>
@@ -99,7 +99,7 @@ export default function ResumePage() {
               <span key={c.label}>
                 {"  ·  "}
                 {c.href ? (
-                  <a href={c.href} className="text-[#1a56a0]">
+                  <a href={c.href} className="text-[#1a56a0] underline">
                     {c.label}
                   </a>
                 ) : (

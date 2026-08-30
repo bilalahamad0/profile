@@ -74,7 +74,7 @@ export function AILabPreview() {
           <motion.div variants={fadeUp} transition={{ duration: 0.5 }} className="mb-6 md:mb-8 lg:mb-10">
             <blockquote className="relative p-6 md:p-8 rounded-2xl bg-gradient-to-r from-violet-100/70 to-indigo-100/60 dark:from-violet-950/40 dark:to-indigo-950/40 border border-violet-500/25 dark:border-violet-500/15">
               <div className="absolute top-4 left-6 text-violet-500/20 text-6xl font-serif leading-none" aria-hidden="true">&ldquo;</div>
-              <p className="relative z-10 text-lg md:text-xl text-body font-light leading-relaxed italic pl-8">
+              <p className="relative z-10 t-lead text-body font-light italic pl-8">
                 AI pair programming reduces development cycles by 65–90% for experienced engineers, with quality metrics that meet or exceed manual baselines.
               </p>
               <cite className="block mt-4 text-sm text-violet-700 dark:text-violet-400 not-italic font-semibold pl-8">
