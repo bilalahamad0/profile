@@ -54,7 +54,7 @@ export function websiteSchema() {
     url: SITE_URL,
     name: `${PERSON_NAME} — Portfolio`,
     description:
-      "Portfolio of Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer with 18+ years across Amazon, Google, Rivian, Cruise, and Samsara. Firmware validation, test automation architecture, IoT, functional safety, and AI-native development.",
+      "Portfolio of Bilal Ahamad — Systems Validation Architect with 18+ years across Amazon, Google, Rivian, Cruise, and Samsara. Firmware validation, test automation architecture, IoT, functional safety, and AI-native development.",
     inLanguage: "en-US",
     author: personRef,
     publisher: personRef,
@@ -159,7 +159,7 @@ export function resumeSchema() {
     url: `${SITE_URL}/resume`,
     name: `${PERSON_NAME} — Resume`,
     description:
-      "One-page resume of Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer with 18+ years across Amazon Lab126, Google, Rivian, Cruise, and Samsara.",
+      "One-page resume of Bilal Ahamad — Systems Validation Architect with 18+ years across Amazon Lab126, Google, Rivian, Cruise, and Samsara.",
     inLanguage: "en-US",
     mainEntity: personRef,
     about: personRef,

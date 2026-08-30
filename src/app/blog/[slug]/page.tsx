@@ -191,7 +191,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <div className="mt-16 pt-10 border-t border-line/10 dark:border-line/5 flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
               <p className="text-ink-muted text-sm">Written by Bilal Ahamad</p>
-              <p className="text-ink-muted text-xs mt-1">Technical QA Lead & AI-Driven Engineer</p>
+              <p className="text-ink-muted text-xs mt-1">Systems Validation Architect</p>
             </div>
             <div className="flex gap-4">
               {post.linkedinUrl && (

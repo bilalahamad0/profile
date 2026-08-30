@@ -26,21 +26,21 @@ import { RESUME_HEADLINE } from "./resume/resume-content";
 export const metadata: Metadata = {
   title: "Home | Bilal Ahamad",
   description:
-    "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer. 18+ years at Amazon, Google, Rivian, Cruise & Samsara building automation, IoT & AI systems.",
+    "Bilal Ahamad — Systems Validation Architect. 18+ years at Amazon, Google, Rivian, Cruise & Samsara validating embedded firmware, IoT and AI systems.",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     title: "Home | Bilal Ahamad",
     description:
-      "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer. 18+ years at Amazon, Google, Rivian, Cruise & Samsara building automation, IoT & AI systems.",
+      "Bilal Ahamad — Systems Validation Architect. 18+ years at Amazon, Google, Rivian, Cruise & Samsara validating embedded firmware, IoT and AI systems.",
     url: "https://bilalahamad.com",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Bilal Ahamad — Systems Validation Architect" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Home | Bilal Ahamad",
     description:
-      "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer. 18+ years at Amazon, Google, Rivian, Cruise, Samsara.",
+      "Bilal Ahamad — Systems Validation Architect. Embedded firmware and safety-critical validation across Amazon, Google, Rivian, Cruise, Samsara.",
     images: ["/og-image.png"],
   },
 };

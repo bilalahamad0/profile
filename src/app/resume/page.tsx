@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   // through the template, so that one keeps the full string.
   title: "Resume",
   description:
-    "Resume of Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer with 18+ years across Amazon Lab126, Google, Rivian, Cruise, and Samsara. Download as PDF.",
+    "Resume of Bilal Ahamad — Systems Validation Architect with 18+ years across Amazon Lab126, Google, Rivian, Cruise, and Samsara. Download as PDF.",
   alternates: { canonical: "https://bilalahamad.com/resume" },
   openGraph: {
     title: "Resume | Bilal Ahamad",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer",
+        alt: "Bilal Ahamad — Systems Validation Architect",
       },
     ],
   },

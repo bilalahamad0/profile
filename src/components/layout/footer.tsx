@@ -57,7 +57,7 @@ export function Footer() {
                 Bilal Ahamad
               </span>
               <span className="text-xs font-semibold tracking-[0.2em] uppercase text-ink-muted mt-0.5">
-                Technical QA Lead
+                Systems Validation Architect
               </span>
             </Link>
 

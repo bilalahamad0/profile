@@ -7,6 +7,8 @@
 //   --html card.html   render an arbitrary HTML file (full control)
 //   --out  path.png    (required) output PNG
 //   --width / --height (default 1200x585 = 2.05:1, the crop-safe ratio for blog cards)
+//   --scale            device scale factor (default 2; use 1 for exact-size OG cards)
+//   --optimize         re-encode as a palette PNG (flat brand art: ~5x smaller, no visible loss)
 //
 // Crop-safety lessons baked in (see memory: the blog card object-covers the
 // thumbnail, overlays a LinkedIn badge top-right, and fades the bottom):
@@ -20,6 +22,8 @@
 
 import { readFile, writeFile } from "node:fs/promises";
 import { chromium } from "playwright";
+
+const argv = process.argv;
 
 function arg(name, fallback) {
   const i = process.argv.indexOf(`--${name}`);
@@ -118,6 +122,9 @@ async function main() {
   let html;
   let width = Number(arg("width", 1200));
   let height = Number(arg("height", 585));
+  // Blog thumbnails want the 2x retina asset; an OG card must be exactly
+  // 1200x630, so it renders at scale 1 rather than being downsampled later.
+  const scale = Number(arg("scale", 2));
   const htmlFile = arg("html");
   const specFile = arg("spec");
 
@@ -134,11 +141,25 @@ async function main() {
   }
 
   const browser = await chromium.launch();
-  const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 2 });
+  const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: scale });
   await page.setContent(html, { waitUntil: "networkidle" });
   await page.screenshot({ path: out });
   await browser.close();
-  console.log(`Rendered ${out} (${width * 2}x${height * 2})`);
+
+  // These cards are flat vector art on a dark ground — a 256-colour palette is
+  // lossless to the eye and turns a 724KB truecolour PNG into ~129KB. Skipped
+  // silently if sharp is unavailable, since it is a transitive dependency.
+  if (argv.includes("--optimize")) {
+    try {
+      const { default: sharp } = await import("sharp");
+      const buf = await sharp(out).png({ palette: true, quality: 92, effort: 10 }).toBuffer();
+      await writeFile(out, buf);
+      console.log(`Optimised to ${Math.round(buf.length / 1024)}KB (palette PNG)`);
+    } catch (err) {
+      console.warn(`⚠ Skipped --optimize: ${err.message}`);
+    }
+  }
+  console.log(`Rendered ${out} (${width * scale}x${height * scale})`);
 }
 
 main().catch((err) => {

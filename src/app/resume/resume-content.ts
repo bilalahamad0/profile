@@ -10,12 +10,12 @@
 
 /**
  * The site's one brand string for the role — it also fills the nav, the page
- * metadata, the JSON-LD Person schema and llms.txt. The owner's own resume
- * self-describes as "Systems Validation Architect"; changing that here alone
- * would put the header of the PDF at odds with every other surface, so the
- * switch is a deliberate site-wide rename, not a resume-only edit.
+ * metadata, the JSON-LD Person schema, the OG card and llms.txt. It matches the
+ * owner's own resume. Edit it here and every surface follows; the embedded and
+ * firmware keywords the title used to carry now live in the page descriptions
+ * and RESUME_SUMMARY, so search and share previews still state the domain.
  */
-export const RESUME_HEADLINE = "Lead Embedded Firmware & Systems QA Engineer";
+export const RESUME_HEADLINE = "Systems Validation Architect";
 
 export const RESUME_LOCATION = "Sunnyvale, CA";
 

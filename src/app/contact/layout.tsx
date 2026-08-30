@@ -5,7 +5,7 @@ import { breadcrumbList } from "@/lib/structured-data";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer. Open to senior engineering, QA leadership, and AI consulting opportunities.",
+    "Get in touch with Bilal Ahamad — Systems Validation Architect, embedded firmware and safety-critical systems. Open to senior engineering, QA leadership, and AI consulting opportunities.",
   alternates: { canonical: "/contact" },
   openGraph: {
     type: "website",

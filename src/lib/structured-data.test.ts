@@ -246,12 +246,12 @@ describe("occupationList()", () => {
 describe("jobTitleList()", () => {
   it("leads with the headline, then each distinct title newest first", () => {
     expect(
-      jobTitleList("Lead Embedded Firmware & Systems QA Engineer", [
+      jobTitleList("Systems Validation Architect", [
         { role: "Senior Firmware Quality Lead", company: "A", duration: "Dec 2023 - Jul 2025" },
         { role: "Senior Test Engineer", company: "B", duration: "Jan 2016 - Jun 2018" },
       ])
     ).toEqual([
-      "Lead Embedded Firmware & Systems QA Engineer",
+      "Systems Validation Architect",
       "Senior Firmware Quality Lead",
       "Senior Test Engineer",
     ]);

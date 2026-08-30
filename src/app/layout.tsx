@@ -32,15 +32,15 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://bilalahamad.com"),
   title: {
-    default: "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer",
+    default: "Bilal Ahamad — Systems Validation Architect",
     template: "%s | Bilal Ahamad",
   },
   description:
     "Portfolio of Bilal Ahamad — 18+ years engineering quality at Amazon, Google, Rivian, Cruise & Samsara. IoT automation, test architecture & AI-native dev.",
   keywords: [
-    "Technical QA Lead", "IoT Engineer", "Test Automation", "Amazon", "Google",
-    "Rivian", "Cruise", "Samsara", "QA Manager", "Software Engineer", "AI",
-    "Bilal Ahamad", "portfolio",
+    "Systems Validation Architect", "Embedded Firmware Validation", "Technical QA Lead",
+    "IoT Engineer", "Test Automation", "Amazon", "Google", "Rivian", "Cruise",
+    "Samsara", "QA Manager", "Software Engineer", "AI", "Bilal Ahamad", "portfolio",
   ],
   authors: [{ name: "Bilal Ahamad", url: "https://bilalahamad.com" }],
   creator: "Bilal Ahamad",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://bilalahamad.com",
     siteName: "Bilal Ahamad Portfolio",
-    title: "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer",
+    title: "Bilal Ahamad — Systems Validation Architect",
     description:
       "18+ years engineering quality for Amazon, Google, Rivian, Cruise & Samsara. Specializing in IoT automation, test architecture, and AI-native development.",
     images: [
@@ -57,13 +57,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer",
+        alt: "Bilal Ahamad — Systems Validation Architect",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer",
+    title: "Bilal Ahamad — Systems Validation Architect",
     description:
       "18+ years engineering quality for Amazon, Google, Rivian, Cruise & Samsara.",
     images: ["/og-image.png"],
