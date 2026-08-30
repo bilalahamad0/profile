@@ -1,6 +1,10 @@
 import { describe, it, expect } from "vitest";
 import {
   SITE_URL,
+  parseRoleDates,
+  occupationList,
+  jobTitleList,
+  resumeSchema,
   PERSON_ID,
   absoluteUrl,
   breadcrumbList,
@@ -159,5 +163,114 @@ describe("blogSchema", () => {
       url: `${SITE_URL}/blog/post-one`,
     });
     expect(ld.blogPost[0].mainEntityOfPage["@id"]).toBe(`${SITE_URL}/blog/post-one`);
+  });
+});
+
+describe("parseRoleDates()", () => {
+  it("parses a closed range into ISO months", () => {
+    expect(parseRoleDates("Dec 2014 - Sep 2015")).toEqual({
+      startDate: "2014-12",
+      endDate: "2015-09",
+    });
+  });
+
+  it("omits endDate for a role still held", () => {
+    expect(parseRoleDates("Jun 2021 - Present")).toEqual({ startDate: "2021-06" });
+    expect(parseRoleDates("Jun 2021 - present")).toEqual({ startDate: "2021-06" });
+  });
+
+  it("accepts en and em dashes as the separator", () => {
+    expect(parseRoleDates("Dec 2014 – Sep 2015")).toEqual({
+      startDate: "2014-12",
+      endDate: "2015-09",
+    });
+    expect(parseRoleDates("Dec 2014 — Sep 2015")).toEqual({
+      startDate: "2014-12",
+      endDate: "2015-09",
+    });
+  });
+
+  it("accepts long and abbreviated month spellings", () => {
+    expect(parseRoleDates("September 2015 - January 2016")).toEqual({
+      startDate: "2015-09",
+      endDate: "2016-01",
+    });
+    expect(parseRoleDates("Sept 2015 - Jan 2016")).toEqual({
+      startDate: "2015-09",
+      endDate: "2016-01",
+    });
+  });
+
+  // Returning null matters more than parsing cleverly: the caller drops the
+  // entry, and a missing tenure is far better than a guessed one in markup
+  // that search engines repeat as fact.
+  it("returns null rather than guessing when either end is unreadable", () => {
+    expect(parseRoleDates("Present")).toBeNull();
+    expect(parseRoleDates("2014 - 2015")).toBeNull();
+    expect(parseRoleDates("Foo 2015 - Jan 2016")).toBeNull();
+    expect(parseRoleDates("Dec 2014 - Foo 2015")).toBeNull();
+    expect(parseRoleDates("Dec 2014 - Sep 2015 - extra")).toBeNull();
+    expect(parseRoleDates("")).toBeNull();
+  });
+});
+
+describe("occupationList()", () => {
+  const roles = [
+    { role: "Senior Firmware Quality Lead", company: "Samsara Inc", duration: "Dec 2023 - Jul 2025" },
+    { role: "Test Lead &\nSenior System Test Engineer", company: "Rivian", duration: "Jun 2021 - Sep 2022" },
+  ];
+
+  it("emits one schema.org Role per career entry, dates derived from the timeline", () => {
+    const out = occupationList(roles);
+    expect(out).toHaveLength(2);
+    expect(out[0]).toEqual({
+      "@type": "Role",
+      roleName: "Senior Firmware Quality Lead",
+      startDate: "2023-12",
+      endDate: "2025-07",
+      occupiedBy: { "@type": "Organization", name: "Samsara Inc" },
+    });
+  });
+
+  it("flattens the hard line breaks the timeline layout uses", () => {
+    expect(occupationList(roles)[1].roleName).toBe("Test Lead & Senior System Test Engineer");
+  });
+
+  it("drops an entry it cannot parse instead of publishing a guessed date", () => {
+    const out = occupationList([...roles, { role: "X", company: "Y", duration: "sometime" }]);
+    expect(out).toHaveLength(2);
+    expect(JSON.stringify(out)).not.toContain("Y");
+  });
+});
+
+describe("jobTitleList()", () => {
+  it("leads with the headline, then each distinct title newest first", () => {
+    expect(
+      jobTitleList("Systems Validation Architect", [
+        { role: "Senior Firmware Quality Lead", company: "A", duration: "Dec 2023 - Jul 2025" },
+        { role: "Senior Test Engineer", company: "B", duration: "Jan 2016 - Jun 2018" },
+      ])
+    ).toEqual([
+      "Systems Validation Architect",
+      "Senior Firmware Quality Lead",
+      "Senior Test Engineer",
+    ]);
+  });
+
+  it("deduplicates a repeated title and one matching the headline", () => {
+    const out = jobTitleList("Senior Test Engineer", [
+      { role: "Senior Test Engineer", company: "A", duration: "Jan 2016 - Jun 2018" },
+      { role: "Senior Test Engineer", company: "B", duration: "Jan 2014 - Dec 2015" },
+    ]);
+    expect(out).toEqual(["Senior Test Engineer"]);
+  });
+});
+
+describe("resumeSchema()", () => {
+  it("binds the resume page to the site's single Person identity", () => {
+    const schema = resumeSchema();
+    expect(schema["@type"]).toBe("ProfilePage");
+    expect(schema["@id"]).toBe(`${SITE_URL}/resume`);
+    expect(JSON.stringify(schema)).toContain(PERSON_ID);
   });
 });

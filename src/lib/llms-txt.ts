@@ -60,14 +60,14 @@ const PAGES: ReadonlyArray<{ name: string; path: string; note: string }> = [
 export function buildLlmsTxt(input: LlmsTxtInput): string {
   const lines: string[] = [];
 
-  lines.push(`# ${PERSON_NAME} — Lead Embedded Firmware & Systems QA Engineer`);
+  lines.push(`# ${PERSON_NAME} — Systems Validation Architect`);
   lines.push("");
   lines.push(
     `> Portfolio of ${PERSON_NAME}: 18+ years engineering firmware and systems quality at Amazon, Google, Rivian, Cruise, and Samsara — test automation architecture, IoT/embedded validation, functional safety, and AI-native development. This file gives AI agents a concise, machine-readable map of ${SITE_URL}.`
   );
   lines.push("");
   lines.push(`- Site: ${SITE_URL}`);
-  lines.push("- Role: Lead Embedded Firmware & Systems QA Engineer");
+  lines.push("- Role: Systems Validation Architect");
   lines.push("- Location: Sunnyvale, CA, US");
   lines.push("- Contact: bilal.ahamad@gmail.com");
 

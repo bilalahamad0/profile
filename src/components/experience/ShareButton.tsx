@@ -8,7 +8,7 @@ export function ShareButton() {
 
   const handleShare = async () => {
     const shareData = {
-      title: "Bilal Ahamad | Lead Embedded Firmware & Systems QA Engineer",
+      title: "Bilal Ahamad | Systems Validation Architect",
       text: "Check out Bilal Ahamad's professional technical roadmap and career timeline.",
       url: window.location.href,
     };

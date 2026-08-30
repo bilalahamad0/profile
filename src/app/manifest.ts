@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Bilal Ahamad — Lead Embedded Firmware & Systems QA",
+    name: "Bilal Ahamad — Systems Validation Architect",
     short_name: "Bilal Ahamad",
     description:
       "Portfolio of Bilal Ahamad — 18+ years engineering quality for Amazon, Google, Rivian, Cruise & Samsara.",

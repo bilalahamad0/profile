@@ -114,7 +114,7 @@ export function AILabSection({
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-3xl mb-12">
           {heroStats.map(({ label, value }) => (
             <div key={label} className="p-4 rounded-2xl bg-surface-card dark:bg-ink/[0.03] border border-line/10 dark:border-line/[0.06]">
-              <span className="block text-2xl md:text-3xl font-black text-ink mb-1">{value}</span>
+              <span className="block t-h2 text-ink mb-1">{value}</span>
               <span className="block t-label font-bold text-ink-muted uppercase tracking-widest">{label}</span>
             </div>
           ))}

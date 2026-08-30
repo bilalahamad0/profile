@@ -1,20 +1,50 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {
   Play, Pause, RefreshCw, ChevronRight,
-  Zap, Car, Shield, Globe, Award, Code, Cpu,
+  Zap, Car, Shield, Globe, Award, Code, Cpu, Radar,
   Sparkles, Briefcase, ArrowRight
 } from "lucide-react";
 import { experienceData } from "@/data/portfolio";
 
+/* ─── Role binding ──────────────────────────────────── */
+// Slides bind to a role by COMPANY NAME, never by array position. Adding or
+// re-ordering a role in experienceData (which has already shifted the indices
+// twice) can no longer pair one job's bullet with another job's stat card.
+const roleByCompany = new Map(
+  experienceData.map((role) => [role.company, role] as const)
+);
+
+type Slide = {
+  id: string;
+  accent: string;
+  bg: string;
+  label: string;
+  title: string;
+  body: string;
+  icon: ReactNode;
+  stat: { value: string; label: string } | null;
+  cta: { label: string; href: string } | null;
+};
+
+/**
+ * Builds a role slide whose body copy is owned by `experienceData`. Spreads to
+ * zero slides when that company is no longer in the career data, so a curated
+ * stat card can never be rendered beside a bullet that isn't its own.
+ */
+function roleSlide(
+  { company, ...slide }: Omit<Slide, "body"> & { company: string }
+): Slide[] {
+  const role = roleByCompany.get(company);
+  const body = role?.highlights?.[0] ?? role?.desc;
+  return body ? [{ ...slide, body }] : [];
+}
+
 /* ─── Slide Definitions ─────────────────────────────── */
-// Note: experienceData indices after adding Stealth at [0]:
-// [0]=Stealth, [1]=Samsara, [2]=Cruise, [3]=Rivian, [4]=Amazon, [5]=Google
-// [6]=Cisco, [7]=Wistron, [8]=Motorola, [9]=Luminous
-const slides = [
+const slides: Slide[] = [
   /* 0 — Intro */
   {
     id: "intro",
@@ -27,67 +57,79 @@ const slides = [
     cta: null,
     stat: null,
   },
-  /* 1 — Samsara */
-  {
+  /* 1 — Stealth Mode (current role) */
+  ...roleSlide({
+    id: "stealth",
+    company: "Stealth Mode",
+    accent: "#818cf8",
+    bg: "from-indigo-950 via-slate-950 to-black",
+    label: "STEALTH MODE · SEP 2025 – AUG 2026",
+    title: "Stealth Mode\nSystem Architect",
+    icon: <Radar className="w-10 h-10 text-indigo-400" />,
+    stat: { value: "70%", label: "LiDAR/Radar Bring-Up Cycle Cut" },
+    cta: null,
+  }),
+  /* 2 — Samsara */
+  ...roleSlide({
     id: "samsara",
+    company: "Samsara Inc",
     accent: "#f59e0b",
     bg: "from-amber-950 via-slate-950 to-black",
     label: "SAMSARA · DEC 2023 – JUL 2025",
     title: "Samsara\nIoT & AI/ML QA",
-    body: experienceData[1]?.highlights?.[0] ?? experienceData[1]?.desc,
     icon: <Zap className="w-10 h-10 text-amber-400" />,
     stat: { value: "5 Days", label: "Regression Cycle (was 2 Weeks)" },
     cta: null,
-  },
-  /* 2 — Amazon */
-  {
+  }),
+  /* 3 — Amazon */
+  ...roleSlide({
     id: "amazon",
+    company: "Amazon Lab126",
     accent: "#f97316",
     bg: "from-orange-950 via-slate-950 to-black",
     label: "AMAZON LAB126 · 2018–2021",
     title: "Amazon\nAlexa IoT Lead",
-    body: experienceData[4]?.highlights?.[0] ?? experienceData[4]?.desc,
     icon: <Shield className="w-10 h-10 text-orange-400" />,
     stat: { value: "$3M", label: "Manual Testing Cost Saved" },
     cta: null,
-  },
-  /* 3 — Google */
-  {
+  }),
+  /* 4 — Google */
+  ...roleSlide({
     id: "google",
+    company: "Tech Mahindra / Google Inc",
     accent: "#3b82f6",
     bg: "from-blue-950 via-slate-950 to-black",
     label: "GOOGLE / DAYDREAM VR · 2016–2018",
     title: "Google\nVR Systems",
-    body: experienceData[5]?.highlights?.[0] ?? experienceData[5]?.desc,
     icon: <Globe className="w-10 h-10 text-blue-400" />,
     stat: { value: "80%", label: "Execution Hours Cut via Robot Arm" },
     cta: null,
-  },
-  /* 4 — Rivian */
-  {
+  }),
+  /* 5 — Rivian */
+  ...roleSlide({
     id: "rivian",
+    company: "Rivian Automotive LLC",
     accent: "#10b981",
     bg: "from-emerald-950 via-slate-950 to-black",
     label: "RIVIAN AUTOMOTIVE · 2021–2022",
     title: "Rivian\nSystem Test Lead",
-    body: experienceData[3]?.highlights?.[0] ?? experienceData[3]?.desc,
     icon: <Car className="w-10 h-10 text-emerald-400" />,
     stat: { value: "R1T / R1S", label: "EV Models Shipped" },
     cta: null,
-  },
-  /* 5 — Motorola / L&T */
-  {
+  }),
+  /* 6 — Motorola / L&T */
+  ...roleSlide({
     id: "motorola",
+    company: "L&T Infotech / Motorola Mobility",
     accent: "#8b5cf6",
     bg: "from-violet-950 via-slate-950 to-black",
     label: "MOTOROLA / L&T INFOTECH · 2009–2014",
     title: "Motorola\nBluetooth Automation",
-    body: experienceData[8]?.highlights?.[0] ?? experienceData[8]?.desc,
     icon: <Cpu className="w-10 h-10 text-violet-400" />,
     stat: { value: "3-Tier", label: "Bluetooth Qualification Framework" },
     cta: null,
-  },
-  /* 6 — Tech / Skills */
+  }),
+  /* 7 — Tech / Skills */
   {
     id: "skills",
     accent: "#ec4899",
@@ -99,7 +141,7 @@ const slides = [
     stat: null,
     cta: null,
   },
-  /* 7 — Certifications / Awards */
+  /* 8 — Certifications / Awards */
   {
     id: "certs",
     accent: "#f59e0b",
@@ -111,7 +153,7 @@ const slides = [
     stat: null,
     cta: null,
   },
-  /* 8 — CTA */
+  /* 9 — CTA */
   {
     id: "cta",
     accent: "#06b6d4",

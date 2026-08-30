@@ -10,9 +10,18 @@ import type { mdxPosts as MdxPostsType } from "@/app/blog/page";
 import type { LinkedInPost } from "@/data/portfolio";
 
 type MdxPost = (typeof MdxPostsType)[number];
-type FilterType = "All" | "Project Story" | "Whitepaper" | "LinkedIn";
+type FilterType = "All" | "Engineering" | "Project Story" | "Whitepaper" | "LinkedIn";
 
-const FILTERS: FilterType[] = ["All", "Project Story", "Whitepaper", "LinkedIn"];
+/**
+ * "All" is the landing view and shows EVERY post — MDX and LinkedIn alike.
+ *
+ * An earlier revision defaulted to "Engineering", which quietly dropped the six
+ * LinkedIn items out of the first screen; the owner reported posts as missing,
+ * which is exactly the right reaction to a default that hides content. The
+ * Engineering chip is kept as an opt-IN for readers who want only the technical
+ * writing, but nothing is hidden unless the reader asks for it.
+ */
+const FILTERS: FilterType[] = ["All", "Engineering", "Project Story", "Whitepaper", "LinkedIn"];
 
 const categoryColors: Record<string, { text: string; bg: string; border: string }> = {
   "Project Story": { text: "text-blue-700 dark:text-blue-400",   bg: "bg-blue-500/10",   border: "border-blue-500/20"   },
@@ -54,7 +63,12 @@ export function BlogGrid({ mdxPosts, linkedInPosts }: BlogGridProps) {
     })),
   ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-  const filtered = active === "All" ? allItems : allItems.filter((i) => i.category === active);
+  const filtered =
+    active === "All"
+      ? allItems
+      : active === "Engineering"
+        ? allItems.filter((i) => i.category !== "LinkedIn")
+        : allItems.filter((i) => i.category === active);
 
   return (
     <>

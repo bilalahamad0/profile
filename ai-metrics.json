@@ -1,10 +1,10 @@
 {
   "projectId": "profile",
-  "lastUpdated": "2026-08-23",
+  "lastUpdated": "2026-08-29",
   "aiContribution": 85,
   "agents": [
     {
-      "name": "Antigravity",
+      "name": "Cursor",
       "provider": "Google DeepMind",
       "period": "Jul 2025",
       "models": [
@@ -17,7 +17,7 @@
     {
       "name": "Cursor",
       "provider": "Anthropic",
-      "period": "Apr 2026 – Present",
+      "period": "Apr 2026 \u2013 Present",
       "models": [
         "Claude Opus 4.6",
         "Claude Sonnet 4"
@@ -28,7 +28,7 @@
     {
       "name": "Claude Code",
       "provider": "Anthropic",
-      "period": "Apr 2026 – Present",
+      "period": "Apr 2026 \u2013 Present",
       "models": [
         "Claude Opus 4.7",
         "Claude Opus 4.8",
@@ -41,8 +41,8 @@
     }
   ],
   "totalTokens": 358226655,
-  "totalCommits": 526,
-  "linesOfCode": 15394,
+  "totalCommits": 536,
+  "linesOfCode": 16846,
   "devCycleDays": 58,
   "manualEstimateDays": 76,
   "impact": "Full-stack portfolio deployed to production",

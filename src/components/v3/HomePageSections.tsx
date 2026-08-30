@@ -6,8 +6,10 @@ import {
   ArrowRight, Sparkles, BookOpen, Terminal,
   FileText, Linkedin, CalendarClock,
 } from "lucide-react";
-import { linkedInPosts } from "@/data/portfolio";
+import { linkedInPosts, projectsData } from "@/data/portfolio";
+import { STATIC_FALLBACK } from "@/lib/ai-metrics-fallback";
 import { BOOKING_ANCHOR } from "@/lib/contact";
+import { formatTokens } from "@/lib/utils";
 
 /* ================================================================
    Shared animation variants
@@ -49,7 +51,69 @@ function SectionLabel({ color, children }: { color: string; children: React.Reac
 /* ================================================================
    AI LAB PREVIEW
    ================================================================ */
-export function AILabPreview() {
+
+/**
+ * Metrics shape, borrowed from `STATIC_FALLBACK` itself rather than imported
+ * from `@/lib/ai-metrics` — that module is `server-only`, and this file is a
+ * client boundary. `ai-metrics-fallback.ts` only imports the type, so it is
+ * safe to pull into the client bundle.
+ */
+type AILabMetrics = typeof STATIC_FALLBACK;
+
+/**
+ * The homepage AI section. Until 2026-08 this led with a self-authored claim
+ * ("AI pair programming reduces development cycles by 65–90%…") dressed as a
+ * pull-quote — the one AI number on the site that nothing backed. It now shows
+ * Bilal's own measured aggregates instead, derived here with the same reduce
+ * logic <AILabSection> uses on /projects so the two can never tell different
+ * stories.
+ *
+ * DATA PATH / KNOWN LIMITATION. /projects is a Server Component: it awaits
+ * `getAIMetricsMap()` (live per-repo `ai-metrics.json` off raw.githubusercontent)
+ * and falls back to `STATIC_FALLBACK`. That path is not open to this component —
+ * `getAIMetricsMap` is `server-only`, the home page renders <AILabPreview />
+ * with no props, and `src/app/page.tsx` is out of scope for this change. So the
+ * default here is the build-time mirror, which the weekly workflow does NOT
+ * touch (it refreshes this repo's own `ai-metrics.json`; the mirror is synced by
+ * hand via `scripts/sync-ai-metrics.mjs --report`) and which can therefore lag
+ * the live sidecars. The figures shown were chosen to survive that lag: tokens
+ * and the cycle ratio are identical in mirror and live today, and tests differ
+ * by 7 of 1,798 (0.4%) — the mirror always undercounts, never inflates. Commits
+ * are deliberately NOT shown here: the mirror is ~10% behind live on that one,
+ * and the full table on /projects is where it belongs.
+ *
+ * To make this live, pass the map down: `<AILabPreview metrics={metrics} />`
+ * from `src/app/page.tsx` after awaiting `getAIMetricsMap()` — the prop below
+ * exists for exactly that, no further change needed here.
+ */
+export function AILabPreview({ metrics = STATIC_FALLBACK }: { metrics?: AILabMetrics }) {
+  const aiProjects = projectsData.filter((p) => p.isAI);
+  const tracked = aiProjects.flatMap((p) => {
+    const m = metrics[p.id];
+    return m ? [m] : [];
+  });
+
+  const totalTokens = tracked.reduce((sum, m) => sum + m.totalTokens, 0);
+  const totalTests = tracked.reduce((sum, m) => sum + (m.tests ?? 0), 0);
+
+  // Weighted by days (Σ actual ÷ Σ baseline), not a mean of percentages, so a
+  // one-day project can't swing the total — same derivation as <AILabSection>.
+  const devDays = tracked.reduce((sum, m) => sum + m.devCycleDays, 0);
+  const manualDays = tracked.reduce((sum, m) => sum + m.manualEstimateDays, 0);
+  const cycleReduction = manualDays > 0 ? Math.round((1 - devDays / manualDays) * 100) : 0;
+
+  // `en-US` is pinned rather than left to the runtime locale: this renders on
+  // the server and hydrates on the client, and an unpinned toLocaleString()
+  // ("1,791" vs "1.791") is a hydration mismatch waiting to happen.
+  const stats = [
+    { label: "Production systems", value: String(aiProjects.length) },
+    // "+" because formatTokens rounds DOWN to 0.1B — same presentation the
+    // /projects hero tile uses, so the two pages read identically.
+    { label: "AI tokens processed", value: `${formatTokens(totalTokens)}+` },
+    { label: "Automated tests", value: totalTests.toLocaleString("en-US") },
+    { label: "Shorter build cycle", value: `${cycleReduction}%` },
+  ];
+
   return (
     <section className="px-6 lg:px-24 py-12 md:py-20 lg:py-24 relative overflow-hidden" aria-labelledby="ai-preview-heading">
       {/* Neural-style background */}
@@ -70,17 +134,42 @@ export function AILabPreview() {
             <h2 id="ai-preview-heading" className="sr-only">AI-Native Engineering</h2>
           </motion.div>
 
-          {/* Philosophy quote */}
+          {/* Measured results — his own numbers, derived at render time.
+              Same panel geometry the pull-quote occupied (rounded-2xl, the
+              violet→indigo wash, p-6/md:p-8) so the section keeps its weight
+              in the page rhythm; only the contents changed. */}
           <motion.div variants={fadeUp} transition={{ duration: 0.5 }} className="mb-6 md:mb-8 lg:mb-10">
-            <blockquote className="relative p-6 md:p-8 rounded-2xl bg-gradient-to-r from-violet-100/70 to-indigo-100/60 dark:from-violet-950/40 dark:to-indigo-950/40 border border-violet-500/25 dark:border-violet-500/15">
-              <div className="absolute top-4 left-6 text-violet-500/20 text-6xl font-serif leading-none" aria-hidden="true">&ldquo;</div>
-              <p className="relative z-10 text-lg md:text-xl text-body font-light leading-relaxed italic pl-8">
-                AI pair programming reduces development cycles by 65–90% for experienced engineers, with quality metrics that meet or exceed manual baselines.
+            <div className="p-6 md:p-8 rounded-2xl bg-gradient-to-r from-violet-100/70 to-indigo-100/60 dark:from-violet-950/40 dark:to-indigo-950/40 border border-violet-500/25 dark:border-violet-500/15">
+              <p className="t-lead text-body font-light">
+                AI-native from architecture to deployment — and{" "}
+                <span className="text-ink font-medium">measured, not asserted</span>.
               </p>
-              <cite className="block mt-4 text-sm text-violet-700 dark:text-violet-400 not-italic font-semibold pl-8">
-                — From the AI-Driven Development Whitepaper
-              </cite>
-            </blockquote>
+
+              <dl className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                {stats.map(({ label, value }) => (
+                  // flex-col-reverse keeps <dt> before <dd> in the DOM (and so in
+                  // the screen-reader order "Automated tests, 1,791") while the
+                  // number still reads above its label.
+                  <div
+                    key={label}
+                    className="flex flex-col-reverse p-4 rounded-2xl bg-ink/[0.04] dark:bg-ink/[0.03] border border-line/10 dark:border-line/[0.06]"
+                  >
+                    <dt className="t-label font-bold text-ink-muted uppercase tracking-widest">{label}</dt>
+                    <dd className="t-h2 text-ink mb-1">{value}</dd>
+                  </div>
+                ))}
+              </dl>
+
+              <p className="mt-5 t-caption text-ink-muted">
+                <Link
+                  href="/projects#ai-lab"
+                  className="font-semibold text-violet-700 dark:text-violet-400 underline underline-offset-2 hover:text-violet-800 dark:hover:text-violet-300 transition-colors"
+                >
+                  See the per-project table
+                </Link>{" "}
+                for tokens, commits, lines of code, test counts and cycle days on every system.
+              </p>
+            </div>
           </motion.div>
 
           {/* CTA */}

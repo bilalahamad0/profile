@@ -31,7 +31,7 @@ export default function ContactPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-surface text-ink">
+    <div className="min-h-screen bg-surface text-ink">
 
       {/* Header Section */}
       <section className="pt-24 pb-8 md:pt-28 md:pb-10 lg:pt-36 lg:pb-12 px-6 lg:px-24 border-b border-line/10 dark:border-line/5">
@@ -79,6 +79,6 @@ export default function ContactPage() {
           </p>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

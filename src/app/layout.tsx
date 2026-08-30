@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { MotionConfig } from "framer-motion";
 import { Footer } from "@/components/layout/footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
@@ -31,15 +32,15 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://bilalahamad.com"),
   title: {
-    default: "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer",
+    default: "Bilal Ahamad — Systems Validation Architect",
     template: "%s | Bilal Ahamad",
   },
   description:
     "Portfolio of Bilal Ahamad — 18+ years engineering quality at Amazon, Google, Rivian, Cruise & Samsara. IoT automation, test architecture & AI-native dev.",
   keywords: [
-    "Technical QA Lead", "IoT Engineer", "Test Automation", "Amazon", "Google",
-    "Rivian", "Cruise", "Samsara", "QA Manager", "Software Engineer", "AI",
-    "Bilal Ahamad", "portfolio",
+    "Systems Validation Architect", "Embedded Firmware Validation", "Technical QA Lead",
+    "IoT Engineer", "Test Automation", "Amazon", "Google", "Rivian", "Cruise",
+    "Samsara", "QA Manager", "Software Engineer", "AI", "Bilal Ahamad", "portfolio",
   ],
   authors: [{ name: "Bilal Ahamad", url: "https://bilalahamad.com" }],
   creator: "Bilal Ahamad",
@@ -48,7 +49,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://bilalahamad.com",
     siteName: "Bilal Ahamad Portfolio",
-    title: "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer",
+    title: "Bilal Ahamad — Systems Validation Architect",
     description:
       "18+ years engineering quality for Amazon, Google, Rivian, Cruise & Samsara. Specializing in IoT automation, test architecture, and AI-native development.",
     images: [
@@ -56,13 +57,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer",
+        alt: "Bilal Ahamad — Systems Validation Architect",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bilal Ahamad — Lead Embedded Firmware & Systems QA Engineer",
+    title: "Bilal Ahamad — Systems Validation Architect",
     description:
       "18+ years engineering quality for Amazon, Google, Rivian, Cruise & Samsara.",
     images: ["/og-image.png"],
@@ -128,16 +129,26 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* Scroll-to-top on every route change */}
-          <ScrollToTop />
-          <NavbarV2 />
-          <main id="main-content" className="min-h-screen relative flex flex-col">
-            {children}
-            <Footer />
-          </main>
-          {/* Client-only entry splash + anti-automation handshake. Renders nothing
-              on the server, so the static HTML crawlers read is the full page. */}
-          <EntryGate />
+          {/* Honour prefers-reduced-motion across EVERY framer-motion animation.
+              The `@media (prefers-reduced-motion: reduce)` block in globals.css
+              only zeroes CSS animations; framer-motion drives its values from
+              JavaScript, so it sailed straight past that rule (verified on
+              production: all six floating hero marks kept animating). Setting it
+              here, once, covers the hero, ResumeReel, FeaturedProjects and every
+              future motion component. MotionConfig ships its own "use client"
+              boundary, so the layout stays a Server Component. */}
+          <MotionConfig reducedMotion="user">
+            {/* Scroll-to-top on every route change */}
+            <ScrollToTop />
+            <NavbarV2 />
+            <main id="main-content" className="min-h-screen relative flex flex-col">
+              {children}
+              <Footer />
+            </main>
+            {/* Client-only entry splash + anti-automation handshake. Renders nothing
+                on the server, so the static HTML crawlers read is the full page. */}
+            <EntryGate />
+          </MotionConfig>
         </ThemeProvider>
       </body>
     </html>

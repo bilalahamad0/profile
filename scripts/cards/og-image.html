@@ -1,0 +1,158 @@
+<!doctype html>
+<!--
+  Source for public/og-image.png — the link-preview card for bilalahamad.com.
+
+  The PNG it produces is a build artifact, not a hand-made binary: regenerate it
+  whenever RESUME_HEADLINE changes, otherwise every shared link keeps announcing
+  the previous job title.
+
+    node scripts/render-card.mjs --html scripts/cards/og-image.html \
+      --out public/og-image.png --width 1200 --height 630 --scale 1 --optimize
+
+  1200x630 at scale 1 is the exact size Open Graph consumers want; rendering at
+  2x produced a 2400x1260, 967KB asset that every crawler downsampled anyway.
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; }
+  body {
+    background: #05070d;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* The inset board: the site's glassmorphism read as a lit PCB. */
+  .board {
+    position: relative;
+    width: 1172px; height: 602px;
+    border-radius: 26px;
+    border: 2px solid rgba(56, 189, 248, 0.5);
+    background:
+      radial-gradient(120% 140% at 78% 42%, rgba(14, 60, 92, 0.55) 0%, rgba(8, 13, 22, 0) 62%),
+      linear-gradient(145deg, #0b1220 0%, #080d16 55%, #070b13 100%);
+    box-shadow:
+      0 0 0 1px rgba(56, 189, 248, 0.12),
+      0 0 42px rgba(34, 211, 238, 0.22),
+      inset 0 0 90px rgba(2, 6, 12, 0.85);
+    overflow: hidden;
+  }
+
+  /* Weave texture — the faint fabric grid in the original card. */
+  .board::before {
+    content: ""; position: absolute; inset: 0; opacity: 0.5;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(148,163,184,0.05) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(90deg, rgba(148,163,184,0.04) 0 1px, transparent 1px 3px);
+  }
+
+  .traces { position: absolute; top: 0; right: 0; width: 660px; height: 602px; }
+
+  .content {
+    position: relative;
+    padding: 0 0 0 62px;
+    height: 100%;
+    display: flex; flex-direction: column; justify-content: center;
+    gap: 26px;
+  }
+
+  .wordmark {
+    width: fit-content;
+    font-size: 84px; font-weight: 900; letter-spacing: -0.035em; line-height: 1;
+    background: linear-gradient(96deg, #a855f7 0%, #6366f1 34%, #38bdf8 68%, #22d3ee 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+
+  .role {
+    font-size: 41px; font-weight: 500; line-height: 1.22; letter-spacing: -0.015em;
+    color: #e8eef6; white-space: nowrap;
+  }
+
+  .companies {
+    font-size: 23px; font-weight: 400; letter-spacing: 0.005em; color: #93a3b8;
+  }
+  .companies b { font-weight: 600; color: #b8c6d8; }
+
+  .domain {
+    margin-top: 6px;
+    font-size: 30px; font-weight: 800; letter-spacing: -0.01em; color: #2dd4bf;
+  }
+
+  /* Edge bloom: the four cyan flares bleeding off the original's border. */
+  .flare { position: absolute; border-radius: 50%; filter: blur(9px); background: #67e8f9; }
+  .flare.t { top: -7px; left: 596px; width: 76px; height: 14px; }
+  .flare.b { bottom: -7px; left: 470px; width: 76px; height: 14px; }
+</style>
+</head>
+<body>
+  <div class="board">
+    <svg class="traces" viewBox="0 0 660 602" fill="none" aria-hidden="true">
+      <defs>
+        <filter id="glow" x="-70%" y="-70%" width="240%" height="240%">
+          <feGaussianBlur stdDeviation="5" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <linearGradient id="tr" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#0e7490" stop-opacity="0.35"/>
+          <stop offset="55%" stop-color="#22d3ee" stop-opacity="0.85"/>
+          <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.5"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Orthogonal routing with 45-degree corners, the way real PCB traces break. -->
+      <g stroke="url(#tr)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M112 96 H206 L232 122 V214 H352"/>
+        <path d="M112 150 H176 L200 174 V292 H300 L322 314 H470"/>
+        <path d="M290 40 V104 L312 126 H430 L452 148 V226"/>
+        <path d="M372 44 V150 L396 174 H540 L562 196 V268"/>
+        <path d="M448 66 V118"/>
+        <path d="M60 340 H180 L206 366 H340 L364 390 V470 H486"/>
+        <path d="M40 402 H128 L152 426 V520 H268 L292 544 H430"/>
+        <path d="M232 470 H300 L326 496 V572"/>
+        <path d="M520 300 H600 L626 326 V430"/>
+        <path d="M498 352 H566 L590 376 V498 H520"/>
+        <path d="M596 130 V206 L572 230 H500"/>
+        <path d="M150 232 H244"/>
+        <path d="M406 468 V540 H556"/>
+        <path d="M642 236 V286"/>
+      </g>
+
+      <!-- Vias: the lit solder points. -->
+      <g filter="url(#glow)">
+        <circle cx="112" cy="96"  r="7"   fill="#67e8f9"/>
+        <circle cx="352" cy="214" r="5.5" fill="#22d3ee"/>
+        <circle cx="290" cy="40"  r="5"   fill="#38bdf8"/>
+        <circle cx="470" cy="314" r="8"   fill="#67e8f9"/>
+        <circle cx="562" cy="268" r="5.5" fill="#22d3ee"/>
+        <circle cx="180" cy="340" r="5"   fill="#38bdf8"/>
+        <circle cx="486" cy="470" r="7"   fill="#67e8f9"/>
+        <circle cx="326" cy="572" r="6"   fill="#22d3ee"/>
+        <circle cx="626" cy="430" r="5.5" fill="#38bdf8"/>
+        <circle cx="500" cy="230" r="5"   fill="#22d3ee"/>
+        <circle cx="244" cy="232" r="4.5" fill="#67e8f9"/>
+        <circle cx="430" cy="544" r="5"   fill="#38bdf8"/>
+        <circle cx="448" cy="118" r="4.5" fill="#22d3ee"/>
+        <circle cx="642" cy="286" r="5"   fill="#67e8f9"/>
+      </g>
+    </svg>
+
+    <div class="content">
+      <div class="wordmark">Bilal Ahamad</div>
+      <div class="role">Systems Validation Architect</div>
+      <div class="companies">
+        <b>Amazon</b> · <b>Google</b> · <b>Rivian</b> · <b>Cruise</b> · <b>Samsara</b>
+      </div>
+      <div class="domain">bilalahamad.com</div>
+    </div>
+
+    <span class="flare t"></span>
+    <span class="flare b"></span>
+  </div>
+</body>
+</html>

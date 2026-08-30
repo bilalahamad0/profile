@@ -83,7 +83,7 @@
     --surface-card:   18  18  20;
     --ink:           255 255 255;
     --ink-muted:     161 161 170;   /* zinc-400 — 5.9:1 on the dark ground */
-    --ink-subtle:    113 113 122;   /* zinc-500 — 4.8:1 on the dark ground */
+    --ink-subtle:    113 113 122;   /* zinc-500 — 4.11:1: large text ONLY  */
     --line:          255 255 255;
 
     --background:        9 9 11;
