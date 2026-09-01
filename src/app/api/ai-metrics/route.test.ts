@@ -6,6 +6,11 @@ import { GET } from "./route";
 const fetchMock = vi.fn<typeof fetch>();
 const originalFetch = globalThis.fetch;
 
+/** GET() reads the client IP off the incoming Request, so it needs a real one. */
+function makeRequest(): Request {
+  return new Request("https://bilalahamad.com/api/ai-metrics");
+}
+
 function createMetrics(projectId: string): AIMetrics {
   return {
     projectId,
@@ -75,7 +80,7 @@ describe("GET /api/ai-metrics", () => {
       return new Response("unknown repo", { status: 500 });
     });
 
-    const response = await GET();
+    const response = await GET(makeRequest());
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -125,7 +130,7 @@ describe("GET /api/ai-metrics", () => {
       return new Response("service unavailable", { status: 503 });
     });
 
-    const response = await GET();
+    const response = await GET(makeRequest());
 
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toEqual({});
