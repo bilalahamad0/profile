@@ -47,9 +47,11 @@ describe("getAIMetricsMap()", () => {
   });
 
   it("requests the raw GitHub ai-metrics.json for each repo (id→repo mapping)", async () => {
-    const fetchMock = vi.fn(async () => ({
+    // The `url` parameter is what this test asserts on — without it `mock.calls`
+    // is typed as an empty tuple and `c[0]` does not type check.
+    const fetchMock = vi.fn(async (url: string) => ({
       ok: true,
-      json: async () => sampleMetrics("any"),
+      json: async () => sampleMetrics(String(url)),
     }));
     vi.stubGlobal("fetch", fetchMock);
 
