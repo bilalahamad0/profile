@@ -13,8 +13,8 @@
     "sync-tokens": "node scripts/sync-claude-tokens.js"
   },
   "dependencies": {
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.4.0",
+    "@react-three/drei": "^10.7.8",
+    "@react-three/fiber": "^9.7.0",
     "@types/three": "^0.184.1",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
@@ -23,15 +23,15 @@
     "framer-motion": "^12.40.0",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.577.0",
-    "next": "^16.2.9",
+    "next": "^16.3.3",
     "next-mdx-remote": "^6.0.0",
     "next-themes": "^0.4.6",
-    "nodemailer": "^9.0.1",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
+    "nodemailer": "^9.0.6",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "remark-gfm": "^4.0.1",
     "tailwind-merge": "^3.6.0",
-    "three": "^0.184.0"
+    "three": "^0.185.1"
   },
   "overrides": {
     "axios": "^1.15.0",
