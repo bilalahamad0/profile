@@ -80,7 +80,13 @@ export function CollapsePanel({
   return (
     <motion.div
       id={id}
-      role="region"
+      // Deliberately NOT role="region". Each panel sits inside a
+      // <section aria-labelledby={headingId}> wrapper that is already a region
+      // landmark with this exact name, so the role made every specialization
+      // row two identically-named landmarks (axe `landmark-unique`). ARIA APG
+      // treats the role as optional here and warns against landmark
+      // proliferation; the toggle's aria-expanded/aria-controls carry the
+      // accordion semantics.
       aria-labelledby={labelledBy}
       initial={false}
       animate={open ? "open" : "collapsed"}

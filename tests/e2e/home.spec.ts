@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import AxeBuilder from '@axe-core/playwright';
 
 test.describe('Homepage E2E', () => {
   test('should load the homepage and check basic elements', async ({ page }) => {
@@ -14,17 +13,8 @@ test.describe('Homepage E2E', () => {
     await expect(main).toBeVisible();
   });
 
-  test('should not have any automatically detectable accessibility issues', async ({ page }) => {
-    await page.goto('/');
-
-    // Wait for all Framer Motion enter animations to finish to avoid false-positive color contrast errors due to opacity transitions
-    await page.waitForTimeout(2000);
-
-    // Exclude iframes since they load external content (like dashboards) that we don't control
-    const accessibilityScanResults = await new AxeBuilder({ page })
-      .exclude('iframe')
-      .analyze();
-
-    expect(accessibilityScanResults.violations).toEqual([]);
-  });
+  // The accessibility scan that used to live here now runs in
+  // accessibility.spec.ts across every route, at two viewports, with deferred
+  // embeds mounted and with the <iframe> elements themselves still in scope.
+  // See the header comment there for what this version could not catch.
 });

@@ -141,7 +141,11 @@ export default function RootLayout({
             {/* Scroll-to-top on every route change */}
             <ScrollToTop />
             <NavbarV2 />
-            <main id="main-content" className="min-h-screen relative flex flex-col">
+            <main
+              id="main-content"
+              aria-label="Portfolio content"
+              className="min-h-screen relative flex flex-col"
+            >
               {children}
               <Footer />
             </main>

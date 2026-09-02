@@ -33,6 +33,7 @@ export function NavbarV2() {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className="fixed top-0 left-0 right-0 z-[100] flex justify-center px-2 sm:px-6 pt-3 sm:pt-4 pointer-events-none"
       role="banner"
+      aria-label="Site header"
     >
       <nav
         aria-label="Main navigation"
