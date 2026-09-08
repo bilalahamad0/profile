@@ -6,7 +6,6 @@ import { HeroPortfolio } from "@/components/v3/HeroPortfolio";
 import { WhoIAmSection } from "@/components/v3/WhoIAmSection";
 import { DisciplinesSection } from "@/components/v3/DisciplinesSection";
 import { CuratedSystemsSection } from "@/components/v3/CuratedSystemsSection";
-import { TestimonialsSection } from "@/components/v3/TestimonialsSection";
 import { BlogPreview, ContactCTA } from "@/components/v3/HomePageSections";
 import { getAllPosts } from "@/lib/blog";
 import { experienceData } from "@/data/portfolio";
@@ -142,11 +141,7 @@ export default async function HomePage() {
         <div className="section-divider" />
         <BlogPreview posts={posts} />
 
-        {/* ── 6. Peer Endorsements & Social Proof ──────── */}
-        <div className="section-divider" />
-        <TestimonialsSection />
-
-        {/* ── 7. Executive Contact / Availability ──────── */}
+        {/* ── 6. Executive Contact / Availability ──────── */}
         <div className="section-divider" />
         <ContactCTA />
       </div>

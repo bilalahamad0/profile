@@ -23,10 +23,6 @@ test.describe('Homepage E2E', () => {
     const curatedSystems = page.locator('#curated-systems');
     await expect(curatedSystems).toBeVisible();
 
-    // Check Testimonials section is present
-    const testimonials = page.locator('#testimonials');
-    await expect(testimonials).toBeVisible();
-
     // Take component screenshots
     if (await whoIAm.count() > 0) {
       await whoIAm.screenshot({ path: 'verify-who-i-am.png' });
@@ -40,9 +36,7 @@ test.describe('Homepage E2E', () => {
       await curatedSystems.screenshot({ path: 'verify-curated-systems.png' });
     }
 
-    if (await testimonials.count() > 0) {
-      await testimonials.screenshot({ path: 'verify-testimonials.png' });
-    }
+
 
     // Scroll down to trigger all in-view animations
     await page.evaluate(async () => {
