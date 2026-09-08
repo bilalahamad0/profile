@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Briefcase, Mail, Award, FolderKanban, BookOpen, Home } from "lucide-react";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import { CommandMenu } from "@/components/command/CommandMenu";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -92,12 +93,9 @@ export function NavbarV2() {
           );
         })}
 
-        {/* Theme control — right end of the pill, fenced off by the same hairline
-            the wordmark uses. Held back to md: at 375px the pill is already
-            full-width (359px) with five of the seven links pinned at their 40.1px
-            floor, so a ninth target would squeeze them to 27px. Measured fit at
-            768px: the pill goes 596.9px → 695.9px inside a 720px container. */}
-        <div className="hidden md:flex items-center shrink-0 ml-1.5 pl-1.5 border-l border-line/10">
+        {/* Command Menu & Theme control — right end of the pill */}
+        <div className="hidden md:flex items-center gap-1.5 shrink-0 ml-1.5 pl-1.5 border-l border-line/10">
+          <CommandMenu />
           <ThemeToggle />
         </div>
       </nav>

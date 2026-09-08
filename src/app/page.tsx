@@ -3,7 +3,8 @@
 
 import type { Metadata } from "next";
 import { HeroPortfolio } from "@/components/v3/HeroPortfolio";
-import { ResumeReelClient } from "@/components/v3/ResumeReelClient";
+import { CareerImpactMatrix } from "@/components/v3/CareerImpactMatrix";
+import { TestimonialsSection } from "@/components/v3/TestimonialsSection";
 import {
   AILabPreview,
   BlogPreview,
@@ -143,15 +144,20 @@ export default async function HomePage() {
     <>
       <JsonLd data={[personSchema, websiteSchema()]} />
       <div className="flex flex-col overflow-x-hidden" id="top">
-      {/* ── Hero ───────────────────────────────────────── */}
+      {/* ── Hero & Interactive Systems Workbench ─────── */}
       <HeroPortfolio />
 
-      {/* ── Mobile Career Reel — lazy, SSR disabled ──── */}
-      <ResumeReelClient />
+      {/* ── Career Trajectory & Systems Impact Matrix ── */}
+      <div className="section-divider" />
+      <CareerImpactMatrix />
 
       {/* ── Featured Projects ──────────────────────── */}
       <div className="section-divider" />
       <FeaturedProjectsSection />
+
+      {/* ── Social Proof & Peer Endorsements ───────── */}
+      <div className="section-divider" />
+      <TestimonialsSection />
 
       {/* ── AI Lab Preview ──────────────────────────── */}
       <div className="section-divider" />

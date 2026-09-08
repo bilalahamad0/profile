@@ -48,11 +48,22 @@ small **UX decisions** — not infrastructure.
 - ✅ **4D** — *375 px mobile audit (Playwright, production build).* All 7 routes **+ a blog post = 0 px horizontal overflow**, zero unclipped offenders; the dense 7-pill `NavbarV2` fits (357 px row in a 375 px viewport). Decorative blur blobs extend off-canvas but are ancestor-clipped (no document scroll). Console clean except the expected `/_vercel/insights` + `/speed-insights` 404s (Vercel-edge-only; resolve in prod). No `overflow-x: clip` guard needed.
 - ✅ **4B** — Hero CTA kept as "Full Career Roadmap" → `/experience` (decided 2026-06-08; the bento career grid is the stronger recruiter CTA). No code change.
 
+### Home Page Elevation to World-Class Standards (2026-09)
+- ✅ **2C** — Added Testimonials / Peer Endorsements section to the homepage (`TestimonialsSection.tsx`) surfacing verified LinkedIn recommendations with authentic authority styling and verified badges.
+- ✅ **Systems Validation Workbench** — Added interactive `SystemsConsole` embedded in the hero, letting visitors simulate real-world validation across Cruise AV HIL, Rivian OTA, Google Robotics, and Samsara Edge AI.
+- ✅ **Career Impact Matrix** — Shipped responsive desktop + mobile career trajectory (`CareerImpactMatrix.tsx`) highlighting 6 flagship roles with quantitative metrics ($3.0M saved, 70% cycle cuts, 80% manual time reduced), solving the desktop timeline gap where ResumeReel was hidden.
+- ✅ **Command Palette (`⌘K`)** — Shipped global accessible command menu (`CommandMenu.tsx`) with search, resume download, role jumps, and theme toggle.
+- ✅ **Instant LCP & Micro-Craft** — De-blocked initial landing (retired blocking EntryGate splash cover) and integrated Linear-style cursor-tracking spotlight glow (`SpotlightCard.tsx`).
+
+### AI Lab Metrics & Multi-Agent Token Synchronization (2026-09)
+- ✅ **Multi-Agent Token Measurement** — Automated measurement and attribution of token usage from both Claude Code transcripts and Antigravity SQLite conversation databases (`measure-antigravity.py`). Site-wide tokens processed reached **1.39B+** (1,390,877,790).
+- ✅ **AI Lab Metrics Refresh** — Recomputed and reconciled derived stats across all 5 systems (`warn`, `adhan`, `profile`, `tmo`, `adhan-ce`): **1,483 total commits**, **1,834 tests** across **116 suites**, and 64% weighted dev cycle reduction. Pushed canonical updates to GitHub sidecars (`warn`, `adhan-api`) and synchronized `ai-metrics.json` and `src/lib/ai-metrics-fallback.ts`.
+
 ---
 
 ## ⬜ Outstanding — codebase-doable (I can implement autonomously)
 
-- ⬜ **2C (mostly)** — Add a Testimonials section to the homepage between `FeaturedProjects` and `AILabPreview`. Data partly exists: `portfolio.ts` `recommendations` (2 real LinkedIn recs) already renders on `/experience` only. Reuse it on the homepage. *(Needs owner input only for a `company` field per rec.)*
+*(All immediate codebase-doable homepage items completed)*
 
 ## ⬜ Outstanding — needs owner content or a decision
 

@@ -1,18 +1,20 @@
 {
   "projectId": "profile",
-  "lastUpdated": "2026-09-06",
+  "lastUpdated": "2026-09-08",
   "aiContribution": 85,
   "agents": [
     {
       "name": "Antigravity",
       "provider": "Google DeepMind",
-      "period": "Jul 2025",
+      "period": "Jul 2025 – Present",
       "models": [
         "Gemini 2.5 Flash",
-        "Gemini 2.5 Pro"
+        "Gemini 2.5 Pro",
+        "Gemini 3 Flash",
+        "Gemini 3.8 Flash"
       ],
-      "tokens": 300000,
-      "role": "Foundation & MVP architecture"
+      "tokens": 33393318,
+      "role": "Foundation, MVP architecture & interactive systems engineering"
     },
     {
       "name": "Cursor",
@@ -36,19 +38,19 @@
         "Claude Opus 5",
         "Claude Fable 5"
       ],
-      "tokens": 357726655,
+      "tokens": 388365138,
       "role": "SEO, metrics automation & CI hardening"
     }
   ],
-  "totalTokens": 358226655,
-  "totalCommits": 564,
-  "linesOfCode": 17490,
+  "totalTokens": 421958456,
+  "totalCommits": 566,
+  "linesOfCode": 16777,
   "devCycleDays": 58,
   "manualEstimateDays": 76,
   "impact": "Full-stack portfolio deployed to production",
   "cycle": "58 active days",
   "beforeAI": "Static HTML/CSS resume site",
   "afterAI": "AI-native Next.js portfolio with analytics",
-  "tests": 279,
+  "tests": 280,
   "testSuites": 21
 }

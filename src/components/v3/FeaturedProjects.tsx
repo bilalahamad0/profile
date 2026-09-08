@@ -7,6 +7,8 @@ import { Sparkles, Github, ArrowRight, ExternalLink } from "lucide-react";
 import { projectsData } from "@/data/portfolio";
 import { LazyLoopVideo } from "@/components/media/LazyLoopVideo";
 
+import { SpotlightCard } from "@/components/ui/SpotlightCard";
+
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
   visible: { opacity: 1, y: 0 },
@@ -35,19 +37,28 @@ const ACCENT_BG: Record<string, string> = {
   pink: "bg-pink-500/5",
   violet: "bg-violet-500/5",
 };
+const ACCENT_SPOTLIGHT: Record<string, string> = {
+  blue: "rgba(59, 130, 246, 0.15)",
+  emerald: "rgba(16, 185, 129, 0.15)",
+  pink: "rgba(236, 72, 153, 0.15)",
+  violet: "rgba(139, 92, 246, 0.15)",
+};
 
 function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] }) {
   const imgPosition = project.id === "adhan" ? "object-top" : "object-center";
-  // Extended sub-group (e.g. California nested under the national US WARN tracker).
   const subDashboards = project.subDashboards ?? [];
+  const hasVideoThumb =
+    ("thumbnailType" in project && project.thumbnailType === "video") ||
+    Boolean(project.thumbnail?.endsWith(".mp4"));
 
   return (
-    <div
+    <SpotlightCard
+      spotlightColor={ACCENT_SPOTLIGHT[project.accent] || "rgba(59, 130, 246, 0.15)"}
       className={`group relative h-full flex flex-col rounded-3xl border border-line/10 dark:border-line/5 bg-surface-card dark:bg-ink/[0.02] overflow-hidden hover:bg-ink/[0.04] transition-all duration-500 ${ACCENT_BORDER[project.accent]}`}
     >
       {/* Stretched link for card-level navigation */}
       <Link
-        href={`/projects${(project as unknown as { thumbnailType?: string }).thumbnailType === 'video' ? `?play=${project.id}` : ''}#${project.id}`}
+        href={`/projects${hasVideoThumb ? `?play=${project.id}` : ""}#${project.id}`}
         className="absolute inset-0 z-[1]"
         aria-label={`View ${project.name} details`}
       />
@@ -57,7 +68,7 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
       />
 
       {/* Thumbnail / live dashboard preview */}
-      {(project as any).thumbnailType === "video" || project.thumbnail?.endsWith('.mp4') ? (
+      {hasVideoThumb ? (
         <div className={`relative w-full h-40 overflow-hidden ${ACCENT_BG[project.accent]}`}>
           <LazyLoopVideo
             src={project.thumbnail!}
@@ -147,7 +158,7 @@ function FeaturedProjectCard({ project }: { project: (typeof projectsData)[0] })
           </div>
         </div>
       </div>
-    </div>
+    </SpotlightCard>
   );
 }
 

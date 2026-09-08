@@ -1,5 +1,5 @@
 import {
-  Terminal, ShieldCheck, Box, Activity, Cpu, Cloud, Settings, Layers,
+  ShieldCheck, Box, Activity, Cpu, Cloud, Settings, Layers,
   Code2, Database, Wrench, Smartphone, Server, Layout
 } from "lucide-react";
 

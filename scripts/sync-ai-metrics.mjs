@@ -107,36 +107,66 @@ const countLoc = (cwd, general = false) => {
 // Tests + suites from the project's real test runner. Returns { tests, testSuites }.
 // Tries Vitest, then Jest (ESM). Excludes node_modules + .claude worktrees so stale
 // worktree copies never pollute the count.
+const countPlaywright = (cwd) => {
+  try {
+    const raw = run('npx playwright test --list --project=chromium --reporter=json 2>/dev/null || true', cwd);
+    const start = raw.indexOf('{');
+    if (start === -1) return { tests: 0, testSuites: 0 };
+    const data = JSON.parse(raw.slice(start));
+    let tests = 0;
+    const files = new Set();
+    const walk = (suites) => {
+      for (const s of suites ?? []) {
+        if (s.file) files.add(s.file);
+        tests += (s.specs ?? []).length;
+        walk(s.suites);
+      }
+    };
+    walk(data.suites);
+    return { tests, testSuites: files.size };
+  } catch {
+    return { tests: 0, testSuites: 0 };
+  }
+};
+
 const countTests = (cwd) => {
   const pkg = JSON.parse(readFileSync(join(cwd, 'package.json'), 'utf8'));
   const dev = { ...pkg.dependencies, ...pkg.devDependencies };
   let out = '';
+  let vitestRes = { tests: 0, testSuites: 0 };
+  let hasRunner = false;
+
   if (dev.vitest) {
+    hasRunner = true;
     out = run(
       "npx vitest run --exclude '**/node_modules/**' --exclude '**/.claude/**' --reporter=dot",
       cwd
     );
-    // Parse the TOTAL in parens ("Tests  116 passed (116)") not "N passed" — so a run with
-    // failures/skips ("Tests  2 failed | 114 passed (116)") still yields the true count
-    // instead of silently keeping the old value.
-    return {
-      tests: pickWarn(out, /Tests\s+.*?\((\d+)\)/, 'vitest tests'),
-      testSuites: pickWarn(out, /Test Files\s+.*?\((\d+)\)/, 'vitest suites'),
+    vitestRes = {
+      tests: pickWarn(out, /Tests\s+.*?\((\d+)\)/, 'vitest tests') ?? 0,
+      testSuites: pickWarn(out, /Test Files\s+.*?\((\d+)\)/, 'vitest suites') ?? 0,
     };
-  }
-  if (dev.jest) {
-    // Honor the repo's own invocation (often needs --experimental-vm-modules for ESM).
+  } else if (dev.jest) {
+    hasRunner = true;
     const cmd = pkg.scripts?.test?.includes('jest')
       ? pkg.scripts.test
       : 'node --experimental-vm-modules node_modules/jest/bin/jest.js';
     out = run(`${cmd} --ci`, cwd);
-    // Parse the "N total" (robust to failed/skipped tests), not "N passed".
-    return {
-      tests: pickWarn(out, /Tests:.*?(\d+) total/, 'jest tests'),
-      testSuites: pickWarn(out, /Test Suites:.*?(\d+) total/, 'jest suites'),
+    vitestRes = {
+      tests: pickWarn(out, /Tests:.*?(\d+) total/, 'jest tests') ?? 0,
+      testSuites: pickWarn(out, /Test Suites:.*?(\d+) total/, 'jest suites') ?? 0,
     };
   }
-  console.error('⚠ no vitest/jest dependency found — leaving tests/testSuites unchanged');
+
+  const pwRes = dev['@playwright/test'] ? countPlaywright(cwd) : { tests: 0, testSuites: 0 };
+  if (hasRunner || pwRes.tests > 0) {
+    return {
+      tests: vitestRes.tests + pwRes.tests,
+      testSuites: vitestRes.testSuites + pwRes.testSuites,
+    };
+  }
+
+  console.error('⚠ no vitest/jest/playwright dependency found — leaving tests/testSuites unchanged');
   return { tests: undefined, testSuites: undefined };
 };
 
@@ -465,9 +495,28 @@ const tokensReport = async () => {
     );
     console.log('');
   }
+
+  const agyScript = join(process.cwd(), 'scripts', 'lib', 'measure-antigravity.py');
+  if (existsSync(agyScript)) {
+    try {
+      const agyJson = sh(`python3 "${agyScript}"`, process.cwd());
+      const agyData = JSON.parse(agyJson);
+      console.log('\nMeasured Antigravity token usage per project (SQLite conversations):\n');
+      for (const [id, stats] of Object.entries(agyData)) {
+        console.log(`  ${id.padEnd(9)} [${stats.convs} convs, ${fmt(stats.calls)} API calls]`);
+        console.log(
+          `    TOTAL=${fmt(stats.total)} (input=${fmt(stats.input)} cached=${fmt(stats.cached)} output=${fmt(stats.output)})`
+        );
+        console.log(`    models: ${(stats.models || []).join(', ') || '—'}\n`);
+      }
+    } catch {
+      // Ignore if python3 or sqlite fails
+    }
+  }
+
   console.log(
-    "Apply: ADD each project's delta to its sidecar's Claude Code agent tokens, then set\n" +
-      'totalTokens = curated agents + that figure (sibling repos via `gh api` PUT — see the\n' +
+    "Apply: ADD each project's delta to its sidecar's Claude Code / Antigravity agent tokens, then set\n" +
+      'totalTokens = sum of all agents (sibling repos via `gh api` PUT — see the\n' +
       'update-ai-page skill). Re-running is safe: the next baseline is the new lastUpdated.'
   );
 };
