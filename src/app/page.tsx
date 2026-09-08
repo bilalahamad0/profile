@@ -3,17 +3,12 @@
 
 import type { Metadata } from "next";
 import { HeroPortfolio } from "@/components/v3/HeroPortfolio";
-import { CareerImpactMatrix } from "@/components/v3/CareerImpactMatrix";
+import { WhoIAmSection } from "@/components/v3/WhoIAmSection";
+import { DisciplinesSection } from "@/components/v3/DisciplinesSection";
+import { CuratedSystemsSection } from "@/components/v3/CuratedSystemsSection";
 import { TestimonialsSection } from "@/components/v3/TestimonialsSection";
-import {
-  AILabPreview,
-  BlogPreview,
-  ContactCTA,
-} from "@/components/v3/HomePageSections";
-import { FeaturedProjectsSection } from "@/components/v3/FeaturedProjects";
+import { BlogPreview, ContactCTA } from "@/components/v3/HomePageSections";
 import { getAllPosts } from "@/lib/blog";
-import { getAIMetricsMap } from "@/lib/ai-metrics";
-import { STATIC_FALLBACK } from "@/lib/ai-metrics-fallback";
 import { experienceData } from "@/data/portfolio";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
@@ -25,21 +20,21 @@ import {
 import { RESUME_HEADLINE } from "./resume/resume-content";
 
 export const metadata: Metadata = {
-  title: "Home | Bilal Ahamad",
+  title: "Bilal Ahamad | Systems Validation Architect",
   description:
-    "Bilal Ahamad — Systems Validation Architect. 18+ years at Amazon, Google, Rivian, Cruise & Samsara validating embedded firmware, IoT and AI systems.",
+    "Bilal Ahamad — Systems Validation Architect. 18+ years architecting embedded firmware, autonomous vehicle compute, and safety-critical systems across Amazon, Google, Rivian, Cruise & Samsara.",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
-    title: "Home | Bilal Ahamad",
+    title: "Bilal Ahamad | Systems Validation Architect",
     description:
-      "Bilal Ahamad — Systems Validation Architect. 18+ years at Amazon, Google, Rivian, Cruise & Samsara validating embedded firmware, IoT and AI systems.",
+      "Bilal Ahamad — Systems Validation Architect. 18+ years architecting embedded firmware, autonomous vehicle compute, and safety-critical systems across Amazon, Google, Rivian, Cruise & Samsara.",
     url: "https://bilalahamad.com",
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Bilal Ahamad — Systems Validation Architect" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Home | Bilal Ahamad",
+    title: "Bilal Ahamad | Systems Validation Architect",
     description:
       "Bilal Ahamad — Systems Validation Architect. Embedded firmware and safety-critical validation across Amazon, Google, Rivian, Cruise, Samsara.",
     images: ["/og-image.png"],
@@ -47,9 +42,7 @@ export const metadata: Metadata = {
 };
 
 // Titles and tenures are DERIVED from `experienceData` — the same records the
-// visible timeline, /resume and llms.txt render. They were hand-maintained here
-// until a role's dates drifted 22 months from the timeline; nothing about this
-// block should go back to being typed by hand.
+// visible timeline, /resume and llms.txt render.
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -90,11 +83,6 @@ const personSchema = {
     { "@type": "Organization", name: "Luminous Infoways" },
     { "@type": "Organization", name: "Biju Patnaik University of Technology" },
   ],
-  // Roughly twenty terms he is genuinely known for, each traceable to a role in
-  // `experienceData` or a credential on /certifications. This was 105 entries,
-  // which reads as keyword stuffing to search engines and to the AI assistants
-  // that increasingly summarize a candidate; a short, defensible list is worth
-  // more than a long one nobody believes.
   knowsAbout: [
     "firmware validation",
     "embedded systems testing",
@@ -121,15 +109,6 @@ const personSchema = {
 };
 
 export default async function HomePage() {
-  // Live per-repo sidecars, with the build-time mirror standing in for any that
-  // fail to fetch — the same contract /projects uses, so the two pages cannot
-  // report different totals.
-  const dynamic = await getAIMetricsMap();
-  const metrics = { ...STATIC_FALLBACK } as typeof STATIC_FALLBACK;
-  for (const id of Object.keys(metrics) as Array<keyof typeof STATIC_FALLBACK>) {
-    const live = dynamic[id];
-    if (live) metrics[id] = live;
-  }
   const posts = getAllPosts().map((p) => ({
     slug: p.slug,
     title: p.title,
@@ -144,33 +123,33 @@ export default async function HomePage() {
     <>
       <JsonLd data={[personSchema, websiteSchema()]} />
       <div className="flex flex-col overflow-x-hidden" id="top">
-      {/* ── Hero & Interactive Systems Workbench ─────── */}
-      <HeroPortfolio />
+        {/* ── 1. Hero: Executive Architectural Presence ── */}
+        <HeroPortfolio />
 
-      {/* ── Career Trajectory & Systems Impact Matrix ── */}
-      <div className="section-divider" />
-      <CareerImpactMatrix />
+        {/* ── 2. Who I Am: Engineering Philosophy ──────── */}
+        <div className="section-divider" />
+        <WhoIAmSection />
 
-      {/* ── Featured Projects ──────────────────────── */}
-      <div className="section-divider" />
-      <FeaturedProjectsSection />
+        {/* ── 3. Core Architectural Disciplines ────────── */}
+        <div className="section-divider" />
+        <DisciplinesSection />
 
-      {/* ── Social Proof & Peer Endorsements ───────── */}
-      <div className="section-divider" />
-      <TestimonialsSection />
+        {/* ── 4. Selected Systems & Frontiers ──────────── */}
+        <div className="section-divider" />
+        <CuratedSystemsSection />
 
-      {/* ── AI Lab Preview ──────────────────────────── */}
-      <div className="section-divider" />
-      <AILabPreview metrics={metrics} />
+        {/* ── 5. Lab Notes & Technical Insights ────────── */}
+        <div className="section-divider" />
+        <BlogPreview posts={posts} />
 
-      {/* ── Blog / Lab Notes ─────────────────────────── */}
-      <div className="section-divider" />
-      <BlogPreview posts={posts} />
+        {/* ── 6. Peer Endorsements & Social Proof ──────── */}
+        <div className="section-divider" />
+        <TestimonialsSection />
 
-      {/* ── Contact / Availability CTA ───────────────── */}
-      <div className="section-divider" />
-      <ContactCTA />
-    </div>
+        {/* ── 7. Executive Contact / Availability ──────── */}
+        <div className="section-divider" />
+        <ContactCTA />
+      </div>
     </>
   );
 }

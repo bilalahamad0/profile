@@ -1,52 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   Car, Cpu, Shield, Zap, Terminal,
-  ChevronRight, Network, CheckSquare, Download,
-  Sparkles, UserCheck, Wrench, Layers
+  ChevronRight, Network, CheckSquare,
+  BookOpen, ArrowDown
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { SystemsConsole } from "@/components/v3/SystemsConsole";
 import { SpotlightCard } from "@/components/ui/SpotlightCard";
-import { cn } from "@/lib/utils";
-
-type PersonaMode = "recruiter" | "architect" | "lead";
-
-interface PersonaConfig {
-  id: PersonaMode;
-  label: string;
-  icon: React.ElementType;
-  pitch: string;
-  badge: string;
-}
-
-const PERSONAS: PersonaConfig[] = [
-  {
-    id: "recruiter",
-    label: "Hiring Executive / Recruiter",
-    icon: UserCheck,
-    pitch: "18+ years leading firmware quality and systems test engineering across Amazon, Google, Rivian, Cruise, and Samsara. Track record of $3.0M+ in cost reductions and zero-escape product launches.",
-    badge: "Staff / Principal / Director Ready",
-  },
-  {
-    id: "architect",
-    label: "Systems Architect",
-    icon: Layers,
-    pitch: "Architect of hardware-in-the-loop (HIL) and software-in-the-loop (SIL) simulation benches, QEMU/Docker virtual-ECU harnesses, and automated release gates for safety-critical systems.",
-    badge: "HIL / SIL & Virtual ECU",
-  },
-  {
-    id: "lead",
-    label: "Technical QA Lead",
-    icon: Wrench,
-    pitch: "Engineering high-throughput Pytest automation, CAN/Ethernet/UART protocol verification, optical bench image quality, and edge-to-cloud AI validation pipelines.",
-    badge: "Firmware & Automation Architecture",
-  },
-];
 
 /* ─── Domain specialisms ─────────────────────────── */
 type Specialism = {
@@ -201,44 +165,33 @@ function SpecialismChips() {
   );
 }
 
-function Highlight({ children, color = "violet" }: { children: React.ReactNode; color?: "violet" | "cyan" }) {
-  const colorMap = {
-    violet: "bg-violet-500/15 border border-violet-500/40 text-violet-800 dark:text-violet-100 shadow-[0_0_20px_rgba(139,92,246,0.2)]",
-    cyan: "bg-cyan-500/15 border border-cyan-500/40 text-cyan-800 dark:text-cyan-100 shadow-[0_0_20px_rgba(6,182,212,0.2)]",
-  };
-  return (
-    <span className={`inline-flex items-center px-2 py-0.5 mx-0.5 rounded-md ${colorMap[color]} font-semibold tracking-wide backdrop-blur-sm`}>
-      {children}
-    </span>
-  );
-}
 
 const coreCards = [
   {
     icon: Cpu,
-    label: "18+ Years",
-    sub: "Systems & QA Leadership",
+    label: "Systems Leadership",
+    sub: "18+ Years Across Global Programs",
     iconColor: "text-cyan-700 dark:text-cyan-400",
     spotlight: "rgba(6, 182, 212, 0.15)",
   },
   {
     icon: Zap,
-    label: "IoT & Firmware",
-    sub: "Embedded Systems Validation",
+    label: "Firmware & Silicon",
+    sub: "Bring-Up & Low-Level Kernels",
     iconColor: "text-amber-700 dark:text-amber-400",
     spotlight: "rgba(245, 158, 11, 0.15)",
   },
   {
     icon: Car,
-    label: "Automotive & AV",
-    sub: "ASIL-D & Multi-ECU HIL",
+    label: "Autonomous & Safety",
+    sub: "ASIL-D Multi-ECU Simulation",
     iconColor: "text-violet-700 dark:text-violet-400",
     spotlight: "rgba(139, 92, 246, 0.15)",
   },
   {
     icon: Shield,
-    label: "Safety Critical",
-    sub: "Zero Fail-Open Tolerances",
+    label: "Edge Intelligence",
+    sub: "Fleet Telematics & AI Quality",
     iconColor: "text-emerald-700 dark:text-emerald-400",
     spotlight: "rgba(16, 185, 129, 0.15)",
   },
@@ -246,21 +199,21 @@ const coreCards = [
 
 function CoreSpecCards() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 w-full">
       {coreCards.map((card) => {
         const Icon = card.icon;
         return (
           <SpotlightCard
             key={card.label}
             spotlightColor={card.spotlight}
-            className="p-4 sm:p-5 flex flex-col items-start gap-3.5 border-line/10 hover:border-line/20"
+            className="p-5 sm:p-6 flex flex-col items-start gap-4 rounded-2xl border-line/10 hover:border-line/20 bg-surface-card/90 dark:bg-black/40"
           >
             <div className="p-2.5 rounded-xl border border-line/10 bg-ink/[0.04] dark:bg-ink/[0.03]">
               <Icon className={`w-5 h-5 ${card.iconColor}`} aria-hidden="true" />
             </div>
             <div>
-              <p className="text-sm font-bold text-ink leading-tight">{card.label}</p>
-              <p className="t-label text-ink-muted mt-1 leading-snug">{card.sub}</p>
+              <p className="t-small font-bold text-ink leading-tight">{card.label}</p>
+              <p className="t-caption text-ink-muted mt-1 leading-snug">{card.sub}</p>
             </div>
           </SpotlightCard>
         );
@@ -279,41 +232,40 @@ const logos = [
 ];
 
 export function HeroPortfolio() {
-  const [persona, setPersona] = useState<PersonaMode>("recruiter");
-  const activePersona = PERSONAS.find((p) => p.id === persona) ?? PERSONAS[0];
-
   return (
     <section
-      className="relative min-h-[95vh] flex flex-col justify-center items-start px-6 lg:px-24 pt-28 pb-16 md:py-24 overflow-hidden"
+      className="relative min-h-[90vh] flex flex-col justify-center items-start px-6 lg:px-24 pt-24 md:pt-32 lg:pt-36 pb-16 md:pb-24 overflow-hidden"
       aria-label="Hero introduction"
     >
       <HeroBackground />
 
-      <div className="w-full max-w-7xl z-10 space-y-12">
-        {/* ── Status Pills & Availability ── */}
+      <div className="w-full max-w-7xl z-10 space-y-10 md:space-y-12">
+        {/* ── Status Pills & Architectural Positioning ── */}
         <div className="flex flex-wrap items-center gap-3">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 t-label font-mono uppercase text-emerald-800 dark:text-emerald-300"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/25 t-label font-mono uppercase text-violet-700 dark:text-violet-300"
           >
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" />
-            <span>Available for Staff &amp; Principal Roles</span>
+            <Terminal className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+            <span className="hidden sm:inline">Systems Validation Architect · Sunnyvale, CA</span>
+            <span className="sm:hidden">Systems Validation Architect</span>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 t-label font-mono uppercase text-violet-700 dark:text-violet-300"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-ink/[0.04] border border-line/10 t-label font-mono uppercase text-ink-muted"
           >
-            <Terminal className="w-3.5 h-3.5" aria-hidden="true" />
-            <span>Systems Validation Architect · Sunnyvale, CA</span>
+            <Shield className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400 shrink-0" aria-hidden="true" />
+            <span className="hidden sm:inline">Safety-Critical &amp; Autonomous Systems</span>
+            <span className="sm:hidden">Safety-Critical Systems</span>
           </motion.div>
         </div>
 
-        {/* ── Headline & Narrative ── */}
+        {/* ── Headline & Architectural Introduction ── */}
         <div className="space-y-6 max-w-4xl">
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
@@ -321,14 +273,10 @@ export function HeroPortfolio() {
             transition={{ duration: 0.55 }}
             className="t-display text-ink"
           >
-            Architecting <br className="sm:hidden" />{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-600 via-zinc-900 via-40% to-zinc-600 dark:from-white/40 dark:via-white/80 dark:to-white/40 bg-[length:200%_100%] animate-[shimmer_3s_ease-in-out_infinite]">
-              Quality
-            </span>{" "}
-            &amp; <br />
-            Automating <br className="sm:hidden" />{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 via-cyan-700 to-blue-600 dark:from-violet-400 dark:via-cyan-400 dark:to-blue-400">
-              Complexity.
+            Architecting Systems <br />
+            at the Edge of{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 via-cyan-600 to-blue-600 dark:from-violet-400 dark:via-cyan-400 dark:to-blue-400">
+              Silicon, Software &amp; Safety.
             </span>
           </motion.h1>
 
@@ -338,116 +286,72 @@ export function HeroPortfolio() {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <p className="t-lead text-body font-light max-w-3xl leading-relaxed">
-              Building specialized test architectures and firmware validation frameworks for{" "}
-              <Highlight>global industry leaders</Highlight>.
-              18+ years validating autonomous vehicles, IoT telematics, and edge AI systems.
+              For over 18 years, I have architected the validation systems, simulation harnesses, and release foundations that allow mission-critical firmware, autonomous compute, and edge IoT devices to operate reliably in the physical world.
             </p>
           </motion.div>
-
-          {/* ── Persona Perspective Switcher ── */}
-          <div className="pt-2 space-y-3">
-            <div className="flex items-center gap-2 t-label font-mono uppercase text-ink-muted">
-              <span>View Profile As:</span>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {PERSONAS.map((p) => {
-                const Icon = p.icon;
-                const isSelected = p.id === persona;
-                return (
-                  <button
-                    key={p.id}
-                    onClick={() => setPersona(p.id)}
-                    className={cn(
-                      "flex items-center gap-2 px-3.5 py-1.5 rounded-xl border text-xs font-semibold transition-all duration-200 cursor-pointer",
-                      isSelected
-                        ? "bg-ink text-surface border-ink shadow-sm"
-                        : "bg-ink/5 border-line/10 text-ink-muted hover:text-ink hover:bg-ink/10"
-                    )}
-                  >
-                    <Icon className="w-3.5 h-3.5" aria-hidden="true" />
-                    <span>{p.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Persona Callout Pitch */}
-            <div className="p-4 rounded-xl bg-ink/[0.03] border border-line/10 max-w-3xl">
-              <div className="flex items-center gap-2 mb-1">
-                <Sparkles className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" aria-hidden="true" />
-                <span className="t-label font-mono uppercase text-violet-700 dark:text-violet-400 font-bold">
-                  {activePersona.badge}
-                </span>
-              </div>
-              <p className="t-body text-ink-muted">{activePersona.pitch}</p>
-            </div>
-          </div>
 
           <SpecialismChips />
         </div>
 
-        {/* ── Interactive Systems Validation Workbench Simulator ── */}
+        {/* ── High-Level Architectural Foundations ── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.25 }}
-          className="pt-2"
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="w-full pt-2"
         >
-          <SystemsConsole />
+          <CoreSpecCards />
         </motion.div>
 
-        {/* ── Capabilities Sub-grid ── */}
-        <div className="space-y-6 pt-2">
-          <CoreSpecCards />
-        </div>
-
-        {/* ── CTA Buttons ── */}
+        {/* ── Direct Executive Action Links ── */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="flex flex-wrap gap-4 items-center pt-4"
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="flex flex-wrap gap-4 items-center pt-2"
         >
-          <Link
-            href="/experience"
-            className="group flex items-center gap-3 px-8 py-3.5 rounded-full bg-ink text-surface font-bold hover:bg-ink/85 dark:hover:bg-zinc-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:scale-105 active:scale-95"
+          <a
+            href="#who-i-am"
+            className="group flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-ink text-surface font-semibold t-small hover:bg-ink/85 dark:hover:bg-zinc-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:scale-105 active:scale-95"
           >
-            Full Career Roadmap
-            <Terminal className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+            <span>Explore Philosophy &amp; Mindset</span>
+            <ArrowDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
+          </a>
+
+          <Link
+            href="/blog"
+            className="group flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-line/15 bg-ink/5 text-ink font-semibold t-small hover:bg-ink/10 transition-all hover:scale-105 active:scale-95"
+          >
+            <BookOpen className="w-4 h-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />
+            <span>Read Lab Notes</span>
           </Link>
 
-          <a
-            href="/Bilal_Ahamad_Resume.pdf"
-            download
-            className="group flex items-center gap-3 px-8 py-3.5 rounded-full border border-line/15 bg-ink/5 text-ink font-bold hover:bg-ink/10 transition-all hover:scale-105 active:scale-95"
+          <Link
+            href="/contact"
+            className="group flex items-center gap-2.5 px-7 py-3.5 rounded-full border border-line/15 bg-ink/5 text-ink font-semibold t-small hover:bg-ink/10 transition-all hover:scale-105 active:scale-95"
           >
-            Download Resume
-            <Download className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
-          </a>
+            <span>Get in Touch</span>
+            <ChevronRight className="w-4 h-4 text-ink-muted group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
+          </Link>
 
-          <a
-            href="https://linkedin.com/in/bilalahamad"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-2 text-sm font-semibold text-ink-muted hover:text-ink transition-colors ml-2"
+          <Link
+            href="/experience"
+            className="group inline-flex items-center gap-1.5 t-small font-mono text-ink-muted hover:text-ink transition-colors ml-1"
           >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-            </svg>
-            bilalahamad
-            <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-          </a>
+            <span>View Career Roadmap</span>
+            <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
+          </Link>
         </motion.div>
 
         {/* ── Trusted-by logos ── */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="pt-10 mt-8 border-t border-line/10 dark:border-line/[0.05]"
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="pt-8 border-t border-line/10 dark:border-line/[0.05] w-full"
         >
           <p className="t-label font-bold uppercase tracking-[0.2em] text-ink-muted mb-6 relative inline-block">
-            Engineering experience at
+            Engineering experience across industry leaders
             <span className="absolute -bottom-2 left-0 w-8 h-px bg-violet-500/50" />
           </p>
           <div className="flex flex-wrap items-center gap-x-10 gap-y-6">

@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Homepage E2E', () => {
-  test('should load the homepage and check basic elements', async ({ page }) => {
+  test('should load the elevated homepage and check key sections', async ({ page }) => {
     await page.goto('/');
     
     // Check page title
@@ -11,26 +11,33 @@ test.describe('Homepage E2E', () => {
     const main = page.locator('main').first();
     await expect(main).toBeVisible();
 
-    // Check Systems Validation Workbench is present
-    const consoleHeader = page.getByText(/Systems Validation Workbench/i);
-    await expect(consoleHeader).toBeVisible();
+    // Check Who I Am section is present
+    const whoIAm = page.locator('#who-i-am');
+    await expect(whoIAm).toBeVisible();
 
-    // Check Career Impact Matrix is present
-    const careerMatrix = page.locator('#career-matrix');
-    await expect(careerMatrix).toBeVisible();
+    // Check Core Disciplines section is present
+    const disciplines = page.locator('#disciplines');
+    await expect(disciplines).toBeVisible();
+
+    // Check Curated Systems section is present
+    const curatedSystems = page.locator('#curated-systems');
+    await expect(curatedSystems).toBeVisible();
 
     // Check Testimonials section is present
     const testimonials = page.locator('#testimonials');
     await expect(testimonials).toBeVisible();
 
     // Take component screenshots
-    const consoleEl = page.locator('div[aria-label="Interactive Systems Validation Workbench"]');
-    if (await consoleEl.count() > 0) {
-      await consoleEl.screenshot({ path: 'verify-systems-console.png' });
+    if (await whoIAm.count() > 0) {
+      await whoIAm.screenshot({ path: 'verify-who-i-am.png' });
     }
 
-    if (await careerMatrix.count() > 0) {
-      await careerMatrix.screenshot({ path: 'verify-career-matrix.png' });
+    if (await disciplines.count() > 0) {
+      await disciplines.screenshot({ path: 'verify-disciplines.png' });
+    }
+
+    if (await curatedSystems.count() > 0) {
+      await curatedSystems.screenshot({ path: 'verify-curated-systems.png' });
     }
 
     if (await testimonials.count() > 0) {
@@ -74,9 +81,4 @@ test.describe('Homepage E2E', () => {
 
     await page.screenshot({ path: 'verify-home-375.png' });
   });
-
-  // The accessibility scan that used to live here now runs in
-  // accessibility.spec.ts across every route, at two viewports, with deferred
-  // embeds mounted and with the <iframe> elements themselves still in scope.
-  // See the header comment there for what this version could not catch.
 });
