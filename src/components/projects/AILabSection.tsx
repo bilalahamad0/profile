@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, BookOpen, Sparkles, TrendingUp } from "lucide-react";
+import { BookOpen, Sparkles, TrendingUp } from "lucide-react";
 import type { AIMetrics } from "@/lib/ai-metrics";
 import { formatTokens } from "@/lib/utils";
 
@@ -195,7 +195,7 @@ export function AILabSection({
           agents, models and before/after behind these numbers.
         </p>
 
-        {/* Whitepaper / consulting — the two links the AI Lab page closed on */}
+        {/* Whitepaper link */}
         <div className="mt-10 flex flex-wrap gap-4">
           {/* text-white here is deliberate and stays in both themes: it labels an
               opaque purple→violet gradient FILL, so it is fixed contrast against
@@ -206,13 +206,6 @@ export function AILabSection({
           >
             <BookOpen className="w-4 h-4" aria-hidden="true" />
             Read the AI Whitepaper
-          </Link>
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-ink/5 border border-line/10 text-body font-bold hover:bg-ink/10 transition-all"
-          >
-            Discuss AI Consulting
-            <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </Link>
         </div>
       </div>
