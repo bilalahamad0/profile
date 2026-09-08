@@ -195,7 +195,7 @@ export const STATIC_FALLBACK: Record<string, AIMetrics> = {
       },
     ],
     totalTokens: 421958456,
-    totalCommits: 567,
+    totalCommits: 571,
     linesOfCode: 17867,
     devCycleDays: 58,
     manualEstimateDays: 76,
