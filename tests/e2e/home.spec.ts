@@ -23,6 +23,15 @@ test.describe('Homepage E2E', () => {
     const curatedSystems = page.locator('#curated-systems');
     await expect(curatedSystems).toBeVisible();
 
+    // Verify exact matching project names from projects data
+    await expect(curatedSystems.getByText('US Live Layoff Monitoring Dashboard')).toBeVisible();
+    await expect(curatedSystems.getByText('Smart-Home IoT Media Caster')).toBeVisible();
+    await expect(curatedSystems.getByText('Adhan Caster — Cross-Browser Extension')).toBeVisible();
+
+    // Verify video thumbnails are rendered
+    const videos = curatedSystems.locator('video');
+    await expect(videos).toHaveCount(3);
+
     // Take component screenshots
     if (await whoIAm.count() > 0) {
       await whoIAm.screenshot({ path: 'verify-who-i-am.png' });
