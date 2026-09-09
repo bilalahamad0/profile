@@ -615,3 +615,63 @@ export const CERT_STATS = {
   specializations: SPECIALIZATIONS.length,
   yearsSpan: `${Math.min(...ALL_YEARS)} – ${Math.max(...ALL_YEARS)}`,
 };
+
+// --- CONTINUING EDUCATION (NON-CREDENTIAL) ---
+//
+// Coursework that issues NO certificate, and therefore is NOT a credential.
+// It lives in its own const, deliberately out of reach of every aggregation
+// above:
+//   • NOT in SPECIALIZATIONS / AI_CERTIFICATES / GENERAL_CERTIFICATES, so it
+//     can never reach ALL_SINGLES, ALL_YEARS or CERT_STATS.credentials (12).
+//   • NOT in CREDENTIAL_GROUPS, so it never renders under an "all verified"
+//     header, never gets a ledger numeral, and never gets a Verify affordance.
+//   • NOT in `certifications` in src/data/portfolio.ts, so certificationsSchema()
+//     never emits it as an EducationalOccupationalCredential and the Experience
+//     page's `certs` summary card never lists it.
+// Anything that would count, verify, badge or schema-tag this entry is a bug;
+// src/app/certifications/data.test.ts asserts all three exclusions.
+//
+// If a future entry here ever DOES earn a real certificate, move it into
+// GENERAL_CERTIFICATES. Never add a `url` / `image` / `logo` field to this type
+// — the shape's inability to express verification is the point.
+
+export type ContinuingEducationEntry = {
+  id: string;
+  title: string;
+  /** Institution name, typeset on the designed tile. Never an image asset:
+   *  no logo file is downloaded and no lockup is reconstructed. */
+  wordmark: string;
+  courseCode: string;
+  /** Row meta line — issuer, format and year, in the slot where a credential
+   *  row prints its issuer and date. */
+  meta: string;
+  /** Curriculum module names, verbatim from Stanford's syllabus. */
+  topics: readonly string[];
+  /** One line, always rendered. Stanford's course page states this twice. */
+  noCertificateNote: string;
+  /** The issuer's public syllabus page. NOT a verification URL — there is none,
+   *  and this must never be routed through openVerifyUrl()/openBadgeUrl(): they
+   *  fire a `verify_certificate` GA event for a credential that does not exist. */
+  courseUrl: string;
+};
+
+export const CONTINUING_EDUCATION: readonly ContinuingEducationEntry[] = [
+  {
+    id: "ce-stanford-xee100",
+    title: "Introduction to Internet of Things",
+    wordmark: "Stanford",
+    courseCode: "XEE100",
+    meta: "Stanford School of Engineering · Non-credit short course · Completed 2026",
+    topics: [
+      "Cool Applications",
+      "Sensors",
+      "Embedded Systems",
+      "Networking",
+      "Circuits",
+    ],
+    noCertificateNote:
+      "Stanford issues no certificate for this course — nothing to verify, so nothing here claims to be.",
+    courseUrl:
+      "https://online.stanford.edu/courses/xee100-introduction-internet-things",
+  },
+];
