@@ -43,7 +43,8 @@ describe("continuing education is never counted as a credential", () => {
     for (const entry of CONTINUING_EDUCATION) {
       expect(entry.courseUrl).toMatch(/^https:\/\/online\.stanford\.edu\/courses\//);
       expect(entry.meta).not.toMatch(/certified/i);
-      expect(entry.noCertificateNote).toMatch(/no certificate/i);
+      expect(entry.status).not.toMatch(/certified|verified/i);
+      expect(entry.formatNote).toMatch(/no certificate/i);
     }
   });
 });

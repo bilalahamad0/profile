@@ -2,14 +2,26 @@ import React from "react";
 import { BookOpen, ExternalLink } from "lucide-react";
 import { CONTINUING_EDUCATION } from "@/app/certifications/data";
 
-/** Coursework that issued no credential, rendered so it can never be mistaken
- *  for one — at the same card size as a credential row, not as a page-width
- *  feature. Server Component by design: nothing here expands, animates or
- *  tracks, so the issuer, the course code and all five topics are in the
- *  initial HTML with zero JavaScript.
+/** Coursework that issued no certificate, presented as what it is: a completed
+ *  Stanford School of Engineering course, at the same card size as a credential
+ *  row. Server Component by design — nothing here expands, animates or tracks,
+ *  so the issuer, the course code and all five topics are in the initial HTML
+ *  with zero JavaScript.
  *
- *  Deliberately absent, every one of which the credential rows carry: the
- *  01…12 ledger numeral, the chevron disclosure, aria-expanded, the certificate
+ *  On tone. An earlier pass stated the no-certificate fact four times — eyebrow,
+ *  header, a red chip and a sentence — which read as an apology and buried the
+ *  course. The fact is not hidden, but it is stated ONCE, in `formatNote`, in
+ *  the fine-print slot beside the format where a reader looks for exactly that
+ *  kind of detail. Accuracy needs one clear line; it does not need four. If you
+ *  are tempted to add a second mention, edit `formatNote` instead.
+ *
+ *  What keeps this honest is structural, not typographic: CONTINUING_EDUCATION
+ *  reaches no aggregation (see the contract in data.ts), the type cannot express
+ *  a verification URL, and data.test.ts gates all three exclusions. So the copy
+ *  is free to lead with the course.
+ *
+ *  Deliberately absent, every one of which the credential rows carry: the 01…12
+ *  ledger numeral, the chevron disclosure, aria-expanded, the certificate
  *  thumbnail and its lightbox, and the Verify button. The single outbound
  *  control is a native <a> — never openVerifyUrl(), which would fire a
  *  `verify_certificate` event for a credential that does not exist. Emerald
@@ -27,8 +39,6 @@ import { CONTINUING_EDUCATION } from "@/app/certifications/data";
  *  LIGHT_EYEBROW map. Do NOT "fix" the dark theme by lightening the fill:
  *  #A31F1F still measures only 2.63:1 against #09090b. */
 export function ContinuingEducation() {
-  const count = CONTINUING_EDUCATION.length;
-
   return (
     // Separator plus roughly the ledger's own inter-group rhythm. A second
     // coloured hairline would just read as a fifth group. This wrapper also
@@ -41,31 +51,22 @@ export function ContinuingEducation() {
         aria-labelledby="continuing-education-heading"
         className="scroll-mt-28"
       >
-        {/* Header mirrors CredentialGroup's geometry and inverts its claim: the
-            right-hand block sits where "{n} credentials · all verified" sits on
-            every group. It is the one element that distinguishes this from a
-            credential group, so unlike its counterpart it renders at EVERY
-            width and simply stacks under the heading on mobile. */}
-        <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-4 md:mb-6">
-          <div className="flex min-w-0 items-center gap-3 md:gap-4">
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-[#8C1515]/25 bg-[#8C1515]/10 text-[#8C1515] dark:border-red-300/25 dark:bg-red-400/10 dark:text-red-300">
-              <BookOpen className="h-5 w-5" aria-hidden />
-            </span>
-            <div className="min-w-0">
-              <p className="t-label font-bold uppercase tracking-widest text-[#8C1515] dark:text-red-300">
-                Studied · Not Certified
-              </p>
-              <h2 id="continuing-education-heading" className="t-h2 text-ink">
-                Continuing Education
-              </h2>
-            </div>
-          </div>
-          {/* 12px on the light card needs more than the dark theme's 55% ink;
-              ink-muted holds 7.0:1 light / 5.9:1 dark. */}
-          <span className="shrink-0 t-caption text-ink-muted dark:text-ink/55 sm:text-right">
-            {count} {count === 1 ? "course" : "courses"} · not counted as a
-            credential
+        {/* Group-header geometry, minus the "{n} credentials · all verified"
+            counterpart — that slot was the loudest of the four disclaimers and
+            the section reads better without it. The eyebrow now names the
+            institution, which is the strongest true thing here. */}
+        <div className="mb-5 flex min-w-0 items-center gap-3 md:mb-6 md:gap-4">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-[#8C1515]/25 bg-[#8C1515]/10 text-[#8C1515] dark:border-red-300/25 dark:bg-red-400/10 dark:text-red-300">
+            <BookOpen className="h-5 w-5" aria-hidden />
           </span>
+          <div className="min-w-0">
+            <p className="t-label font-bold uppercase tracking-widest text-[#8C1515] dark:text-red-300">
+              Stanford School of Engineering
+            </p>
+            <h2 id="continuing-education-heading" className="t-h2 text-ink">
+              Continuing Education
+            </h2>
+          </div>
         </div>
 
         <div className="flex flex-col gap-3 md:gap-4">
@@ -104,16 +105,20 @@ export function ContinuingEducation() {
                   </p>
                 </div>
 
-                {/* Sits where a credential row prints its chips, and says the
-                    opposite of what they say. */}
+                {/* Sits where a credential row prints its chips, and carries the
+                    achievement rather than the absence of a certificate. A
+                    module count would only repeat the five chips directly
+                    below it. Cardinal, not violet or emerald: violet is the
+                    specializations' "N Courses" chip and emerald is reserved
+                    page-wide for verification, so either would borrow a
+                    credential signal. Beside the Stanford tile, cardinal reads
+                    as the institution rather than as a warning. */}
                 <span className="inline-flex shrink-0 items-center gap-1.5 self-start rounded-full border border-[#8C1515]/30 bg-[#8C1515]/[0.06] px-3 py-1 t-label font-bold uppercase tracking-wider text-[#8C1515] dark:border-red-300/25 dark:bg-red-400/[0.08] dark:text-red-300 md:self-auto">
-                  No certificate issued
+                  {entry.status}
                 </span>
               </div>
 
-              {/* Topics + the one-line disclosure. Always visible: there is no
-                  disclosure control on this card, so nothing about it is
-                  hidden behind an interaction. */}
+              {/* The substance: what the course actually covered. */}
               <div className="flex flex-col gap-3 border-t border-line/10 px-4 py-3 md:flex-row md:items-center md:justify-between md:gap-6 md:px-6">
                 <ul className="m-0 flex list-none flex-wrap gap-1.5 p-0">
                   {entry.topics.map((topic) => (
@@ -127,8 +132,11 @@ export function ContinuingEducation() {
                 </ul>
 
                 <div className="flex shrink-0 flex-wrap items-center gap-x-3 gap-y-1">
-                  <span className="t-caption text-ink-muted dark:text-ink/55">
-                    {entry.noCertificateNote}
+                  {/* The one and only statement of the record status, in the
+                      fine-print slot next to the format. See the tone note at
+                      the top of this file before adding a second one. */}
+                  <span className="t-caption text-ink-subtle dark:text-ink/50">
+                    {entry.formatNote}
                   </span>
                   <a
                     href={entry.courseUrl}

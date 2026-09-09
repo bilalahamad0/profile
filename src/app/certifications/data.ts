@@ -642,13 +642,22 @@ export type ContinuingEducationEntry = {
    *  no logo file is downloaded and no lockup is reconstructed. */
   wordmark: string;
   courseCode: string;
-  /** Row meta line — issuer, format and year, in the slot where a credential
-   *  row prints its issuer and date. */
+  /** Row meta line, in the slot where a credential row prints its issuer and
+   *  date. Leads with substance. "six Stanford faculty" is Stanford's OWN
+   *  wording ("six Stanford faculty members will deliver an overview") — keep
+   *  the attribution to them: their teaching team lists Beth Pruitt at UC Santa
+   *  Barbara, so writing that claim from scratch would overstate it. */
   meta: string;
   /** Curriculum module names, verbatim from Stanford's syllabus. */
   topics: readonly string[];
-  /** One line, always rendered. Stanford's course page states this twice. */
-  noCertificateNote: string;
+  /** The achievement, in the slot where a credential row prints its chips. */
+  status: string;
+  /** Format + record status, stated once, in the fine-print slot where format
+   *  details live. Factual, not apologetic: this section exists to present real
+   *  coursework accurately, and one quiet line does that. Repeating it — an
+   *  eyebrow, a chip, AND a sentence — turns an honest footnote into a
+   *  disclaimer that drowns out the course itself. Keep it to this one field. */
+  formatNote: string;
   /** The issuer's public syllabus page. NOT a verification URL — there is none,
    *  and this must never be routed through openVerifyUrl()/openBadgeUrl(): they
    *  fire a `verify_certificate` GA event for a credential that does not exist. */
@@ -661,7 +670,8 @@ export const CONTINUING_EDUCATION: readonly ContinuingEducationEntry[] = [
     title: "Introduction to Internet of Things",
     wordmark: "Stanford",
     courseCode: "XEE100",
-    meta: "Stanford School of Engineering · Non-credit short course · Completed 2026",
+    meta: "Taught by six Stanford faculty · 5 modules",
+    status: "Completed 2026",
     topics: [
       "Cool Applications",
       "Sensors",
@@ -669,8 +679,8 @@ export const CONTINUING_EDUCATION: readonly ContinuingEducationEntry[] = [
       "Networking",
       "Circuits",
     ],
-    noCertificateNote:
-      "Stanford issues no certificate for this course — nothing to verify, so nothing here claims to be.",
+    formatNote:
+      "Non-credit short course · Stanford issues no certificate for this course.",
     courseUrl:
       "https://online.stanford.edu/courses/xee100-introduction-internet-things",
   },

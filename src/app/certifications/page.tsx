@@ -82,10 +82,10 @@ export default function CertificationsPage() {
           })}
 
           {/* Continuing Education is not a category peer, so it is set apart by
-              a divider and a Cardinal tint — and where every pill above ends
-              "· {n}", this one ends "· not counted". The page's own navigation
-              states the exclusion before the reader has scrolled anywhere;
-              hiding the section from the nav would undercut the premise.
+              a divider and a Cardinal tint. It deliberately carries no count
+              suffix where the four pills above end "· {n}": the absence of a
+              number is what marks it as a different kind of thing, and it does
+              so without spending the label on a disclaimer.
               The nav's accessible name is unchanged ("Certification
               categories") — slightly imprecise for this one pill, and a
               knowingly accepted wart: certifications.spec.ts matches the nav by
@@ -97,7 +97,6 @@ export default function CertificationsPage() {
           >
             <BookOpen className="h-3.5 w-3.5 text-[#8C1515] dark:text-red-300" aria-hidden />
             Continuing Education
-            <span className="text-ink/65 dark:text-ink/50">· not counted</span>
           </a>
         </nav>
       </section>

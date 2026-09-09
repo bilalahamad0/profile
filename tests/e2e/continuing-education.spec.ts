@@ -69,46 +69,48 @@ test.describe('Certifications — Continuing Education (non-credential)', () => 
     }
   });
 
-  test('the no-certificate fact is stated on the card, not buried', async ({ page }) => {
+  test('the record status is stated once, in the fine print — not repeated', async ({ page }) => {
     await page.goto('/certifications');
     const section = page.locator('#continuing-education');
 
-    // On the card itself, in the slot where a credential row prints its chips.
+    // Stated: one quiet line beside the course-page link.
     await expect(
-      section.getByText('No certificate issued', { exact: true }),
+      section.getByText(/Stanford issues no certificate for this course/i),
     ).toBeVisible();
 
-    // In the header slot where every group says "N credentials · all verified".
-    await expect(
-      section.getByText('1 course · not counted as a credential'),
-    ).toBeVisible();
+    // Stated ONCE. An earlier pass said it four times (eyebrow, header slot,
+    // a red chip and a sentence), which read as an apology and buried the
+    // course. This is the regression guard for that tone, not a nitpick.
+    await expect(section.getByText(/no certificate/i)).toHaveCount(1);
+    await expect(section.getByText(/not counted/i)).toHaveCount(0);
+    await expect(section.getByText(/not certified/i)).toHaveCount(0);
 
-    // And as a plain sentence beside the course-page link.
+    // The prominent slots carry the achievement instead.
+    await expect(section.getByText('Completed 2026', { exact: true })).toBeVisible();
+    await expect(
+      section.getByText(/Taught by six Stanford faculty/i),
+    ).toBeVisible();
+  });
+
+  test('the achievement and the fine print both render at mobile width', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto('/certifications');
+    const section = page.locator('#continuing-education');
+    await expect(section.getByText('Completed 2026', { exact: true })).toBeVisible();
     await expect(
       section.getByText(/Stanford issues no certificate for this course/i),
     ).toBeVisible();
   });
 
-  test('the disqualifier renders at mobile width too', async ({ page }) => {
-    // The one element that distinguishes this from a credential group must not
-    // be hidden at the viewports the mobile projects and the axe scan use.
-    await page.setViewportSize({ width: 375, height: 812 });
-    await page.goto('/certifications');
-    const section = page.locator('#continuing-education');
-    await expect(
-      section.getByText('No certificate issued', { exact: true }),
-    ).toBeVisible();
-    await expect(
-      section.getByText('1 course · not counted as a credential'),
-    ).toBeVisible();
-  });
-
-  test('the jump pill announces the exclusion and resolves to the section', async ({ page }) => {
+  test('the jump pill is present and set apart from the category pills', async ({ page }) => {
     await page.goto('/certifications');
     const nav = page.getByRole('navigation', { name: /certification categories/i });
     const pill = nav.locator('a[href="#continuing-education"]');
     await expect(pill).toBeVisible();
-    await expect(pill).toContainText('not counted');
+    await expect(pill).toContainText('Continuing Education');
+    // No "· {n}" count suffix — that absence is what sets it apart from the
+    // four category pills, without spending the label on a disclaimer.
+    await expect(pill).not.toContainText('·');
     // The four category pills are untouched.
     await expect(nav.locator('a[href="#group-ai"]')).toBeVisible();
     await expect(nav.locator('a[href="#group-engineering"]')).toBeVisible();
