@@ -36,10 +36,14 @@ const CREDENTIAL_TITLES = [
   'Software Testing Foundations: Integrating AI into the Quality Process',
   'AI Coding Agents with GitHub Copilot and Cursor',
   'ISTQB Foundation Level',
+  'Test Automation Foundations',
   'Project Management Foundations',
   'Scrum: Advanced',
+  'Scrum: The Basics',
+  'Nano Tips to Stop Overthinking with Shadé Zahrai',
   'How to Master Your Executive Presence',
   'Javascript Essential Training',
+  'Node.js Essential Training',
   'iOS App Development: Essential Courses',
 ];
 
@@ -217,9 +221,12 @@ test.describe('Certifications — collapse/expand behavior', () => {
     await btn.click();
     await expect(btn).toHaveText(/collapse all/i);
 
+    // Count is derived, not hardcoded: the claim under test is "every row in
+    // the group", which must keep holding as credentials are added to it.
     const toggles = page.locator('#group-leadership [aria-expanded]');
-    await expect(toggles).toHaveCount(4);
-    for (let i = 0; i < 4; i++) {
+    const rowCount = await toggles.count();
+    expect(rowCount).toBeGreaterThan(1);
+    for (let i = 0; i < rowCount; i++) {
       await expect(toggles.nth(i)).toHaveAttribute('aria-expanded', 'true');
     }
 
