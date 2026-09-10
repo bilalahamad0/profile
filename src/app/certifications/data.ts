@@ -615,3 +615,73 @@ export const CERT_STATS = {
   specializations: SPECIALIZATIONS.length,
   yearsSpan: `${Math.min(...ALL_YEARS)} – ${Math.max(...ALL_YEARS)}`,
 };
+
+// --- CONTINUING EDUCATION (NON-CREDENTIAL) ---
+//
+// Coursework that issues NO certificate, and therefore is NOT a credential.
+// It lives in its own const, deliberately out of reach of every aggregation
+// above:
+//   • NOT in SPECIALIZATIONS / AI_CERTIFICATES / GENERAL_CERTIFICATES, so it
+//     can never reach ALL_SINGLES, ALL_YEARS or CERT_STATS.credentials (12).
+//   • NOT in CREDENTIAL_GROUPS, so it never renders under an "all verified"
+//     header, never gets a ledger numeral, and never gets a Verify affordance.
+//   • NOT in `certifications` in src/data/portfolio.ts, so certificationsSchema()
+//     never emits it as an EducationalOccupationalCredential and the Experience
+//     page's `certs` summary card never lists it.
+// Anything that would count, verify, badge or schema-tag this entry is a bug;
+// src/app/certifications/data.test.ts asserts all three exclusions.
+//
+// If a future entry here ever DOES earn a real certificate, move it into
+// GENERAL_CERTIFICATES. Never add a `url` / `image` / `logo` field to this type
+// — the shape's inability to express verification is the point.
+
+export type ContinuingEducationEntry = {
+  id: string;
+  title: string;
+  /** Institution name, typeset on the designed tile. Never an image asset:
+   *  no logo file is downloaded and no lockup is reconstructed. */
+  wordmark: string;
+  courseCode: string;
+  /** Row meta line, in the slot where a credential row prints its issuer and
+   *  date. Leads with substance. "six Stanford faculty" is Stanford's OWN
+   *  wording ("six Stanford faculty members will deliver an overview") — keep
+   *  the attribution to them: their teaching team lists Beth Pruitt at UC Santa
+   *  Barbara, so writing that claim from scratch would overstate it. */
+  meta: string;
+  /** Curriculum module names, verbatim from Stanford's syllabus. */
+  topics: readonly string[];
+  /** The achievement, in the slot where a credential row prints its chips. */
+  status: string;
+  /** Format + record status, stated once, in the fine-print slot where format
+   *  details live. Factual, not apologetic: this section exists to present real
+   *  coursework accurately, and one quiet line does that. Repeating it — an
+   *  eyebrow, a chip, AND a sentence — turns an honest footnote into a
+   *  disclaimer that drowns out the course itself. Keep it to this one field. */
+  formatNote: string;
+  /** The issuer's public syllabus page. NOT a verification URL — there is none,
+   *  and this must never be routed through openVerifyUrl()/openBadgeUrl(): they
+   *  fire a `verify_certificate` GA event for a credential that does not exist. */
+  courseUrl: string;
+};
+
+export const CONTINUING_EDUCATION: readonly ContinuingEducationEntry[] = [
+  {
+    id: "ce-stanford-xee100",
+    title: "Introduction to Internet of Things",
+    wordmark: "Stanford",
+    courseCode: "XEE100",
+    meta: "Taught by six Stanford faculty · 5 modules",
+    status: "Completed 2026",
+    topics: [
+      "Cool Applications",
+      "Sensors",
+      "Embedded Systems",
+      "Networking",
+      "Circuits",
+    ],
+    formatNote:
+      "Non-credit short course · Stanford issues no certificate for this course.",
+    courseUrl:
+      "https://online.stanford.edu/courses/xee100-introduction-internet-things",
+  },
+];
