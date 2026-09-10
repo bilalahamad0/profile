@@ -1,0 +1,31 @@
+# Files that never need to reach a Vercel build.
+# Keeps the source upload small and stops stray local test artifacts
+# (Playwright / Lost Pixel PNGs) from ever riding along into a deployment.
+#
+# Do NOT add: src/, public/, content/, ai-metrics.json, next.config.ts,
+# package.json, package-lock.json, tsconfig.json, postcss.config.* — the
+# Next.js build reads all of these.
+
+# Committed Playwright viewport-verification screenshots (repo root)
+verify-*.png
+prod-verify-*.png
+
+# Local / CI test artifacts
+/playwright-report/
+/test-results/
+/.playwright-mcp/
+/lost-pixel/
+/.lost-pixel/
+**/__screenshots__/
+
+# E2E suites are never imported by the app
+/tests/
+
+# CI config and standalone docs pages (not app routes)
+/.github/
+/docs/
+
+# Editor / OS noise
+.DS_Store
+/.vscode/
+/.idea/
