@@ -12,7 +12,7 @@ import { certifications } from "@/data/portfolio";
 
 describe("continuing education is never counted as a credential", () => {
   it("does not move the computed stats strip", () => {
-    expect(CERT_STATS.credentials).toBe(12);
+    expect(CERT_STATS.credentials).toBe(17);
     expect(CERT_STATS.specializations).toBe(SPECIALIZATIONS.length);
     expect(CERT_STATS.credentials).toBe(
       SPECIALIZATIONS.length + AI_CERTIFICATES.length + GENERAL_CERTIFICATES.length,

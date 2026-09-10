@@ -408,6 +408,17 @@ export const GENERAL_CERTIFICATES: GalleryCertificate[] = [
     officialBadge: "/badges/ISTQB-CTFL-badge.png"
   },
   {
+    id: "g-7",
+    title: "Test Automation Foundations",
+    issuer: "LinkedIn Learning",
+    date: "2023",
+    image: "/certificates/test_automation_foundations_thumb.jpg",
+    url: "https://www.linkedin.com/learning/certificates/0a7921f60d0738aa78ec4312dda4bac360ef241f6d0209a0fce2e15ccda3d968",
+    logo: "/logos/linkedin.png",
+    description: "Automation strategy end to end — choosing test types and tooling, then sustaining suites across continuous integration and delivery.",
+    gradient: "from-cyan-600/10 to-sky-600/10"
+  },
+  {
     id: "g-5",
     title: "Project Management Foundations",
     issuer: "LinkedIn Learning",
@@ -417,6 +428,17 @@ export const GENERAL_CERTIFICATES: GalleryCertificate[] = [
     logo: "/logos/linkedin.png",
     description: "Essential project management skills including planning, execution, and risk management.",
     gradient: "from-indigo-600/10 to-violet-600/10"
+  },
+  {
+    id: "g-10",
+    title: "Nano Tips to Stop Overthinking with Shadé Zahrai",
+    issuer: "LinkedIn Learning",
+    date: "2022",
+    image: "/certificates/nano_tips_overthinking_thumb.jpg",
+    url: "https://www.linkedin.com/learning/certificates/0041c10c2859e50332c144c268dcb9bf0a239d8df5f28a73e331fe514a72ef8d",
+    logo: "/logos/linkedin.png",
+    description: "Interrupting rumination and keeping judgement clear under pressure — applied positive psychology for high-stakes decisions.",
+    gradient: "from-rose-600/10 to-pink-600/10"
   },
   {
     id: "g-2",
@@ -441,6 +463,17 @@ export const GENERAL_CERTIFICATES: GalleryCertificate[] = [
     gradient: "from-slate-600/10 to-zinc-600/10"
   },
   {
+    id: "g-9",
+    title: "Scrum: The Basics",
+    issuer: "LinkedIn Learning",
+    date: "2021",
+    image: "/certificates/scrum_basics_thumb.jpg",
+    url: "https://www.linkedin.com/learning/certificates/b27c9412dbd221e0bfa9a8d5fa7769c6dbc0c5c3c3bb4aa31a67529481d2f0e2",
+    logo: "/logos/linkedin.png",
+    description: "The Scrum framework end to end — roles, artifacts, and ceremonies, and how a delivery team organizes its work around them.",
+    gradient: "from-amber-600/10 to-orange-600/10"
+  },
+  {
     id: "g-4",
     title: "Javascript Essential Training",
     issuer: "LinkedIn Learning",
@@ -452,6 +485,17 @@ export const GENERAL_CERTIFICATES: GalleryCertificate[] = [
     gradient: "from-yellow-600/10 to-amber-600/10"
   },
   {
+    id: "g-8",
+    title: "Node.js Essential Training",
+    issuer: "LinkedIn Learning",
+    date: "2024",
+    image: "/certificates/node_js_essential_thumb.jpg",
+    url: "https://www.linkedin.com/learning/certificates/e9b657ca75db5096262df4ca149e666a0717e7082af3d490ff6e7fd6b5a762df",
+    logo: "/logos/linkedin.png",
+    description: "Server-side JavaScript fundamentals — the Node core, module system, file I/O, and event-driven execution outside the browser.",
+    gradient: "from-green-600/10 to-lime-600/10"
+  },
+  {
     id: "g-3",
     title: "iOS App Development: Essential Courses",
     issuer: "LinkedIn Learning",
@@ -461,6 +505,17 @@ export const GENERAL_CERTIFICATES: GalleryCertificate[] = [
     logo: "/logos/linkedin.png",
     description: "Comprehensive training in Swift, Xcode, and iOS development principles.",
     gradient: "from-sky-600/10 to-blue-600/10"
+  },
+  {
+    id: "g-11",
+    title: "Learning Python Generators",
+    issuer: "LinkedIn Learning",
+    date: "2018",
+    image: "/certificates/python_generators_thumb.jpg",
+    url: "https://www.linkedin.com/learning/certificates/efbb25ce7ad8a03cb580b721b3a8504f1f3b0c72fb74bb4f886d703c163a69ad",
+    logo: "/logos/linkedin.png",
+    description: "Lazy iteration over large data sets — generator functions and expressions, and how they power context managers and coroutines.",
+    gradient: "from-blue-700/10 to-amber-600/10"
   },
 ];
 
@@ -511,8 +566,16 @@ export function credentialSlug(credential: Credential): string {
 }
 
 // Skill-domain groups mirroring CertCategory in src/data/portfolio.ts
-// (ai / testing / leadership) plus a page-local engineering bucket for the
-// two dev certs portfolio.ts deliberately leaves out of the summary card.
+// (ai / testing / leadership) plus a page-local engineering bucket for the dev
+// certs that never belonged in a skills summary.
+//
+// This ledger is the COMPLETE record; `certifications` in portfolio.ts is a
+// curated SUBSET of it, feeding the Experience summary card and the JSON-LD
+// Person schema. A row here with no portfolio.ts twin is deliberate curation,
+// not drift — currently g-4 / g-8 / g-3 / g-11 (engineering foundations) and
+// g-9 / g-10 (short leadership coursework whose stronger sibling is already
+// listed). Verify against portfolio.ts before "fixing" an apparent gap.
+//
 // Specializations come before singles within a group; singles by date desc.
 export const CREDENTIAL_GROUPS: CredentialGroupDef[] = [
   {
@@ -551,7 +614,10 @@ export const CREDENTIAL_GROUPS: CredentialGroupDef[] = [
         "data-[open=true]:border-blue-400/25 data-[open=true]:shadow-[0_0_30px_-12px_rgba(59,130,246,0.35)]",
       disclosureOpen: "border-blue-400/30 bg-blue-400/10",
     },
-    credentials: [byCertId("g-1")],
+    // ISTQB leads on prominence, not recency: it is the only formally
+    // accredited, proctored certification on the page, so it stays above the
+    // newer coursework in its own group.
+    credentials: [byCertId("g-1"), byCertId("g-7")],
   },
   {
     id: "group-leadership",
@@ -571,7 +637,11 @@ export const CREDENTIAL_GROUPS: CredentialGroupDef[] = [
       bySpecId("spec-google-project-management"),
       byCertId("g-5"),
       byCertId("g-6"),
+      byCertId("g-10"),
+      // Advanced above Basics: same completion year, and the pair reads as the
+      // progression it was.
       byCertId("g-2"),
+      byCertId("g-9"),
     ],
   },
   {
@@ -588,7 +658,7 @@ export const CREDENTIAL_GROUPS: CredentialGroupDef[] = [
         "data-[open=true]:border-sky-400/25 data-[open=true]:shadow-[0_0_30px_-12px_rgba(56,189,248,0.3)]",
       disclosureOpen: "border-sky-400/30 bg-sky-400/10",
     },
-    credentials: [byCertId("g-4"), byCertId("g-3")],
+    credentials: [byCertId("g-4"), byCertId("g-8"), byCertId("g-3"), byCertId("g-11")],
   },
 ];
 
@@ -622,7 +692,7 @@ export const CERT_STATS = {
 // It lives in its own const, deliberately out of reach of every aggregation
 // above:
 //   • NOT in SPECIALIZATIONS / AI_CERTIFICATES / GENERAL_CERTIFICATES, so it
-//     can never reach ALL_SINGLES, ALL_YEARS or CERT_STATS.credentials (12).
+//     can never reach ALL_SINGLES, ALL_YEARS or CERT_STATS.credentials (17).
 //   • NOT in CREDENTIAL_GROUPS, so it never renders under an "all verified"
 //     header, never gets a ledger numeral, and never gets a Verify affordance.
 //   • NOT in `certifications` in src/data/portfolio.ts, so certificationsSchema()
