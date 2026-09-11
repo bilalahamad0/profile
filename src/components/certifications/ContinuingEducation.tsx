@@ -30,7 +30,14 @@ import { CONTINUING_EDUCATION } from "@/app/certifications/data";
  *  (verified 2026-09-10/11) — with
  *  the local thumbnail inline and an ink ExternalLink glyph so a link chip is
  *  distinguishable from a plain chip without hover; a course without one
- *  renders as the same chip as a <span>. That link IS a verification
+ *  renders as the same chip as a <span>. A chip whose badge carries a
+ *  `linkTitle` prints BOTH names in that one chip — the course title, then the
+ *  platform's own name for the badge in parentheses, muted — because a
+ *  destination titled something the chip never says cannot corroborate the
+ *  label it was clicked from. Exactly one badge needs this today (Credly's
+ *  "Prompt Design in Vertex AI Skill Badge" for Google's "Prompt Design in
+ *  Agent Platform"); the field is absent everywhere the two names agree, so
+ *  every other chip is unchanged. That link IS a verification
  *  affordance, so it borrows exactly the ledger's verification vocabulary for
  *  that one purpose and nothing more: emerald on HOVER and FOCUS only — the
  *  ring ChildBadgesGrid puts on its Credly badges, PAIRED for the light theme
@@ -44,11 +51,12 @@ import { CONTINUING_EDUCATION } from "@/app/certifications/data";
  *  belongs to the ledger's credential rows. That holds for the two chips that
  *  now DO point at credly.com: a Credly-hosted course badge is still a course
  *  badge, still a plain <a>, still untracked. Both providers get the identical
- *  chip, tile, hover and focus treatment — the only difference a reader can
- *  perceive is the sr-only suffix naming the platform, and the thumbnail, which
- *  is an opaque-white-ground WebP either way (so the bg-white tile below needs
- *  no per-provider branching). Nothing at ENTRY level links anywhere except the
- *  issuer's plain page, exactly as before.
+ *  chip, tile, hover and focus treatment — the only differences a reader can
+ *  perceive are the sr-only suffix naming the platform, the thumbnail (an
+ *  opaque-white-ground WebP either way, so the bg-white tile below needs no
+ *  per-provider branching), and the visible `linkTitle` annotation on the one
+ *  chip whose two names disagree. Nothing at ENTRY level links anywhere except
+ *  the issuer's plain page, exactly as before.
  *
  *  Deliberately absent, every one of which the credential rows carry: the
  *  01…12 ledger numeral, the chevron disclosure, aria-expanded, the
@@ -65,9 +73,13 @@ import { CONTINUING_EDUCATION } from "@/app/certifications/data";
  *  ink: eyebrow and jump pill `text-ink/70 dark:text-ink/60` (6.39:1 light /
  *  7.34:1 dark on the page), the same pair on the `bg-ink/[0.05]` icon tile
  *  and status chip (6.08–6.24 / 6.91–7.06) and on the `bg-ink/[0.04]` course
- *  chips (6.31 / 6.97); meta `text-ink-muted dark:text-ink/55` (7.66 / 6.24)
+ *  chips (6.26 / 6.97); meta `text-ink-muted dark:text-ink/55` (7.66 / 6.24)
  *  and fine print `text-ink-subtle dark:text-ink/50` (4.79 / 5.34) are the
- *  existing pairs. The chip is ink on every card — including Stanford's,
+ *  existing pairs. A badge chip's secondary `linkTitle` run is the one step
+ *  quieter than its chip, `text-ink/65 dark:text-ink/50` (5.29 / 5.23 on the
+ *  chip, 5.31 / 5.19 on the emerald hover fill) — subordinate to the chip's
+ *  6.26 / 6.97 and still well clear of 4.5:1, which `ink/55` (3.85 light) is
+ *  not. The chip is ink on every card — including Stanford's,
  *  which used to be cardinal — because the ledger's rule (CredentialRow.tsx)
  *  is that a chip is tinted by its MEANING, and "Completed" must not wear two
  *  colours down one section. Badge-chip hover fill `bg-emerald-500/[0.08]`
@@ -224,24 +236,53 @@ export function ContinuingEducation() {
                               className="object-contain"
                             />
                           </span>
-                          <span className="min-w-0">{course.title}</span>
+                          {/* Course title first, always — it is what the
+                              issuer's path page lists. When the badging
+                              platform names the badge something else, that
+                              name follows, verbatim and in full (never
+                              truncated or line-clamped: the chip is
+                              max-w-full and wraps instead). Without it the
+                              destination page never contains the string it was
+                              clicked from, so it cannot corroborate its own
+                              label. Muted so it reads as an annotation rather
+                              than a second course: `text-ink/65
+                              dark:text-ink/50` measures 5.29:1 light / 5.23:1
+                              dark on the chip's `bg-ink/[0.04]` ground (5.31 /
+                              5.19 on the emerald hover fill) against the chip's
+                              own 6.26 / 6.97 — subordinate, and clear of
+                              4.5:1 in both themes either way. It keeps its own
+                              colour through hover:text-ink deliberately: the
+                              hierarchy should not collapse on hover. No t-*
+                              class here — it inherits the chip's `t-label`,
+                              the one token on this element. */}
+                          <span className="min-w-0">
+                            {course.title}
+                            {course.badge.linkTitle ? (
+                              <span className="text-ink/65 dark:text-ink/50">
+                                {` (${course.badge.provider}: ${course.badge.linkTitle})`}
+                              </span>
+                            ) : null}
+                          </span>
                           {/* No opacity modifier: at `opacity-60` this glyph
                               composited to ~42% ink over the chip = 2.63:1
                               light / 3.34:1 dark, under WCAG 1.4.11's 3:1 for
                               a non-text UI part — and this glyph is what makes
                               a link chip distinguishable from a plain one
                               without hover, so it has to clear that bar. At
-                              the chip's own ink it measures 6.31:1 / 6.97:1. */}
+                              the chip's own ink it measures 6.26:1 / 6.97:1. */}
                           <ExternalLink className="h-3 w-3 shrink-0" aria-hidden />
-                          {/* `badge.kind` and `badge.provider` change ONLY the
-                              spoken suffix ("skill badge on Credly",
-                              "completion badge on Google Skills"): a lab-based
+                          {/* `badge.kind` changes ONLY the spoken suffix
+                              ("skill badge" / "completion badge"): a lab-based
                               skill badge and an on-demand completion badge look
                               identical on the chip, exactly as Google's
-                              Credentials page files both under "Completions",
-                              and so do the two platforms' pages. The two fields
-                              are independent — read them both, never derive one
-                              from the other. */}
+                              Credentials page files both under "Completions".
+                              `badge.provider` changes the spoken suffix AND —
+                              on the one chip that carries a `linkTitle` — the
+                              visible "(Credly: …)" annotation above, so it is
+                              user-visible copy there, not sr-only text; reword
+                              or localise it only with that render in mind. The
+                              two fields are independent — read them both, never
+                              derive one from the other. */}
                           <span className="sr-only">
                             {` — ${course.badge.kind} badge on ${course.badge.provider}, opens in a new tab`}
                           </span>

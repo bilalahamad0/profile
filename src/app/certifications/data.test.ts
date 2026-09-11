@@ -44,6 +44,12 @@ const CREDLY_BADGE_URLS = [
   "https://www.credly.com/badges/328f785b-dc1b-4f73-9ed2-d9a8eb7c8e71/public_url",
   "https://www.credly.com/badges/fc080ecb-a01b-4ca4-a99f-4f008a846da9/public_url",
 ];
+/** The ONE badge the two platforms name differently: Credly's exact og:title
+ *  for the course Google lists inside path 118 as "Prompt Design in Agent
+ *  Platform". `fc080ecb…` is titled identically on both, so it carries none. */
+const PROMPT_DESIGN_BADGE_URL = CREDLY_BADGE_URLS[0];
+const PROMPT_DESIGN_LINK_TITLE = "Prompt Design in Vertex AI Skill Badge";
+const GEMINI_ENTERPRISE_BADGE_URL = CREDLY_BADGE_URLS[1];
 const COURSE_URL =
   /^https:\/\/(online\.stanford\.edu\/courses\/[a-z0-9-]+|www\.skills\.google\/paths\/\d+)$/;
 /** Keys the ENTRY type must never grow — verification lives on a course. */
@@ -236,6 +242,35 @@ describe("course-level completion badges", () => {
     expect(imageByUrl.size).toBe(20);
     expect(new Set(imageByUrl.values()).size).toBe(20);
     expect([...imageByUrl.keys()].some((url) => url.endsWith("/badges/27855015"))).toBe(false);
+  });
+
+  it("names the destination on exactly the one badge whose platform title differs", () => {
+    // `linkTitle` is the chip's visible "…and Credly calls it this" annotation,
+    // so it must be set ONLY where the two names actually disagree — one badge
+    // today. A second one appearing here without a real mismatch would print a
+    // parenthetical for nothing.
+    const withLinkTitle = badged.filter(({ badge }) => badge.linkTitle !== undefined);
+    expect(withLinkTitle.map(({ badge }) => badge.url)).toEqual([PROMPT_DESIGN_BADGE_URL]);
+    expect(withLinkTitle[0]?.badge.linkTitle).toBe(PROMPT_DESIGN_LINK_TITLE);
+    expect(withLinkTitle[0]?.course.title).toBe("Prompt Design in Agent Platform");
+    // Credly titles this one identically to the course, so it carries none.
+    const gemini = badged.find(({ badge }) => badge.url === GEMINI_ENTERPRISE_BADGE_URL);
+    expect(gemini?.badge).toBeDefined();
+    expect(gemini?.badge.linkTitle).toBeUndefined();
+  });
+
+  it("never carries a linkTitle equal to the course title that references it", () => {
+    // The field MEANS "these two names disagree". A value equal to the course
+    // title is therefore a bug, not a harmless duplicate — it would render the
+    // same words twice inside one chip.
+    for (const { course, badge } of badged) {
+      if (badge.linkTitle === undefined) continue;
+      expect(badge.linkTitle.trim().length).toBeGreaterThan(0);
+      expect(
+        badge.linkTitle,
+        `${course.title} carries a redundant linkTitle`,
+      ).not.toBe(course.title);
+    }
   });
 });
 

@@ -125,7 +125,20 @@ const CARDS: Card[] = [
   },
 ];
 
+// The one course whose badge page is titled something else. The chip shows
+// BOTH names: Google's course title, then Credly's own badge name in
+// parentheses, muted — so the destination can corroborate the label it was
+// clicked from. Credly's exact og:title, verbatim and in full.
+const PROMPT_DESIGN_COURSE = 'Prompt Design in Agent Platform';
+const PROMPT_DESIGN_CREDLY_TITLE = 'Prompt Design in Vertex AI Skill Badge';
+const PROMPT_DESIGN_CHIP_TEXT = `${PROMPT_DESIGN_COURSE} (Credly: ${PROMPT_DESIGN_CREDLY_TITLE})`;
+
 const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+// A course chip's text starts with the course title and then either ends, or
+// continues with the muted "(Credly: …)" annotation, or with the sr-only
+// provider suffix.
+const chipStartsWith = (course: string) =>
+  new RegExp(`^${esc(course)}( \\((Credly|Google Skills): | — |$)`);
 // Two of the badges are lab-based skill badges, linked at their Credly copies;
 // the chip is identical, only the spoken suffix differs (kind + provider).
 const badgeLinks = (scope: Locator) =>
@@ -137,7 +150,8 @@ const credlyLinks = (scope: Locator) =>
 // The two Credly skill badges: "Create Your First Gemini Enterprise
 // Application" (rendered on the SMB and Agents cards) and "Prompt Design in
 // Agent Platform" (Credly names that badge "Prompt Design in Vertex AI Skill
-// Badge"; the chip deliberately keeps Google's course title).
+// Badge" — the chip leads with Google's course title and prints Credly's name
+// after it, so the destination corroborates the label it was clicked from).
 const CREDLY_BADGE_UUIDS = [
   '328f785b-dc1b-4f73-9ed2-d9a8eb7c8e71',
   'fc080ecb-a01b-4ca4-a99f-4f008a846da9',
@@ -167,6 +181,11 @@ test.describe('Certifications — Continuing Education (non-credential)', () => 
       // framed the way Google Cloud's certification page frames the path.
       'Generative AI Leader Certification',
       'Train for the exam',
+      // Credly's own name for the Prompt Design badge — the chip prints it
+      // beside Google's course title, so it is in the static HTML too. Only
+      // the two titles separately: a <span> boundary sits between them in the
+      // markup, so the joined chip text is asserted against the DOM instead.
+      PROMPT_DESIGN_CREDLY_TITLE,
       ...CARDS.map((c) => c.title),
       ...CARDS.flatMap((c) => c.courses),
     ]);
@@ -271,9 +290,10 @@ test.describe('Certifications — Continuing Education (non-credential)', () => 
         // the sr-only badge suffixes also contain "Google Skills".
         await expect(el.locator('h3 + p')).toContainText(`${card.issuer} · `);
         for (const course of card.courses) {
-          // Anchored: a link chip's text continues with the sr-only suffix.
+          // Anchored: a link chip's text continues with the muted platform
+          // title (where the two names disagree) and the sr-only suffix.
           await expect(
-            el.locator('li').filter({ hasText: new RegExp(`^${esc(course)}( — |$)`) }),
+            el.locator('li').filter({ hasText: chipStartsWith(course) }),
           ).toHaveCount(1);
         }
         await expect(el.locator('li')).toHaveCount(card.courses.length);
@@ -335,6 +355,54 @@ test.describe('Certifications — Continuing Education (non-credential)', () => 
       });
     });
   }
+
+  test('the Prompt Design chip shows BOTH the course title and Credly’s own badge name', async ({ page }) => {
+    await page.goto('/certifications');
+    // "Prompt Design in Agent Platform" appears in exactly one card, but scope
+    // to the card anyway — every text locator in this file is card-scoped.
+    const card = page.locator('#ce-google-skills-beginner-gen-ai-118');
+    const chip = card.locator('li').filter({ hasText: chipStartsWith(PROMPT_DESIGN_COURSE) });
+    await expect(chip).toHaveCount(1);
+
+    // Visible text: Google's course title, then Credly's own name — verbatim,
+    // in full, neither one dropped and neither one truncated away.
+    const visible = (await chip.locator('a > span.min-w-0').innerText()).replace(/\s+/g, ' ').trim();
+    expect(visible).toBe(PROMPT_DESIGN_CHIP_TEXT);
+    await expect(chip).toContainText(PROMPT_DESIGN_COURSE);
+    await expect(chip).toContainText(PROMPT_DESIGN_CREDLY_TITLE);
+
+    // Accessible name: both titles, in reading order, still ending in the
+    // existing provider suffix.
+    const link = chip.getByRole('link');
+    await expect(link).toHaveCount(1);
+    await expect(link).toHaveAccessibleName(
+      new RegExp(
+        `^${esc(PROMPT_DESIGN_CHIP_TEXT)}\\s*— skill badge on Credly, opens in a new tab$`,
+      ),
+    );
+    await expect(link).toHaveAttribute('href', CREDLY_BADGE_URL);
+    // Not a `title` attribute standing in for visible text.
+    await expect(link).not.toHaveAttribute('title', /./);
+    // Still one chip, one <li>, one thumbnail, one link.
+    await expect(chip.locator('a')).toHaveCount(1);
+    await expect(chip.locator('img')).toHaveCount(1);
+    await expect(chip.locator('img')).toHaveAttribute('alt', '');
+    // Nothing clamps or truncates the second title away.
+    const clipped = await chip.locator('a').evaluate((el) => {
+      const spans = [el, ...el.querySelectorAll('span')].filter(
+        (n) => !(n as HTMLElement).classList.contains('sr-only'),
+      );
+      return spans.some((n) => {
+        const s = getComputedStyle(n as HTMLElement);
+        return (
+          s.textOverflow === 'ellipsis' ||
+          s.webkitLineClamp !== 'none' ||
+          (n as HTMLElement).scrollWidth > (n as HTMLElement).clientWidth + 1
+        );
+      });
+    });
+    expect(clipped, 'the Prompt Design chip truncates its own text').toBe(false);
+  });
 
   test('Stanford keeps its faculty attribution', async ({ page }) => {
     await page.goto('/certifications');
@@ -433,5 +501,26 @@ test.describe('Certifications — Continuing Education (non-credential)', () => 
       () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
     );
     expect(docOverflow).toBeLessThanOrEqual(0);
+
+    // The longest chip in the section is the Prompt Design one, which carries
+    // two full titles. It may WRAP to a second line at 375px — that is fine —
+    // but it must not push past its list, nor scroll inside itself.
+    const chip = await page
+      .locator('#ce-google-skills-beginner-gen-ai-118 li')
+      .filter({ hasText: chipStartsWith(PROMPT_DESIGN_COURSE) })
+      .locator('a')
+      .evaluate((el) => {
+        const list = el.closest('ul') as HTMLElement;
+        const r = el.getBoundingClientRect();
+        const lr = list.getBoundingClientRect();
+        return {
+          selfOverflow: el.scrollWidth - el.clientWidth,
+          pastList: Math.round(r.right - lr.right),
+          height: Math.round(r.height),
+        };
+      });
+    expect(chip.selfOverflow, `chip scrolls by ${chip.selfOverflow}px`).toBeLessThanOrEqual(0);
+    expect(chip.pastList, `chip extends ${chip.pastList}px past its list`).toBeLessThanOrEqual(0);
+    expect(chip.height).toBeGreaterThan(0);
   });
 });

@@ -734,13 +734,23 @@ export const CERT_STATS = {
 //            other Credly art. Linking a Credly page here still does NOT make
 //            the badge a credential: it stays a course unit inside Continuing
 //            Education, outside every aggregation above.
+//            `badge.linkTitle` closes the one gap that leaves: when the
+//            platform names the badge differently from the course, the chip
+//            SHOWS both names (course title first, the platform's own title
+//            after it, muted) so a reader sees, before clicking, that the
+//            destination page is titled something else. Today that is exactly
+//            one badge — Credly issues "Prompt Design in Vertex AI Skill
+//            Badge" for the course Google lists inside path 118 as "Prompt
+//            Design in Agent Platform". The mismatch used to be recorded here
+//            only, in a comment; it is now on the page.
 //
 // If a future entry here ever DOES earn a real certificate, move it into
 // GENERAL_CERTIFICATES. Never add a `url` / `image` / `logo` field to
 // ContinuingEducationEntry — put verification on ContinuingEducationCourse.
 // data.test.ts asserts: no entry-level url/image/logo keys, every badge url
 // and image path matches its provider's pattern, every badge image exists on
-// disk, and exactly the two lab-based badges carry kind "skill".
+// disk, exactly the two lab-based badges carry kind "skill", and exactly one
+// badge carries a `linkTitle` — never one equal to its own course title.
 
 /** A course's public, login-free badge page plus its local thumbnail. */
 export type ContinuingEducationBadge = {
@@ -759,11 +769,24 @@ export type ContinuingEducationBadge = {
    *  below. */
   kind: "completion" | "skill";
   /** Which platform's public page `url` points at, and the word spoken in the
-   *  sr-only suffix. Deliberately NOT derived from `kind`, even though today
+   *  sr-only suffix — and, where `linkTitle` is set, the platform name PRINTED
+   *  before it on the chip ("(Credly: …)"), so on that chip this value is
+   *  visible copy, not sr-only text. Deliberately NOT derived from `kind`,
+   *  even though today
    *  the correlation is exact (both skill badges → Credly, all 18 completion
    *  badges → Google Skills): a skill badge exists on both platforms, and this
    *  field records which copy is linked, not what kind of badge it is. */
   provider: "Google Skills" | "Credly";
+  /** The destination page's OWN title, set only when the platform names the
+   *  badge differently from the course. Its presence means "these two names
+   *  disagree" — never set it to a value equal to the course title
+   *  (data.test.ts fails a redundant value). The chip renders it verbatim and
+   *  in full after the course title, muted and prefixed by `provider` (the
+   *  field, not a literal "Credly:"), so a reader sees the name the
+   *  badge page will greet them with instead of finding a page that never
+   *  contains the string they clicked. It ADDS a name; it never replaces the
+   *  course title, which is what the issuer's path page lists. */
+  linkTitle?: string;
   /** Local thumbnail under /public (240px WebP, opaque white ground),
    *  rendered with next/image — no remotePatterns change. Google Skills art
    *  sits in /badges/google-skills/, Credly art flat in /badges/ beside the
@@ -895,13 +918,21 @@ function gsBadge(
  *  lab-based skill badge, so `kind` is fixed at "skill" — but that is a fact
  *  about today's two badges, not a rule: provider and kind stay independent
  *  fields (see the type), and a future Credly-linked completion badge would
- *  simply widen this helper. */
-function credlyBadge(uuid: string, image: string): ContinuingEducationBadge {
+ *  simply widen this helper.
+ *  Pass `linkTitle` ONLY when Credly's own badge name differs from the course
+ *  title — it is rendered on the chip, so a value equal to the course title
+ *  would print the same words twice. */
+function credlyBadge(
+  uuid: string,
+  image: string,
+  linkTitle?: string,
+): ContinuingEducationBadge {
   return {
     url: `https://www.credly.com/badges/${uuid}/public_url`,
     image: `/badges/${image}.webp`,
     kind: "skill",
     provider: "Credly",
+    ...(linkTitle ? { linkTitle } : {}),
   };
 }
 
@@ -920,8 +951,10 @@ const ENTERPRISE_AGENTS: ContinuingEducationCourse = {
 };
 // Lab-based skill badge, so it exists on both platforms; the Credly copy is the
 // one linked (Google Skills badge 27848848 is its twin). Credly and Google use
-// the SAME name for this one. Shared by the SMB and Agents paths, so both cards
-// pick the Credly link up from this single const.
+// the SAME name for this one — verified against Credly's og:title — so it gets
+// no `linkTitle`; that field exists only to surface a DISAGREEMENT. Shared by
+// the SMB and Agents paths, so both cards pick the Credly link up from this
+// single const.
 const FIRST_GEMINI_ENTERPRISE_APP: ContinuingEducationCourse = {
   title: "Create Your First Gemini Enterprise Application",
   badge: credlyBadge(
@@ -961,18 +994,23 @@ export const CONTINUING_EDUCATION: readonly ContinuingEducationEntry[] = [
       INTRO_GENERATIVE_AI,
       INTRO_LARGE_LANGUAGE_MODELS,
       {
-        // The chip keeps GOOGLE's course title. The two platforms name this
-        // badge differently — Credly issues it as "Prompt Design in Vertex AI
-        // Skill Badge" (hence the image filename), Google lists the course
-        // inside path 118 as "Prompt Design in Agent Platform" — and the chip
-        // is a course chip in a path, so it shows the course title. Renaming it
-        // to Credly's wording would make this card disagree with the path page
-        // it links to. Google Skills badge 27852046 is the twin of this Credly
-        // badge.
+        // The chip LEADS with Google's course title and SHOWS Credly's name
+        // after it. The two platforms name this badge differently — Credly
+        // issues it as "Prompt Design in Vertex AI Skill Badge" (hence the
+        // image filename), Google lists the course inside path 118 as "Prompt
+        // Design in Agent Platform". Renaming the chip to Credly's wording
+        // would make this card disagree with the path page it links to, so the
+        // course title stays; but leaving Credly's name off meant the linked
+        // page never contained the string it was clicked from, and could not
+        // corroborate the label. Hence `linkTitle`: both names, verbatim, in
+        // one chip. The value below is Credly's exact og:title (no trailing
+        // "was issued by…"), verified logged-out 2026-09-11. Google Skills
+        // badge 27852046 is the twin of this Credly badge.
         title: "Prompt Design in Agent Platform",
         badge: credlyBadge(
           "328f785b-dc1b-4f73-9ed2-d9a8eb7c8e71",
           "prompt-design-in-vertex-ai",
+          "Prompt Design in Vertex AI Skill Badge",
         ),
       },
       {
