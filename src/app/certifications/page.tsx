@@ -82,10 +82,13 @@ export default function CertificationsPage() {
           })}
 
           {/* Continuing Education is not a category peer, so it is set apart by
-              a divider and a Cardinal tint. It deliberately carries no count
-              suffix where the four pills above end "· {n}": the absence of a
-              number is what marks it as a different kind of thing, and it does
-              so without spending the label on a disclaimer.
+              a divider, an uncoloured icon (the four category icons carry their
+              group hue) and no count suffix where the four pills above end
+              "· {n}": the absence of a number is what marks it as a different
+              kind of thing, and it does so without spending the label on a
+              disclaimer. The section now hosts more than one issuer, so no
+              institution colour is spent here — same neutral fill as the
+              category pills, minus the count.
               The nav's accessible name is unchanged ("Certification
               categories") — slightly imprecise for this one pill, and a
               knowingly accepted wart: certifications.spec.ts matches the nav by
@@ -93,9 +96,9 @@ export default function CertificationsPage() {
           <span aria-hidden className="mx-1 h-5 w-px shrink-0 bg-line/15" />
           <a
             href="#continuing-education"
-            className="inline-flex shrink-0 snap-start items-center gap-2 rounded-full border border-[#8C1515]/30 bg-[#8C1515]/[0.06] dark:border-red-300/25 dark:bg-red-400/[0.06] px-4 py-2 t-label font-bold uppercase tracking-wider text-ink/70 dark:text-ink/60 transition-colors hover:border-[#8C1515]/50 hover:text-ink"
+            className="inline-flex shrink-0 snap-start items-center gap-2 rounded-full border border-line/10 bg-ink/[0.05] dark:bg-ink/[0.03] px-4 py-2 t-label font-bold uppercase tracking-wider text-ink/70 dark:text-ink/60 transition-colors hover:border-line/25 hover:text-ink"
           >
-            <BookOpen className="h-3.5 w-3.5 text-[#8C1515] dark:text-red-300" aria-hidden />
+            <BookOpen className="h-3.5 w-3.5 text-ink/60 dark:text-ink/50" aria-hidden />
             Continuing Education
           </a>
         </nav>
@@ -105,7 +108,9 @@ export default function CertificationsPage() {
       <div className="relative mx-auto max-w-7xl px-6 pb-20 pt-10 md:pb-32 md:pt-14 lg:pb-40">
         <CredentialLedger />
 
-        {/* Coursework that issued no credential. Last on purpose: the ledger
+        {/* Coursework whose completion issued no credential (course-completion
+            badges link out at the course level; nothing at the entry level
+            does). Last on purpose: the ledger
             states "N credentials · all verified" four times before the reader
             reaches this, so by the time the disclosure appears the standard it
             is being measured against has already been set four times over.
