@@ -1,7 +1,17 @@
 import { test, expect, type Locator } from '@playwright/test';
 
-const BADGE_URL =
+// Public badge page per PROVIDER — both return 200 logged-out behind no login
+// wall. 18 course badges are linked at Google Skills; the two lab-based skill
+// badges are linked at their Credly copies.
+const GOOGLE_SKILLS_BADGE_URL =
   /^https:\/\/www\.skills\.google\/public_profiles\/aece174b-451d-4d6f-928d-6def28946025\/badges\/\d+$/;
+const CREDLY_BADGE_URL = /^https:\/\/www\.credly\.com\/badges\/[0-9a-f-]{36}\/public_url$/;
+const BADGE_URL =
+  /^(https:\/\/www\.skills\.google\/public_profiles\/aece174b-451d-4d6f-928d-6def28946025\/badges\/\d+|https:\/\/www\.credly\.com\/badges\/[0-9a-f-]{36}\/public_url)$/;
+const BADGE_URL_BY_PROVIDER: Record<string, RegExp> = {
+  'Google Skills': GOOGLE_SKILLS_BADGE_URL,
+  Credly: CREDLY_BADGE_URL,
+};
 
 const STANFORD_TOPICS = ['Cool Applications', 'Sensors', 'Embedded Systems', 'Networking', 'Circuits'];
 const BEGINNER_COURSES = [
@@ -48,6 +58,7 @@ type Card = {
   pathUrl: RegExp; // the entry-level syllabus/path link
   courses: string[];
   badges: number; // courses that link to a public badge page
+  credly: number; // of those, how many link at credly.com (the rest: Google Skills)
   note: RegExp; // the one "no certificate" line
 };
 
@@ -65,6 +76,7 @@ const CARDS: Card[] = [
     pathUrl: /^https:\/\/www\.skills\.google\/paths\/118$/,
     courses: BEGINNER_COURSES,
     badges: 4,
+    credly: 1, // Prompt Design in Agent Platform
     note: /Google issues no certificate for completing this path/i,
   },
   {
@@ -75,6 +87,7 @@ const CARDS: Card[] = [
     pathUrl: /^https:\/\/www\.skills\.google\/paths\/3546$/,
     courses: AGENTS_COURSES,
     badges: 3,
+    credly: 1, // Create Your First Gemini Enterprise Application
     note: /Google issues no certificate for completing this path/i,
   },
   {
@@ -85,6 +98,7 @@ const CARDS: Card[] = [
     pathUrl: /^https:\/\/www\.skills\.google\/paths\/4020$/,
     courses: SMB_COURSES,
     badges: 13,
+    credly: 1, // Create Your First Gemini Enterprise Application
     note: /Google issues no certificate for completing this path/i,
   },
   {
@@ -95,6 +109,7 @@ const CARDS: Card[] = [
     pathUrl: /^https:\/\/www\.skills\.google\/paths\/1951$/,
     courses: LEADER_COURSES,
     badges: 5,
+    credly: 0,
     note: /Google issues no certificate for completing this path/i,
   },
   {
@@ -105,16 +120,28 @@ const CARDS: Card[] = [
     pathUrl: /^https:\/\/online\.stanford\.edu\/courses\/xee100-introduction-internet-things$/,
     courses: STANFORD_TOPICS,
     badges: 0,
+    credly: 0,
     note: /Stanford issues no certificate for this course/i,
   },
 ];
 
 const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-// Two of the badges are lab-based skill badges (also issued on Credly); the
-// chip is identical, only the spoken suffix differs.
+// Two of the badges are lab-based skill badges, linked at their Credly copies;
+// the chip is identical, only the spoken suffix differs (kind + provider).
 const badgeLinks = (scope: Locator) =>
-  scope.getByRole('link', { name: /(completion|skill) badge on Google Skills, opens in a new tab$/i });
-const SKILL_BADGE_IDS = ['27848848', '27852046'];
+  scope.getByRole('link', {
+    name: /(completion|skill) badge on (Google Skills|Credly), opens in a new tab$/i,
+  });
+const credlyLinks = (scope: Locator) =>
+  scope.getByRole('link', { name: /badge on Credly, opens in a new tab$/i });
+// The two Credly skill badges: "Create Your First Gemini Enterprise
+// Application" (rendered on the SMB and Agents cards) and "Prompt Design in
+// Agent Platform" (Credly names that badge "Prompt Design in Vertex AI Skill
+// Badge"; the chip deliberately keeps Google's course title).
+const CREDLY_BADGE_UUIDS = [
+  '328f785b-dc1b-4f73-9ed2-d9a8eb7c8e71',
+  'fc080ecb-a01b-4ca4-a99f-4f008a846da9',
+];
 const pathLink = (card: Locator) => card.getByRole('link', { name: /^(course|path) page on /i });
 
 test.describe('Certifications — Continuing Education (non-credential)', () => {
@@ -189,7 +216,7 @@ test.describe('Certifications — Continuing Education (non-credential)', () => 
     await expect(section.getByText('Google Skills · Stanford', { exact: true })).toBeVisible();
 
     // 25 course badges section-wide (4 + 3 + 13 + 5 + 0), every one a safe
-    // new-tab link to the public profile, every thumbnail decorative and local.
+    // new-tab link to a public badge page, every thumbnail decorative and local.
     const links = badgeLinks(section);
     await expect(links).toHaveCount(25);
     for (const a of await links.all()) {
@@ -198,22 +225,38 @@ test.describe('Certifications — Continuing Education (non-credential)', () => 
       await expect(a).toHaveAttribute('target', '_blank');
     }
     // 20 distinct badge pages behind them (shared courses repeat an href), and
-    // the spoken suffix says "skill badge" for exactly the two lab-based ones.
+    // the spoken suffix names the platform: 3 of the 25 links resolve to Credly
+    // (the shared "Create Your First Gemini Enterprise Application" chip on
+    // both the SMB and Agents cards, plus "Prompt Design in Agent Platform"),
+    // the other 22 to Google Skills.
     const hrefs = await links.evaluateAll((els) => els.map((el) => el.getAttribute('href') ?? ''));
     expect(new Set(hrefs).size).toBe(20);
+    expect(hrefs.filter((h) => CREDLY_BADGE_URL.test(h))).toHaveLength(3);
+    expect(hrefs.filter((h) => GOOGLE_SKILLS_BADGE_URL.test(h))).toHaveLength(22);
     // 27855015 belongs to an unfinished path and must never render.
     expect(hrefs.some((h) => h.endsWith('/badges/27855015'))).toBe(false);
-    const skillLinks = section.getByRole('link', { name: /skill badge on Google Skills/i });
-    const skillHrefs = await skillLinks.evaluateAll((els) => els.map((el) => el.getAttribute('href') ?? ''));
-    // 27848848 sits in two cards (SMB + Agents), 27852046 in one (Beginner).
-    expect(skillHrefs).toHaveLength(3);
-    expect(new Set(skillHrefs.map((h) => h.split('/').pop()))).toEqual(new Set(SKILL_BADGE_IDS));
+    const credlyHrefs = await credlyLinks(section).evaluateAll((els) =>
+      els.map((el) => el.getAttribute('href') ?? ''),
+    );
+    expect(credlyHrefs).toHaveLength(3);
+    expect(credlyHrefs.every((h) => CREDLY_BADGE_URL.test(h))).toBe(true);
+    // fc080ecb… ("Create Your First Gemini Enterprise Application") is shared
+    // by the SMB and Agents cards, so it appears twice; 328f785b… ("Prompt
+    // Design in Agent Platform") once, on the Beginner card.
+    const credlyUuids = credlyHrefs.map((h) => h.split('/')[4]).sort();
+    expect(credlyUuids).toEqual([
+      '328f785b-dc1b-4f73-9ed2-d9a8eb7c8e71',
+      'fc080ecb-a01b-4ca4-a99f-4f008a846da9',
+      'fc080ecb-a01b-4ca4-a99f-4f008a846da9',
+    ]);
+    expect(new Set(credlyUuids)).toEqual(new Set(CREDLY_BADGE_UUIDS));
     const imgs = section.locator('img');
     await expect(imgs).toHaveCount(25);
     for (const img of await imgs.all()) {
       await expect(img).toHaveAttribute('alt', '');
-      // next/image rewrites local src to /_next/image?url=%2Fbadges%2Fgoogle-skills…
-      await expect(img).toHaveAttribute('src', /badges%2Fgoogle-skills|\/badges\/google-skills/);
+      // next/image rewrites local src to /_next/image?url=%2Fbadges%2F… —
+      // Google Skills art is namespaced, Credly art sits flat in /badges/.
+      await expect(img).toHaveAttribute('src', /badges(%2F|\/)(google-skills(%2F|\/))?[a-z0-9-]+\.webp/);
     }
   });
 
@@ -244,16 +287,28 @@ test.describe('Certifications — Continuing Education (non-credential)', () => 
         await expect(pathLink(el)).toHaveAttribute('target', '_blank');
       });
 
-      test('every badge link is a public, login-free Google Skills page opened safely in a new tab', async ({ page }) => {
+      test('every badge link is a public, login-free badge page on the provider its accessible name states', async ({ page }) => {
         test.skip(card.badges === 0, 'no badges on this card');
         await page.goto('/certifications');
-        const links = badgeLinks(page.locator(`#${card.id}`));
+        const el = page.locator(`#${card.id}`);
+        const links = badgeLinks(el);
         await expect(links).toHaveCount(card.badges);
         for (let i = 0; i < card.badges; i++) {
           await expect(links.nth(i)).toHaveAttribute('href', BADGE_URL);
           await expect(links.nth(i)).toHaveAttribute('rel', /noopener/);
           await expect(links.nth(i)).toHaveAttribute('target', '_blank');
+          // The host must match the platform the spoken suffix names — a chip
+          // that says "on Credly" and links skills.google is a lie to a screen
+          // reader, and vice versa.
+          const spoken = (await links.nth(i).textContent()) ?? '';
+          const provider = /badge on Credly/i.test(spoken) ? 'Credly' : 'Google Skills';
+          await expect(links.nth(i), `${card.id} link ${i} says "${provider}"`).toHaveAttribute(
+            'href',
+            BADGE_URL_BY_PROVIDER[provider],
+          );
         }
+        // ...and exactly this many of them point at Credly.
+        await expect(credlyLinks(el)).toHaveCount(card.credly);
       });
 
       test('the record status is stated once, in the fine print — not repeated', async ({ page }) => {

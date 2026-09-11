@@ -1,6 +1,5 @@
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { describe, it, expect } from "vitest";
 import {
   AI_CERTIFICATES,
@@ -13,12 +12,38 @@ import {
 } from "./data";
 import { certifications } from "@/data/portfolio";
 
-const PUBLIC_DIR = fileURLToPath(new URL("../../../public/", import.meta.url));
+/** Resolve from the process cwd, NOT from `import.meta.url`. Vitest runs this
+ *  suite under `environment: "happy-dom"` (vitest.config.mjs), where
+ *  `import.meta.url` is not a `file:` URL — `fileURLToPath()` on it throws
+ *  `ERR_INVALID_URL_SCHEME` and the whole FILE fails to load, so every test in
+ *  it is skipped rather than failed. That is exactly what broke CI on
+ *  2026-09-11 ("Test Files 1 failed | 16 passed", "Tests 193 passed"): a green
+ *  test count hiding a suite that never ran. Vitest sets the cwd to the project
+ *  root (where vitest.config.mjs lives), which is also where CI invokes
+ *  `npm run test:coverage`. A wrong cwd cannot make this pass silently — the
+ *  existsSync() assertions below would fail loudly. */
+const PUBLIC_DIR = path.resolve(process.cwd(), "public");
 
-/** The owner's public Google Skills profile — every badge page under it
- *  returns 200 logged-out (verified by curl on 2026-09-10/11). */
-const GOOGLE_SKILLS_BADGE_URL =
-  /^https:\/\/www\.skills\.google\/public_profiles\/aece174b-451d-4d6f-928d-6def28946025\/badges\/\d+$/;
+/** Public badge page per PROVIDER. Both return 200 logged-out behind no login
+ *  wall (verified by curl 2026-09-10/11): every page under the owner's public
+ *  Google Skills profile, and the two Credly `public_url` pages. */
+const BADGE_URL_BY_PROVIDER = {
+  "Google Skills":
+    /^https:\/\/www\.skills\.google\/public_profiles\/aece174b-451d-4d6f-928d-6def28946025\/badges\/\d+$/,
+  Credly: /^https:\/\/www\.credly\.com\/badges\/[0-9a-f-]{36}\/public_url$/,
+} as const;
+/** Thumbnail folder per provider: Google Skills art is namespaced, Credly art
+ *  sits flat in /badges/ beside the ledger's other Credly badges. */
+const BADGE_IMAGE_BY_PROVIDER = {
+  "Google Skills": /^\/badges\/google-skills\/[a-z0-9-]+\.webp$/,
+  Credly: /^\/badges\/[a-z0-9-]+\.webp$/,
+} as const;
+/** The two lab-based Google Cloud skill badges, linked at their Credly copies.
+ *  Google Skills badge 27848848 / 27852046 are their twins. */
+const CREDLY_BADGE_URLS = [
+  "https://www.credly.com/badges/328f785b-dc1b-4f73-9ed2-d9a8eb7c8e71/public_url",
+  "https://www.credly.com/badges/fc080ecb-a01b-4ca4-a99f-4f008a846da9/public_url",
+];
 const COURSE_URL =
   /^https:\/\/(online\.stanford\.edu\/courses\/[a-z0-9-]+|www\.skills\.google\/paths\/\d+)$/;
 /** Keys the ENTRY type must never grow — verification lives on a course. */
@@ -134,29 +159,68 @@ describe("course-level completion badges", () => {
     }
   });
 
-  it("point only at the public, login-free Google Skills profile", () => {
+  it("point only at their provider's public, login-free badge page", () => {
     // 4 (Beginner) + 3 (Agents) + 13 (SMB) + 5 (Gen AI Leader) + 0 (Stanford).
     expect(badged.length).toBe(25);
-    for (const { badge } of badged) expect(badge.url).toMatch(GOOGLE_SKILLS_BADGE_URL);
-  });
-
-  it("mark exactly the two lab-based, Credly-issued skill badges as kind 'skill'", () => {
-    const kindByUrl = new Map(badged.map(({ badge }) => [badge.url, badge.kind]));
-    const skillIds = [...kindByUrl]
-      .filter(([, kind]) => kind === "skill")
-      .map(([url]) => Number(url.split("/").pop()))
-      .sort((a, b) => a - b);
-    expect(skillIds).toEqual([27848848, 27852046]);
-    for (const [, kind] of kindByUrl) expect(["completion", "skill"]).toContain(kind);
-    // A shared course carries the same kind in every path that lists it.
-    for (const { badge } of badged) expect(kindByUrl.get(badge.url)).toBe(badge.kind);
-  });
-
-  it("ship a local thumbnail that exists on disk under public/", () => {
     for (const { badge } of badged) {
-      expect(badge.image).toMatch(/^\/badges\/google-skills\/[a-z0-9-]+\.webp$/);
+      expect(Object.keys(BADGE_URL_BY_PROVIDER)).toContain(badge.provider);
+      expect(badge.url, `${badge.url} is not a ${badge.provider} badge page`).toMatch(
+        BADGE_URL_BY_PROVIDER[badge.provider],
+      );
+    }
+  });
+
+  it("link exactly the two lab-based skill badges at Credly, everything else at Google Skills", () => {
+    const byUrl = new Map(badged.map(({ badge }) => [badge.url, badge]));
+    // `kind` and `provider` are INDEPENDENT fields by design — a skill badge
+    // exists on both platforms and this site links whichever copy the owner
+    // chose. Today the correlation happens to be exact, so assert it in both
+    // directions on the current data; if a future completion badge is ever
+    // linked at Credly, this expectation moves — the type does not.
+    const credly = [...byUrl.values()].filter((b) => b.provider === "Credly");
+    const skill = [...byUrl.values()].filter((b) => b.kind === "skill");
+    expect(credly.map((b) => b.url).sort()).toEqual(CREDLY_BADGE_URLS);
+    expect(skill.map((b) => b.url).sort()).toEqual(CREDLY_BADGE_URLS);
+    expect([...byUrl.values()].filter((b) => b.provider === "Google Skills")).toHaveLength(18);
+    for (const badge of byUrl.values()) {
+      expect(["completion", "skill"]).toContain(badge.kind);
+      expect(["Google Skills", "Credly"]).toContain(badge.provider);
+    }
+    // A shared course carries the same kind and provider in every path.
+    for (const { badge } of badged) {
+      expect(byUrl.get(badge.url)?.kind).toBe(badge.kind);
+      expect(byUrl.get(badge.url)?.provider).toBe(badge.provider);
+    }
+  });
+
+  it("ship a local thumbnail, in its provider's folder, that exists on disk under public/", () => {
+    for (const { badge } of badged) {
+      expect(badge.image, `${badge.image} is not in the ${badge.provider} folder`).toMatch(
+        BADGE_IMAGE_BY_PROVIDER[badge.provider],
+      );
       expect(existsSync(path.join(PUBLIC_DIR, badge.image)), `${badge.image} is missing`).toBe(true);
     }
+  });
+
+  it("leave no orphan art in public/badges/google-skills/", () => {
+    // That folder exists ONLY for this section, so it must hold exactly the
+    // Google Skills thumbnails referenced above — 18 files, 18 references.
+    // public/badges/ itself is shared with the ledger's Credly art, so only
+    // assert that the two files referenced there exist (done above), never
+    // that the folder has no extras.
+    const onDisk = readdirSync(path.join(PUBLIC_DIR, "badges/google-skills"))
+      .filter((f) => f.endsWith(".webp"))
+      .map((f) => `/badges/google-skills/${f}`)
+      .sort();
+    const referenced = [
+      ...new Set(
+        badged
+          .filter(({ badge }) => badge.provider === "Google Skills")
+          .map(({ badge }) => badge.image),
+      ),
+    ].sort();
+    expect(referenced).toHaveLength(18);
+    expect(onDisk).toEqual(referenced);
   });
 
   it("map one badge id to one image, even for a course shared by two paths", () => {
@@ -166,9 +230,9 @@ describe("course-level completion badges", () => {
       if (seen) expect(seen).toBe(badge.image);
       else imageByUrl.set(badge.url, badge.image);
     }
-    // 20 distinct badges across the four completed paths (Google Skills →
-    // Credentials → Completions also lists a 21st, 27855015, from an
-    // unfinished path — it must never appear here).
+    // 20 distinct badges across the four completed paths — 18 linked at Google
+    // Skills, 2 at Credly (Google Skills → Credentials → Completions also
+    // lists a 21st, 27855015, from an unfinished path: it must never appear).
     expect(imageByUrl.size).toBe(20);
     expect(new Set(imageByUrl.values()).size).toBe(20);
     expect([...imageByUrl.keys()].some((url) => url.endsWith("/badges/27855015"))).toBe(false);

@@ -707,11 +707,13 @@ export const CERT_STATS = {
 //            the shape's inability to express entry-level verification is the
 //            point (data.test.ts asserts those keys are absent on every entry).
 //   COURSE — one unit inside an entry. Some units DO issue a public badge on
-//            the issuer's site (Google Skills course badges are public,
+//            a badging platform (Google Skills course badges are public,
 //            login-free pages that return 200 logged-out — verified
-//            2026-09-10/11). That is real and verifiable, so it lives on the
-//            COURSE as `badge` — never promoted to the entry, never counted
-//            anywhere, and never routed through openVerifyUrl()/openBadgeUrl().
+//            2026-09-10/11; so are the two Credly badge pages — verified
+//            logged-out 2026-09-11). That is real and verifiable, so it lives
+//            on the COURSE as `badge` — never promoted to the entry, never
+//            counted anywhere, and never routed through
+//            openVerifyUrl()/openBadgeUrl().
 //            Google issues two kinds (`badge.kind`): an on-demand course's
 //            COMPLETION badge, and a lab-based SKILL badge that Google Cloud
 //            also issues on Credly. Google's own Credentials page lists both
@@ -722,32 +724,51 @@ export const CERT_STATS = {
 //            which. Completing a PATH issues nothing — no certificate, no
 //            badge (Google fact, 2026-09-10) — which is exactly why the badge
 //            lives on the course and not on the entry.
+//            `badge.provider` says WHICH platform's public page is linked, and
+//            it is independent of `kind`: a skill badge exists on both
+//            platforms and this site links whichever copy the owner chose. The
+//            two skill badges link Credly (the richer, issuer-attested page);
+//            everything else links Google Skills. Thumbnails therefore live in
+//            two folders — /badges/google-skills/*.webp for the Google copies
+//            and /badges/*.webp for the Credly ones, flat beside the ledger's
+//            other Credly art. Linking a Credly page here still does NOT make
+//            the badge a credential: it stays a course unit inside Continuing
+//            Education, outside every aggregation above.
 //
 // If a future entry here ever DOES earn a real certificate, move it into
 // GENERAL_CERTIFICATES. Never add a `url` / `image` / `logo` field to
 // ContinuingEducationEntry — put verification on ContinuingEducationCourse.
 // data.test.ts asserts: no entry-level url/image/logo keys, every badge url
-// matches the public-profile pattern, every badge image exists on disk, and
-// exactly the two lab-based badges carry kind "skill".
+// and image path matches its provider's pattern, every badge image exists on
+// disk, and exactly the two lab-based badges carry kind "skill".
 
 /** A course's public, login-free badge page plus its local thumbnail. */
 export type ContinuingEducationBadge = {
-  /** Public badge page on the issuer's site (HTTP 200 logged-out). Opened via
-   *  a plain <a target="_blank" rel="noopener noreferrer">, never
-   *  openBadgeUrl(): that helper fires a `verify_badge` GA event with
-   *  provider "Credly". */
+  /** Public badge page on the badging platform (HTTP 200 logged-out). Opened
+   *  via a plain <a target="_blank" rel="noopener noreferrer">, never
+   *  openBadgeUrl() — even for the Credly ones: that helper fires a
+   *  `verify_badge` GA event with provider "Credly", and that event belongs to
+   *  the ledger's credential rows, not to a course chip. */
   url: string;
-  /** "completion" = an on-demand course's completion badge (skills.google
-   *  only). "skill" = a lab-based Google Cloud skill badge, ALSO issued on
-   *  Credly. Google's Credentials page files both under "Completions" and the
-   *  chip renders identically for both; the kind is read ONLY by the sr-only
-   *  link suffix ("skill badge" / "completion badge") so the spoken name is
-   *  accurate. The Credly copy is deliberately not linked or counted here —
-   *  a Credly-backed skill badge belongs in the ledger proper, if anywhere. */
+  /** "completion" = an on-demand course's completion badge (issued by Google
+   *  Skills only). "skill" = a lab-based Google Cloud skill badge, issued on
+   *  BOTH Google Skills and Credly. Google's Credentials page files both under
+   *  "Completions" and the chip renders identically for both; the kind is read
+   *  ONLY by the sr-only link suffix ("skill badge" / "completion badge") so
+   *  the spoken name is accurate. Independent of `provider` by design — see
+   *  below. */
   kind: "completion" | "skill";
+  /** Which platform's public page `url` points at, and the word spoken in the
+   *  sr-only suffix. Deliberately NOT derived from `kind`, even though today
+   *  the correlation is exact (both skill badges → Credly, all 18 completion
+   *  badges → Google Skills): a skill badge exists on both platforms, and this
+   *  field records which copy is linked, not what kind of badge it is. */
+  provider: "Google Skills" | "Credly";
   /** Local thumbnail under /public (240px WebP, opaque white ground),
-   *  rendered with next/image — no remotePatterns change. data.test.ts
-   *  asserts the file exists on disk. */
+   *  rendered with next/image — no remotePatterns change. Google Skills art
+   *  sits in /badges/google-skills/, Credly art flat in /badges/ beside the
+   *  ledger's other Credly badges. data.test.ts asserts the file exists on
+   *  disk and that the path matches the provider's folder. */
   image: string;
 };
 
@@ -863,6 +884,24 @@ function gsBadge(
     url: `${GOOGLE_SKILLS_PROFILE}/badges/${id}`,
     image: `/badges/google-skills/${image}.webp`,
     kind,
+    provider: "Google Skills",
+  };
+}
+
+/** The Credly copy of a lab-based skill badge. Its public_url page returns 200
+ *  logged-out (verified 2026-09-11) and names the issuer (Google Cloud) and the
+ *  earner, which is why the two skill badges link here rather than at their
+ *  Google Skills twins. Every Credly badge referenced here happens to be a
+ *  lab-based skill badge, so `kind` is fixed at "skill" — but that is a fact
+ *  about today's two badges, not a rule: provider and kind stay independent
+ *  fields (see the type), and a future Credly-linked completion badge would
+ *  simply widen this helper. */
+function credlyBadge(uuid: string, image: string): ContinuingEducationBadge {
+  return {
+    url: `https://www.credly.com/badges/${uuid}/public_url`,
+    image: `/badges/${image}.webp`,
+    kind: "skill",
+    provider: "Credly",
   };
 }
 
@@ -879,12 +918,15 @@ const ENTERPRISE_AGENTS: ContinuingEducationCourse = {
   title: "Enterprise Agents and Use Cases",
   badge: gsBadge(27848742, "enterprise-agents-and-use-cases"),
 };
+// Lab-based skill badge, so it exists on both platforms; the Credly copy is the
+// one linked (Google Skills badge 27848848 is its twin). Credly and Google use
+// the SAME name for this one. Shared by the SMB and Agents paths, so both cards
+// pick the Credly link up from this single const.
 const FIRST_GEMINI_ENTERPRISE_APP: ContinuingEducationCourse = {
   title: "Create Your First Gemini Enterprise Application",
-  badge: gsBadge(
-    27848848,
+  badge: credlyBadge(
+    "fc080ecb-a01b-4ca4-a99f-4f008a846da9",
     "create-your-first-gemini-enterprise-application",
-    "skill",
   ),
 };
 // In both the SMB path and the Beginner: Introduction to Generative AI path:
@@ -919,8 +961,19 @@ export const CONTINUING_EDUCATION: readonly ContinuingEducationEntry[] = [
       INTRO_GENERATIVE_AI,
       INTRO_LARGE_LANGUAGE_MODELS,
       {
+        // The chip keeps GOOGLE's course title. The two platforms name this
+        // badge differently — Credly issues it as "Prompt Design in Vertex AI
+        // Skill Badge" (hence the image filename), Google lists the course
+        // inside path 118 as "Prompt Design in Agent Platform" — and the chip
+        // is a course chip in a path, so it shows the course title. Renaming it
+        // to Credly's wording would make this card disagree with the path page
+        // it links to. Google Skills badge 27852046 is the twin of this Credly
+        // badge.
         title: "Prompt Design in Agent Platform",
-        badge: gsBadge(27852046, "prompt-design-in-agent-platform", "skill"),
+        badge: credlyBadge(
+          "328f785b-dc1b-4f73-9ed2-d9a8eb7c8e71",
+          "prompt-design-in-vertex-ai",
+        ),
       },
       {
         title: "Responsible AI: Applying AI Principles with Google Cloud",

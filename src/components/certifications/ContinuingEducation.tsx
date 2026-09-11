@@ -24,8 +24,10 @@ import { CONTINUING_EDUCATION } from "@/app/certifications/data";
  *  So the copy is free to lead with the course.
  *
  *  Two kinds of chip, one map. A course with a `badge` renders as a plain
- *  <a target="_blank"> to its PUBLIC, login-free badge page (HTTP 200
- *  logged-out; the page says "Bilal Ahamad has earned this award!") with
+ *  <a target="_blank"> to its PUBLIC, login-free badge page — on Google Skills
+ *  ("Bilal Ahamad has earned this award!") or on Credly, whichever
+ *  `badge.provider` names; both return HTTP 200 logged-out behind no wall
+ *  (verified 2026-09-10/11) — with
  *  the local thumbnail inline and an ink ExternalLink glyph so a link chip is
  *  distinguishable from a plain chip without hover; a course without one
  *  renders as the same chip as a <span>. That link IS a verification
@@ -38,8 +40,15 @@ import { CONTINUING_EDUCATION } from "@/app/certifications/data";
  *  chip so thirteen of them do not become thirteen green pills under a ledger
  *  that says "all verified" four times. No emerald text, no "Verify" word, no
  *  CheckCircle2, and never openVerifyUrl()/openBadgeUrl() — they fire GA
- *  "verify_*" events with provider "Credly". Nothing at ENTRY level links
- *  anywhere except the issuer's plain page, exactly as before.
+ *  "verify_*" events with a hardcoded provider "Credly", and that vocabulary
+ *  belongs to the ledger's credential rows. That holds for the two chips that
+ *  now DO point at credly.com: a Credly-hosted course badge is still a course
+ *  badge, still a plain <a>, still untracked. Both providers get the identical
+ *  chip, tile, hover and focus treatment — the only difference a reader can
+ *  perceive is the sr-only suffix naming the platform, and the thumbnail, which
+ *  is an opaque-white-ground WebP either way (so the bg-white tile below needs
+ *  no per-provider branching). Nothing at ENTRY level links anywhere except the
+ *  issuer's plain page, exactly as before.
  *
  *  Deliberately absent, every one of which the credential rows carry: the
  *  01…12 ledger numeral, the chevron disclosure, aria-expanded, the
@@ -224,13 +233,17 @@ export function ContinuingEducation() {
                               without hover, so it has to clear that bar. At
                               the chip's own ink it measures 6.31:1 / 6.97:1. */}
                           <ExternalLink className="h-3 w-3 shrink-0" aria-hidden />
-                          {/* `badge.kind` changes ONLY the spoken suffix: a
-                              lab-based skill badge (also on Credly) and an
-                              on-demand completion badge look identical on the
-                              chip, exactly as Google's Credentials page files
-                              both under "Completions". */}
+                          {/* `badge.kind` and `badge.provider` change ONLY the
+                              spoken suffix ("skill badge on Credly",
+                              "completion badge on Google Skills"): a lab-based
+                              skill badge and an on-demand completion badge look
+                              identical on the chip, exactly as Google's
+                              Credentials page files both under "Completions",
+                              and so do the two platforms' pages. The two fields
+                              are independent — read them both, never derive one
+                              from the other. */}
                           <span className="sr-only">
-                            {` — ${course.badge.kind} badge on Google Skills, opens in a new tab`}
+                            {` — ${course.badge.kind} badge on ${course.badge.provider}, opens in a new tab`}
                           </span>
                         </a>
                       ) : (
