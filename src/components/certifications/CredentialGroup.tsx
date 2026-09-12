@@ -81,8 +81,13 @@ export function CredentialGroup({
           >
             {allOpen ? "Collapse all" : "Expand all"}
           </button>
+          {/* A group whose rows are NOT credentials MUST supply `countLabel` —
+              the derived line below says "credentials · all verified", which
+              would be a false claim about a learning path. See
+              COURSEWORK_GROUPS in data.ts. */}
           <span className="hidden t-caption text-ink-subtle sm:block dark:text-ink/50">
-            {count} {count === 1 ? "credential" : "credentials"} · all verified
+            {group.countLabel ??
+              `${count} ${count === 1 ? "credential" : "credentials"} · all verified`}
           </span>
         </div>
       </div>

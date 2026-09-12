@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { trackEvent } from "@/components/analytics/google-analytics";
 import {
+  COURSEWORK_GROUPS,
   CREDENTIAL_GROUPS,
   DEFAULT_OPEN_IDS,
   credentialSlug,
@@ -12,14 +13,35 @@ import {
 import { CredentialGroup } from "./CredentialGroup";
 import { CertLightbox } from "./CertLightbox";
 
+// Deep links must reach the coursework rows too.
 const ALL_SLUGS = new Set(
-  CREDENTIAL_GROUPS.flatMap((g) => g.credentials.map(credentialSlug))
+  [...CREDENTIAL_GROUPS, ...COURSEWORK_GROUPS].flatMap((g) =>
+    g.credentials.map(credentialSlug),
+  )
 );
 
-// 0-based ledger index of each group's first row (the 01…12 numerals).
-const GROUP_START_INDEXES = CREDENTIAL_GROUPS.map((_, i) =>
-  CREDENTIAL_GROUPS.slice(0, i).reduce((n, g) => n + g.credentials.length, 0)
-);
+const startIndexes = (groups: readonly { credentials: readonly unknown[] }[]) =>
+  groups.map((_, i) => groups.slice(0, i).reduce((n, g) => n + g.credentials.length, 0));
+
+// 0-based ledger index of each group's first row (the 01…17 numerals).
+const GROUP_START_INDEXES = startIndexes(CREDENTIAL_GROUPS);
+// The coursework sections are a SEPARATE ledger: their numerals restart at 01
+// and then run continuously across the two sections (01–04 Google Skills, 05
+// Continuing Education), exactly as the credential ledger runs 01–17 across its
+// four group headers. Continuing to 18 would number these as items of the
+// credential ledger — the one numeric claim on this page that would be false,
+// and visibly at odds with the stats strip's "17 Credentials".
+const COURSEWORK_START_INDEXES = startIndexes(COURSEWORK_GROUPS);
+
+// Both ledgers share one open-state store and therefore one pair of GA events,
+// whose names ("credential_expand") predate the coursework sections and cannot
+// be renamed without splitting an existing funnel. So every expand carries an
+// explicit `kind`, and no report has to infer from `category` that a row named
+// by a credential event is not a credential. Badge and path links are separate
+// events entirely (open_course_badge / open_coursework_page, see verify.ts).
+const COURSEWORK_GROUP_IDS = new Set(COURSEWORK_GROUPS.map((g) => g.id));
+const expandKind = (groupId: string) =>
+  COURSEWORK_GROUP_IDS.has(groupId) ? "coursework" : "credential";
 
 export function CredentialLedger() {
   // Multi-open by design — expanding one credential never closes another.
@@ -66,7 +88,12 @@ export function CredentialLedger() {
         }
         return next;
       });
-      trackEvent("credential_expand", { id: slug, category, expanded });
+      trackEvent("credential_expand", {
+        id: slug,
+        category,
+        expanded,
+        kind: expandKind(category),
+      });
     },
     [openIds]
   );
@@ -81,7 +108,11 @@ export function CredentialLedger() {
         slugs.forEach((s) => (expand ? next.add(s) : next.delete(s)));
         return next;
       });
-      trackEvent("credential_expand_all", { category: group.id, expanded: expand });
+      trackEvent("credential_expand_all", {
+        category: group.id,
+        expanded: expand,
+        kind: expandKind(group.id),
+      });
     },
     []
   );
@@ -101,6 +132,28 @@ export function CredentialLedger() {
           />
         ))}
       </div>
+
+      {/* Completed coursework, below the credential ledger and behind a rule.
+          The ledger states its standard four times before a reader arrives
+          here, so the boundary reads as a boundary rather than an apology.
+          This wrapper is a <div> on purpose: it keeps every new <section> a
+          GRANDCHILD of the page's .max-w-7xl.mx-auto.px-6 container, so the
+          `> section` probe in mobile-spacing.spec.ts stays unmatched exactly as
+          it is today. */}
+      <div className="mt-16 space-y-14 border-t border-line/10 pt-12 md:mt-24 md:space-y-20 md:pt-16">
+        {COURSEWORK_GROUPS.map((group, i) => (
+          <CredentialGroup
+            key={group.id}
+            group={group}
+            startIndex={COURSEWORK_START_INDEXES[i]}
+            openIds={openIds}
+            onToggle={handleToggle}
+            onToggleAll={handleToggleAll}
+            onInspect={setInspected}
+          />
+        ))}
+      </div>
+
       <CertLightbox cert={inspected} onClose={closeInspect} />
     </>
   );

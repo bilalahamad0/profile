@@ -11,7 +11,12 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { SpecializationData } from "@/app/certifications/data";
-import { haloBloomVariants, panelItemVariants } from "./CollapsePanel";
+import {
+  haloBloomVariants,
+  panelItemVariants,
+  reducedHaloVariants,
+  reducedItemVariants,
+} from "./CollapsePanel";
 import { ChildBadgesGrid } from "./ChildBadgesGrid";
 import { openBadgeUrl, openVerifyUrl } from "./verify";
 
@@ -21,7 +26,7 @@ import { openBadgeUrl, openVerifyUrl } from "./verify";
 export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
   const ribbon = spec.ribbon ?? { emoji: "🌟", label: "AI Skills" };
   const reduceMotion = useReducedMotion();
-  const itemVariants = reduceMotion ? undefined : panelItemVariants;
+  const itemVariants = reduceMotion ? reducedItemVariants : panelItemVariants;
 
   return (
     <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] md:gap-8">
@@ -124,7 +129,7 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
           >
             <motion.span
               aria-hidden
-              variants={reduceMotion ? undefined : haloBloomVariants}
+              variants={reduceMotion ? reducedHaloVariants : haloBloomVariants}
               className={cn(
                 "pointer-events-none absolute -inset-3 rounded-full blur-2xl",
                 spec.badgeHalo

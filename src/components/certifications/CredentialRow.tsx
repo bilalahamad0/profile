@@ -14,7 +14,9 @@ import {
 import { CollapsePanel } from "./CollapsePanel";
 import { SpecializationBody } from "./SpecializationBody";
 import { SingleCertBody } from "./SingleCertBody";
-import { openVerifyUrl } from "./verify";
+import { PathBody } from "./PathBody";
+import { IssuerTileMark } from "./IssuerTileMark";
+import { openVerifyUrl, trackCourseworkPage } from "./verify";
 
 const DISCLOSURE_SPRING = { type: "spring", stiffness: 380, damping: 28 } as const;
 
@@ -79,14 +81,17 @@ export function CredentialRow({
   onInspect: (cert: GalleryCertificate) => void;
 }) {
   const isSpec = credential.kind === "specialization";
+  const isSingle = credential.kind === "single";
   const slug = credentialSlug(credential);
-  const headingId = isSpec ? credential.headingId : `cert-heading-${credential.id}`;
+  const headingId = isSingle ? `cert-heading-${credential.id}` : credential.headingId;
   const panelId = `${slug}-panel`;
-  const title = isSpec ? credential.titleLines[0] : credential.title;
-  const metaLine = isSpec
-    ? `${credential.issuer} · ${credential.date} · ${credential.titleLines[1]}`
-    : `${credential.issuer} · ${credential.date}`;
-  const isOfficial = !isSpec && Boolean(credential.officialBadge);
+  const title = isSingle ? credential.title : credential.titleLines[0];
+  const metaLine = isSingle
+    ? `${credential.issuer} · ${credential.date}`
+    : `${credential.issuer} · ${credential.date} · ${credential.titleLines[1]}${
+        credential.kind === "path" && credential.metaSuffix ? ` · ${credential.metaSuffix}` : ""
+      }`;
+  const isOfficial = isSingle && Boolean(credential.officialBadge);
 
   const handleRowClick = (e: React.MouseEvent<HTMLDivElement>) => {
     // The heading button and Verify button handle their own clicks; every
@@ -100,16 +105,23 @@ export function CredentialRow({
       onClick={handleRowClick}
       className="flex min-h-[72px] cursor-pointer items-center gap-3 px-4 py-3 md:min-h-[96px] md:gap-4 md:px-6 md:py-4"
     >
-      {/* Continuous ledger index 01…12 — decorative ordering cue */}
+      {/* Continuous ledger index 01…17 — decorative ordering cue */}
       <span
         aria-hidden
+        data-ledger-index
         className="hidden w-7 shrink-0 t-label tabular-nums text-ink-subtle transition-colors group-hover/row:text-ink/70 sm:block dark:text-ink/50"
       >
         {String(index + 1).padStart(2, "0")}
       </span>
 
-      {/* Visual — parent badge for specs, thumbnail for singles */}
-      {isSpec ? (
+      {/* Visual — parent badge for specs, issuer tile for paths, thumbnail for
+          singles. A path earned no path-level badge: a fabricated parent badge,
+          a certificate thumbnail, or a cluster of its own course badges would
+          each present something as awarded FOR THE PATH. The rectangular
+          single-cert slot already means "artifact, not award". */}
+      {credential.kind === "path" ? (
+        <IssuerTileMark tile={credential.tile} />
+      ) : isSpec ? (
         <span className="relative h-11 w-11 shrink-0 md:h-14 md:w-14">
           <span
             aria-hidden
@@ -180,7 +192,7 @@ export function CredentialRow({
             {credential.ribbon.label}
           </Chip>
         )}
-        {!isSpec && credential.id.startsWith("ai-") && (
+        {isSingle && credential.id.startsWith("ai-") && (
           <Chip className={cn("hidden lg:inline-flex", CHIP_SKILLS)}>
             <Sparkles className="h-3 w-3 fill-amber-400/20" aria-hidden />
             AI Skills
@@ -194,14 +206,47 @@ export function CredentialRow({
         {isSpec && (
           <Chip className={CHIP_COURSES}>{credential.totalCourses} Courses</Chip>
         )}
+        {credential.kind === "path" && (
+          <Chip className={CHIP_COURSES}>
+            {credential.totalCourses} {credential.unitNoun}
+          </Chip>
+        )}
       </span>
 
       {/* Verify — always reachable without expanding. There is deliberately no
           "Verified" state pill beside it: it rendered identically on every row,
           so it distinguished nothing while implying some rows might not be
           verified. The group header states "all verified" once, and this link
-          is the stronger claim — it hands over the issuer URL as proof. */}
-      {(isSpec || credential.url) && (
+          is the stronger claim — it hands over the issuer URL as proof.
+          Path rows take this slot with the issuer's own page: same box, same
+          icon, same label position — but a real <a>, a neutral ink hue (blue is
+          the Verify/Official vocabulary, emerald the verification one), and a
+          word that claims nothing. GA gets `open_coursework_page`, never
+          `verify_certificate`. handleRowClick already ignores clicks inside an
+          anchor, so this cannot toggle the row. */}
+      {credential.kind === "path" ? (
+        <a
+          href={credential.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-coursework-link
+          onClick={() =>
+            trackCourseworkPage({
+              id: credential.id,
+              issuer: credential.issuer,
+              title,
+              urlLabel: credential.urlLabel,
+            })
+          }
+          aria-label={`${credential.urlLabel} for ${title} on ${credential.issuerShort} (opens in a new tab)`}
+          className="inline-flex h-10 w-10 shrink-0 items-center justify-center gap-1 rounded-full text-ink/70 transition-colors hover:bg-ink/[0.04] hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-ink/70 dark:text-ink/60 dark:hover:text-ink dark:focus-visible:ring-ink/60 md:w-auto md:px-3"
+        >
+          <span className="hidden t-label font-semibold uppercase tracking-wider md:inline">
+            {credential.urlLabel}
+          </span>
+          <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+        </a>
+      ) : isSpec || credential.url ? (
         <button
           type="button"
           data-verify
@@ -220,7 +265,7 @@ export function CredentialRow({
           </span>
           <ExternalLink className="h-3.5 w-3.5" aria-hidden />
         </button>
-      )}
+      ) : null}
 
       <Disclosure open={open} accent={accent} />
     </div>
@@ -229,7 +274,9 @@ export function CredentialRow({
   const body = (
     <CollapsePanel id={panelId} labelledBy={headingId} open={open}>
       <div className="border-t border-line/10 px-4 pb-5 pt-4 md:px-6 md:pb-7 md:pt-5">
-        {isSpec ? (
+        {credential.kind === "path" ? (
+          <PathBody path={credential} />
+        ) : isSpec ? (
           <SpecializationBody spec={credential} />
         ) : (
           <SingleCertBody cert={credential} onInspect={onInspect} />

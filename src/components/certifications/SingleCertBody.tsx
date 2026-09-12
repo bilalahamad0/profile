@@ -6,7 +6,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Calendar, ExternalLink, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { GalleryCertificate } from "@/app/certifications/data";
-import { panelItemVariants } from "./CollapsePanel";
+import { panelItemVariants, reducedItemVariants } from "./CollapsePanel";
 import { openVerifyUrl } from "./verify";
 
 /** Expanded body of a single-certificate row: inspectable thumbnail on the
@@ -19,7 +19,7 @@ export const SingleCertBody = ({
   cert: GalleryCertificate;
   onInspect: (cert: GalleryCertificate) => void;
 }) => {
-  const itemVariants = useReducedMotion() ? undefined : panelItemVariants;
+  const itemVariants = useReducedMotion() ? reducedItemVariants : panelItemVariants;
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(280px,340px)_1fr] md:gap-8">
       {/* Thumbnail — opens the lightbox for full-size inspection */}
