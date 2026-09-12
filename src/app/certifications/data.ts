@@ -103,7 +103,7 @@ export type CourseBadge = {
   image: string;
 };
 
-/** One unit inside a path. `badge` absent = the issuer publishes none for it.
+/** One unit inside a path.
  *
  *  STANDING RULE (owner, 2026-09-11): a "Welcome:" or "Wrap Up:" module is
  *  NEVER a course. Google's path pages list them as activities, but they are
@@ -111,33 +111,16 @@ export type CourseBadge = {
  *  `totalCourses`, out of the row chip and out of the badge grid — now and for
  *  any path added later. data.test.ts enforces it.
  *
- *  A BADGE-LESS COURSE IS NORMAL. It was briefly believed that the bookends
- *  were the only badge-less Google units and therefore that every course on a
- *  `coursesLayout: "badges"` path carried a badge. Path 4459 disproved that:
- *  "Build Multi-Agent Systems with ADK" is a hands-on lab (/focuses/125061)
- *  that issues no completion badge on Google Skills and no Credly badge —
- *  checked against the public profile (23 badges) and the Credly earner list
- *  (13 badges) on 2026-09-11. So `badge` is optional in earnest: the badges
- *  grid renders a badge-less course as a marked tile (CourseBadgesGrid), and
- *  data.test.ts pins WHICH courses lack one rather than forbidding the case. */
+ *  EVERY LISTED COURSE ON A `coursesLayout: "badges"` PATH CARRIES A BADGE, and
+ *  data.test.ts asserts it: a badge-less course would render an empty tile, so
+ *  it must fail loudly rather than paint. `badge` stays OPTIONAL only because
+ *  the same type describes Stanford's five `coursesLayout: "list"` modules,
+ *  which are unbadged by nature and never enter the badge grid. */
 export type PathCourse = {
   /** 1-based position in the issuer's own order. */
   step: number;
   title: string;
   badge?: CourseBadge;
-  /** This course is a hands-on LAB (`/focuses/<id>`) rather than an on-demand
-   *  course, so the issuer publishes no badge for it.
-   *
-   *  STANDING RULE (owner, 2026-09-11): "a lab is still a COURSE — it counts
-   *  toward the path's total and occupies a tile, but the tile is marked 'Lab'
-   *  in place of badge art and a Verify pill, never left blank. Model it with
-   *  an explicit flag on the course — never infer 'lab' from 'has no badge'."
-   *
-   *  Hence a FLAG and not a derivation: `!badge` says only that nothing was
-   *  issued, which is also true of Stanford's modules, and the word on the
-   *  tile is a claim about what the unit IS. data.test.ts pins the flag and
-   *  the badge-less set against each other so they cannot drift apart. */
-  isLab?: true;
 };
 
 /** A typeset issuer mark. Never a downloaded logo and never a reconstructed
@@ -1119,7 +1102,7 @@ export const LEARNING_PATHS: readonly LearningPathData[] = [
     id: "ce-google-skills-multi-agent-4459",
     headingId: "ce-google-skills-multi-agent-4459-heading",
     testId: "coursework-courses-multi-agent",
-    titleLines: ["Build High-Performance Multi-Agent Systems", "4-Course Path"],
+    titleLines: ["Build High-Performance Multi-Agent Systems", "3-Course Path"],
     issuer: "Google Skills",
     issuerShort: "Google Skills",
     date: "Sep 2026",
@@ -1133,11 +1116,17 @@ export const LEARNING_PATHS: readonly LearningPathData[] = [
     // typographic edit applies here.
     description:
       "Go from single-prompt design to orchestrating end-to-end, multi-agent systems. Learn to coordinate agents in Agent Development Kit (ADK), connect to external tools with MCP, and automate workflows using the Agent-to-Agent (A2A) protocol. This path teaches you to design workflow-based routing and deploy your solutions via Agent Runtime.",
-    // FOUR courses, not the six activities Google's path page counts: the first
-    // and last are the "Welcome:" / "Wrap Up:" bookends, which are never
-    // courses. scratchpad/google-skills-paths.json records the same split
-    // (`activities: 6`, `site_course_count: 4`).
-    totalCourses: 4,
+    // THREE courses, not the six activities Google's path page counts. Two are
+    // the "Welcome:" / "Wrap Up:" bookends, which are never courses. The third
+    // exclusion is "Build Multi-Agent Systems with ADK" (/focuses/125061), a
+    // hands-on lab Google issues no badge for anywhere: DELIBERATELY not listed
+    // (owner, 2026-09-12) — a badge-less lab shows nothing that was achieved,
+    // and labs are embedded inside many of the courses on this page without
+    // ever being surfaced, so listing one standalone lab was inconsistent. Same
+    // reasoning as those embedded labs; not a scraping gap.
+    // scratchpad/google-skills-paths.json records the same split
+    // (`activities: 6`, `site_course_count: 3`, `lab_course_rule`).
+    totalCourses: 3,
     unitNoun: "Courses",
     gradient: "from-cyan-600/20 via-teal-500/12 to-blue-600/20",
     coursesLayout: "badges",
@@ -1148,29 +1137,12 @@ export const LEARNING_PATHS: readonly LearningPathData[] = [
         badge: gsBadge(27855015, "build-collaborative-multi-agent-systems-adk-mcp"),
       },
       {
-        // NO BADGE, and that is the fact rather than an omission: this unit is
-        // a hands-on lab (/focuses/125061). Google Skills issues it no
-        // completion badge and Google Cloud no Credly badge — checked against
-        // the public profile (23 badges) and the Credly earner list (13) on
-        // 2026-09-11. It is still a course Google lists inside the path, so it
-        // keeps its step, its title and its tile.
-        //
-        // `isLab` drives that tile (owner's decision, 2026-09-11): a lab glyph
-        // in the art slot and a neutral "Lab" marker where a badged tile shows
-        // its Verify pill. No badge art, no link, no Verify — there is nothing
-        // to verify. The flag is explicit and must never be inferred from a
-        // missing badge: a future course could lack one for another reason.
         step: 2,
-        title: "Build Multi-Agent Systems with ADK",
-        isLab: true,
-      },
-      {
-        step: 3,
         title: "Build Agent Skills with Google",
         badge: gsBadge(27885513, "build-agent-skills-with-google"),
       },
       {
-        step: 4,
+        step: 3,
         title: "Use Agent Skills with Multi-Agent Systems",
         // "skill", not the gsBadge() default: the artwork reads "SKILL BADGE ·
         // INTERMEDIATE" over the four-colour bar, and Google's raw PNG is
@@ -1233,9 +1205,7 @@ export const LEARNING_PATHS: readonly LearningPathData[] = [
         // the tile glows like the other two — the convention is `provider`,
         // never the course's name or its position. Google Skills also issued
         // completion badge 27888420 for the same course; the Credly copy is
-        // linked because it names the issuer AND the earner. NOT the item-3 kind
-        // of lab: that one (path 4459, step 2) earned nothing anywhere and is
-        // flagged `isLab`. This one has a real badge, so it is a normal tile.
+        // linked because it names the issuer AND the earner.
         // Credly titles it exactly as Google names the course, so there is
         // nothing about the destination to note.
         step: 3,
@@ -1397,11 +1367,10 @@ const asPath = (p: LearningPathData): PathCredential => ({ kind: "path", ...p })
 /** DISTINCT badge PAGES, not badge references. Across the six Google paths
  *  there are 31 references but only 26 distinct badges — Google reuses five
  *  courses between paths. Printing 31 would overstate the awards held, which is
- *  the exact class of overclaim this rebuild exists to prevent. Note the count
- *  is of BADGES, not of courses: the 32 course entries include one lab that
- *  earns no badge at all (path 4459, step 2), so it is counted by the chip and
- *  the meta line and by nothing here. Computed with a Set so it cannot drift;
- *  every number is asserted in data.test.ts. */
+ *  the exact class of overclaim this rebuild exists to prevent. The 31
+ *  references are exactly the 31 course entries: every listed course carries a
+ *  badge, so the chip's count and the reference count cannot disagree. Computed
+ *  with a Set so it cannot drift; every number is asserted in data.test.ts. */
 const distinctBadges = (paths: readonly LearningPathData[]) =>
   new Set(
     paths.flatMap((p) => p.courses.flatMap((c) => (c.badge ? [c.badge.url] : []))),
