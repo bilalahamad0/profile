@@ -838,7 +838,18 @@ const ALL_YEARS = [
 
 export const CERT_STATS = {
   credentials: SPECIALIZATIONS.length + ALL_SINGLES.length,
-  courseCertificates: SPECIALIZATIONS.reduce((n, s) => n + s.children.length, 0),
+  // Every certificate that certifies ONE course. A specialization contributes
+  // its per-course credentials (7 + 7 + 4 + 5 = 23); a standalone certificate
+  // IS a single course certificate and contributes itself (11). Total 34.
+  //
+  // It counted only the specialization children until 2026-09-12, which made
+  // the figure mean two different things at once: it took the trouble to look
+  // inside the four multi-course programmes while ignoring eleven certificates
+  // that are course certificates in their own right. A reader comparing it
+  // against "15 Credentials" could not reconcile the two, because 23 was
+  // neither a subset of the 15 nor a total of anything.
+  courseCertificates:
+    SPECIALIZATIONS.reduce((n, s) => n + s.children.length, 0) + ALL_SINGLES.length,
   specializations: SPECIALIZATIONS.length,
   yearsSpan: `${Math.min(...ALL_YEARS)} – ${Math.max(...ALL_YEARS)}`,
 };
