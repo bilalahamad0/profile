@@ -13,7 +13,7 @@ import {
   credentialSlug,
   type LearningPathData,
 } from "./data";
-import { gridPositions } from "@/components/certifications/ChildBadgesGrid";
+import { gridPositions } from "@/components/certifications/gridPositions";
 import { certifications } from "@/data/portfolio";
 
 /** Resolve from the process cwd, NOT from `import.meta.url`. Vitest runs this
