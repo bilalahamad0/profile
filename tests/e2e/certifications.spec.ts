@@ -497,7 +497,39 @@ test.describe('Certifications — single-certificate rows', () => {
     await expect(dialog).toBeVisible();
     await expect(dialog.getByText('AI Coding Agents with GitHub Copilot and Cursor')).toBeVisible();
 
-    await dialog.getByRole('button', { name: /back to album/i }).click();
+    // The lightbox ships TWO close controls and swaps them at Tailwind's `md`
+    // (768px): below it the round X at top-right (`md:hidden`), at and above it
+    // the "Back to Album" link (`hidden … md:flex`). Asking for "Back to Album"
+    // unconditionally is why this test timed out on Mobile Chrome (393px) — the
+    // button genuinely is not in the DOM there. That was a defect in the test,
+    // not in the lightbox.
+    const wide = (page.viewportSize()?.width ?? 1280) >= 768;
+    const shown = wide ? /back to album/i : /close certificate viewer/i;
+    const hidden = wide ? /close certificate viewer/i : /back to album/i;
+
+    // Assert the swap itself, so a regression that drops BOTH controls — which
+    // would strand a viewer inside the dialog — fails here instead of leaving
+    // the suite green because the one control it happened to check survived.
+    await expect(dialog.getByRole('button', { name: shown })).toBeVisible();
+    await expect(dialog.getByRole('button', { name: hidden })).toHaveCount(0);
+
+    await dialog.getByRole('button', { name: shown }).click();
+    await expect(dialog).not.toBeVisible();
+  });
+
+  test('the lightbox always closes on Escape, at every viewport', async ({ page }) => {
+    // The viewport-specific buttons above are the visible affordance; Escape is
+    // the one close path that must work everywhere, and nothing covered it.
+    await page.goto('/certifications');
+    await expandRow(page, '#cert-ai-1');
+    await page
+      .locator('#cert-ai-1')
+      .getByRole('button', { name: /view .* certificate full size/i })
+      .click();
+
+    const dialog = page.getByRole('dialog');
+    await expect(dialog).toBeVisible();
+    await page.keyboard.press('Escape');
     await expect(dialog).not.toBeVisible();
   });
 });
