@@ -53,10 +53,12 @@ export function trackCourseworkPage(meta: {
   });
 }
 
-/** One course badge's public page. `provider` comes from the DATA — the two
- *  lab-based skill badges link Credly, the other 18 link Google Skills — never
- *  hardcoded the way openBadgeUrl() hardcodes "Credly". `badge_kind`
- *  distinguishes a lab-based skill badge from an on-demand completion badge. */
+/** One course badge's public page. `provider` comes from the DATA — four badge
+ *  references link Credly, the other 27 link Google Skills — never hardcoded the way
+ *  openBadgeUrl() hardcodes "Credly". `badge_kind` comes from the data too and
+ *  is INDEPENDENT of it: it records what the artwork says the award is (a
+ *  lab-based skill badge or an on-demand completion badge), and one skill badge
+ *  here has no Credly twin, so neither field may be derived from the other. */
 export function trackCourseBadge(meta: {
   title: string;
   provider: "Google Skills" | "Credly";

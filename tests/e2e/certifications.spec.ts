@@ -40,7 +40,6 @@ const CREDENTIAL_TITLES = [
   'Project Management Foundations',
   'Scrum: Advanced',
   'Scrum: The Basics',
-  'Nano Tips to Stop Overthinking with Shadé Zahrai',
   'How to Master Your Executive Presence',
   'Javascript Essential Training',
   'Node.js Essential Training',

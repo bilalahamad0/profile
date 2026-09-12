@@ -63,21 +63,36 @@ export type CourseBadge = {
   /** Public badge page. HTTP 200 logged-out, no login wall — verified by curl
    *  2026-09-10/11 for every Google Skills page and both Credly pages. */
   url: string;
-  /** "completion" = an on-demand course's completion badge (Google Skills only).
-   *  "skill"      = a lab-based Google Cloud skill badge, issued on BOTH
-   *  platforms. Google's own Credentials page files both under "Completions";
-   *  the kind changes ONLY the sr-only spoken suffix. */
+  /** What the ARTWORK itself says it is, read off the badge image — never
+   *  inferred from where the badge is hosted.
+   *
+   *  "completion" = an on-demand course's completion badge; the art prints
+   *  "COMPLETION BADGE" on Google's 1000x908 portrait template.
+   *  "skill"      = a lab-based Google Cloud skill badge; the art prints
+   *  "SKILL BADGE · <level>" over the four-colour bar on Google's 1000x666
+   *  landscape template.
+   *
+   *  INDEPENDENT OF `provider`. Three of the four skill badges here are ALSO
+   *  issued on Credly and link there; the fourth (27886491, "Use Agent Skills
+   *  with Multi-Agent Systems") has no Credly twin and links Google Skills, so
+   *  "skill" must never be read as "hosted on Credly" — that conflation is what
+   *  made this badge ship announced as a completion badge over skill-badge art.
+   *  Google's own Credentials page files both kinds under "Completions". The
+   *  kind changes ONLY the sr-only spoken suffix. */
   kind: "completion" | "skill";
   /** WHICH platform's copy `url` points at. Deliberately INDEPENDENT of `kind`:
    *  a skill badge exists on both platforms and this records which copy is
-   *  linked. Spoken in the sr-only suffix; where `linkTitle` is set, also
-   *  printed on the tile. */
+   *  linked. Read twice by CourseBadgesGrid: it picks the pill's label ("Verify
+   *  in Credly" on Credly, a bare "Verify" everywhere else) and it is spoken in
+   *  the sr-only suffix, which names the platform either way.
+   *
+   *  NOTHING on the tile prints the DESTINATION page's own title. A `linkTitle`
+   *  field once did, on the one badge Credly names differently from the course
+   *  ("Prompt Design in Vertex AI Skill Badge"); the owner removed the
+   *  parenthetical on 2026-09-11, and the field with it, so the tile shows the
+   *  issuer's course name alone. The naming difference is recorded in a comment
+   *  at that course instead — see the Prompt Design entry in path 118. */
   provider: "Google Skills" | "Credly";
-  /** The destination page's OWN title, set ONLY where the platform names the
-   *  badge differently from the course. Rendered verbatim and IN FULL after the
-   *  course title, muted, so the destination can corroborate the label it was
-   *  clicked from. Never equal to the course title (data.test.ts). */
-  linkTitle?: string;
   /** Local WebP under /public. Google Skills art in /badges/google-skills/,
    *  Credly art flat in /badges/ beside the ledger's other Credly art.
    *  The art is an OPAQUE white rectangular card (lossy VP8, no alpha, ~600px
@@ -96,15 +111,33 @@ export type CourseBadge = {
  *  `totalCourses`, out of the row chip and out of the badge grid — now and for
  *  any path added later. data.test.ts enforces it.
  *
- *  Those bookends were also the only badge-less Google units, so today every
- *  course on a `coursesLayout: "badges"` path carries a badge (asserted in
- *  data.test.ts) and `badge` is absent only on Stanford's modules, which render
- *  through the list layout. */
+ *  A BADGE-LESS COURSE IS NORMAL. It was briefly believed that the bookends
+ *  were the only badge-less Google units and therefore that every course on a
+ *  `coursesLayout: "badges"` path carried a badge. Path 4459 disproved that:
+ *  "Build Multi-Agent Systems with ADK" is a hands-on lab (/focuses/125061)
+ *  that issues no completion badge on Google Skills and no Credly badge —
+ *  checked against the public profile (23 badges) and the Credly earner list
+ *  (13 badges) on 2026-09-11. So `badge` is optional in earnest: the badges
+ *  grid renders a badge-less course as a marked tile (CourseBadgesGrid), and
+ *  data.test.ts pins WHICH courses lack one rather than forbidding the case. */
 export type PathCourse = {
   /** 1-based position in the issuer's own order. */
   step: number;
   title: string;
   badge?: CourseBadge;
+  /** This course is a hands-on LAB (`/focuses/<id>`) rather than an on-demand
+   *  course, so the issuer publishes no badge for it.
+   *
+   *  STANDING RULE (owner, 2026-09-11): "a lab is still a COURSE — it counts
+   *  toward the path's total and occupies a tile, but the tile is marked 'Lab'
+   *  in place of badge art and a Verify pill, never left blank. Model it with
+   *  an explicit flag on the course — never infer 'lab' from 'has no badge'."
+   *
+   *  Hence a FLAG and not a derivation: `!badge` says only that nothing was
+   *  issued, which is also true of Stanford's modules, and the word on the
+   *  tile is a claim about what the unit IS. data.test.ts pins the flag and
+   *  the badge-less set against each other so they cannot drift apart. */
+  isLab?: true;
 };
 
 /** A typeset issuer mark. Never a downloaded logo and never a reconstructed
@@ -566,17 +599,6 @@ export const GENERAL_CERTIFICATES: GalleryCertificate[] = [
     gradient: "from-indigo-600/10 to-violet-600/10"
   },
   {
-    id: "g-10",
-    title: "Nano Tips to Stop Overthinking with Shadé Zahrai",
-    issuer: "LinkedIn Learning",
-    date: "2022",
-    image: "/certificates/nano_tips_overthinking_thumb.jpg",
-    url: "https://www.linkedin.com/learning/certificates/0041c10c2859e50332c144c268dcb9bf0a239d8df5f28a73e331fe514a72ef8d",
-    logo: "/logos/linkedin.png",
-    description: "Interrupting rumination and keeping judgement clear under pressure — applied positive psychology for high-stakes decisions.",
-    gradient: "from-rose-600/10 to-pink-600/10"
-  },
-  {
     id: "g-2",
     title: "Scrum: Advanced",
     issuer: "LinkedIn Learning",
@@ -641,17 +663,6 @@ export const GENERAL_CERTIFICATES: GalleryCertificate[] = [
     logo: "/logos/linkedin.png",
     description: "Comprehensive training in Swift, Xcode, and iOS development principles.",
     gradient: "from-sky-600/10 to-blue-600/10"
-  },
-  {
-    id: "g-11",
-    title: "Learning Python Generators",
-    issuer: "LinkedIn Learning",
-    date: "2018",
-    image: "/certificates/python_generators_thumb.jpg",
-    url: "https://www.linkedin.com/learning/certificates/efbb25ce7ad8a03cb580b721b3a8504f1f3b0c72fb74bb4f886d703c163a69ad",
-    logo: "/logos/linkedin.png",
-    description: "Lazy iteration over large data sets — generator functions and expressions, and how they power context managers and coroutines.",
-    gradient: "from-blue-700/10 to-amber-600/10"
   },
 ];
 
@@ -733,9 +744,12 @@ export function credentialSlug(credential: Credential): string {
 // This ledger is the COMPLETE record; `certifications` in portfolio.ts is a
 // curated SUBSET of it, feeding the Experience summary card and the JSON-LD
 // Person schema. A row here with no portfolio.ts twin is deliberate curation,
-// not drift — currently g-4 / g-8 / g-3 / g-11 (engineering foundations) and
-// g-9 / g-10 (short leadership coursework whose stronger sibling is already
-// listed). Verify against portfolio.ts before "fixing" an apparent gap.
+// not drift — currently g-4 / g-8 / g-3 (engineering foundations) and g-9
+// (short leadership coursework whose stronger sibling is already listed).
+// Verify against portfolio.ts before "fixing" an apparent gap.
+// (g-10 "Nano Tips to Stop Overthinking" and g-11 "Learning Python Generators"
+// were retired at the owner's request on 2026-09-11 and are gone from the file,
+// not merely unlisted here; neither ever had a portfolio.ts twin.)
 //
 // Specializations come before singles within a group; singles by date desc.
 export const CREDENTIAL_GROUPS: LedgerGroupDef[] = [
@@ -798,7 +812,6 @@ export const CREDENTIAL_GROUPS: LedgerGroupDef[] = [
       bySpecId("spec-google-project-management"),
       byCertId("g-5"),
       byCertId("g-6"),
-      byCertId("g-10"),
       // Advanced above Basics: same completion year, and the pair reads as the
       // progression it was.
       byCertId("g-2"),
@@ -819,7 +832,7 @@ export const CREDENTIAL_GROUPS: LedgerGroupDef[] = [
         "data-[open=true]:border-sky-400/25 data-[open=true]:shadow-[0_0_30px_-12px_rgba(56,189,248,0.3)]",
       disclosureOpen: "border-sky-400/30 bg-sky-400/10",
     },
-    credentials: [byCertId("g-4"), byCertId("g-8"), byCertId("g-3"), byCertId("g-11")],
+    credentials: [byCertId("g-4"), byCertId("g-8"), byCertId("g-3")],
   },
 ];
 
@@ -862,15 +875,17 @@ export const CERT_STATS = {
 //   • PathCredential's `kind` is "path", which LedgerCredential has no arm for,
 //     so a path inside CREDENTIAL_GROUPS is a COMPILE ERROR.
 //   • Never in SPECIALIZATIONS / AI_CERTIFICATES / GENERAL_CERTIFICATES, so it
-//     cannot reach ALL_SINGLES, ALL_YEARS or CERT_STATS.credentials (17).
+//     cannot reach ALL_SINGLES, ALL_YEARS or CERT_STATS.credentials (15).
 //   • Never in `certifications` in src/data/portfolio.ts, so
 //     certificationsSchema() emits no EducationalOccupationalCredential and the
 //     Experience page's `certs` card never lists these. No "@type":"Course".
 //   • COURSEWORK_GROUPS ids deliberately do NOT start with "group-", and path
 //     rows' headingIds deliberately do NOT start with
 //     "specialization-path-heading". Those are the two structural selectors
-//     tests/e2e/certifications.spec.ts counts at exactly 4 each, and that file
-//     may not be edited.
+//     tests/e2e/certifications.spec.ts counts at exactly 4 each. That file is
+//     edited ONLY under an explicit instruction: on 2026-09-11 exactly one
+//     CREDENTIAL_TITLES entry (g-10, "Nano Tips to Stop Overthinking with
+//     Shadé Zahrai") was removed with the credential itself, and nothing else.
 //   • Each coursework group prints its own computed `countLabel`. Nothing here
 //     prints "credential", "all verified" or "certified".
 // A course badge IS real and publicly verifiable (Google Skills and Credly badge
@@ -936,30 +951,27 @@ function gsBadge(
 }
 
 /** The Credly copy of a lab-based skill badge. Its public_url page returns 200
- *  logged-out (verified 2026-09-11) and names both the issuer (Google Cloud)
- *  and the earner, which is why the two skill badges link here rather than at
- *  their Google Skills twins. `linkTitle` ONLY where Credly's own badge name
- *  differs from the course title.
+ *  logged-out (verified 2026-09-11/12) and names both the issuer (Google Cloud)
+ *  and the earner, which is why all three skill badges link here rather than at
+ *  their Google Skills twins — the convention `skill_badge_rule` records in
+ *  scratchpad/google-skills-paths.json.
  *
- *  PROVENANCE. These are the only two badges whose `url` is NOT the
- *  `completed_paths[].courses[].badge` value in scratchpad/google-skills-paths.json.
- *  Nothing is invented: each UUID below appears verbatim in that same file under
- *  `completion_badges[title].credly_public_url`, and each has a Google Skills
- *  twin recorded in `courses[].badge` — 27852046 for "Prompt Design in Agent
- *  Platform" (path 118) and 27848848 for "Create Your First Gemini Enterprise
- *  Application" (paths 3546 / 4020). The Credly copy is the one linked because
- *  its page names the issuer AND the earner, and because it is the art the owner
- *  asked to be displayed. The tile that carries it is labelled "Badge", never
- *  "Verify", so it stays a factual marker and is not a verification affordance
- *  for the path. data.test.ts pins both Credly URLs exactly (CREDLY_BADGE_URLS);
- *  the twin ids are recorded here and at each call site. */
-function credlyBadge(uuid: string, image: string, linkTitle?: string): CourseBadge {
+ *  PROVENANCE. These are the only badges whose `url` is the Credly copy rather
+ *  than a Google Skills page. Nothing is invented: each UUID below appears
+ *  verbatim in that same file, and each has a Google Skills twin recorded
+ *  there — 27852046 for "Prompt Design in Agent Platform" (path 118), 27848848
+ *  for "Create Your First Gemini Enterprise Application" (paths 3546 / 4020)
+ *  and 27888420 for "Deploy Multi-Agent Architectures" (path 3802). The Credly
+ *  copy is the one linked because its page names the issuer AND the earner, and
+ *  because it is the art the owner asked to be displayed. data.test.ts pins all
+ *  three Credly URLs exactly (CREDLY_BADGE_URLS); the twin ids are recorded
+ *  here and at each call site. */
+function credlyBadge(uuid: string, image: string): CourseBadge {
   return {
     url: `https://www.credly.com/badges/${uuid}/public_url`,
     image: `/badges/${image}.webp`,
     kind: "skill",
     provider: "Credly",
-    ...(linkTitle ? { linkTitle } : {}),
   };
 }
 
@@ -983,8 +995,9 @@ const ENTERPRISE_AGENTS = {
   badge: gsBadge(27848742, "enterprise-agents-and-use-cases"),
 } as const;
 /** Lab-based skill badge → exists on both platforms; the Credly copy is linked
- *  (Google Skills badge 27848848 is its twin). Both platforms use the SAME name
- *  for this one — verified against Credly's og:title — so no `linkTitle`. */
+ *  (Google Skills badge 27848848 is its twin). Both platforms name it the same
+ *  way — verified against Credly's og:title — so nothing about the destination
+ *  needs recording here. */
 const FIRST_GEMINI_ENTERPRISE_APP = {
   title: "Create Your First Gemini Enterprise Application",
   badge: credlyBadge(
@@ -993,139 +1006,22 @@ const FIRST_GEMINI_ENTERPRISE_APP = {
   ),
 } as const;
 
+/** THIS ARRAY'S ORDER IS THE DISPLAY ORDER, and it is the OWNER'S CHOICE, dated
+ *  2026-09-11: Generative AI Leader (1951) · SMB Learning Path (4020) · Build
+ *  High-Performance Multi-Agent Systems (4459) · Deploy Production Ready Agents
+ *  (3802) · Introduction to Agents (3546) · Beginner: Introduction to
+ *  Generative AI (118). Stanford follows alone in CONTINUING_EDUCATION, so the
+ *  coursework ledger numerals run 01–06 here and 07 there.
+ *
+ *  IT IS CURATED, NOT DERIVED. Every earlier revision of this file sorted these
+ *  cards newest-first and said so; that rule is GONE, not merely overridden.
+ *  Nothing sorts at runtime, no `date` field is read for ordering, and a newly
+ *  completed path does NOT go first — where it lands is the owner's call. Path
+ *  3802 is the proof: it was completed LAST of the six and sits FOURTH.
+ *  `display_order_path_ids` / `display_order_rule` in
+ *  scratchpad/google-skills-paths.json record the same order and the same rule;
+ *  data.test.ts pins it as EXPECTED_ORDER. */
 export const LEARNING_PATHS: readonly LearningPathData[] = [
-  {
-    id: "ce-google-skills-beginner-gen-ai-118",
-    headingId: "ce-google-skills-beginner-gen-ai-118-heading",
-    testId: "coursework-courses-beginner-gen-ai",
-    titleLines: ["Beginner: Introduction to Generative AI", "4-Course Path"],
-    issuer: "Google Skills",
-    issuerShort: "Google Skills",
-    date: "Sep 2026",
-    url: "https://www.skills.google/paths/118",
-    urlLabel: "Path page",
-    urlNoun: "path",
-    logo: "/logos/google.png",
-    tile: GOOGLE_SKILLS_TILE,
-    // `description` arm 1 — Google's own path description, verbatim and
-    // complete (it is a single sentence; nothing is trimmed).
-    description:
-      "This learning path provides an overview of generative AI concepts, from the fundamentals of large language models to responsible AI principles.",
-    totalCourses: 4,
-    unitNoun: "Courses",
-    gradient: "from-blue-600/20 via-sky-500/12 to-indigo-600/20",
-    coursesLayout: "badges",
-    courses: [
-      { step: 1, ...INTRO_GENERATIVE_AI },
-      { step: 2, ...INTRO_LARGE_LANGUAGE_MODELS },
-      {
-        step: 3,
-        // The tile LEADS with Google's course title and SHOWS Credly's name
-        // after it. Credly issues this badge as "Prompt Design in Vertex AI
-        // Skill Badge" (hence the image filename); Google lists the course
-        // inside path 118 as "Prompt Design in Agent Platform". Renaming the
-        // tile to Credly's wording would make the card disagree with the path
-        // page it links to; omitting Credly's name meant the destination never
-        // contained the string it was clicked from. Hence both, verbatim, in
-        // one tile. The value below is Credly's exact og:title, verified
-        // logged-out 2026-09-11. Google Skills badge 27852046 is the twin.
-        title: "Prompt Design in Agent Platform",
-        badge: credlyBadge(
-          "328f785b-dc1b-4f73-9ed2-d9a8eb7c8e71",
-          "prompt-design-in-vertex-ai",
-          "Prompt Design in Vertex AI Skill Badge",
-        ),
-      },
-      {
-        step: 4,
-        title: "Responsible AI: Applying AI Principles with Google Cloud",
-        badge: gsBadge(27852150, "responsible-ai-applying-ai-principles"),
-      },
-    ],
-  },
-  {
-    id: "ce-google-skills-agents-3546",
-    headingId: "ce-google-skills-agents-3546-heading",
-    testId: "coursework-courses-agents",
-    titleLines: [
-      "Introduction to Agents and Google’s Agent Ecosystem",
-      "3-Course Path",
-    ],
-    issuer: "Google Skills",
-    issuerShort: "Google Skills",
-    date: "Sep 2026",
-    url: "https://www.skills.google/paths/3546",
-    urlLabel: "Path page",
-    urlNoun: "path",
-    logo: "/logos/google.png",
-    tile: GOOGLE_SKILLS_TILE,
-    // `description` arm 1 — Google's own sentences 1–2, a contiguous prefix.
-    // The ONE edit is typographic: Google's source writes 'the essentials of
-    // "what is an agent,"' with straight quotes (U+0022); the site renders the
-    // same words with “ ” like every other quotation on it. No word or mark of
-    // punctuation is otherwise changed. Its trailing call to action — "Explore other paths in the Gemini Enterprise
-    // Agent Ready (GEAR) series" — is dropped rather than restated: a
-    // declarative rewrite ("Part of the … series") would be prose AUTHORED here,
-    // which this field forbids, and Google's literal CTA is not a claim about
-    // this résumé. The series name Google records for the path lives in
-    // scratchpad/google-skills-paths.json (`series`) and reaches the page only
-    // where Google itself writes it into a description (path 4020, below).
-    description:
-      "Gain a foundational understanding of AI agents, from their core architecture to their real-world business impact. Cover the essentials of “what is an agent,” understand Google Cloud's unified stack for agent development, and gain practical experience by creating your first Gemini Enterprise application to earn a skill badge.",
-    // THREE courses, not the five activities Google's path page counts. The
-    // first and last of those five are the "Welcome:" and "Wrap Up:" bookends,
-    // which are never courses (see PathCourse) — they taught nothing, earned no
-    // badge, and counting them would inflate the chip, the meta line and the
-    // panel's badge counter alike. scratchpad/google-skills-paths.json records
-    // the same split: `activities: 5`, `site_course_count: 3`.
-    totalCourses: 3,
-    unitNoun: "Courses",
-    gradient: "from-indigo-600/20 via-blue-500/12 to-cyan-600/20",
-    coursesLayout: "badges",
-    courses: [
-      { step: 1, ...AGENT_FUNDAMENTALS },
-      { step: 2, ...ENTERPRISE_AGENTS },
-      { step: 3, ...FIRST_GEMINI_ENTERPRISE_APP },
-    ],
-  },
-  {
-    id: "ce-google-skills-smb-4020",
-    headingId: "ce-google-skills-smb-4020-heading",
-    testId: "coursework-courses-smb",
-    titleLines: ["SMB Learning Path", "13-Course Path"],
-    issuer: "Google Skills",
-    issuerShort: "Google Skills",
-    date: "Sep 2026",
-    url: "https://www.skills.google/paths/4020",
-    urlLabel: "Path page",
-    urlNoun: "path",
-    logo: "/logos/google.png",
-    tile: GOOGLE_SKILLS_TILE,
-    // `description` arm 1 — Google's own first sentence, verbatim; its
-    // GEAR-registration CTA is dropped. Keep Google's capitalisation of
-    // "Small/Medium-sized Businesses (SMBs)".
-    description:
-      "This path was curated for Small/Medium-sized Businesses (SMBs) and focuses on scaling business operations by combining introductory Generative AI technical foundations with Gemini-led automation and the GEAR framework for custom agent development.",
-    totalCourses: 13,
-    unitNoun: "Courses",
-    gradient: "from-sky-600/20 via-blue-500/12 to-violet-600/20",
-    coursesLayout: "badges",
-    courses: [
-      { step: 1, ...INTRO_GENERATIVE_AI },
-      { step: 2, ...INTRO_LARGE_LANGUAGE_MODELS },
-      { step: 3, title: "Introduction to AI Agents", badge: gsBadge(27848206, "intro-ai-agents") },
-      { step: 4, ...AGENT_FUNDAMENTALS },
-      { step: 5, ...ENTERPRISE_AGENTS },
-      { step: 6, ...FIRST_GEMINI_ENTERPRISE_APP },
-      { step: 7, title: "Google Workspace with Gemini: Foundations of Your AI Workflow", badge: gsBadge(27848970, "google-workspace-with-gemini-foundations") },
-      { step: 8, title: "Gemini in Gmail", badge: gsBadge(27849041, "gemini-in-gmail") },
-      { step: 9, title: "Gemini in Google Sheets", badge: gsBadge(27849084, "gemini-in-google-sheets") },
-      { step: 10, title: "AI Boost Bites: TL;DR with Gemini in Docs & Drive", badge: gsBadge(27849118, "ai-boost-bites-tldr-gemini-docs-drive") },
-      { step: 11, title: "AI Boost Bites: Gemini Gems – Your ultimate marketing sidekick", badge: gsBadge(27849147, "ai-boost-bites-gemini-gems") },
-      { step: 12, title: "AI Boost Bites: Content Generation with Gemini Made Easy", badge: gsBadge(27849164, "ai-boost-bites-content-generation") },
-      { step: 13, title: "Gemini in Google Vids", badge: gsBadge(27849255, "gemini-in-google-vids") },
-    ],
-  },
   {
     // The heading is EXACTLY the role name — no suffix, no appended qualifier,
     // no chip. Google Cloud's certification page lists this path under Quick
@@ -1181,6 +1077,276 @@ export const LEARNING_PATHS: readonly LearningPathData[] = [
       { step: 5, title: "Gen AI Agents: Transform Your Organization", badge: gsBadge(27847477, "gen-ai-agents-transform-your-organization") },
     ],
   },
+  {
+    id: "ce-google-skills-smb-4020",
+    headingId: "ce-google-skills-smb-4020-heading",
+    testId: "coursework-courses-smb",
+    titleLines: ["SMB Learning Path", "13-Course Path"],
+    issuer: "Google Skills",
+    issuerShort: "Google Skills",
+    date: "Sep 2026",
+    url: "https://www.skills.google/paths/4020",
+    urlLabel: "Path page",
+    urlNoun: "path",
+    logo: "/logos/google.png",
+    tile: GOOGLE_SKILLS_TILE,
+    // `description` arm 1 — Google's own first sentence, verbatim; its
+    // GEAR-registration CTA is dropped. Keep Google's capitalisation of
+    // "Small/Medium-sized Businesses (SMBs)".
+    description:
+      "This path was curated for Small/Medium-sized Businesses (SMBs) and focuses on scaling business operations by combining introductory Generative AI technical foundations with Gemini-led automation and the GEAR framework for custom agent development.",
+    totalCourses: 13,
+    unitNoun: "Courses",
+    gradient: "from-sky-600/20 via-blue-500/12 to-violet-600/20",
+    coursesLayout: "badges",
+    courses: [
+      { step: 1, ...INTRO_GENERATIVE_AI },
+      { step: 2, ...INTRO_LARGE_LANGUAGE_MODELS },
+      { step: 3, title: "Introduction to AI Agents", badge: gsBadge(27848206, "intro-ai-agents") },
+      { step: 4, ...AGENT_FUNDAMENTALS },
+      { step: 5, ...ENTERPRISE_AGENTS },
+      { step: 6, ...FIRST_GEMINI_ENTERPRISE_APP },
+      { step: 7, title: "Google Workspace with Gemini: Foundations of Your AI Workflow", badge: gsBadge(27848970, "google-workspace-with-gemini-foundations") },
+      { step: 8, title: "Gemini in Gmail", badge: gsBadge(27849041, "gemini-in-gmail") },
+      { step: 9, title: "Gemini in Google Sheets", badge: gsBadge(27849084, "gemini-in-google-sheets") },
+      { step: 10, title: "AI Boost Bites: TL;DR with Gemini in Docs & Drive", badge: gsBadge(27849118, "ai-boost-bites-tldr-gemini-docs-drive") },
+      { step: 11, title: "AI Boost Bites: Gemini Gems – Your ultimate marketing sidekick", badge: gsBadge(27849147, "ai-boost-bites-gemini-gems") },
+      { step: 12, title: "AI Boost Bites: Content Generation with Gemini Made Easy", badge: gsBadge(27849164, "ai-boost-bites-content-generation") },
+      { step: 13, title: "Gemini in Google Vids", badge: gsBadge(27849255, "gemini-in-google-vids") },
+    ],
+  },
+  {
+    id: "ce-google-skills-multi-agent-4459",
+    headingId: "ce-google-skills-multi-agent-4459-heading",
+    testId: "coursework-courses-multi-agent",
+    titleLines: ["Build High-Performance Multi-Agent Systems", "4-Course Path"],
+    issuer: "Google Skills",
+    issuerShort: "Google Skills",
+    date: "Sep 2026",
+    url: "https://www.skills.google/paths/4459",
+    urlLabel: "Path page",
+    urlNoun: "path",
+    logo: "/logos/google.png",
+    tile: GOOGLE_SKILLS_TILE,
+    // `description` arm 1 — Google's own path description, verbatim and
+    // complete. It contains no straight quote or apostrophe, so not even the
+    // typographic edit applies here.
+    description:
+      "Go from single-prompt design to orchestrating end-to-end, multi-agent systems. Learn to coordinate agents in Agent Development Kit (ADK), connect to external tools with MCP, and automate workflows using the Agent-to-Agent (A2A) protocol. This path teaches you to design workflow-based routing and deploy your solutions via Agent Runtime.",
+    // FOUR courses, not the six activities Google's path page counts: the first
+    // and last are the "Welcome:" / "Wrap Up:" bookends, which are never
+    // courses. scratchpad/google-skills-paths.json records the same split
+    // (`activities: 6`, `site_course_count: 4`).
+    totalCourses: 4,
+    unitNoun: "Courses",
+    gradient: "from-cyan-600/20 via-teal-500/12 to-blue-600/20",
+    coursesLayout: "badges",
+    courses: [
+      {
+        step: 1,
+        title: "Build Collaborative Multi-Agent Systems with ADK & MCP",
+        badge: gsBadge(27855015, "build-collaborative-multi-agent-systems-adk-mcp"),
+      },
+      {
+        // NO BADGE, and that is the fact rather than an omission: this unit is
+        // a hands-on lab (/focuses/125061). Google Skills issues it no
+        // completion badge and Google Cloud no Credly badge — checked against
+        // the public profile (23 badges) and the Credly earner list (13) on
+        // 2026-09-11. It is still a course Google lists inside the path, so it
+        // keeps its step, its title and its tile.
+        //
+        // `isLab` drives that tile (owner's decision, 2026-09-11): a lab glyph
+        // in the art slot and a neutral "Lab" marker where a badged tile shows
+        // its Verify pill. No badge art, no link, no Verify — there is nothing
+        // to verify. The flag is explicit and must never be inferred from a
+        // missing badge: a future course could lack one for another reason.
+        step: 2,
+        title: "Build Multi-Agent Systems with ADK",
+        isLab: true,
+      },
+      {
+        step: 3,
+        title: "Build Agent Skills with Google",
+        badge: gsBadge(27885513, "build-agent-skills-with-google"),
+      },
+      {
+        step: 4,
+        title: "Use Agent Skills with Multi-Agent Systems",
+        // "skill", not the gsBadge() default: the artwork reads "SKILL BADGE ·
+        // INTERMEDIATE" over the four-colour bar, and Google's raw PNG is
+        // 1000x666 — the landscape skill-badge template, the same one 27848848
+        // (1000x667) and 27852046 (1000x666) use — where every completion badge
+        // in this file is the 1000x908/909 portrait template. It has no Credly
+        // twin, so it stays `provider: "Google Skills"`; `kind` and `provider`
+        // are independent (see CourseBadge).
+        badge: gsBadge(27886491, "use-agent-skills-with-multi-agent-systems", "skill"),
+      },
+    ],
+  },
+  {
+    // FOURTH by the owner's choice, not by date: this path was completed LAST
+    // of the six (2026-09-12) and sits here. It is the clearest case against
+    // ever re-deriving the section's order from a completion date — see the
+    // comment on LEARNING_PATHS.
+    id: "ce-google-skills-deploy-agents-3802",
+    headingId: "ce-google-skills-deploy-agents-3802-heading",
+    testId: "coursework-courses-deploy-agents",
+    titleLines: ["Deploy Production Ready Agents", "3-Course Path"],
+    issuer: "Google Skills",
+    issuerShort: "Google Skills",
+    date: "Sep 2026",
+    url: "https://www.skills.google/paths/3802",
+    urlLabel: "Path page",
+    urlNoun: "path",
+    logo: "/logos/google.png",
+    tile: GOOGLE_SKILLS_TILE,
+    // `description` arm 1 — Google's own path description, verbatim and
+    // complete. It contains no straight quote or apostrophe, so not even the
+    // typographic edit applies here.
+    description:
+      "Connect and operationalize agents across enterprise ecosystems. Learn to manage the entire agent lifecycle, deploy ADK agents to scalable environments like Vertex AI Agent Engine and Cloud Run, and enable enterprise connectivity using the Model Context Protocol (MCP) and Agent2Agent (A2A) Protocol.",
+    // THREE courses, not the five activities Google's path page counts: the
+    // first and last are the "Welcome:" / "Wrap Up:" bookends, which are never
+    // courses. scratchpad/google-skills-paths.json records the same split
+    // (`activities: 5`, `site_course_count: 3`).
+    totalCourses: 3,
+    unitNoun: "Courses",
+    // Same blue→cyan family as the other Google cards, so the open row's wash
+    // stays inside the range PathBody's date line was measured against
+    // (ink/70 ≥ 6.2:1 light, ink/60 ≥ 6.9:1 dark).
+    gradient: "from-blue-700/20 via-cyan-500/12 to-teal-600/20",
+    coursesLayout: "badges",
+    courses: [
+      {
+        step: 1,
+        title: "Build and Deploy Agents in Production",
+        badge: gsBadge(27888328, "build-and-deploy-agents-in-production"),
+      },
+      {
+        step: 2,
+        title: "Deploy Your First Agent",
+        badge: gsBadge(27888392, "deploy-your-first-agent"),
+      },
+      {
+        // A challenge lab, so it earns a lab-based Credly SKILL badge from
+        // Google Cloud (issued 2026-09-12; public page verified logged-out) and
+        // the tile glows like the other two — the convention is `provider`,
+        // never the course's name or its position. Google Skills also issued
+        // completion badge 27888420 for the same course; the Credly copy is
+        // linked because it names the issuer AND the earner. NOT the item-3 kind
+        // of lab: that one (path 4459, step 2) earned nothing anywhere and is
+        // flagged `isLab`. This one has a real badge, so it is a normal tile.
+        // Credly titles it exactly as Google names the course, so there is
+        // nothing about the destination to note.
+        step: 3,
+        title: "Deploy Multi-Agent Architectures",
+        badge: credlyBadge(
+          "97b82f44-68ec-4c85-8847-4c488e076a9a",
+          "deploy-multi-agent-architectures",
+        ),
+      },
+    ],
+  },
+  {
+    id: "ce-google-skills-agents-3546",
+    headingId: "ce-google-skills-agents-3546-heading",
+    testId: "coursework-courses-agents",
+    titleLines: [
+      "Introduction to Agents and Google’s Agent Ecosystem",
+      "3-Course Path",
+    ],
+    issuer: "Google Skills",
+    issuerShort: "Google Skills",
+    date: "Sep 2026",
+    url: "https://www.skills.google/paths/3546",
+    urlLabel: "Path page",
+    urlNoun: "path",
+    logo: "/logos/google.png",
+    tile: GOOGLE_SKILLS_TILE,
+    // `description` arm 1 — Google's own sentences 1–2, a contiguous prefix.
+    // The ONE edit is typographic: Google's source writes 'the essentials of
+    // "what is an agent,"' with straight quotes (U+0022); the site renders the
+    // same words with “ ” like every other quotation on it. No word or mark of
+    // punctuation is otherwise changed. Its trailing call to action — "Explore other paths in the Gemini Enterprise
+    // Agent Ready (GEAR) series" — is dropped rather than restated: a
+    // declarative rewrite ("Part of the … series") would be prose AUTHORED here,
+    // which this field forbids, and Google's literal CTA is not a claim about
+    // this résumé. The series name Google records for the path lives in
+    // scratchpad/google-skills-paths.json (`series`) and reaches the page only
+    // where Google itself writes it into a description (path 4020, below).
+    description:
+      "Gain a foundational understanding of AI agents, from their core architecture to their real-world business impact. Cover the essentials of “what is an agent,” understand Google Cloud's unified stack for agent development, and gain practical experience by creating your first Gemini Enterprise application to earn a skill badge.",
+    // THREE courses, not the five activities Google's path page counts. The
+    // first and last of those five are the "Welcome:" and "Wrap Up:" bookends,
+    // which are never courses (see PathCourse) — they taught nothing, earned no
+    // badge, and counting them would inflate the chip, the meta line and the
+    // panel's badge counter alike. scratchpad/google-skills-paths.json records
+    // the same split: `activities: 5`, `site_course_count: 3`.
+    totalCourses: 3,
+    unitNoun: "Courses",
+    gradient: "from-indigo-600/20 via-blue-500/12 to-cyan-600/20",
+    coursesLayout: "badges",
+    courses: [
+      { step: 1, ...AGENT_FUNDAMENTALS },
+      { step: 2, ...ENTERPRISE_AGENTS },
+      { step: 3, ...FIRST_GEMINI_ENTERPRISE_APP },
+    ],
+  },
+  {
+    id: "ce-google-skills-beginner-gen-ai-118",
+    headingId: "ce-google-skills-beginner-gen-ai-118-heading",
+    testId: "coursework-courses-beginner-gen-ai",
+    titleLines: ["Beginner: Introduction to Generative AI", "4-Course Path"],
+    issuer: "Google Skills",
+    issuerShort: "Google Skills",
+    date: "Sep 2026",
+    url: "https://www.skills.google/paths/118",
+    urlLabel: "Path page",
+    urlNoun: "path",
+    logo: "/logos/google.png",
+    tile: GOOGLE_SKILLS_TILE,
+    // `description` arm 1 — Google's own path description, verbatim and
+    // complete (it is a single sentence; nothing is trimmed).
+    description:
+      "This learning path provides an overview of generative AI concepts, from the fundamentals of large language models to responsible AI principles.",
+    totalCourses: 4,
+    unitNoun: "Courses",
+    gradient: "from-blue-600/20 via-sky-500/12 to-indigo-600/20",
+    coursesLayout: "badges",
+    courses: [
+      { step: 1, ...INTRO_GENERATIVE_AI },
+      { step: 2, ...INTRO_LARGE_LANGUAGE_MODELS },
+      {
+        step: 3,
+        // TWO PLATFORMS, TWO NAMES — and the tile deliberately shows GOOGLE'S.
+        // Google lists this course inside path 118 as "Prompt Design in Agent
+        // Platform"; Credly issues the same skill badge as "Prompt Design in
+        // Vertex AI Skill Badge" (hence the image filename, and the wording
+        // printed on the artwork itself). The tile used to append Credly's name
+        // in brackets after the course title; the owner removed that
+        // parenthetical on 2026-09-11, so only the title below renders.
+        //
+        // DO NOT "fix" the title to match Credly. Renaming it would make the
+        // card disagree with the Google path page it sits inside, which is the
+        // issuer of the course. The destination is still communicated three
+        // ways without any extra words: the Credly artwork (which reads "Prompt
+        // Design in Vertex AI"), the amber skill-badge glow, and the "Verify in
+        // Credly" pill. Credly's exact og:title is recorded in
+        // scratchpad/google-skills-paths.json; Google Skills badge 27852046 is
+        // the twin of the Credly copy linked here.
+        title: "Prompt Design in Agent Platform",
+        badge: credlyBadge(
+          "328f785b-dc1b-4f73-9ed2-d9a8eb7c8e71",
+          "prompt-design-in-vertex-ai",
+        ),
+      },
+      {
+        step: 4,
+        title: "Responsible AI: Applying AI Principles with Google Cloud",
+        badge: gsBadge(27852150, "responsible-ai-applying-ai-principles"),
+      },
+    ],
+  },
 ];
 
 export const CONTINUING_EDUCATION: readonly LearningPathData[] = [
@@ -1228,13 +1394,14 @@ export const CONTINUING_EDUCATION: readonly LearningPathData[] = [
 
 const asPath = (p: LearningPathData): PathCredential => ({ kind: "path", ...p });
 
-/** DISTINCT badge PAGES, not badge references. Across the four Google paths
- *  there are 25 references but only 20 distinct badges — Google reuses five
- *  courses between paths, and `scratchpad/google-skills-paths.json` records the
- *  same split ("25 badge links total across 20 unique badges"). Printing 25
- *  would overstate the awards held, which is the exact class of overclaim this
- *  rebuild exists to prevent. Computed with a Set so it cannot drift; both
- *  numbers are asserted in data.test.ts. */
+/** DISTINCT badge PAGES, not badge references. Across the six Google paths
+ *  there are 31 references but only 26 distinct badges — Google reuses five
+ *  courses between paths. Printing 31 would overstate the awards held, which is
+ *  the exact class of overclaim this rebuild exists to prevent. Note the count
+ *  is of BADGES, not of courses: the 32 course entries include one lab that
+ *  earns no badge at all (path 4459, step 2), so it is counted by the chip and
+ *  the meta line and by nothing here. Computed with a Set so it cannot drift;
+ *  every number is asserted in data.test.ts. */
 const distinctBadges = (paths: readonly LearningPathData[]) =>
   new Set(
     paths.flatMap((p) => p.courses.flatMap((c) => (c.badge ? [c.badge.url] : []))),

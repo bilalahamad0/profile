@@ -9,6 +9,23 @@ const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 // Course titles, verbatim. Several repeat ACROSS cards (Google reuses courses
 // between paths), so every text locator below is scoped to its card.
+// Four, not the six activities Google's path page counts — the Welcome/Wrap Up
+// bookends are never courses. Step 2 is a hands-on lab that Google issues NO
+// badge for, so this card has 4 units and 3 badge links.
+const MULTI_AGENT_COURSES = [
+  'Build Collaborative Multi-Agent Systems with ADK & MCP',
+  'Build Multi-Agent Systems with ADK',
+  'Build Agent Skills with Google',
+  'Use Agent Skills with Multi-Agent Systems',
+];
+// Three, not the five activities Google's path page counts — the Welcome/Wrap Up
+// bookends are never courses. Step 3 is a challenge lab that DOES earn a badge
+// (a Credly skill badge), so all three tiles are badged and one glows.
+const DEPLOY_COURSES = [
+  'Build and Deploy Agents in Production',
+  'Deploy Your First Agent',
+  'Deploy Multi-Agent Architectures',
+];
 const BEGINNER_COURSES = [
   'Introduction to Generative AI',
   'Introduction to Large Language Models',
@@ -59,41 +76,59 @@ type Card = {
   issuerShort: 'Google Skills' | 'Stanford';
   url: RegExp;
   courses: string[];
+  /** Badge links on the card. Equals courses.length on every card but 4459,
+   *  whose step 2 is a lab with no badge (and 0 on Stanford). */
   badges: number;
   credly: number;
   pill: RegExp;
 };
 
+/** The CURATED top-to-bottom order the owner chose on 2026-09-11, which is also
+ *  the order LEARNING_PATHS is written in and the order these numerals assert.
+ *  It is NOT chronological: path 3802 was completed last of the six and renders
+ *  fourth. Never re-sort this list by date. */
 const CARDS: Card[] = [
-  { section: 'google-skills', id: 'ce-google-skills-beginner-gen-ai-118',
-    title: 'Beginner: Introduction to Generative AI',
-    meta: 'Google Skills · Sep 2026 · 4-Course Path', chip: '4 Courses', numeral: '01',
-    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
-    url: /^https:\/\/www\.skills\.google\/paths\/118$/,
-    courses: BEGINNER_COURSES, badges: 4, credly: 1, pill: /^4 public course badges$/i },
-  { section: 'google-skills', id: 'ce-google-skills-agents-3546',
-    title: 'Introduction to Agents and Google’s Agent Ecosystem',
-    meta: 'Google Skills · Sep 2026 · 3-Course Path', chip: '3 Courses', numeral: '02',
-    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
-    url: /^https:\/\/www\.skills\.google\/paths\/3546$/,
-    courses: AGENTS_COURSES, badges: 3, credly: 1, pill: /^3 public course badges$/i },
-  { section: 'google-skills', id: 'ce-google-skills-smb-4020',
-    title: 'SMB Learning Path',
-    meta: 'Google Skills · Sep 2026 · 13-Course Path', chip: '13 Courses', numeral: '03',
-    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
-    url: /^https:\/\/www\.skills\.google\/paths\/4020$/,
-    courses: SMB_COURSES, badges: 13, credly: 1, pill: /^13 public course badges$/i },
   { section: 'google-skills', id: 'ce-google-skills-gen-ai-leader-1951',
     title: 'Generative AI Leader',
     meta: 'Google Skills · Sep 2026 · 5-Course Path · “Train for the exam”',
-    chip: '5 Courses', numeral: '04',
+    chip: '5 Courses', numeral: '01',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/1951$/,
     courses: LEADER_COURSES, badges: 5, credly: 0, pill: /^5 public course badges$/i },
+  { section: 'google-skills', id: 'ce-google-skills-smb-4020',
+    title: 'SMB Learning Path',
+    meta: 'Google Skills · Sep 2026 · 13-Course Path', chip: '13 Courses', numeral: '02',
+    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
+    url: /^https:\/\/www\.skills\.google\/paths\/4020$/,
+    courses: SMB_COURSES, badges: 13, credly: 1, pill: /^13 public course badges$/i },
+  { section: 'google-skills', id: 'ce-google-skills-multi-agent-4459',
+    title: 'Build High-Performance Multi-Agent Systems',
+    meta: 'Google Skills · Sep 2026 · 4-Course Path', chip: '4 Courses', numeral: '03',
+    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
+    url: /^https:\/\/www\.skills\.google\/paths\/4459$/,
+    courses: MULTI_AGENT_COURSES, badges: 3, credly: 0, pill: /^3 public course badges$/i },
+  { section: 'google-skills', id: 'ce-google-skills-deploy-agents-3802',
+    title: 'Deploy Production Ready Agents',
+    meta: 'Google Skills · Sep 2026 · 3-Course Path', chip: '3 Courses', numeral: '04',
+    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
+    url: /^https:\/\/www\.skills\.google\/paths\/3802$/,
+    courses: DEPLOY_COURSES, badges: 3, credly: 1, pill: /^3 public course badges$/i },
+  { section: 'google-skills', id: 'ce-google-skills-agents-3546',
+    title: 'Introduction to Agents and Google’s Agent Ecosystem',
+    meta: 'Google Skills · Sep 2026 · 3-Course Path', chip: '3 Courses', numeral: '05',
+    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
+    url: /^https:\/\/www\.skills\.google\/paths\/3546$/,
+    courses: AGENTS_COURSES, badges: 3, credly: 1, pill: /^3 public course badges$/i },
+  { section: 'google-skills', id: 'ce-google-skills-beginner-gen-ai-118',
+    title: 'Beginner: Introduction to Generative AI',
+    meta: 'Google Skills · Sep 2026 · 4-Course Path', chip: '4 Courses', numeral: '06',
+    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
+    url: /^https:\/\/www\.skills\.google\/paths\/118$/,
+    courses: BEGINNER_COURSES, badges: 4, credly: 1, pill: /^4 public course badges$/i },
   { section: 'continuing-education', id: 'ce-stanford-xee100',
     title: 'Introduction to Internet of Things',
     meta: 'Stanford School of Engineering · 2026 · 5-Module Course',
-    chip: '5 Modules', numeral: '05',
+    chip: '5 Modules', numeral: '07',
     linkLabel: 'Course page', urlNoun: 'course', issuerShort: 'Stanford',
     url: /^https:\/\/online\.stanford\.edu\/courses\/xee100-introduction-internet-things$/,
     courses: STANFORD_MODULES, badges: 0, credly: 0, pill: /^5 course modules$/i },
@@ -148,16 +183,19 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     for (const needle of new Set<string>([
       'Google Skills', 'Continuing Education', 'Completed Learning Paths',
       'Stanford School of Engineering', 'XEE100',
-      '4 learning paths · 20 course badges', '1 short course · 5 modules',
+      '6 learning paths · 26 course badges', '1 short course · 5 modules',
       'Generative AI Leader Certification', 'Train for the exam',
       'Google Cloud Generative AI Leader certification',
-      'Prompt Design in Vertex AI Skill Badge',
       'six Stanford faculty members will deliver an overview',
       ...CARDS.map((c) => c.title),
       ...CARDS.flatMap((c) => c.courses),
     ])) {
       expect(html, `raw HTML must contain "${needle}"`).toContain(needle);
     }
+    // The removed annotation: the tile shows Google's course name alone now, so
+    // Credly's own name for that badge appears nowhere on the page.
+    expect(html).not.toContain('Prompt Design in Vertex AI');
+    expect(html).not.toContain('(Credly:');
   });
 
   test('neither section prints credential vocabulary anywhere in its markup', async ({ request }) => {
@@ -171,12 +209,16 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
       expect(body).not.toMatch(/certified/i);
       expect(body).not.toMatch(/all verified/i);
       expect(body).not.toMatch(/\bcredentials?\b/i);
-      // "Verify in Credly" / "Verify in Google Skills" is the ONE licensed use
-      // of the word in these two sections: it labels a public, login-free BADGE
-      // page and names the platform it opens. (React splits the interpolated
-      // provider with an HTML comment, hence the optional marker.) Strip those
-      // pills, then nothing else on the card may claim verification.
-      const rest = body.replace(/Verify in (?:<!-- -->)?(?:Credly|Google Skills)/g, '');
+      // The badge pill is the ONE licensed use of the word in these two
+      // sections: it labels a public, login-free BADGE page. It reads "Verify
+      // in Credly" on a Credly badge and a bare "Verify" on every other
+      // provider (the owner's wording, 2026-09-11) — and "Verify in Google
+      // Skills" is now gone entirely. Strip the pills longest-first, then
+      // nothing else on the card may claim verification.
+      expect(body).not.toMatch(/Verify in (?:<!-- -->)?Google Skills/);
+      const rest = body
+        .replace(/Verify in (?:<!-- -->)?Credly/g, '')
+        .replace(/Verify/g, '');
       expect(rest).not.toMatch(/\bverif(y|ied)\b/i);
       expect(body).not.toMatch(
         /no certificate|issues no|not a certification|exam not taken|non-credential|not counted|non-credit/i,
@@ -193,7 +235,7 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     const credentialsCell = page
       .locator('dl > div')
       .filter({ has: page.getByText('Credentials', { exact: true }) });
-    await expect(credentialsCell.locator('dd')).toHaveText('17');
+    await expect(credentialsCell.locator('dd')).toHaveText('15');
   });
 
   test('both group headers count the real thing and say nothing about certificates', async ({ page }) => {
@@ -201,7 +243,7 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     const google = page.locator('#google-skills');
     await expect(google.getByRole('heading', { level: 2 })).toHaveText('Google Skills');
     await expect(google.getByText('Completed Learning Paths', { exact: true })).toBeVisible();
-    const googleCount = google.getByText('4 learning paths · 20 course badges', { exact: true });
+    const googleCount = google.getByText('6 learning paths · 26 course badges', { exact: true });
     await (wideViewport(page) ? expect(googleCount).toBeVisible() : expect(googleCount).toBeAttached());
     const cont = page.locator('#continuing-education');
     await expect(cont.getByRole('heading', { level: 2 })).toHaveText('Continuing Education');
@@ -233,14 +275,22 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     }
   });
 
-  test('the coursework sections run one continuous ledger, 01–04 then 05, never past 17', async ({ page }) => {
+  test('the coursework sections run one continuous ledger, 01–06 then 07, never past 15', async ({ page }) => {
     await page.goto('/certifications');
     const nums = (sel: string) =>
       page.locator(`${sel} [data-ledger-index]`).evaluateAll((els) =>
         els.map((e) => e.textContent?.trim()),
       );
-    expect(await nums('#google-skills')).toEqual(['01', '02', '03', '04']);
-    expect(await nums('#continuing-education')).toEqual(['05']);
+    expect(await nums('#google-skills')).toEqual(['01', '02', '03', '04', '05', '06']);
+    expect(await nums('#continuing-education')).toEqual(['07']);
+    // And the cards carry those numerals in the owner's curated sequence, which
+    // is what makes the order itself an assertion rather than a coincidence.
+    const titles = await page
+      .locator('#google-skills article[id^="ce-"] h3 button > span:first-child')
+      .evaluateAll((els) => els.map((e) => e.textContent?.trim()));
+    expect(titles).toEqual(
+      CARDS.filter((c) => c.section === 'google-skills').map((c) => c.title),
+    );
   });
 
   test('the Verify slot holds the issuer page link — never a Verify control', async ({ page }) => {
@@ -327,11 +377,11 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     }
   });
 
-  test('every badge pill names the platform the click verifies on, unclipped', async ({ page }) => {
+  test('every badge pill reads Verify, naming Credly only where it links there, unclipped', async ({ page }) => {
     await page.goto('/certifications');
     await page.getByTestId('expand-all-google-skills').click();
     const links = badgeLinks(page.locator('#google-skills'));
-    await expect(links).toHaveCount(25);
+    await expect(links).toHaveCount(31);
     const rows = await links.evaluateAll((els) =>
       els.map((el) => ({
         text: (el.textContent ?? '').replace(/\s+/g, ' '),
@@ -352,11 +402,26 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     for (const { text, clipped } of rows) {
       const provider = /badge on (Google Skills|Credly), opens/.exec(text)?.[1];
       expect(provider, `no provider in "${text}"`).toBeTruthy();
-      expect(text, 'pill must name the provider it links to').toContain(`Verify in ${provider}`);
+      // Credly keeps its platform name; every other provider reads a bare
+      // "Verify". WCAG 2.5.3 still holds because the accessible name (this
+      // whole string) contains the visible label either way, and the sr-only
+      // suffix still says which platform the link opens.
+      if (provider === 'Credly') {
+        expect(text, 'a Credly pill must still name Credly').toContain('Verify in Credly');
+      } else {
+        // `toContain`, not a \b regex: the <a>'s textContent runs the course
+        // title straight into the pill ("…ChatbotVerify"), so there is no word
+        // boundary before the V.
+        expect(text, 'a Google Skills pill must read a bare Verify').toContain('Verify');
+        expect(text, 'the platform must be gone from the visible pill').not.toContain(
+          'Verify in Google Skills',
+        );
+      }
       expect(clipped, `a tile span is clipped in "${text}"`).toBe(false);
     }
-    expect(rows.filter((r) => r.text.includes('Verify in Credly'))).toHaveLength(3);
-    expect(rows.filter((r) => r.text.includes('Verify in Google Skills'))).toHaveLength(22);
+    expect(rows.filter((r) => r.text.includes('Verify in Credly'))).toHaveLength(4);
+    expect(rows.filter((r) => r.text.includes('Verify in Google Skills'))).toHaveLength(0);
+    expect(rows.filter((r) => r.text.includes('Verify'))).toHaveLength(31);
   });
 
   test('only the Credly skill badges glow', async ({ page }) => {
@@ -374,7 +439,7 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
         };
       }),
     );
-    expect(tiles.filter((t) => t.credly)).toHaveLength(3);
+    expect(tiles.filter((t) => t.credly)).toHaveLength(4);
     for (const t of tiles) {
       expect(t.amber, 'glow must follow badge.provider === "Credly"').toBe(t.credly);
       expect(t.halo, 'halo must follow badge.provider === "Credly"').toBe(t.credly);
@@ -385,7 +450,7 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     await page.goto('/certifications');
     await page.getByTestId('expand-all-google-skills').click();
     const links = badgeLinks(page.locator('#google-skills'));
-    await expect(links).toHaveCount(25);
+    await expect(links).toHaveCount(31);
     const rows = await links.evaluateAll((els) =>
       els.map((e) => [e.getAttribute('href') ?? '', e.textContent ?? ''] as const),
     );
@@ -394,22 +459,28 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
       expect(href).toMatch(/badge on Credly/i.test(text) ? CREDLY_BADGE_URL : GOOGLE_SKILLS_BADGE_URL);
     }
     const hrefs = rows.map(([h]) => h);
-    // 25 references, 20 distinct badge pages — the number the header prints.
-    expect(new Set(hrefs).size).toBe(20);
-    expect(hrefs.filter((h) => CREDLY_BADGE_URL.test(h))).toHaveLength(3);
-    expect(hrefs.filter((h) => GOOGLE_SKILLS_BADGE_URL.test(h))).toHaveLength(22);
-    // 27855015 belongs to the UNFINISHED path 4459.
-    expect(hrefs.some((h) => h.endsWith('/badges/27855015'))).toBe(false);
+    // 31 references, 26 distinct badge pages — the number the header prints.
+    expect(new Set(hrefs).size).toBe(26);
+    expect(hrefs.filter((h) => CREDLY_BADGE_URL.test(h))).toHaveLength(4);
+    expect(hrefs.filter((h) => GOOGLE_SKILLS_BADGE_URL.test(h))).toHaveLength(27);
+    // Path 4459's badges (withheld while it was unfinished) and path 3802's.
+    for (const id of ['27855015', '27885513', '27886491', '27888328', '27888392']) {
+      expect(hrefs.some((h) => h.endsWith(`/badges/${id}`)), `badge ${id} missing`).toBe(true);
+    }
   });
 
-  test('both Credly badges are DISPLAYED as art, not merely linked', async ({ page }) => {
+  test('all three Credly badges are DISPLAYED as art, not merely linked', async ({ page }) => {
     await page.goto('/certifications');
     await page.getByTestId('expand-all-google-skills').click();
     const srcs = await page
       .locator('#google-skills ol[data-testid^="coursework-courses-"] img')
       .evaluateAll((els) => els.map((e) => e.getAttribute('src') ?? ''));
     // Credly art sits flat in /badges/ (no google-skills segment).
-    for (const file of ['create-your-first-gemini-enterprise-application', 'prompt-design-in-vertex-ai']) {
+    for (const file of [
+      'create-your-first-gemini-enterprise-application',
+      'prompt-design-in-vertex-ai',
+      'deploy-multi-agent-architectures',
+    ]) {
       expect(
         srcs.some((s) => s.includes(`badges%2F${file}.webp`) || s.includes(`badges/${file}.webp`)),
         `${file} not rendered as art`,
@@ -423,14 +494,20 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     expect(box?.width ?? 0).toBeGreaterThanOrEqual(60);
   });
 
-  test('the Prompt Design tile shows BOTH names, verbatim and unclipped', async ({ page }) => {
+  test('the Prompt Design tile shows GOOGLE\'S course name alone, unclipped', async ({ page }) => {
+    // The "(Credly: Prompt Design in Vertex AI Skill Badge)" annotation was
+    // removed on the owner's instruction (2026-09-11). The tile keeps Google's
+    // title — the issuer of the course and of the path page it links from — and
+    // the Credly destination is carried by the artwork, the amber glow and the
+    // "Verify in Credly" pill instead of by extra words.
     await page.goto('/certifications');
     await openRow(page, 'ce-google-skills-beginner-gen-ai-118');
-    const link = page
-      .locator('#ce-google-skills-beginner-gen-ai-118')
-      .getByRole('link', {
-        name: /^Prompt Design in Agent Platform \(Credly: Prompt Design in Vertex AI Skill Badge\)/,
-      });
+    const card = page.locator('#ce-google-skills-beginner-gen-ai-118');
+    await expect(card).not.toContainText('Prompt Design in Vertex AI');
+    await expect(card).not.toContainText('(Credly:');
+    const link = card.getByRole('link', {
+      name: /^Prompt Design in Agent Platform Verify in Credly/,
+    });
     await expect(link).toHaveCount(1);
     await expect(link).toHaveAttribute('href', CREDLY_BADGE_URL);
     await expect(link).not.toHaveAttribute('title', /./);
@@ -451,30 +528,75 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     expect(clipped).toBe(false);
   });
 
+  test('the badge-less lab tile reads as a deliberate course, not a broken badge', async ({ page }) => {
+    // Path 4459 step 2 is a hands-on lab Google issues no badge for. It keeps a
+    // normal tile slot so the path's contents stay complete and the 4-up row
+    // stays full — but carries no badge art, no link and nothing to verify.
+    await page.goto('/certifications');
+    await openRow(page, 'ce-google-skills-multi-agent-4459');
+    const list = page.getByTestId('coursework-courses-multi-agent');
+    const items = list.locator('li');
+    await expect(items).toHaveCount(4);
+    const tile = items.nth(1);
+    await expect(tile).toContainText('Build Multi-Agent Systems with ADK');
+    await expect(tile.locator('a')).toHaveCount(0);
+    await expect(tile.locator('img')).toHaveCount(0);
+    await expect(tile.getByText(/verif(y|ied)/i)).toHaveCount(0);
+    // The art slot carries a lucide lab glyph (FlaskConical) — a vector mark, so
+    // an <svg> and never an <img>, which is why the img count above still holds.
+    // It replaced the bare word "LAB" typeset in that slot on 2026-09-11: text
+    // alone read as a placeholder next to three real badges.
+    await expect(tile.locator('svg')).toHaveCount(1);
+    // The word "Lab" survives as the tile's MARKER, in the slot where every
+    // badged tile shows its Verify pill — the issuer's own activity type, not a
+    // disclaimer and not a bare numeral, which would have echoed the counter
+    // slot's own big figure higher up the same card.
+    await expect(tile.getByText('Lab', { exact: true })).toBeAttached();
+    // And it is the ONLY tile so marked — the marker is driven by an explicit
+    // `isLab` flag on the course, never by the absence of a badge.
+    await expect(list.getByText('Lab', { exact: true })).toHaveCount(1);
+    // No hole in the row: it is the same width as the three badged tiles.
+    // Polled, because panelBadgeVariants scales each tile in from 0.85 and a
+    // mid-flight box is narrower than its own grid cell.
+    await expect
+      .poll(async () => {
+        const w = await items.evaluateAll((els) =>
+          els.map((e) => e.getBoundingClientRect().width),
+        );
+        return Math.round(Math.max(...w) - Math.min(...w));
+      }, { message: 'the badge-less tile is not the width of its neighbours' })
+      .toBeLessThanOrEqual(1);
+  });
+
   test('no Welcome or Wrap Up bookend is rendered, or present in the HTML, as a course', async ({
     page,
     request,
   }) => {
-    // The standing rule, asserted where a reader would see it. The bookends
-    // were also the only badge-less units on a badge-grid path, so every tile
-    // in every Google path list is now a badge link.
+    // The standing rule, asserted where a reader would see it. A tile without
+    // a badge link is NOT evidence of a smuggled bookend any more — path 4459
+    // has a genuine badge-less course — so each grid's tile and link counts are
+    // pinned individually rather than required to be equal.
     const html = await (await request.get('/certifications')).text();
     expect(html).not.toMatch(/Welcome:\s*Introduction to Agents/);
     expect(html).not.toMatch(/Wrap[\s-]?Up:\s*Introduction to Agents/);
+    expect(html).not.toMatch(/Welcome:\s*Build High-Performance/);
+    expect(html).not.toMatch(/Wrap[\s-]?Up:\s*Build High-Performance/);
+    expect(html).not.toMatch(/Welcome:\s*Deploy Production Ready/);
+    expect(html).not.toMatch(/Wrap[\s-]?Up:\s*Deploy Production Ready/);
     await page.goto('/certifications');
     await page.getByTestId('expand-all-google-skills').click();
-    for (const testId of [
-      'coursework-courses-beginner-gen-ai',
-      'coursework-courses-agents',
-      'coursework-courses-smb',
-      'coursework-courses-gen-ai-leader',
-    ]) {
+    for (const [testId, tiles, links] of [
+      ['coursework-courses-multi-agent', 4, 3],
+      ['coursework-courses-deploy-agents', 3, 3],
+      ['coursework-courses-beginner-gen-ai', 4, 4],
+      ['coursework-courses-agents', 3, 3],
+      ['coursework-courses-smb', 13, 13],
+      ['coursework-courses-gen-ai-leader', 5, 5],
+    ] as const) {
       const items = page.getByTestId(testId).locator('li');
-      const n = await items.count();
-      expect(n).toBeGreaterThan(0);
-      await expect(items.locator('a')).toHaveCount(n);
+      await expect(items).toHaveCount(tiles);
+      await expect(items.locator('a')).toHaveCount(links);
     }
-    await expect(page.getByTestId('coursework-courses-agents').locator('li')).toHaveCount(3);
   });
 
   test('the SMB grid is 4·5·4 with every row centred at desktop width', async ({ page }) => {
@@ -543,6 +665,8 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
 
     // The other counts still read as ONE deliberate full-width row.
     for (const [id, testId, n] of [
+      ['ce-google-skills-multi-agent-4459', 'coursework-courses-multi-agent', 4],
+      ['ce-google-skills-deploy-agents-3802', 'coursework-courses-deploy-agents', 3],
       ['ce-google-skills-agents-3546', 'coursework-courses-agents', 3],
       ['ce-google-skills-beginner-gen-ai-118', 'coursework-courses-beginner-gen-ai', 4],
       ['ce-google-skills-gen-ai-leader-1951', 'coursework-courses-gen-ai-leader', 5],
@@ -574,7 +698,7 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     // Same template parts as a Google card.
     await expect(el.locator('button[aria-expanded]')).toHaveCount(1);
     await expect(el.locator('[data-collapsible]')).toHaveCount(1);
-    await expect(el.locator('[data-ledger-index]')).toHaveText('05');
+    await expect(el.locator('[data-ledger-index]')).toHaveText('07');
   });
 
   test('the Generative AI Leader card cannot be read as a held certification', async ({ page }) => {
@@ -595,7 +719,7 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
 
   test('expand all / collapse all works on both sections', async ({ page }) => {
     await page.goto('/certifications');
-    for (const [section, n] of [['google-skills', 4], ['continuing-education', 1]] as const) {
+    for (const [section, n] of [['google-skills', 6], ['continuing-education', 1]] as const) {
       const btn = page.getByTestId(`expand-all-${section}`);
       await btn.click();
       const toggles = page.locator(`#${section} button[aria-expanded]`);
@@ -635,6 +759,7 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     for (const needle of [
       'XEE100', 'Internet of Things', 'SMB Learning Path', 'Generative AI Leader',
       'Agent Ecosystem', 'Beginner: Introduction to Generative AI',
+      'Deploy Production Ready Agents',
     ]) {
       expect(html).not.toMatch(
         new RegExp(`EducationalOccupationalCredential[^]{0,400}${esc(needle)}`),
@@ -658,7 +783,7 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
       const cards = await page
         .locator('article[id^="ce-"]')
         .evaluateAll((els) => els.map((el) => [el.id, el.scrollWidth - el.clientWidth] as const));
-      expect(cards).toHaveLength(5);
+      expect(cards).toHaveLength(7);
       for (const [id, d] of cards) expect(d, `${id} overflows by ${d}px (${pass})`).toBeLessThanOrEqual(0);
       const doc = await page.evaluate(
         () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
@@ -681,8 +806,9 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     test('every course tile and module row is visible in a row opened by hand', async ({ page }) => {
       await page.goto('/certifications');
       for (const id of [
-        // Coursework rows: all five start collapsed.
+        // Coursework rows: all seven start collapsed.
         'ce-google-skills-beginner-gen-ai-118',
+        'ce-google-skills-deploy-agents-3802',
         'ce-google-skills-smb-4020',
         'ce-stanford-xee100',
         // A collapsed row of the untouched credential template, which carried
