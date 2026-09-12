@@ -1,9 +1,8 @@
 import React from "react";
-import { Award, BookOpen } from "lucide-react";
+import { Award } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ContinuingEducation } from "@/components/certifications/ContinuingEducation";
 import { CredentialLedger } from "@/components/certifications/CredentialLedger";
-import { CERT_STATS, CREDENTIAL_GROUPS } from "./data";
+import { CERT_STATS, COURSEWORK_GROUPS, CREDENTIAL_GROUPS } from "./data";
 
 // Server Component by design: the hero, stats, and jump pills are static
 // SEO-critical HTML; all interactivity lives in <CredentialLedger />.
@@ -81,26 +80,29 @@ export default function CertificationsPage() {
             );
           })}
 
-          {/* Continuing Education is not a category peer, so it is set apart by
-              a divider, an uncoloured icon (the four category icons carry their
-              group hue) and no count suffix where the four pills above end
-              "· {n}": the absence of a number is what marks it as a different
-              kind of thing, and it does so without spending the label on a
-              disclaimer. The section now hosts more than one issuer, so no
-              institution colour is spent here — same neutral fill as the
-              category pills, minus the count.
-              The nav's accessible name is unchanged ("Certification
-              categories") — slightly imprecise for this one pill, and a
-              knowingly accepted wart: certifications.spec.ts matches the nav by
-              that name and must pass unchanged. */}
+          {/* These two are not category peers, so they sit past a divider, wear
+              no category hue (their accent is neutral) and carry no "· {n}"
+              count where the four pills above end with one. The absence of a
+              number is what marks them as a different kind of section, and it
+              does so without spending the label on a disclaimer.
+              The nav's accessible name stays "Certification categories" —
+              slightly imprecise for these two, and a knowingly accepted wart:
+              certifications.spec.ts matches the nav by that name and must pass
+              unchanged. */}
           <span aria-hidden className="mx-1 h-5 w-px shrink-0 bg-line/15" />
-          <a
-            href="#continuing-education"
-            className="inline-flex shrink-0 snap-start items-center gap-2 rounded-full border border-line/10 bg-ink/[0.05] dark:bg-ink/[0.03] px-4 py-2 t-label font-bold uppercase tracking-wider text-ink/70 dark:text-ink/60 transition-colors hover:border-line/25 hover:text-ink"
-          >
-            <BookOpen className="h-3.5 w-3.5 text-ink/60 dark:text-ink/50" aria-hidden />
-            Continuing Education
-          </a>
+          {COURSEWORK_GROUPS.map((group) => {
+            const Icon = group.icon;
+            return (
+              <a
+                key={group.id}
+                href={`#${group.id}`}
+                className="inline-flex shrink-0 snap-start items-center gap-2 rounded-full border border-line/10 bg-ink/[0.05] dark:bg-ink/[0.03] px-4 py-2 t-label font-bold uppercase tracking-wider text-ink/70 dark:text-ink/60 transition-colors hover:border-line/25 hover:text-ink"
+              >
+                <Icon className="h-3.5 w-3.5 text-ink/60 dark:text-ink/50" aria-hidden />
+                {group.title}
+              </a>
+            );
+          })}
         </nav>
       </section>
 
@@ -108,19 +110,9 @@ export default function CertificationsPage() {
       <div className="relative mx-auto max-w-7xl px-6 pb-20 pt-10 md:pb-32 md:pt-14 lg:pb-40">
         <CredentialLedger />
 
-        {/* Coursework whose completion issued no credential (course-completion
-            badges link out at the course level; nothing at the entry level
-            does). Last on purpose: the ledger
-            states "N credentials · all verified" four times before the reader
-            reaches this, so by the time the disclosure appears the standard it
-            is being measured against has already been set four times over.
-            Above the ledger it would read as an apology; below it, it reads as
-            the boundary line. The wrapper div inside the component carries the
-            separating rule and spacing — the new <section> is therefore a
-            grandchild of this container, not a direct child, which leaves the
-            `.max-w-7xl.mx-auto.px-6 > section` probe in mobile-spacing.spec.ts
-            unmatched exactly as it is today. */}
-        <ContinuingEducation />
+        {/* Completed coursework renders inside <CredentialLedger /> (see the
+            note there): one open-state store, one set of jump anchors, and the
+            same CredentialRow template as every credential above. */}
       </div>
     </div>
   );

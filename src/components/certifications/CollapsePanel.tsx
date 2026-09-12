@@ -55,6 +55,32 @@ export const panelBadgeVariants: Variants = {
   },
 };
 
+/* --- Reduced-motion partners -------------------------------------------------
+ *
+ * NEVER pass `undefined` in place of a variant pair when reduced motion is on.
+ * `useReducedMotion()` resolves to `false` on the hydration render, so framer
+ * applies the `collapsed` variant (opacity 0) as the element's resting inline
+ * style; when the media query then resolves `true` and the `variants` prop
+ * becomes `undefined`, framer stops managing the element and that opacity-0
+ * style is frozen on it forever. The panel still expands, but every tile and
+ * row inside it stays invisible — for exactly the users who cannot be shown a
+ * fade-in to notice. (Rows in DEFAULT_OPEN_IDS escaped it only because their
+ * first render is `open`.)
+ *
+ * So the reduced pairs below keep the SAME keys — framer diffs resolved values
+ * per key, so a key present in one pair and absent from the other would leave
+ * the old value applied — and simply hold them at their visible rest with
+ * `duration: 0`. The element stays managed; nothing animates. */
+export const reducedItemVariants: Variants = {
+  collapsed: { opacity: 1, x: 0, transition: { duration: 0 } },
+  open: { opacity: 1, x: 0, transition: { duration: 0 } },
+};
+
+export const reducedBadgeVariants: Variants = {
+  collapsed: { opacity: 1, scale: 1, y: 0, transition: { duration: 0 } },
+  open: { opacity: 1, scale: 1, y: 0, transition: { duration: 0 } },
+};
+
 /** "Power-on" bloom for the parent badge halo when a panel opens. */
 export const haloBloomVariants: Variants = {
   collapsed: { opacity: 0.5, scale: 1 },
@@ -63,6 +89,14 @@ export const haloBloomVariants: Variants = {
     scale: [0.7, 1.15, 1],
     transition: { duration: 0.9, delay: 0.25 },
   },
+};
+
+/** Reduced-motion partner for the halo: the same two keys, held at the resting
+ *  values the bloom keyframes settle on (0.5 closed, 0.6 open), no keyframes.
+ *  Same rule as above — never swap a variant pair for `undefined`. */
+export const reducedHaloVariants: Variants = {
+  collapsed: { opacity: 0.5, scale: 1, transition: { duration: 0 } },
+  open: { opacity: 0.6, scale: 1, transition: { duration: 0 } },
 };
 
 export function CollapsePanel({
