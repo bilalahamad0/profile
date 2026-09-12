@@ -166,11 +166,43 @@ const rowTitle = (card: Locator) => card.locator('h3 button > span').first();
  *  template, so below 640px they are in the DOM but not painted. Mobile Chrome
  *  (Pixel 5, 393px) runs this file too. */
 const wideViewport = (page: Page) => (page.viewportSize()?.width ?? 0) >= 640;
-/** Open a row so its panel is measurable — the panel is `inert` while closed. */
+/** Open a row so its panel is measurable — the panel is `inert` while closed.
+ *
+ *  RETRIES the click. The row toggle is server-rendered with
+ *  `aria-expanded="false"` and only starts responding once CredentialLedger
+ *  hydrates, so a single click can land on inert markup, do nothing, and leave
+ *  the assertion to time out. That never reproduced locally on a warm dev
+ *  machine but failed on CI's slower runner (2026-09-12: one hard failure plus
+ *  four flaky, every one of them an expansion). Polling the click instead of
+ *  firing it once removes the race without weakening anything — the assertion
+ *  is still that the row really opened. */
 const openRow = async (page: Page, id: string) => {
   const toggle = page.locator(`#${id} button[aria-expanded]`);
-  if ((await toggle.getAttribute('aria-expanded')) !== 'true') await toggle.click();
-  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  await expect(toggle).toBeVisible();
+  await expect(async () => {
+    if ((await toggle.getAttribute('aria-expanded')) !== 'true') await toggle.click();
+    await expect(toggle).toHaveAttribute('aria-expanded', 'true', { timeout: 1_000 });
+  }).toPass({ timeout: 15_000 });
+};
+
+/** Same hydration race, for the group-level Expand/Collapse all buttons: they
+ *  are inert until the ledger hydrates. `assert` runs after each attempt and
+ *  must throw until the click has taken effect. */
+const clickUntil = async (target: Locator, assert: () => Promise<void>) => {
+  await expect(target).toBeVisible();
+  await expect(async () => {
+    await target.click();
+    await assert();
+  }).toPass({ timeout: 15_000 });
+};
+
+/** Expand every row in a section, retried past hydration. The button's own
+ *  label flipping to "Collapse all" is the proof the click landed. */
+const expandAll = async (page: Page, section: 'google-skills' | 'continuing-education') => {
+  const btn = page.getByTestId(`expand-all-${section}`);
+  await clickUntil(btn, async () => {
+    await expect(btn).toHaveText('Collapse all', { timeout: 1_000 });
+  });
 };
 
 test.describe('Certifications — completed coursework (Google Skills + Continuing Education)', () => {
@@ -379,7 +411,7 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
 
   test('every badge pill reads Verify, naming Credly only where it links there, unclipped', async ({ page }) => {
     await page.goto('/certifications');
-    await page.getByTestId('expand-all-google-skills').click();
+    await expandAll(page, 'google-skills');
     const links = badgeLinks(page.locator('#google-skills'));
     await expect(links).toHaveCount(31);
     const rows = await links.evaluateAll((els) =>
@@ -426,7 +458,7 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
 
   test('only the Credly skill badges glow', async ({ page }) => {
     await page.goto('/certifications');
-    await page.getByTestId('expand-all-google-skills').click();
+    await expandAll(page, 'google-skills');
     const tiles = await badgeLinks(page.locator('#google-skills')).evaluateAll((els) =>
       els.map((el) => {
         const spans = [...el.querySelectorAll('span')];
@@ -448,7 +480,7 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
 
   test('every badge link is a public, login-free page on the provider its name states', async ({ page }) => {
     await page.goto('/certifications');
-    await page.getByTestId('expand-all-google-skills').click();
+    await expandAll(page, 'google-skills');
     const links = badgeLinks(page.locator('#google-skills'));
     await expect(links).toHaveCount(31);
     const rows = await links.evaluateAll((els) =>
@@ -471,7 +503,7 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
 
   test('all three Credly badges are DISPLAYED as art, not merely linked', async ({ page }) => {
     await page.goto('/certifications');
-    await page.getByTestId('expand-all-google-skills').click();
+    await expandAll(page, 'google-skills');
     const srcs = await page
       .locator('#google-skills ol[data-testid^="coursework-courses-"] img')
       .evaluateAll((els) => els.map((e) => e.getAttribute('src') ?? ''));
@@ -543,7 +575,7 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     expect(html).not.toMatch(/Welcome:\s*Deploy Production Ready/);
     expect(html).not.toMatch(/Wrap[\s-]?Up:\s*Deploy Production Ready/);
     await page.goto('/certifications');
-    await page.getByTestId('expand-all-google-skills').click();
+    await expandAll(page, 'google-skills');
     for (const [testId, tiles, links] of [
       ['coursework-courses-multi-agent', 3, 3],
       ['coursework-courses-deploy-agents', 3, 3],
@@ -680,12 +712,19 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     await page.goto('/certifications');
     for (const [section, n] of [['google-skills', 6], ['continuing-education', 1]] as const) {
       const btn = page.getByTestId(`expand-all-${section}`);
-      await btn.click();
       const toggles = page.locator(`#${section} button[aria-expanded]`);
       await expect(toggles).toHaveCount(n);
+
+      // Retried: this button is inert until the ledger hydrates, and firing it
+      // once is what made this the hard failure on CI.
+      await clickUntil(btn, async () => {
+        await expect(btn).toHaveText('Collapse all', { timeout: 1_000 });
+      });
       for (let i = 0; i < n; i++) await expect(toggles.nth(i)).toHaveAttribute('aria-expanded', 'true');
-      await expect(btn).toHaveText('Collapse all');
-      await btn.click();
+
+      await clickUntil(btn, async () => {
+        await expect(btn).toHaveText('Expand all', { timeout: 1_000 });
+      });
       for (let i = 0; i < n; i++) await expect(toggles.nth(i)).toHaveAttribute('aria-expanded', 'false');
     }
   });
@@ -732,8 +771,8 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     await page.goto('/certifications');
     for (const pass of ['collapsed', 'expanded'] as const) {
       if (pass === 'expanded') {
-        await page.getByTestId('expand-all-google-skills').click();
-        await page.getByTestId('expand-all-continuing-education').click();
+        await expandAll(page, 'google-skills');
+        await expandAll(page, 'continuing-education');
       }
       for (const id of ['google-skills', 'continuing-education']) {
         const delta = await page.locator(`#${id}`).evaluate((el) => el.scrollWidth - el.clientWidth);
