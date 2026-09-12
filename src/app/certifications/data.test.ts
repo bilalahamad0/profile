@@ -111,6 +111,26 @@ describe("coursework is never counted as a credential", () => {
     );
   });
 
+  it("counts EVERY single-course certificate, inside a specialization or standing alone", () => {
+    // The stat used to sum only the specialization children, so it looked
+    // inside the four multi-course programmes while ignoring eleven
+    // certificates that each certify one course. 23 was then neither a subset
+    // of the 15 credentials nor a total of anything, and the two figures could
+    // not be reconciled by a reader. Both halves are asserted here so the stat
+    // cannot silently revert to counting one of them.
+    const fromSpecializations = SPECIALIZATIONS.reduce((n, s) => n + s.children.length, 0);
+    const standalone = AI_CERTIFICATES.length + GENERAL_CERTIFICATES.length;
+    expect(fromSpecializations).toBe(23);
+    expect(standalone).toBe(11);
+    expect(CERT_STATS.courseCertificates).toBe(34);
+    expect(CERT_STATS.courseCertificates).toBe(fromSpecializations + standalone);
+    // Every standalone credential is also a course certificate, so this stat
+    // can never be smaller than the credential count minus the specializations.
+    expect(CERT_STATS.courseCertificates).toBeGreaterThanOrEqual(
+      CERT_STATS.credentials - CERT_STATS.specializations,
+    );
+  });
+
   it("is absent from every array that feeds the ledger, the stats or the JSON-LD", () => {
     const ledgerSlugs = CREDENTIAL_GROUPS.flatMap((g) => g.credentials.map(credentialSlug));
     const singleIds = [...AI_CERTIFICATES, ...GENERAL_CERTIFICATES].map((c) => c.id);
