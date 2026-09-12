@@ -105,7 +105,7 @@ export function CredentialRow({
       onClick={handleRowClick}
       className="flex min-h-[72px] cursor-pointer items-center gap-3 px-4 py-3 md:min-h-[96px] md:gap-4 md:px-6 md:py-4"
     >
-      {/* Continuous ledger index 01…17 — decorative ordering cue */}
+      {/* Continuous ledger index 01…15 — decorative ordering cue */}
       <span
         aria-hidden
         data-ledger-index

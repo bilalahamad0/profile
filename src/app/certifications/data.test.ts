@@ -42,13 +42,16 @@ const BADGE_IMAGE_BY_PROVIDER = {
   "Google Skills": /^\/badges\/google-skills\/[a-z0-9-]+\.webp$/,
   Credly: /^\/badges\/[a-z0-9-]+\.webp$/,
 } as const;
+/** All three lab-based skill badges link their CREDLY copy and glow — the
+ *  convention `skill_badge_rule` records in scratchpad/google-skills-paths.json.
+ *  Not every skill badge is here: 27886491 has no Credly twin (see below). */
 const CREDLY_BADGE_URLS = [
   "https://www.credly.com/badges/328f785b-dc1b-4f73-9ed2-d9a8eb7c8e71/public_url",
   "https://www.credly.com/badges/fc080ecb-a01b-4ca4-a99f-4f008a846da9/public_url",
+  "https://www.credly.com/badges/97b82f44-68ec-4c85-8847-4c488e076a9a/public_url",
 ];
-const PROMPT_DESIGN_BADGE_URL = CREDLY_BADGE_URLS[0];
-const PROMPT_DESIGN_LINK_TITLE = "Prompt Design in Vertex AI Skill Badge";
-const GEMINI_ENTERPRISE_BADGE_URL = CREDLY_BADGE_URLS[1];
+const GS_PROFILE =
+  "https://www.skills.google/public_profiles/aece174b-451d-4d6f-928d-6def28946025";
 const ISSUER_URL =
   /^https:\/\/(online\.stanford\.edu\/courses\/[a-z0-9-]+|www\.skills\.google\/paths\/\d+)$/;
 /** Keys that would turn an entry into a credential. Verification lives on a
@@ -78,11 +81,18 @@ const PRO_CERT_GRID_POSITIONS = [
   "col-start-4 col-end-6",
 ];
 
+/** The CURATED top-to-bottom order of the coursework cards — the owner's
+ *  choice, dated 2026-09-11, and the order LEARNING_PATHS itself is written in.
+ *  It is NOT chronological and must never be re-derived from a completion date:
+ *  path 3802 was finished last of the six and sits FOURTH. Earlier revisions of
+ *  this file asserted reverse chronology; that rule is gone, not overridden. */
 const EXPECTED_ORDER = [
-  "ce-google-skills-beginner-gen-ai-118",
-  "ce-google-skills-agents-3546",
-  "ce-google-skills-smb-4020",
   "ce-google-skills-gen-ai-leader-1951",
+  "ce-google-skills-smb-4020",
+  "ce-google-skills-multi-agent-4459",
+  "ce-google-skills-deploy-agents-3802",
+  "ce-google-skills-agents-3546",
+  "ce-google-skills-beginner-gen-ai-118",
   "ce-stanford-xee100",
 ];
 const byId = (id: string) => ALL_COURSEWORK.find((e) => e.id === id);
@@ -94,7 +104,7 @@ const badged = ALL_COURSEWORK.flatMap((entry) =>
 
 describe("coursework is never counted as a credential", () => {
   it("does not move the computed stats strip", () => {
-    expect(CERT_STATS.credentials).toBe(17);
+    expect(CERT_STATS.credentials).toBe(15);
     expect(CERT_STATS.specializations).toBe(SPECIALIZATIONS.length);
     expect(CERT_STATS.credentials).toBe(
       SPECIALIZATIONS.length + AI_CERTIFICATES.length + GENERAL_CERTIFICATES.length,
@@ -106,7 +116,7 @@ describe("coursework is never counted as a credential", () => {
     const singleIds = [...AI_CERTIFICATES, ...GENERAL_CERTIFICATES].map((c) => c.id);
     const specIds = SPECIALIZATIONS.map((s) => s.id);
     const schemaTitles = certifications.map((c) => c.title);
-    expect(ALL_COURSEWORK).toHaveLength(5);
+    expect(ALL_COURSEWORK).toHaveLength(7);
     for (const entry of ALL_COURSEWORK) {
       expect(ledgerSlugs).not.toContain(entry.id);
       expect(ledgerSlugs).not.toContain(`cert-${entry.id}`);
@@ -199,9 +209,11 @@ describe("coursework is never counted as a credential", () => {
     for (const e of ALL_COURSEWORK) expect(e).not.toHaveProperty("formatNote");
   });
 
-  it("lists the four Google paths in reverse chronology, then Stanford", () => {
+  it("lists the six Google paths in the owner's curated order, then Stanford", () => {
+    // The array order IS the display order (see EXPECTED_ORDER). Nothing sorts
+    // at runtime and no date is read: 3802 was completed last and sits fourth.
     expect(ALL_COURSEWORK.map((e) => e.id)).toEqual(EXPECTED_ORDER);
-    expect(LEARNING_PATHS.map((e) => e.id)).toEqual(EXPECTED_ORDER.slice(0, 4));
+    expect(LEARNING_PATHS.map((e) => e.id)).toEqual(EXPECTED_ORDER.slice(0, 6));
     expect(CONTINUING_EDUCATION.map((e) => e.id)).toEqual(["ce-stanford-xee100"]);
   });
 });
@@ -218,11 +230,15 @@ describe("the two coursework group headers", () => {
   });
 
   it("count DISTINCT badge pages, not badge references", () => {
-    // 25 references resolve to 20 distinct badge pages: Google reuses five
-    // courses between paths. Printing 25 would overstate the awards held.
-    expect(badged).toHaveLength(25);
-    expect(new Set(badged.map((b) => b.badge.url)).size).toBe(20);
-    expect(COURSEWORK_GROUPS[0].countLabel).toBe("4 learning paths · 20 course badges");
+    // 31 references resolve to 26 distinct badge pages: Google reuses five
+    // courses between paths. Printing 31 would overstate the awards held.
+    // The count is of BADGES, not courses — the 32 course entries include one
+    // lab (path 4459, step 2) that earns none.
+    expect(badged).toHaveLength(31);
+    expect(new Set(badged.map((b) => b.badge.url)).size).toBe(26);
+    // 32 course entries across the six Google paths, 31 of which carry a badge.
+    expect(LEARNING_PATHS.reduce((n, e) => n + e.courses.length, 0)).toBe(32);
+    expect(COURSEWORK_GROUPS[0].countLabel).toBe("6 learning paths · 26 course badges");
     expect(COURSEWORK_GROUPS[1].countLabel).toBe("1 short course · 5 modules");
   });
 });
@@ -241,8 +257,8 @@ describe("the row template's own fields are populated for every card", () => {
       headings.add(e.headingId);
       testIds.add(e.testId);
     }
-    expect(headings.size).toBe(5);
-    expect(testIds.size).toBe(5);
+    expect(headings.size).toBe(7);
+    expect(testIds.size).toBe(7);
   });
 
   it("keeps the chip noun and the unit count honest on every card", () => {
@@ -250,6 +266,10 @@ describe("the row template's own fields are populated for every card", () => {
       ALL_COURSEWORK.map((e) => [e.id, [e.totalCourses, e.unitNoun, e.courses.length]]),
     );
     expect(shape).toEqual({
+      // 4, not the 6 activities Google's path page counts — same bookend rule.
+      "ce-google-skills-multi-agent-4459": [4, "Courses", 4],
+      // 3, not the 5 activities Google's path page counts — same bookend rule.
+      "ce-google-skills-deploy-agents-3802": [3, "Courses", 3],
       "ce-google-skills-beginner-gen-ai-118": [4, "Courses", 4],
       // 3, not the 5 activities Google's path page counts: the "Welcome:" and
       // "Wrap Up:" bookends are not courses.
@@ -296,7 +316,7 @@ describe("the row template's own fields are populated for every card", () => {
     expect(LEARNING_PATHS.every((e) => e.tile.wordmarkFamily === undefined)).toBe(true);
   });
 
-  it("puts the badge grid on the four Google paths and the list on Stanford", () => {
+  it("puts the badge grid on the six Google paths and the list on Stanford", () => {
     expect(LEARNING_PATHS.every((e) => e.coursesLayout === "badges")).toBe(true);
     expect(byId("ce-stanford-xee100")?.coursesLayout).toBe("list");
   });
@@ -311,6 +331,11 @@ describe("course-level badges", () => {
       ]),
     );
     expect(shape).toEqual({
+      // 4 courses, 3 badges: step 2 is a lab Google issues no badge for.
+      "ce-google-skills-multi-agent-4459": [4, 3],
+      // 3 courses, 3 badges: step 3 is a challenge lab with a real Credly skill
+      // badge, so it is a normal badged tile, NOT an item-3 "Lab" marker.
+      "ce-google-skills-deploy-agents-3802": [3, 3],
       "ce-google-skills-beginner-gen-ai-118": [4, 4],
       "ce-google-skills-agents-3546": [3, 3],
       "ce-google-skills-smb-4020": [13, 13],
@@ -333,18 +358,66 @@ describe("course-level badges", () => {
     }
   });
 
-  it("gives every course on a badge-grid path a badge, so the grid has no badge-less arm", () => {
-    // The bookends were the only badge-less Google units. CourseBadgesGrid now
-    // renders ONLY badged units (it no longer carries a numbered-tile arm), so
-    // a badge-less course on a "badges" path would silently vanish from the
-    // panel. It cannot: this is the invariant that keeps the two in step.
-    // Badge-less units still render — through CourseUnitsList, on Stanford.
-    for (const entry of ALL_COURSEWORK) {
-      if (entry.coursesLayout !== "badges") continue;
-      const missing = entry.courses.filter((c) => !c.badge).map((c) => c.title);
-      expect(missing, `${entry.id} has badge-less courses in a badges layout`).toEqual([]);
-    }
+  it("allows a badge-less course on a badge-grid path, but pins exactly which", () => {
+    // This used to assert that a "badges" path NEVER holds a badge-less
+    // course, on the reading that only the Welcome/Wrap Up bookends lacked
+    // badges. Path 4459 disproved it: step 2 is a hands-on lab
+    // (/focuses/125061) that earns no Google Skills completion badge and no
+    // Credly badge. CourseBadgesGrid renders such a course as a marked tile,
+    // so nothing vanishes — but a badge silently DISAPPEARING from a course
+    // that has one would, so the exact set is pinned here. Adding a genuinely
+    // badge-less course means adding it to this list, deliberately.
+    const missing = ALL_COURSEWORK.filter((e) => e.coursesLayout === "badges").map(
+      (e) => [e.id, e.courses.filter((c) => !c.badge).map((c) => c.title)] as const,
+    );
+    expect(Object.fromEntries(missing)).toEqual({
+      "ce-google-skills-multi-agent-4459": ["Build Multi-Agent Systems with ADK"],
+      "ce-google-skills-deploy-agents-3802": [],
+      "ce-google-skills-beginner-gen-ai-118": [],
+      "ce-google-skills-agents-3546": [],
+      "ce-google-skills-smb-4020": [],
+      "ce-google-skills-gen-ai-leader-1951": [],
+    });
     expect(byId("ce-stanford-xee100")?.coursesLayout).toBe("list");
+  });
+
+  it("marks a lab with an explicit flag, never inferred from the missing badge", () => {
+    // STANDING RULE (owner, 2026-09-11): a lab is still a course, its tile is
+    // marked "Lab" in place of badge art and a Verify pill, and lab-ness is
+    // modelled as a flag — never derived from `!badge`. So the two facts are
+    // pinned against each other here: they may not drift apart, and the flag
+    // may never land on a course that DID earn a badge (which would put "Lab"
+    // where art belongs, or nothing where "Lab" belongs).
+    const labs = ALL_COURSEWORK.flatMap((e) =>
+      e.courses.filter((c) => c.isLab).map((c) => `${e.id} / ${c.title}`),
+    );
+    expect(labs).toEqual(["ce-google-skills-multi-agent-4459 / Build Multi-Agent Systems with ADK"]);
+    for (const entry of ALL_COURSEWORK) {
+      for (const course of entry.courses) {
+        const where = `${entry.id} / ${course.title}`;
+        if (course.isLab) expect(course.badge, `${where} is a lab, so it has no badge`).toBeUndefined();
+        // The converse is deliberately NOT asserted: Stanford's five modules
+        // are badge-less and are not labs, which is exactly why the marker
+        // cannot be derived from the absence of a badge.
+      }
+    }
+    // And on the one badges-grid path that has a badge-less course, that
+    // course IS the flagged one — so no tile there can fall back to a numeral.
+    const path4459 = byId("ce-google-skills-multi-agent-4459");
+    expect(path4459?.courses.filter((c) => !c.badge).every((c) => c.isLab === true)).toBe(true);
+  });
+
+  it("keeps every badge it does carry complete and well-formed", () => {
+    // The other half of the relaxed guard above: `badge` may be absent, but it
+    // may never be half-populated — a tile with no url, no art or no provider
+    // would render as a dead link or a broken image.
+    for (const { entry, course, badge } of badged) {
+      const where = `${entry.id} / ${course.title}`;
+      expect(badge.url, where).toMatch(/^https:\/\/[^\s]+$/);
+      expect(badge.image, where).toMatch(/^\/badges\/[^\s]+\.webp$/);
+      expect(["completion", "skill"], where).toContain(badge.kind);
+      expect(["Google Skills", "Credly"], where).toContain(badge.provider);
+    }
   });
 
   it("keeps Stanford's five modules verbatim and badge-free", () => {
@@ -374,13 +447,24 @@ describe("course-level badges", () => {
     }
   });
 
-  it("links exactly the two lab-based skill badges at Credly, everything else at Google Skills", () => {
+  it("links exactly three badges at Credly, everything else at Google Skills, kind independent", () => {
+    // `kind` (what the ARTWORK says the award is) and `provider` (which
+    // platform's copy is linked) are separate fields and are pinned
+    // separately. This test used to assert that the skill-badge set equalled
+    // the Credly set, which silently forbade a Google-Skills-hosted skill
+    // badge — and 27886491 is one: its art reads "SKILL BADGE · INTERMEDIATE"
+    // and Google's raw PNG uses the 1000x666 landscape skill template, not the
+    // 1000x908 completion template. Every Credly badge is still a skill badge;
+    // the converse is what no longer holds.
     const byUrl = new Map(badged.map(({ badge }) => [badge.url, badge]));
     const credly = [...byUrl.values()].filter((b) => b.provider === "Credly");
     const skill = [...byUrl.values()].filter((b) => b.kind === "skill");
     expect(credly.map((b) => b.url).sort()).toEqual([...CREDLY_BADGE_URLS].sort());
-    expect(skill.map((b) => b.url).sort()).toEqual([...CREDLY_BADGE_URLS].sort());
-    expect([...byUrl.values()].filter((b) => b.provider === "Google Skills")).toHaveLength(18);
+    expect(credly.every((b) => b.kind === "skill")).toBe(true);
+    expect(skill.map((b) => b.url).sort()).toEqual(
+      [...CREDLY_BADGE_URLS, `${GS_PROFILE}/badges/27886491`].sort(),
+    );
+    expect([...byUrl.values()].filter((b) => b.provider === "Google Skills")).toHaveLength(23);
     // A course shared by two paths carries identical kind and provider in both.
     for (const { badge } of badged) {
       expect(byUrl.get(badge.url)?.kind).toBe(badge.kind);
@@ -395,13 +479,15 @@ describe("course-level badges", () => {
     }
   });
 
-  it("displays both Credly badges as art, not merely as links", () => {
-    // The user asked for these two explicitly.
+  it("displays all three Credly badges as art, not merely as links", () => {
+    // The owner asked for these explicitly. Credly art sits flat in /badges/,
+    // beside the ledger's other Credly art.
     const credlyImages = badged
       .filter(({ badge }) => badge.provider === "Credly")
       .map(({ badge }) => badge.image);
     expect([...new Set(credlyImages)].sort()).toEqual([
       "/badges/create-your-first-gemini-enterprise-application.webp",
+      "/badges/deploy-multi-agent-architectures.webp",
       "/badges/prompt-design-in-vertex-ai.webp",
     ]);
   });
@@ -418,7 +504,7 @@ describe("course-level badges", () => {
           .map(({ badge }) => badge.image),
       ),
     ].sort();
-    expect(referenced).toHaveLength(18);
+    expect(referenced).toHaveLength(23);
     expect(onDisk).toEqual(referenced);
   });
 
@@ -429,26 +515,46 @@ describe("course-level badges", () => {
       if (seen) expect(seen).toBe(badge.image);
       else imageByUrl.set(badge.url, badge.image);
     }
-    expect(imageByUrl.size).toBe(20);
-    expect(new Set(imageByUrl.values()).size).toBe(20);
-    // 27855015 belongs to the UNFINISHED path 4459 and must never appear.
-    expect([...imageByUrl.keys()].some((u) => u.endsWith("/badges/27855015"))).toBe(false);
+    expect(imageByUrl.size).toBe(26);
+    expect(new Set(imageByUrl.values()).size).toBe(26);
+    // 27855015 was withheld while path 4459 was unfinished. The path completed
+    // on 2026-09-11, so its three badges are now on the page — this asserts
+    // they arrived, and with the art the scrape recorded for them.
+    expect(imageByUrl.get(`${GS_PROFILE}/badges/27855015`)).toBe(
+      "/badges/google-skills/build-collaborative-multi-agent-systems-adk-mcp.webp",
+    );
+    expect(imageByUrl.get(`${GS_PROFILE}/badges/27885513`)).toBe(
+      "/badges/google-skills/build-agent-skills-with-google.webp",
+    );
+    expect(imageByUrl.get(`${GS_PROFILE}/badges/27886491`)).toBe(
+      "/badges/google-skills/use-agent-skills-with-multi-agent-systems.webp",
+    );
+    // Path 3802's own two Google Skills badges, plus its Credly skill badge.
+    expect(imageByUrl.get(`${GS_PROFILE}/badges/27888328`)).toBe(
+      "/badges/google-skills/build-and-deploy-agents-in-production.webp",
+    );
+    expect(imageByUrl.get(`${GS_PROFILE}/badges/27888392`)).toBe(
+      "/badges/google-skills/deploy-your-first-agent.webp",
+    );
+    expect(imageByUrl.get(CREDLY_BADGE_URLS[2])).toBe(
+      "/badges/deploy-multi-agent-architectures.webp",
+    );
   });
 
-  it("names the destination on exactly the one badge whose platform title differs", () => {
-    const withLinkTitle = badged.filter(({ badge }) => badge.linkTitle !== undefined);
-    expect(withLinkTitle.map(({ badge }) => badge.url)).toEqual([PROMPT_DESIGN_BADGE_URL]);
-    expect(withLinkTitle[0]?.badge.linkTitle).toBe(PROMPT_DESIGN_LINK_TITLE);
-    expect(withLinkTitle[0]?.course.title).toBe("Prompt Design in Agent Platform");
-    expect(
-      badged.find(({ badge }) => badge.url === GEMINI_ENTERPRISE_BADGE_URL)?.badge.linkTitle,
-    ).toBeUndefined();
-  });
-
-  it("never carries a linkTitle equal to the course title that references it", () => {
-    for (const { course, badge } of badged) {
-      if (badge.linkTitle !== undefined) expect(badge.linkTitle).not.toBe(course.title);
+  it("prints the ISSUER'S course title and nothing about the destination page", () => {
+    // A `linkTitle` field once put Credly's own name for a badge in brackets
+    // after the course title on one tile; the owner removed the parenthetical
+    // on 2026-09-11 and the field with it. No badge may carry a name for its
+    // destination again, and in particular the Prompt Design course keeps
+    // GOOGLE'S title — renaming it to Credly's "Prompt Design in Vertex AI
+    // Skill Badge" would make the card disagree with the path page it links to.
+    for (const { badge } of badged) {
+      expect(badge).not.toHaveProperty("linkTitle");
+      expect(Object.keys(badge).sort()).toEqual(["image", "kind", "provider", "url"]);
     }
+    const promptDesign = badged.find(({ badge }) => badge.url === CREDLY_BADGE_URLS[0]);
+    expect(promptDesign?.course.title).toBe("Prompt Design in Agent Platform");
+    expect(JSON.stringify(ALL_COURSEWORK)).not.toMatch(/Prompt Design in Vertex AI/);
   });
 });
 

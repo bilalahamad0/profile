@@ -72,7 +72,7 @@ export const PathBody = ({ path }: { path: LearningPathData }) => {
               is OPEN, i.e. with the gradient wash painted at opacity-50 behind
               it, and pixel-measured there ink/60 lands at 4.52:1 on the blue
               path cards and 4.45:1 on Stanford's red wash — one side of AA and
-              one side under it. ink/70 gives 6.21–6.35:1 across all five.
+              one side under it. ink/70 gives 6.21–6.35:1 across all six.
               Dark keeps ink/60 (6.97–7.09:1), which was never in question. */}
           <p className="flex items-center gap-1.5 t-label uppercase tracking-tighter text-ink/70 dark:text-ink/60">
             <Calendar className="h-3 w-3" aria-hidden />
