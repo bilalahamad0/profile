@@ -9,18 +9,18 @@ const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 // Course titles, verbatim. Several repeat ACROSS cards (Google reuses courses
 // between paths), so every text locator below is scoped to its card.
-// Four, not the six activities Google's path page counts — the Welcome/Wrap Up
-// bookends are never courses. Step 2 is a hands-on lab that Google issues NO
-// badge for, so this card has 4 units and 3 badge links.
+// Three, not the six activities Google's path page counts. Two are the
+// Welcome/Wrap Up bookends, which are never courses; the third is a badge-less
+// hands-on lab the owner dropped from the data on 2026-09-12. So this card has
+// 3 units and 3 badge links.
 const MULTI_AGENT_COURSES = [
   'Build Collaborative Multi-Agent Systems with ADK & MCP',
-  'Build Multi-Agent Systems with ADK',
   'Build Agent Skills with Google',
   'Use Agent Skills with Multi-Agent Systems',
 ];
 // Three, not the five activities Google's path page counts — the Welcome/Wrap Up
-// bookends are never courses. Step 3 is a challenge lab that DOES earn a badge
-// (a Credly skill badge), so all three tiles are badged and one glows.
+// bookends are never courses. Step 3 earns a Credly skill badge, so all three
+// tiles are badged and one glows.
 const DEPLOY_COURSES = [
   'Build and Deploy Agents in Production',
   'Deploy Your First Agent',
@@ -76,8 +76,8 @@ type Card = {
   issuerShort: 'Google Skills' | 'Stanford';
   url: RegExp;
   courses: string[];
-  /** Badge links on the card. Equals courses.length on every card but 4459,
-   *  whose step 2 is a lab with no badge (and 0 on Stanford). */
+  /** Badge links on the card. Equals courses.length on every Google card —
+   *  every listed course carries a badge — and 0 on Stanford. */
   badges: number;
   credly: number;
   pill: RegExp;
@@ -103,7 +103,7 @@ const CARDS: Card[] = [
     courses: SMB_COURSES, badges: 13, credly: 1, pill: /^13 public course badges$/i },
   { section: 'google-skills', id: 'ce-google-skills-multi-agent-4459',
     title: 'Build High-Performance Multi-Agent Systems',
-    meta: 'Google Skills · Sep 2026 · 4-Course Path', chip: '4 Courses', numeral: '03',
+    meta: 'Google Skills · Sep 2026 · 3-Course Path', chip: '3 Courses', numeral: '03',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/4459$/,
     courses: MULTI_AGENT_COURSES, badges: 3, credly: 0, pill: /^3 public course badges$/i },
@@ -528,54 +528,13 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     expect(clipped).toBe(false);
   });
 
-  test('the badge-less lab tile reads as a deliberate course, not a broken badge', async ({ page }) => {
-    // Path 4459 step 2 is a hands-on lab Google issues no badge for. It keeps a
-    // normal tile slot so the path's contents stay complete and the 4-up row
-    // stays full — but carries no badge art, no link and nothing to verify.
-    await page.goto('/certifications');
-    await openRow(page, 'ce-google-skills-multi-agent-4459');
-    const list = page.getByTestId('coursework-courses-multi-agent');
-    const items = list.locator('li');
-    await expect(items).toHaveCount(4);
-    const tile = items.nth(1);
-    await expect(tile).toContainText('Build Multi-Agent Systems with ADK');
-    await expect(tile.locator('a')).toHaveCount(0);
-    await expect(tile.locator('img')).toHaveCount(0);
-    await expect(tile.getByText(/verif(y|ied)/i)).toHaveCount(0);
-    // The art slot carries a lucide lab glyph (FlaskConical) — a vector mark, so
-    // an <svg> and never an <img>, which is why the img count above still holds.
-    // It replaced the bare word "LAB" typeset in that slot on 2026-09-11: text
-    // alone read as a placeholder next to three real badges.
-    await expect(tile.locator('svg')).toHaveCount(1);
-    // The word "Lab" survives as the tile's MARKER, in the slot where every
-    // badged tile shows its Verify pill — the issuer's own activity type, not a
-    // disclaimer and not a bare numeral, which would have echoed the counter
-    // slot's own big figure higher up the same card.
-    await expect(tile.getByText('Lab', { exact: true })).toBeAttached();
-    // And it is the ONLY tile so marked — the marker is driven by an explicit
-    // `isLab` flag on the course, never by the absence of a badge.
-    await expect(list.getByText('Lab', { exact: true })).toHaveCount(1);
-    // No hole in the row: it is the same width as the three badged tiles.
-    // Polled, because panelBadgeVariants scales each tile in from 0.85 and a
-    // mid-flight box is narrower than its own grid cell.
-    await expect
-      .poll(async () => {
-        const w = await items.evaluateAll((els) =>
-          els.map((e) => e.getBoundingClientRect().width),
-        );
-        return Math.round(Math.max(...w) - Math.min(...w));
-      }, { message: 'the badge-less tile is not the width of its neighbours' })
-      .toBeLessThanOrEqual(1);
-  });
-
   test('no Welcome or Wrap Up bookend is rendered, or present in the HTML, as a course', async ({
     page,
     request,
   }) => {
-    // The standing rule, asserted where a reader would see it. A tile without
-    // a badge link is NOT evidence of a smuggled bookend any more — path 4459
-    // has a genuine badge-less course — so each grid's tile and link counts are
-    // pinned individually rather than required to be equal.
+    // The standing rule, asserted where a reader would see it. Every listed
+    // course carries a badge, so a grid's tile count and its link count are now
+    // equal on every card — a tile with no link would mean a smuggled bookend.
     const html = await (await request.get('/certifications')).text();
     expect(html).not.toMatch(/Welcome:\s*Introduction to Agents/);
     expect(html).not.toMatch(/Wrap[\s-]?Up:\s*Introduction to Agents/);
@@ -586,7 +545,7 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     await page.goto('/certifications');
     await page.getByTestId('expand-all-google-skills').click();
     for (const [testId, tiles, links] of [
-      ['coursework-courses-multi-agent', 4, 3],
+      ['coursework-courses-multi-agent', 3, 3],
       ['coursework-courses-deploy-agents', 3, 3],
       ['coursework-courses-beginner-gen-ai', 4, 4],
       ['coursework-courses-agents', 3, 3],
@@ -665,7 +624,7 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
 
     // The other counts still read as ONE deliberate full-width row.
     for (const [id, testId, n] of [
-      ['ce-google-skills-multi-agent-4459', 'coursework-courses-multi-agent', 4],
+      ['ce-google-skills-multi-agent-4459', 'coursework-courses-multi-agent', 3],
       ['ce-google-skills-deploy-agents-3802', 'coursework-courses-deploy-agents', 3],
       ['ce-google-skills-agents-3546', 'coursework-courses-agents', 3],
       ['ce-google-skills-beginner-gen-ai-118', 'coursework-courses-beginner-gen-ai', 4],

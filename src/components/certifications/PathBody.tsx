@@ -42,14 +42,16 @@ export const PathBody = ({ path }: { path: LearningPathData }) => {
   // exists and composing one would be a lie. On a card with badges it counts
   // them; on Stanford's, which has none, it counts modules — so no card ever
   // prints a zero, and the slot is never empty.
+  //
+  // No "of N courses" sub-line: it existed to explain the one path whose badge
+  // count fell short of its course count, and with that lab no longer listed
+  // every badged card counts the same number twice. `badges` still reads the
+  // data rather than `totalCourses`, so the figure stays the number of tiles
+  // the grid below actually paints.
   const counter =
     badges > 0
-      ? {
-          value: String(badges),
-          label: "Course Badges",
-          sub: badges < path.totalCourses ? `of ${path.totalCourses} courses` : null,
-        }
-      : { value: String(path.totalCourses), label: path.unitNoun, sub: null };
+      ? { value: String(badges), label: "Course Badges" }
+      : { value: String(path.totalCourses), label: path.unitNoun };
 
   return (
     <div className="flex flex-col gap-5">
@@ -110,9 +112,6 @@ export const PathBody = ({ path }: { path: LearningPathData }) => {
           <span className="t-label font-bold uppercase tracking-wider text-ink/70 dark:text-ink/60">
             {counter.label}
           </span>
-          {counter.sub ? (
-            <span className="t-label text-ink/75 dark:text-ink/50">{counter.sub}</span>
-          ) : null}
         </div>
       </div>
 

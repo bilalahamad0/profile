@@ -232,12 +232,13 @@ describe("the two coursework group headers", () => {
   it("count DISTINCT badge pages, not badge references", () => {
     // 31 references resolve to 26 distinct badge pages: Google reuses five
     // courses between paths. Printing 31 would overstate the awards held.
-    // The count is of BADGES, not courses — the 32 course entries include one
-    // lab (path 4459, step 2) that earns none.
     expect(badged).toHaveLength(31);
     expect(new Set(badged.map((b) => b.badge.url)).size).toBe(26);
-    // 32 course entries across the six Google paths, 31 of which carry a badge.
-    expect(LEARNING_PATHS.reduce((n, e) => n + e.courses.length, 0)).toBe(32);
+    // 31 course entries across the six Google paths, and 31 badge references:
+    // the two are EQUAL because every listed course carries a badge.
+    const courseEntries = LEARNING_PATHS.reduce((n, e) => n + e.courses.length, 0);
+    expect(courseEntries).toBe(31);
+    expect(courseEntries).toBe(badged.length);
     expect(COURSEWORK_GROUPS[0].countLabel).toBe("6 learning paths · 26 course badges");
     expect(COURSEWORK_GROUPS[1].countLabel).toBe("1 short course · 5 modules");
   });
@@ -266,8 +267,10 @@ describe("the row template's own fields are populated for every card", () => {
       ALL_COURSEWORK.map((e) => [e.id, [e.totalCourses, e.unitNoun, e.courses.length]]),
     );
     expect(shape).toEqual({
-      // 4, not the 6 activities Google's path page counts — same bookend rule.
-      "ce-google-skills-multi-agent-4459": [4, "Courses", 4],
+      // 3, not the 6 activities Google's path page counts: two are Welcome/Wrap
+      // Up bookends and one is the badge-less lab the owner excluded outright
+      // on 2026-09-12 (see the note on the path in data.ts).
+      "ce-google-skills-multi-agent-4459": [3, "Courses", 3],
       // 3, not the 5 activities Google's path page counts — same bookend rule.
       "ce-google-skills-deploy-agents-3802": [3, "Courses", 3],
       "ce-google-skills-beginner-gen-ai-118": [4, "Courses", 4],
@@ -280,7 +283,7 @@ describe("the row template's own fields are populated for every card", () => {
     });
   });
 
-  it("gives every course a contiguous 1..n step so a badge-less unit can show one", () => {
+  it("gives every course a contiguous 1..n step, which the grid uses as its key", () => {
     for (const e of ALL_COURSEWORK) {
       expect(e.courses.map((c) => c.step)).toEqual(
         Array.from({ length: e.courses.length }, (_, i) => i + 1),
@@ -331,10 +334,7 @@ describe("course-level badges", () => {
       ]),
     );
     expect(shape).toEqual({
-      // 4 courses, 3 badges: step 2 is a lab Google issues no badge for.
-      "ce-google-skills-multi-agent-4459": [4, 3],
-      // 3 courses, 3 badges: step 3 is a challenge lab with a real Credly skill
-      // badge, so it is a normal badged tile, NOT an item-3 "Lab" marker.
+      "ce-google-skills-multi-agent-4459": [3, 3],
       "ce-google-skills-deploy-agents-3802": [3, 3],
       "ce-google-skills-beginner-gen-ai-118": [4, 4],
       "ce-google-skills-agents-3546": [3, 3],
@@ -358,66 +358,48 @@ describe("course-level badges", () => {
     }
   });
 
-  it("allows a badge-less course on a badge-grid path, but pins exactly which", () => {
-    // This used to assert that a "badges" path NEVER holds a badge-less
-    // course, on the reading that only the Welcome/Wrap Up bookends lacked
-    // badges. Path 4459 disproved it: step 2 is a hands-on lab
-    // (/focuses/125061) that earns no Google Skills completion badge and no
-    // Credly badge. CourseBadgesGrid renders such a course as a marked tile,
-    // so nothing vanishes — but a badge silently DISAPPEARING from a course
-    // that has one would, so the exact set is pinned here. Adding a genuinely
-    // badge-less course means adding it to this list, deliberately.
-    const missing = ALL_COURSEWORK.filter((e) => e.coursesLayout === "badges").map(
-      (e) => [e.id, e.courses.filter((c) => !c.badge).map((c) => c.title)] as const,
-    );
-    expect(Object.fromEntries(missing)).toEqual({
-      "ce-google-skills-multi-agent-4459": ["Build Multi-Agent Systems with ADK"],
-      "ce-google-skills-deploy-agents-3802": [],
-      "ce-google-skills-beginner-gen-ai-118": [],
-      "ce-google-skills-agents-3546": [],
-      "ce-google-skills-smb-4020": [],
-      "ce-google-skills-gen-ai-leader-1951": [],
-    });
+  it("gives EVERY course on a badge-grid path a well-formed badge", () => {
+    // The invariant restored on 2026-09-12, when the owner dropped the one
+    // badge-less unit on the page (path 4459's hands-on lab, /focuses/125061)
+    // from the data rather than rendering a tile for it. Every listed course on
+    // a "badges" path now carries a badge, so the grid has a single arm and can
+    // never paint an empty tile — and this is the guard that keeps it that way.
+    // A future badge-less course must fail HERE, loudly, not render blank.
+    for (const entry of ALL_COURSEWORK.filter((e) => e.coursesLayout === "badges")) {
+      for (const course of entry.courses) {
+        const where = `${entry.id} / ${course.title}`;
+        const badge = course.badge;
+        expect(badge, `${where} has no badge`).toBeDefined();
+        expect(badge?.url, where).toMatch(/^https:\/\/[^\s]+$/);
+        expect(badge?.image, where).toMatch(/^\/badges\/[^\s]+\.webp$/);
+        expect(["completion", "skill"], where).toContain(badge?.kind);
+        expect(["Google Skills", "Credly"], where).toContain(badge?.provider);
+      }
+    }
+    // Stanford is the only entry whose courses carry none, and it renders the
+    // list layout, never the badge grid.
     expect(byId("ce-stanford-xee100")?.coursesLayout).toBe("list");
   });
 
-  it("marks a lab with an explicit flag, never inferred from the missing badge", () => {
-    // STANDING RULE (owner, 2026-09-11): a lab is still a course, its tile is
-    // marked "Lab" in place of badge art and a Verify pill, and lab-ness is
-    // modelled as a flag — never derived from `!badge`. So the two facts are
-    // pinned against each other here: they may not drift apart, and the flag
-    // may never land on a course that DID earn a badge (which would put "Lab"
-    // where art belongs, or nothing where "Lab" belongs).
-    const labs = ALL_COURSEWORK.flatMap((e) =>
-      e.courses.filter((c) => c.isLab).map((c) => `${e.id} / ${c.title}`),
+  it("no longer lists the excluded hands-on lab anywhere in the data", () => {
+    // Owner's call, 2026-09-12: a badge-less lab does not show what was
+    // achieved, and labs sit inside many of these courses without being
+    // surfaced, so listing one standalone was inconsistent. It is excluded from
+    // the data, not merely hidden — chip, meta line and grid all count 3.
+    // Plain substring, deliberately: a lookahead excluding "… ADK &" would let
+    // the excluded lab back in under a name like "Build Multi-Agent Systems
+    // with ADK & MCP", which is the regression this guards. No surviving
+    // title contains this string ("Collaborative" sits between the words).
+    expect(JSON.stringify(ALL_COURSEWORK)).not.toContain(
+      "Build Multi-Agent Systems with ADK",
     );
-    expect(labs).toEqual(["ce-google-skills-multi-agent-4459 / Build Multi-Agent Systems with ADK"]);
-    for (const entry of ALL_COURSEWORK) {
-      for (const course of entry.courses) {
-        const where = `${entry.id} / ${course.title}`;
-        if (course.isLab) expect(course.badge, `${where} is a lab, so it has no badge`).toBeUndefined();
-        // The converse is deliberately NOT asserted: Stanford's five modules
-        // are badge-less and are not labs, which is exactly why the marker
-        // cannot be derived from the absence of a badge.
-      }
-    }
-    // And on the one badges-grid path that has a badge-less course, that
-    // course IS the flagged one — so no tile there can fall back to a numeral.
     const path4459 = byId("ce-google-skills-multi-agent-4459");
-    expect(path4459?.courses.filter((c) => !c.badge).every((c) => c.isLab === true)).toBe(true);
-  });
-
-  it("keeps every badge it does carry complete and well-formed", () => {
-    // The other half of the relaxed guard above: `badge` may be absent, but it
-    // may never be half-populated — a tile with no url, no art or no provider
-    // would render as a dead link or a broken image.
-    for (const { entry, course, badge } of badged) {
-      const where = `${entry.id} / ${course.title}`;
-      expect(badge.url, where).toMatch(/^https:\/\/[^\s]+$/);
-      expect(badge.image, where).toMatch(/^\/badges\/[^\s]+\.webp$/);
-      expect(["completion", "skill"], where).toContain(badge.kind);
-      expect(["Google Skills", "Credly"], where).toContain(badge.provider);
-    }
+    expect(path4459?.courses.map((c) => c.title)).toEqual([
+      "Build Collaborative Multi-Agent Systems with ADK & MCP",
+      "Build Agent Skills with Google",
+      "Use Agent Skills with Multi-Agent Systems",
+    ]);
+    expect(path4459?.titleLines[1]).toBe("3-Course Path");
   });
 
   it("keeps Stanford's five modules verbatim and badge-free", () => {
