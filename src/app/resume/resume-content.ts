@@ -30,7 +30,7 @@ export const RESUME_SUMMARY =
  * Entries without an `href` render as plain text.
  */
 export const RESUME_CONTACT: ReadonlyArray<{ label: string; href?: string }> = [
-  { label: "bilal.ahamad@gmail.com", href: "mailto:bilal.ahamad@gmail.com" },
+  { label: "contact@bilalahamad.com", href: "mailto:contact@bilalahamad.com" },
   { label: "bilalahamad.com", href: "https://bilalahamad.com" },
   { label: "linkedin.com/in/bilalahamad", href: "https://linkedin.com/in/bilalahamad" },
   { label: "github.com/bilalahamad0", href: "https://github.com/bilalahamad0" },

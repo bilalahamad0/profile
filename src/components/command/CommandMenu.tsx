@@ -53,7 +53,7 @@ export function CommandMenu() {
       shortcut: "EMAIL",
       keywords: ["contact", "email", "bilal", "message"],
       onSelect: () => {
-        navigator.clipboard.writeText("bilal.ahamad@gmail.com");
+        navigator.clipboard.writeText("contact@bilalahamad.com");
         setCopiedEmail(true);
         setTimeout(() => setCopiedEmail(false), 2000);
       },

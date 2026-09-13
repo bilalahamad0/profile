@@ -106,13 +106,13 @@ export function ContactSection() {
                         <h3 className="t-h3 mb-6">Connect</h3>
                         <div className="space-y-4">
                             <a
-                                href="mailto:bilal.ahamad@gmail.com"
+                                href="mailto:contact@bilalahamad.com"
                                 className="flex items-center gap-3 text-ink-muted hover:text-blue-700 dark:hover:text-blue-500 transition-colors"
                             >
                                 <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center">
                                     <Mail className="w-5 h-5" />
                                 </div>
-                                bilal.ahamad@gmail.com
+                                contact@bilalahamad.com
                             </a>
                             <a
                                 href="https://linkedin.com/in/bilalahamad"

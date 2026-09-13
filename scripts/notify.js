@@ -13,7 +13,7 @@ async function sendEmail({ subject, text, html }) {
 
   const mailOptions = {
     from: process.env.SMTP_FROM || process.env.SMTP_USER,
-    to: process.env.SMTP_TO || 'bilal.ahamad@gmail.com',
+    to: process.env.SMTP_TO || 'contact@bilalahamad.com',
     subject,
     text,
     html,
