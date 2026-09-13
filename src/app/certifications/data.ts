@@ -1545,6 +1545,18 @@ export const CONTINUING_EDUCATION: readonly LearningPathData[] = [
 // meaning beyond that — it used to be what earned the amber AI Skills chip in
 // CredentialRow, and since 2026-09-13 the `aiSkills` flag below says so
 // outright, on these rows and on the Google Skills paths alike.
+//
+// GRADIENT COLOUR MAP — certificate artwork colour → card gradient.
+// Every new Claude Academy certificate should reuse the gradient that matches
+// its badge's dominant colour so the expanded wash is visually consistent.
+//
+//   Terra-cotta / orange badges  →  "from-orange-600/20 to-amber-600/20"
+//     (Claude 101, Claude Code 101, AI Fluency)
+//   Green / sage badges          →  "from-emerald-600/20 to-teal-600/20"
+//     (Claude Code in Action, Introduction to Claude Cowork)
+//   Violet / purple badges       →  "from-indigo-600/20 to-violet-600/20"
+//     (Building Effective Human Agent Teams)
+//
 export const CLAUDE_ACADEMY_COURSES: GalleryCertificate[] = [
   {
     id: "ai-5",
@@ -1645,7 +1657,7 @@ export const CLAUDE_ACADEMY_COURSES: GalleryCertificate[] = [
     courseUrl: "https://academy.claude.com/courses/claude-101",
     logo: "/logos/anthropic.png",
     description: "Core Claude features and everyday working patterns — the shared foundation every certification track starts from.",
-    gradient: "from-orange-600/20 to-stone-600/20",
+    gradient: "from-orange-600/20 to-amber-600/20",
     courseBadge: "/badges/claude-academy/claude-101.webp",
     logoWordmark: true,
     aiSkills: true,
