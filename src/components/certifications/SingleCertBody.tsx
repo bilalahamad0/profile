@@ -118,7 +118,7 @@ export const SingleCertBody = ({
         </div>
 
         <div className={cn("flex flex-col gap-5", hasAwardArt && "sm:flex-row sm:items-center sm:gap-8")}>
-          <p className="t-body text-ink/88">
+          <p className="flex-1 t-body text-ink/88">
             {cert.description}
           </p>
           {cert.officialBadge && (
