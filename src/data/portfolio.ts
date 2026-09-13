@@ -183,6 +183,15 @@ export type Certification = {
 // whenever a new credential is added to the gallery.
 // Note: "AI for App Building" is intentionally absent — it's now course #7 of
 // the Google AI Professional specialization.
+// Note: NONE of the six Claude Academy courses is listed here, and that is a
+// rule rather than a judgement call. On 2026-09-12 the owner moved them out of
+// the counted ledger into their own uncounted "Claude Academy" coursework
+// section on /certifications, and coursework emits no credential: this array
+// feeds certificationsSchema() (JSON-LD EducationalOccupationalCredential) and
+// the Experience summary card, which is exactly why the Google Skills paths and
+// Stanford XEE100 have never appeared in it either. Two of the six (Claude Code
+// in Action, AI Fluency) were listed here while they were counted credentials
+// and were removed with the move — not dropped for space.
 export const certifications: Certification[] = [
   { title: "Google AI Professional (2026)", category: "ai" },
   { title: "Google AI Essentials (2026)", category: "ai" },

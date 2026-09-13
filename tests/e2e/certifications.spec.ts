@@ -28,6 +28,9 @@ const PM_TITLES = [
   'Accelerate Your Job Search with AI',
 ];
 
+// The six Claude Academy courses were removed on 2026-09-12 with the move into
+// their own uncounted coursework section: this list is the COUNTED ledger, and
+// their titles are asserted in tests/e2e/continuing-education.spec.ts instead.
 const CREDENTIAL_TITLES = [
   'Google Project Management Professional',
   'Google AI Professional',

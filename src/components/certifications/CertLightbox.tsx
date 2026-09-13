@@ -120,8 +120,21 @@ export function CertLightbox({
 
               <div className="space-y-6">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-line/10 bg-ink/5 p-2">
-                    <Image src={cert.logo} alt={cert.issuer} width={30} height={30} className="object-contain" />
+                  {/* Same tile, same two cases as the row body: a wide wordmark
+                      is sized by the tile's width and inverted for the dark
+                      plate; a square mark keeps its 30px box. */}
+                  <div
+                    className={
+                      cert.logoWordmark
+                        ? "flex h-10 w-auto items-center justify-center rounded-xl border border-line/10 bg-ink/5 px-2.5 py-2"
+                        : "flex h-10 w-10 items-center justify-center rounded-xl border border-line/10 bg-ink/5 p-2"
+                    }
+                  >
+                    {cert.logoWordmark ? (
+                      <Image src={cert.logo} alt={cert.issuer} width={64} height={8} className="h-auto w-16 object-contain dark:invert" />
+                    ) : (
+                      <Image src={cert.logo} alt={cert.issuer} width={30} height={30} className="object-contain" />
+                    )}
                   </div>
                   <div>
                     <p className="t-caption font-bold uppercase tracking-widest text-blue-700 dark:text-blue-400">{cert.issuer}</p>

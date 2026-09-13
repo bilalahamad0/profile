@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { Award, BookOpen, GitBranch, GraduationCap, ShieldCheck, Sparkles } from "lucide-react";
+import { Award, BookOpen, Bot, GitBranch, GraduationCap, ShieldCheck, Sparkles } from "lucide-react";
 
 // --- TYPES ---
 
@@ -13,8 +13,72 @@ export type GalleryCertificate = {
   logo: string;
   description: string;
   gradient: string;
+  /** The issuer is an accreditation BODY and this badge is its official mark,
+   *  which is what the blue "Official Badge" chip and the blue collapsed
+   *  border claim. Only ISTQB® qualifies, and it is the sole user of
+   *  `officialBadge` alongside it. A course-completion badge is a real,
+   *  publicly verifiable award but it is not that claim, so it takes the
+   *  separate, glow-free `courseBadge` path instead. Until 2026-09-12
+   *  CredentialRow derived the chip from `Boolean(officialBadge)` and this
+   *  field was read by nothing; the two are now separate because the art and
+   *  the claim are. */
   isOfficial?: boolean;
+  /** The accreditation body's own seal, rendered in the row header's badge slot
+   *  (and at 128px in the expanded body) with the BLUE halo and blue
+   *  drop-shadow tuned for it. ISTQB® is its only user, and that treatment is
+   *  written out literally at both call sites so it cannot drift. Distinct from
+   *  `image`, which is the certificate artifact the thumbnail and lightbox
+   *  show, and from `courseBadge`, which is award art without the seal claim. */
   officialBadge?: string;
+  /** Square course-completion award art — a Claude Academy decagon — used as
+   *  the row's HEADER VISUAL in place of the rectangular thumbnail, and again
+   *  at 128px in the expanded body.
+   *
+   *  Owner decision, 2026-09-12: "use the decagon as the header visual only, no
+   *  glow needed for Claude". So this path emits NO halo element, NO
+   *  drop-shadow and no coloured bloom of any kind — the art already sits on
+   *  its own tinted ground. It is deliberately a SEPARATE field from
+   *  `officialBadge` rather than a "no glow" flag on it, so the glowing
+   *  accreditation-seal treatment keeps exactly one user and the two cannot
+   *  drift into each other. */
+  courseBadge?: string;
+  /** The issuer's public course page, when the certificate's own verify URL is
+   *  a separate document. Rendered as a plain outbound <a> in the expanded
+   *  body — it verifies nothing and never routes through openVerifyUrl(). */
+  courseUrl?: string;
+  /** The issuer mark is a WIDE MONOCHROME WORDMARK rather than a square logo —
+   *  `/logos/anthropic.png` is 855×96, i.e. 8.9:1. Two consequences, both keyed
+   *  off this one fact:
+   *  1. SIZE. Contained in the 24px square box every square mark uses, it
+   *     composites to 24×3 CSS px — a grey smudge. It is sized by the logo
+   *     tile's WIDTH instead, and the tile widens to suit. Square marks
+   *     (Coursera, LinkedIn, ISTQB, Google) keep their 24px box untouched.
+   *  2. COLOUR. It is near-black, and the tile is `bg-ink/5` — a light plate in
+   *     light mode, a dark one in dark mode — so it needs `dark:invert` to
+   *     survive the dark ground. Same convention `invertLogo` already uses for
+   *     the employer logos in portfolio.ts. */
+  logoWordmark?: boolean;
+  /** Renders the amber "AI Skills" qualifier chip on the collapsed row.
+   *
+   *  A DATA flag, deliberately. Until 2026-09-13 CredentialRow derived this
+   *  from `id.startsWith("ai-")`, which made a deep-link anchor load-bearing
+   *  for a visual claim: renaming an id would silently drop the chip, and no
+   *  non-`ai-` row could ever earn one. The same flag now also exists on
+   *  LearningPathData, so a path can carry the chip on identical terms. Never
+   *  infer it from an id prefix, a title match, or which section a row sits in.
+   *
+   *  Specializations state the same fact through `ribbon`, which is a separate
+   *  mechanism (it also renders on the expanded thumbnail) and is untouched. */
+  aiSkills?: boolean;
+  /** The issuer's own product this course teaches — "Claude Code", "Claude.ai",
+   *  "Claude Teams", "Claude Cowork". Rendered as the FIRST chip in the
+   *  qualifier run, ahead of AI Skills (see CHIP_PRODUCT in CredentialRow).
+   *
+   *  Set explicitly per row and never derived from the title: "Claude Code 101"
+   *  and "Claude Code in Action" happen to name their product, "AI Fluency" and
+   *  "Claude 101" (both Claude.ai) do not, and two labels legitimately repeat
+   *  across the six rows. A factual label, not a status. */
+  product?: string;
 };
 
 export type CredlyBadgeRef = { image: string; credlyUrl: string };
@@ -204,6 +268,13 @@ export type LearningPathData = {
   /** The issuer's noun for a unit — drives the row chip and the counter. */
   unitNoun: "Courses" | "Modules";
   gradient: string;
+  /** Renders the amber "AI Skills" qualifier chip on the collapsed row — the
+   *  same flag, the same chip and the same slot as `GalleryCertificate.aiSkills`
+   *  (see the contract there). Set on the six Google Skills AI paths and
+   *  deliberately ABSENT from Stanford XEE100, which is an Internet-of-Things
+   *  course and would be misdescribed by it. A subject claim, so it is stated
+   *  per path rather than inferred from the section a row renders in. */
+  aiSkills?: boolean;
   coursesLayout: "list" | "badges";
   courses: readonly PathCourse[];
 };
@@ -518,6 +589,11 @@ export const SPECIALIZATIONS: SpecializationData[] = [
   },
 ];
 
+// The two LinkedIn Learning AI singles. The six Claude Academy courses used to
+// live here and were counted alongside them; on 2026-09-12 the owner moved them
+// into their own uncounted section ("Own section, not counted"), so they are now
+// CLAUDE_ACADEMY_COURSES down in the COURSEWORK block and reach neither
+// ALL_SINGLES nor CERT_STATS. Nothing about the rows themselves changed.
 export const AI_CERTIFICATES: GalleryCertificate[] = [
   {
     id: "ai-2",
@@ -528,7 +604,8 @@ export const AI_CERTIFICATES: GalleryCertificate[] = [
     url: "https://www.linkedin.com/learning/certificates/2a2a9abe336c54ff022075ad5887ac814192edc56dca798f9a7a5374be40a447",
     logo: "/logos/linkedin.png",
     description: "Modernizing QA workflows by integrating Generative AI into test planning, execution, and reporting.",
-    gradient: "from-emerald-600/20 to-teal-600/20"
+    gradient: "from-emerald-600/20 to-teal-600/20",
+    aiSkills: true
   },
   {
     id: "ai-1",
@@ -539,10 +616,9 @@ export const AI_CERTIFICATES: GalleryCertificate[] = [
     url: "https://www.linkedin.com/learning/certificates/fa26c3fb8c3d86ba367271e666d1f5e54e0752eb73aff59ffb4e22a1c6b4d879",
     logo: "/logos/linkedin.png",
     description: "Deep dive into leveraging AI agents, GitHub Copilot, and Cursor for accelerated software development.",
-    gradient: "from-blue-600/20 to-purple-600/20"
+    gradient: "from-blue-600/20 to-purple-600/20",
+    aiSkills: true
   },
-  // ai-3 (AI for App Building) intentionally removed — it's now child #7 of the
-  // Google AI Professional specialization above.
 ];
 
 export const GENERAL_CERTIFICATES: GalleryCertificate[] = [
@@ -651,10 +727,15 @@ export const GENERAL_CERTIFICATES: GalleryCertificate[] = [
 
 // --- LEDGER GROUPS ---
 
+/** One certificate, standing on its own. Legal in the counted ledger AND in a
+ *  coursework group: what a single certificate IS does not change with the
+ *  section it is filed under, only whether the page counts it. */
+export type SingleCredential = { kind: "single" } & GalleryCertificate;
+
 /** The two kinds the credential LEDGER may contain. */
 export type LedgerCredential =
   | ({ kind: "specialization" } & SpecializationData)
-  | ({ kind: "single" } & GalleryCertificate);
+  | SingleCredential;
 
 /** A completed learning path or short course. Its `kind` has no arm in
  *  LedgerCredential, which is why putting one into CREDENTIAL_GROUPS below is a
@@ -696,10 +777,21 @@ export type LedgerGroupDef = Omit<CredentialGroupDef, "credentials"> & {
   credentials: LedgerCredential[];
 };
 
-/** A coursework group: paths only, and `countLabel` is mandatory. */
+/** A coursework row: a learning path, or a single certificate the owner chose
+ *  to file as coursework rather than count. Widened from paths-only on
+ *  2026-09-12 for the Claude Academy section — those six ARE certificates with
+ *  public verification pages, and forcing them into LearningPathData to fit the
+ *  old type would have thrown away the badge, the certificate artwork and the
+ *  verify control to satisfy a shape. */
+export type CourseworkCredential = PathCredential | SingleCredential;
+
+/** A coursework group, and `countLabel` is mandatory. The guard that matters
+ *  runs the other way and is untouched: LedgerGroupDef.credentials is
+ *  LedgerCredential[], which has no "path" arm, so a path in CREDENTIAL_GROUPS
+ *  is still a compile error. Widening THIS type cannot weaken that. */
 export type CourseworkGroupDef = Omit<CredentialGroupDef, "credentials" | "countLabel"> & {
   countLabel: string;
-  credentials: PathCredential[];
+  credentials: CourseworkCredential[];
 };
 
 function bySpecId(id: string): LedgerCredential {
@@ -729,6 +821,10 @@ export function credentialSlug(credential: Credential): string {
 // Person schema. A row here with no portfolio.ts twin is deliberate curation,
 // not drift — currently g-4 / g-8 / g-3 (engineering foundations) and g-9
 // (short leadership coursework whose stronger sibling is already listed).
+// The Claude Academy courses are absent from portfolio.ts too, but for a
+// different reason and not as curation: they are COURSEWORK now, and coursework
+// emits no EducationalOccupationalCredential — the same rule that keeps the
+// Google Skills paths and Stanford out of it.
 // Verify against portfolio.ts before "fixing" an apparent gap.
 // (g-10 "Nano Tips to Stop Overthinking" and g-11 "Learning Python Generators"
 // were retired at the owner's request on 2026-09-11 and are gone from the file,
@@ -754,6 +850,11 @@ export const CREDENTIAL_GROUPS: LedgerGroupDef[] = [
       bySpecId("spec-google-ai-professional"),
       bySpecId("spec-google-ai-essentials"),
       bySpecId("spec-google-prompting-essentials"),
+      // Singles, date desc. This group's rule is still completion-date
+      // descending; it governs these two and nothing else. The six Claude
+      // Academy courses that sat here until 2026-09-12 are in their own
+      // uncounted section now and carry a CURATED order of the owner's, which
+      // is not derived from any date — see CLAUDE_ACADEMY_COURSES.
       byCertId("ai-2"),
       byCertId("ai-1"),
     ],
@@ -838,16 +939,22 @@ const ALL_YEARS = [
 
 export const CERT_STATS = {
   credentials: SPECIALIZATIONS.length + ALL_SINGLES.length,
-  // Every certificate that certifies ONE course. A specialization contributes
-  // its per-course credentials (7 + 7 + 4 + 5 = 23); a standalone certificate
-  // IS a single course certificate and contributes itself (11). Total 34.
+  // Every COUNTED certificate that certifies ONE course. A specialization
+  // contributes its per-course credentials (7 + 7 + 4 + 5 = 23); a standalone
+  // certificate IS a single course certificate and contributes itself (11).
+  // Total 34.
   //
   // It counted only the specialization children until 2026-09-12, which made
   // the figure mean two different things at once: it took the trouble to look
-  // inside the four multi-course programmes while ignoring eleven certificates
+  // inside the four multi-course programmes while ignoring the certificates
   // that are course certificates in their own right. A reader comparing it
   // against "15 Credentials" could not reconcile the two, because 23 was
   // neither a subset of the 15 nor a total of anything.
+  //
+  // The six Claude Academy completion badges are NOT in here. They are real
+  // course certificates, but the owner filed them as an uncounted coursework
+  // section, and a stat that counted them while the ledger did not would put
+  // two different totals on the same page.
   courseCertificates:
     SPECIALIZATIONS.reduce((n, s) => n + s.children.length, 0) + ALL_SINGLES.length,
   specializations: SPECIALIZATIONS.length,
@@ -855,47 +962,62 @@ export const CERT_STATS = {
 };
 
 
-// --- COURSEWORK (COMPLETED LEARNING PATHS AND SHORT COURSES) -----------------
+// --- COURSEWORK (COMPLETED LEARNING PATHS, COURSES AND SHORT COURSES) --------
 //
 // These render through the SAME CredentialRow / CredentialGroup / CollapsePanel
 // / ChildBadgesGrid template as the ledger above — same numeral, same card,
-// same chips, same chevron, same disclosure panel — a single full-width column
-// since the issuer slab was removed (see PathBody). They are NOT credentials,
-// and the honesty is carried STRUCTURALLY, never by a sentence on the page:
-//   • LearningPathData has no `image` and no `parentBadge`/`badgeHalo`/
-//     `badgeShadow`. The type CANNOT express a path-level award, which is why
-//     the header visual is a typeset issuer tile and the panel's counter slot
-//     holds a number. Verification lives on a COURSE, never on a path.
-//   • PathCredential's `kind` is "path", which LedgerCredential has no arm for,
-//     so a path inside CREDENTIAL_GROUPS is a COMPILE ERROR.
-//   • Never in SPECIALIZATIONS / AI_CERTIFICATES / GENERAL_CERTIFICATES, so it
-//     cannot reach ALL_SINGLES, ALL_YEARS or CERT_STATS.credentials (15).
-//   • Never in `certifications` in src/data/portfolio.ts, so
+// same chips, same chevron, same disclosure panel. What they share is that the
+// stats strip does not count them; WHY differs by section, and the two reasons
+// must not be conflated:
+//
+//   1. The Google Skills paths and Stanford XEE100 are NOT credentials. A path
+//      awards nothing at path level, and the honesty is carried STRUCTURALLY,
+//      never by a sentence on the page:
+//        • LearningPathData has no `image` and no `parentBadge`/`badgeHalo`/
+//          `badgeShadow`. The type CANNOT express a path-level award, which is
+//          why the header visual is a typeset issuer tile and the panel's
+//          counter slot holds a number. Verification lives on a COURSE.
+//        • PathCredential's `kind` is "path", which LedgerCredential has no arm
+//          for, so a path inside CREDENTIAL_GROUPS is a COMPILE ERROR.
+//   2. The six Claude Academy rows ARE certificates — each has a public
+//      completion badge and a working verify page, and each keeps its Verify
+//      Certificate control. They are uncounted because the OWNER placed them
+//      here ("Own section, not counted", 2026-09-12), not because they lack an
+//      award, and nothing in this section pretends otherwise. They are simply
+//      absent from AI_CERTIFICATES, so CERT_STATS cannot see them.
+//
+// Common to both, and asserted in src/app/certifications/data.test.ts:
+//   • Nothing here is in SPECIALIZATIONS / AI_CERTIFICATES /
+//     GENERAL_CERTIFICATES, so none of it can reach ALL_SINGLES, ALL_YEARS or
+//     CERT_STATS.credentials (15).
+//   • Nothing here is in `certifications` in src/data/portfolio.ts, so
 //     certificationsSchema() emits no EducationalOccupationalCredential and the
 //     Experience page's `certs` card never lists these. No "@type":"Course".
-//   • COURSEWORK_GROUPS ids deliberately do NOT start with "group-", and path
-//     rows' headingIds deliberately do NOT start with
+//   • COURSEWORK_GROUPS ids deliberately do NOT start with "group-", and
+//     coursework rows' headingIds deliberately do NOT start with
 //     "specialization-path-heading". Those are the two structural selectors
 //     tests/e2e/certifications.spec.ts counts at exactly 4 each. That file is
 //     edited ONLY under an explicit instruction: on 2026-09-11 exactly one
 //     CREDENTIAL_TITLES entry (g-10, "Nano Tips to Stop Overthinking with
-//     Shadé Zahrai") was removed with the credential itself, and nothing else.
-//   • Each coursework group prints its own computed `countLabel`. Nothing here
-//     prints "credential", "all verified" or "certified".
+//     Shadé Zahrai") was removed with the credential itself, and on 2026-09-12
+//     the six Claude Academy titles were removed with this move. Nothing else.
+//   • Each coursework group prints its own computed `countLabel`. No group
+//     header here prints "credential", "all verified" or "certified".
 // A course badge IS real and publicly verifiable (Google Skills and Credly badge
-// pages return 200 logged-out — verified 2026-09-10/11), so verification
-// vocabulary is legitimate for a BADGE and is used nowhere else. Badge links
-// never route through openVerifyUrl()/openBadgeUrl(); see verify.ts.
-// src/app/certifications/data.test.ts asserts every line of this.
+// pages return 200 logged-out — verified 2026-09-10/11; the Claude Academy
+// verify pages were rendered logged-out in a real browser on 2026-09-12), so
+// verification vocabulary is legitimate for a BADGE or a CERTIFICATE and is
+// never attached to a path. Path badge links never route through
+// openVerifyUrl()/openBadgeUrl(); see verify.ts.
 
-/** The two coursework sections are deliberately UNCOLOURED. Violet / blue /
+/** The three coursework sections are deliberately UNCOLOURED. Violet / blue /
  *  amber / sky belong to the four counted groups, and every other hue on this
  *  page is already reserved by meaning (emerald = verification, blue-700/400 =
  *  Verify + Official Badge, violet = courses, amber = skills). "No category
  *  hue" is the structural signal that this is a different register, and it
  *  spends no words on a disclaimer. Every value carries its own dark: partner,
  *  so eyebrowTone() in CredentialGroup (which maps only the four 300-weight
- *  tokens) leaves this pair unchanged.
+ *  tokens) leaves this trio unchanged.
  *  Measured: eyebrow ink/70 6.41:1 light / ink/60 7.31:1 dark on the page
  *  ground; icon tile ink/70 on bg-ink/[0.05] 6.12:1 light / ink/60 7.09:1 dark. */
 const COURSEWORK_ACCENT: GroupAccent = {
@@ -1062,6 +1184,7 @@ export const LEARNING_PATHS: readonly LearningPathData[] = [
     totalCourses: 5,
     unitNoun: "Courses",
     gradient: "from-violet-600/20 via-indigo-500/12 to-blue-600/20",
+    aiSkills: true,
     coursesLayout: "badges",
     courses: [
       { step: 1, title: "Gen AI: Beyond the Chatbot", badge: gsBadge(27812324, "gen-ai-beyond-the-chatbot") },
@@ -1092,6 +1215,7 @@ export const LEARNING_PATHS: readonly LearningPathData[] = [
     totalCourses: 13,
     unitNoun: "Courses",
     gradient: "from-sky-600/20 via-blue-500/12 to-violet-600/20",
+    aiSkills: true,
     coursesLayout: "badges",
     courses: [
       { step: 1, ...INTRO_GENERATIVE_AI },
@@ -1140,6 +1264,7 @@ export const LEARNING_PATHS: readonly LearningPathData[] = [
     totalCourses: 3,
     unitNoun: "Courses",
     gradient: "from-cyan-600/20 via-teal-500/12 to-blue-600/20",
+    aiSkills: true,
     coursesLayout: "badges",
     courses: [
       {
@@ -1198,6 +1323,7 @@ export const LEARNING_PATHS: readonly LearningPathData[] = [
     // stays inside the range PathBody's date line was measured against
     // (ink/70 ≥ 6.2:1 light, ink/60 ≥ 6.9:1 dark).
     gradient: "from-blue-700/20 via-cyan-500/12 to-teal-600/20",
+    aiSkills: true,
     coursesLayout: "badges",
     courses: [
       {
@@ -1266,6 +1392,7 @@ export const LEARNING_PATHS: readonly LearningPathData[] = [
     totalCourses: 3,
     unitNoun: "Courses",
     gradient: "from-indigo-600/20 via-blue-500/12 to-cyan-600/20",
+    aiSkills: true,
     coursesLayout: "badges",
     courses: [
       { step: 1, ...AGENT_FUNDAMENTALS },
@@ -1293,6 +1420,7 @@ export const LEARNING_PATHS: readonly LearningPathData[] = [
     totalCourses: 4,
     unitNoun: "Courses",
     gradient: "from-blue-600/20 via-sky-500/12 to-indigo-600/20",
+    aiSkills: true,
     coursesLayout: "badges",
     courses: [
       { step: 1, ...INTRO_GENERATIVE_AI },
@@ -1373,7 +1501,160 @@ export const CONTINUING_EDUCATION: readonly LearningPathData[] = [
   },
 ];
 
+// Claude Academy — six completed courses, each with a public completion badge
+// and a working verification page.
+//
+// PLACEMENT. These were counted singles in group-ai until 2026-09-12, when the
+// owner asked for "a separate section for Claude Academy just like Google
+// Skills" and, asked directly whether they should still count, answered "Own
+// section, not counted". They left AI_CERTIFICATES for this array on that
+// instruction alone; every row's artwork, copy, links and controls came across
+// unchanged. Being uncounted is a filing decision here, NOT a claim that these
+// award nothing — see the two numbered reasons at the top of this block.
+//
+// ORDER — the owner's curated sequence, set 2026-09-12. THE ARRAY LITERAL IS
+// THE ORDER; nothing sorts at runtime and no date is read. It is a SENIORITY
+// PROGRESSION, not a timeline: the hands-on agentic-engineering course leads,
+// then fluency, then human–agent teams, then the Cowork intro, and the two 101s
+// close it. The dates run out of sequence in both directions to serve that —
+// Sep 12 sits third, May 11 first, and the two oldest last. A newly completed
+// course does NOT go first; where it lands is the owner's call. Any earlier
+// wording claiming these are ordered by completion date is gone, not overridden
+// — that rule still governs the singles in group-ai, and nothing else.
+//
+// BRAND: the academy rebranded to Claude Academy at academy.claude.com, so the
+// retired anthropic.skilljar.com course pages and verify.skilljar.com/c/<code>
+// certificates were swapped for academy.claude.com/courses/<slug> and
+// academy.claude.com/verify/<token> on 2026-09-12. `/logos/anthropic.png`
+// STAYS — the site ships no replacement wordmark and Anthropic PBC is still the
+// issuing organisation, as its own footer says.
+//
+// NEVER link academy.claude.com/badges/<uuid>: those are the owner's private
+// badge pages and render a sign-in wall logged out. They are where the verify
+// tokens came from, not something to publish.
+//
+// Both URL sets were confirmed logged-out in a real browser (this SPA is
+// client-rendered, so curl returns an identical empty shell for a real URL and
+// a fabricated one — a bogus 32-hex token 200s and renders "This completion
+// badge couldn't be verified", which is the only discrimination that proves a
+// token is genuine).
+//
+// The `ai-` ids and their `cert-ai-*` anchors are kept deliberately through the
+// move: they are live deep links, and changing them would have altered the
+// rendered rows, which this move was required not to do. The prefix carries NO
+// meaning beyond that — it used to be what earned the amber AI Skills chip in
+// CredentialRow, and since 2026-09-13 the `aiSkills` flag below says so
+// outright, on these rows and on the Google Skills paths alike.
+export const CLAUDE_ACADEMY_COURSES: GalleryCertificate[] = [
+  {
+    id: "ai-5",
+    title: "Claude Code in Action",
+    issuer: "Claude Academy",
+    date: "2026",
+    image: "/certificates/claude_academy_claude_code_in_action_badge.webp",
+    url: "https://academy.claude.com/verify/4d7c863adbe9b8db4d518c6800d494ea",
+    courseUrl: "https://academy.claude.com/courses/claude-code-in-action",
+    logo: "/logos/anthropic.png",
+    description: "Running long, hands-off Claude Code sessions you can trust: steering, configuring, automating and verifying agent work.",
+    gradient: "from-amber-600/20 to-yellow-600/20",
+    courseBadge: "/badges/claude-academy/claude-code-in-action.webp",
+    logoWordmark: true,
+    aiSkills: true,
+    product: "Claude Code"
+  },
+  {
+    id: "ai-6",
+    title: "AI Fluency: Framework & Foundations",
+    issuer: "Claude Academy",
+    date: "2026",
+    image: "/certificates/claude_academy_ai_fluency_framework_foundations_badge.webp",
+    url: "https://academy.claude.com/verify/87cca4700437d5b08cdfc43b538849e0",
+    courseUrl: "https://academy.claude.com/courses/ai-fluency-framework-foundations",
+    logo: "/logos/anthropic.png",
+    description: "Collaborating with AI systems effectively, efficiently, ethically and safely — the second universal prerequisite. Graded 10 / 10.",
+    gradient: "from-violet-600/20 to-fuchsia-600/20",
+    courseBadge: "/badges/claude-academy/ai-fluency-framework-foundations.webp",
+    logoWordmark: true,
+    aiSkills: true,
+    product: "Claude.ai"
+  },
+  {
+    // "(Beta)" is kept because that is how Claude Academy itself names the
+    // course, on the badge and on the course page. It describes the COURSE's
+    // release stage, not the award: the completion badge is issued and publicly
+    // verifiable exactly like the other five. Completed 2026-09-12, the newest
+    // of the six, and it sits THIRD — see the curated order above.
+    id: "ai-8",
+    title: "Building Effective Human Agent Teams (Beta)",
+    issuer: "Claude Academy",
+    date: "2026",
+    image: "/certificates/claude_academy_building_effective_human_agent_teams_badge.webp",
+    url: "https://academy.claude.com/verify/158250357ac93005cec8552388fb168a",
+    courseUrl: "https://academy.claude.com/courses/building-effective-human-agent-teams",
+    logo: "/logos/anthropic.png",
+    description: "Designing the division of labour between people and agents: where to delegate, where to keep a human decision, and the review loops that hold a team accountable for agent work.",
+    gradient: "from-indigo-600/20 to-violet-600/20",
+    courseBadge: "/badges/claude-academy/building-effective-human-agent-teams.webp",
+    logoWordmark: true,
+    aiSkills: true,
+    product: "Claude Teams"
+  },
+  {
+    id: "ai-7",
+    title: "Introduction to Claude Cowork",
+    issuer: "Claude Academy",
+    date: "2026",
+    image: "/certificates/claude_academy_introduction_to_claude_cowork_badge.webp",
+    url: "https://academy.claude.com/verify/fcf45c0d8bd08cfbdfe1cda2716ed394",
+    courseUrl: "https://academy.claude.com/courses/introduction-to-claude-cowork",
+    logo: "/logos/anthropic.png",
+    description: "The Cowork task loop, plugins and skills, and how to steer multi-step work on real files responsibly.",
+    gradient: "from-rose-600/20 to-pink-600/20",
+    courseBadge: "/badges/claude-academy/introduction-to-claude-cowork.webp",
+    logoWordmark: true,
+    aiSkills: true,
+    product: "Claude Cowork"
+  },
+  {
+    id: "ai-4",
+    title: "Claude Code 101",
+    issuer: "Claude Academy",
+    date: "2026",
+    image: "/certificates/claude_academy_claude_code_101_badge.webp",
+    url: "https://academy.claude.com/verify/906865ee77b53507c289141ed39e25f3",
+    courseUrl: "https://academy.claude.com/courses/claude-code-101",
+    logo: "/logos/anthropic.png",
+    description: "Using Claude Code effectively inside a daily development workflow.",
+    gradient: "from-cyan-600/20 to-sky-600/20",
+    courseBadge: "/badges/claude-academy/claude-code-101.webp",
+    logoWordmark: true,
+    aiSkills: true,
+    product: "Claude Code"
+  },
+  {
+    // The id `ai-3` was previously "AI for App Building", which was retired
+    // from AI_CERTIFICATES in 2026 because it is now child #7 of the Google AI
+    // Professional specialization. The free id is reused here; the two entries
+    // have nothing to do with each other.
+    id: "ai-3",
+    title: "Claude 101",
+    issuer: "Claude Academy",
+    date: "2026",
+    image: "/certificates/claude_academy_claude_101_badge.webp",
+    url: "https://academy.claude.com/verify/26fc2b7fb0801c5c6d8168316b99dcae",
+    courseUrl: "https://academy.claude.com/courses/claude-101",
+    logo: "/logos/anthropic.png",
+    description: "Core Claude features and everyday working patterns — the shared foundation every certification track starts from.",
+    gradient: "from-orange-600/20 to-stone-600/20",
+    courseBadge: "/badges/claude-academy/claude-101.webp",
+    logoWordmark: true,
+    aiSkills: true,
+    product: "Claude.ai"
+  },
+];
+
 const asPath = (p: LearningPathData): PathCredential => ({ kind: "path", ...p });
+const asSingle = (c: GalleryCertificate): SingleCredential => ({ kind: "single", ...c });
 
 /** DISTINCT badge PAGES, not badge references. Across the six Google paths
  *  there are 31 references but only 26 distinct badges — Google reuses five
@@ -1390,10 +1671,13 @@ const totalUnits = (paths: readonly LearningPathData[]) =>
   paths.reduce((n, p) => n + p.totalCourses, 0);
 const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
 
-/** Rendered AFTER the ledger, by CredentialLedger. Deliberately NOT part of
- *  CREDENTIAL_GROUPS (which the type system now forbids), ids deliberately not
- *  "group-*", and `countLabel` never says "credential", "all verified" or
- *  "certified". */
+/** Rendered AFTER the ledger, by CredentialLedger, in exactly this order:
+ *  Google Skills → Claude Academy → Continuing Education (owner-confirmed,
+ *  2026-09-12). Deliberately NOT part of CREDENTIAL_GROUPS — a path there is a
+ *  compile error, and the Claude singles are kept out of it by their absence
+ *  from AI_CERTIFICATES, which is what keeps them out of CERT_STATS too. Ids
+ *  deliberately not "group-*", and no `countLabel` says "credential", "all
+ *  verified" or "certified". */
 export const COURSEWORK_GROUPS: CourseworkGroupDef[] = [
   {
     id: "google-skills",
@@ -1407,6 +1691,25 @@ export const COURSEWORK_GROUPS: CourseworkGroupDef[] = [
       "course badges",
     )}`,
     credentials: LEARNING_PATHS.map(asPath),
+  },
+  {
+    // Owner-confirmed placement: "Place Claude section after Google Skills
+    // section". The array IS the page order, so this position is the assertion.
+    id: "claude-academy",
+    eyebrow: "Completed Courses",
+    title: "Claude Academy",
+    icon: Bot,
+    accent: COURSEWORK_ACCENT,
+    // Factual, and deliberately NOT the derived "N credentials · all verified"
+    // line the counted groups print. Every row here does carry a working
+    // Verify Certificate control, so naming the badges is accurate — it just
+    // never borrows the "credentials" noun the counted ledger reserves.
+    countLabel: `${plural(CLAUDE_ACADEMY_COURSES.length, "course", "courses")} · ${plural(
+      new Set(CLAUDE_ACADEMY_COURSES.map((c) => c.url)).size,
+      "completion badge",
+      "completion badges",
+    )}`,
+    credentials: CLAUDE_ACADEMY_COURSES.map(asSingle),
   },
   {
     id: "continuing-education",
