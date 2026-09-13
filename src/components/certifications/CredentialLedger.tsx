@@ -26,11 +26,12 @@ const startIndexes = (groups: readonly { credentials: readonly unknown[] }[]) =>
 // 0-based ledger index of each group's first row (the 01…15 numerals).
 const GROUP_START_INDEXES = startIndexes(CREDENTIAL_GROUPS);
 // The coursework sections are a SEPARATE ledger: their numerals restart at 01
-// and then run continuously across the two sections (01–06 Google Skills, 07
-// Continuing Education), exactly as the credential ledger runs 01–15 across its
-// four group headers. Continuing to 16 would number these as items of the
-// credential ledger — the one numeric claim on this page that would be false,
-// and visibly at odds with the stats strip's "15 Credentials".
+// and then run continuously across the three sections (01–06 Google Skills,
+// 07–12 Claude Academy, 13 Continuing Education), exactly as the credential
+// ledger runs 01–15 across its four group headers. Continuing to 16 would
+// number these as items of the credential ledger — the one numeric claim on
+// this page that would be false, and visibly at odds with the stats strip's
+// "15 Credentials".
 const COURSEWORK_START_INDEXES = startIndexes(COURSEWORK_GROUPS);
 
 // Both ledgers share one open-state store and therefore one pair of GA events,

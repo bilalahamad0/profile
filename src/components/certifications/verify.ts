@@ -33,7 +33,9 @@ export function openBadgeUrl(
   window.open(url, "_blank", "noopener,noreferrer");
 }
 
-/** Coursework link tracking. Deliberately NOT openVerifyUrl(): that helper
+/** Course-page link tracking, for a learning-path row and for the "Course
+ *  page" link on a single certificate whose syllabus lives at its own URL.
+ *  Deliberately NOT openVerifyUrl(): that helper
  *  fires `verify_certificate`, a claim no learning path can make. The verb is
  *  "open", not "verify", so a GA report can never merge these clicks into
  *  credential verifications. These helpers only TRACK — the <a> navigates

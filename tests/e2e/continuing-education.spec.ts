@@ -64,6 +64,48 @@ const LEADER_COURSES = [
 ];
 const STANFORD_MODULES = ['Cool Applications', 'Sensors', 'Embedded Systems', 'Networking', 'Circuits'];
 
+/** The Claude Academy section: six single certificates filed as coursework on
+ *  2026-09-12 ("Own section, not counted"). Top-to-bottom in the owner's
+ *  CURATED order, which is a seniority progression and NOT a timeline — the
+ *  newest course (Building Effective Human Agent Teams, 12 Sep 2026) sits third
+ *  and the two oldest 101s close the section. Never re-derive this from dates.
+ *  Numerals continue the coursework ledger: 07–12, after Google Skills' 01–06.
+ *
+ *  `product` is the neutral chip that heads each row's qualifier run. Two
+ *  labels repeat by design (Claude Code, Claude.ai) and two rows do not name
+ *  their product in the title at all, which is why the label is data and never
+ *  a title match. */
+const CLAUDE_ROWS = [
+  { id: 'cert-ai-5', numeral: '07', title: 'Claude Code in Action', product: 'Claude Code',
+    verify: 'https://academy.claude.com/verify/4d7c863adbe9b8db4d518c6800d494ea',
+    course: 'https://academy.claude.com/courses/claude-code-in-action' },
+  { id: 'cert-ai-6', numeral: '08', title: 'AI Fluency: Framework & Foundations', product: 'Claude.ai',
+    verify: 'https://academy.claude.com/verify/87cca4700437d5b08cdfc43b538849e0',
+    course: 'https://academy.claude.com/courses/ai-fluency-framework-foundations' },
+  { id: 'cert-ai-8', numeral: '09', title: 'Building Effective Human Agent Teams (Beta)', product: 'Claude Teams',
+    verify: 'https://academy.claude.com/verify/158250357ac93005cec8552388fb168a',
+    course: 'https://academy.claude.com/courses/building-effective-human-agent-teams' },
+  { id: 'cert-ai-7', numeral: '10', title: 'Introduction to Claude Cowork', product: 'Claude Cowork',
+    verify: 'https://academy.claude.com/verify/fcf45c0d8bd08cfbdfe1cda2716ed394',
+    course: 'https://academy.claude.com/courses/introduction-to-claude-cowork' },
+  { id: 'cert-ai-4', numeral: '11', title: 'Claude Code 101', product: 'Claude Code',
+    verify: 'https://academy.claude.com/verify/906865ee77b53507c289141ed39e25f3',
+    course: 'https://academy.claude.com/courses/claude-code-101' },
+  { id: 'cert-ai-3', numeral: '12', title: 'Claude 101', product: 'Claude.ai',
+    verify: 'https://academy.claude.com/verify/26fc2b7fb0801c5c6d8168316b99dcae',
+    course: 'https://academy.claude.com/courses/claude-101' },
+] as const;
+
+/** The chip run of one row, in RENDERED left-to-right order. Chips are
+ *  `hidden … sm:flex` / `hidden lg:inline-flex` on the shared template, so
+ *  below 1024px they are in the DOM but unpainted — read the DOM, then assert
+ *  visibility separately where the viewport is wide enough. */
+const chipRun = (card: Locator) =>
+  card.locator('[data-chips] > span').evaluateAll((els) =>
+    els.map((e) => (e.textContent ?? '').replace(/\s+/g, ' ').trim()),
+  );
+const lgViewport = (page: Page) => (page.viewportSize()?.width ?? 0) >= 1024;
+
 type Card = {
   section: 'google-skills' | 'continuing-education';
   id: string;
@@ -128,11 +170,33 @@ const CARDS: Card[] = [
   { section: 'continuing-education', id: 'ce-stanford-xee100',
     title: 'Introduction to Internet of Things',
     meta: 'Stanford School of Engineering · 2026 · 5-Module Course',
-    chip: '5 Modules', numeral: '07',
+    chip: '5 Modules', numeral: '13',
     linkLabel: 'Course page', urlNoun: 'course', issuerShort: 'Stanford',
     url: /^https:\/\/online\.stanford\.edu\/courses\/xee100-introduction-internet-things$/,
     courses: STANFORD_MODULES, badges: 0, credly: 0, pill: /^5 course modules$/i },
 ];
+
+/** The Claude Academy rows are certificates, so their Verify control routes
+ *  through window.open() like every other certificate on the page. Intercept it
+ *  rather than let a new tab open. */
+async function spyOnWindowOpen(page: Page) {
+  await page.evaluate(() => {
+    // @ts-expect-error attach probe state for the test
+    window.__openCalls = [];
+    window.open = (url, target) => {
+      // @ts-expect-error read probe state
+      window.__openCalls.push({ url: String(url), target: String(target) });
+      return null;
+    };
+  });
+}
+
+async function readOpenCalls(page: Page) {
+  return page.evaluate(
+    // @ts-expect-error read probe state
+    () => window.__openCalls as Array<{ url: string; target: string }>,
+  );
+}
 
 const badgeLinks = (scope: Locator) =>
   scope.getByRole('link', {
@@ -198,14 +262,17 @@ const clickUntil = async (target: Locator, assert: () => Promise<void>) => {
 
 /** Expand every row in a section, retried past hydration. The button's own
  *  label flipping to "Collapse all" is the proof the click landed. */
-const expandAll = async (page: Page, section: 'google-skills' | 'continuing-education') => {
+const expandAll = async (
+  page: Page,
+  section: 'google-skills' | 'claude-academy' | 'continuing-education',
+) => {
   const btn = page.getByTestId(`expand-all-${section}`);
   await clickUntil(btn, async () => {
     await expect(btn).toHaveText('Collapse all', { timeout: 1_000 });
   });
 };
 
-test.describe('Certifications — completed coursework (Google Skills + Continuing Education)', () => {
+test.describe('Certifications — completed coursework (Google Skills + Claude Academy + Continuing Education)', () => {
   test('ATS: every path, issuer, course title and citation is in the raw server HTML with zero JavaScript', async ({ request }) => {
     const res = await request.get('/certifications');
     expect(res.status()).toBe(200);
@@ -214,8 +281,11 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     const html = decode(await res.text());
     for (const needle of new Set<string>([
       'Google Skills', 'Continuing Education', 'Completed Learning Paths',
+      'Claude Academy', 'Completed Courses',
       'Stanford School of Engineering', 'XEE100',
       '6 learning paths · 26 course badges', '1 short course · 5 modules',
+      '6 courses · 6 completion badges',
+      ...CLAUDE_ROWS.map((r) => r.title),
       'Generative AI Leader Certification', 'Train for the exam',
       'Google Cloud Generative AI Leader certification',
       'six Stanford faculty members will deliver an overview',
@@ -230,7 +300,12 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     expect(html).not.toContain('(Credly:');
   });
 
-  test('neither section prints credential vocabulary anywhere in its markup', async ({ request }) => {
+  test('neither learning-path section prints credential vocabulary anywhere in its markup', async ({ request }) => {
+    // The two PATH sections only. Claude Academy is deliberately not in this
+    // loop: its rows are real certificates with public verification pages, so
+    // "Verify Certificate" there is accurate, not an overclaim. What that
+    // section may not do is call itself credentials — asserted separately in
+    // the header test below.
     const html = await (await request.get('/certifications')).text();
     for (const id of ['google-skills', 'continuing-education']) {
       const start = html.indexOf(`id="${id}"`);
@@ -258,19 +333,47 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     }
   });
 
-  test('neither section joins the four counted ledger groups, and the stats strip is unmoved', async ({ page }) => {
+  test('no coursework section joins the four counted ledger groups, and the stats strip counts none of them', async ({ page }) => {
     await page.goto('/certifications');
     await expect(page.locator('section[id^="group-"]')).toHaveCount(4);
     await expect(page.locator('section[aria-labelledby^="specialization-path-heading"]')).toHaveCount(4);
     await expect(page.locator('#google-skills')).toBeVisible();
+    await expect(page.locator('#claude-academy')).toBeVisible();
     await expect(page.locator('#continuing-education')).toBeVisible();
-    const credentialsCell = page
-      .locator('dl > div')
-      .filter({ has: page.getByText('Credentials', { exact: true }) });
-    await expect(credentialsCell.locator('dd')).toHaveText('15');
+    const cell = (label: string) =>
+      page
+        .locator('dl > div')
+        .filter({ has: page.getByText(label, { exact: true }) })
+        .locator('dd');
+    // 15 and 34, i.e. back where they were before the six Claude Academy
+    // courses were briefly counted as credentials.
+    await expect(cell('Credentials')).toHaveText('15');
+    await expect(cell('Course Certificates')).toHaveText('34');
   });
 
-  test('both group headers count the real thing and say nothing about certificates', async ({ page }) => {
+  test('the three coursework sections render in the owner-confirmed order, Claude Academy after Google Skills', async ({ page }) => {
+    await page.goto('/certifications');
+    const ids = await page
+      .locator('section[id]')
+      .evaluateAll((els) =>
+        els
+          .map((el) => el.id)
+          .filter((id) =>
+            ['google-skills', 'claude-academy', 'continuing-education'].includes(id),
+          ),
+      );
+    expect(ids).toEqual(['google-skills', 'claude-academy', 'continuing-education']);
+    // And all three sit below every counted group.
+    const order = await page
+      .locator('section[id^="group-"], #google-skills, #claude-academy, #continuing-education')
+      .evaluateAll((els) => els.map((el) => el.id));
+    expect(order).toEqual([
+      'group-ai', 'group-testing', 'group-leadership', 'group-engineering',
+      'google-skills', 'claude-academy', 'continuing-education',
+    ]);
+  });
+
+  test('both learning-path group headers count the real thing and say nothing about certificates', async ({ page }) => {
     await page.goto('/certifications');
     const google = page.locator('#google-skills');
     await expect(google.getByRole('heading', { level: 2 })).toHaveText('Google Skills');
@@ -282,6 +385,96 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     await expect(cont.getByText('Stanford School of Engineering', { exact: true }).first()).toBeVisible();
     const contCount = cont.getByText('1 short course · 5 modules', { exact: true });
     await (wideViewport(page) ? expect(contCount).toBeVisible() : expect(contCount).toBeAttached());
+  });
+
+  test('the Claude Academy header counts courses and badges, and never says credentials', async ({ page }) => {
+    await page.goto('/certifications');
+    const academy = page.locator('#claude-academy');
+    await expect(academy.getByRole('heading', { level: 2 })).toHaveText('Claude Academy');
+    await expect(academy.getByText('Completed Courses', { exact: true })).toBeVisible();
+    const count = academy.getByText('6 courses · 6 completion badges', { exact: true });
+    await (wideViewport(page) ? expect(count).toBeVisible() : expect(count).toBeAttached());
+    // The derived "N credentials · all verified" line is reserved for the four
+    // counted groups; this header may not borrow either half of it.
+    const header = await academy.evaluate((el) => el.querySelector('div')?.textContent ?? '');
+    expect(header).not.toMatch(/credential/i);
+    expect(header).not.toMatch(/all verified/i);
+  });
+
+  test('the six Claude Academy rows render in the owner’s curated order, with their verify and course links intact', async ({ page }) => {
+    await page.goto('/certifications');
+    const academy = page.locator('#claude-academy');
+    // Rendered top-to-bottom order. NOT chronological: the newest course sits
+    // third. This assertion is what stops a later edit resequencing them.
+    const titles = await academy
+      .locator('article h3 button > span:first-child')
+      .evaluateAll((els) => els.map((e) => e.textContent?.trim()));
+    expect(titles).toEqual(CLAUDE_ROWS.map((r) => r.title));
+    const nums = await academy
+      .locator('[data-ledger-index]')
+      .evaluateAll((els) => els.map((e) => e.textContent?.trim()));
+    expect(nums).toEqual(CLAUDE_ROWS.map((r) => r.numeral));
+
+    for (const row of CLAUDE_ROWS) {
+      const el = page.locator(`#${row.id}`);
+      expect(await el.evaluate((n) => n.tagName)).toBe('ARTICLE');
+      await expect(el.getByText('Claude Academy · 2026', { exact: true })).toBeVisible();
+      // Header visual is the glow-free completion decagon, never the seal.
+      await expect(el.getByAltText(`${row.title} course completion badge`)).toBeAttached();
+      await expect(el.getByText('Official Badge', { exact: true })).toHaveCount(0);
+      // Verify is a real control on these rows — they are certificates.
+      await expect(el.locator('[data-verify]')).toHaveCount(1);
+      await openRow(page, row.id);
+      await expect(el.locator(`a[href="${row.course}"]`)).toHaveCount(1);
+    }
+
+    // Every verify URL is the public academy.claude.com token page, opened
+    // through the same window.open path every other certificate uses.
+    await spyOnWindowOpen(page);
+    for (const row of CLAUDE_ROWS) {
+      await page.locator(`#${row.id} [data-verify]`).click();
+    }
+    const calls = await readOpenCalls(page);
+    expect(calls.map((c) => c.url)).toEqual(CLAUDE_ROWS.map((r) => r.verify));
+  });
+
+  test('each Claude Academy row leads with its product chip, then AI Skills', async ({ page }) => {
+    await page.goto('/certifications');
+    for (const row of CLAUDE_ROWS) {
+      const el = page.locator(`#${row.id}`);
+      // Rendered left-to-right. The product chip is FIRST (owner: "add them as
+      // chips before 'AI Skills' chip"), AI Skills second. These rows carry no
+      // Courses chip — they are single certificates, not paths — so the run is
+      // exactly two, and Verify sits immediately right of it.
+      expect(await chipRun(el), `${row.id} chip order`).toEqual([row.product, 'AI Skills']);
+      if (lgViewport(page)) {
+        await expect(el.getByText(row.product, { exact: true })).toBeVisible();
+        await expect(el.getByText('AI Skills', { exact: true })).toBeVisible();
+      }
+      // The product name is a factual label, never a status: it may not borrow
+      // any of the four spoken-for tints (emerald/blue/violet/amber).
+      const cls = await el.locator('[data-chips] > span').first().getAttribute('class');
+      expect(cls).not.toMatch(/emerald|blue|violet|amber/);
+    }
+  });
+
+  test('every Google Skills path carries AI Skills before its Courses chip; Stanford carries neither', async ({ page }) => {
+    await page.goto('/certifications');
+    for (const card of CARDS.filter((c) => c.section === 'google-skills')) {
+      const el = page.locator(`#${card.id}`);
+      // Qualifier first, count last — Courses always sits directly left of the
+      // issuer-page link. No product chip: these are Google paths.
+      expect(await chipRun(el), `${card.id} chip order`).toEqual(['AI Skills', card.chip]);
+      if (lgViewport(page)) {
+        await expect(el.getByText('AI Skills', { exact: true })).toBeVisible();
+      }
+    }
+    // Stanford XEE100 is an Internet-of-Things course. It keeps its Modules
+    // chip and must never gain the AI Skills one — the chip is a subject claim
+    // driven by data, not by the coursework section a row happens to sit in.
+    const stanford = page.locator('#ce-stanford-xee100');
+    expect(await chipRun(stanford)).toEqual(['5 Modules']);
+    await expect(stanford.getByText('AI Skills', { exact: true })).toHaveCount(0);
   });
 
   test('every card uses the credential row template: article, numeral, meta, chip, disclosure, panel', async ({ page }) => {
@@ -307,14 +500,15 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     }
   });
 
-  test('the coursework sections run one continuous ledger, 01–06 then 07, never past 15', async ({ page }) => {
+  test('the coursework sections run one continuous ledger, 01–06, 07–12 then 13, never past 15', async ({ page }) => {
     await page.goto('/certifications');
     const nums = (sel: string) =>
       page.locator(`${sel} [data-ledger-index]`).evaluateAll((els) =>
         els.map((e) => e.textContent?.trim()),
       );
     expect(await nums('#google-skills')).toEqual(['01', '02', '03', '04', '05', '06']);
-    expect(await nums('#continuing-education')).toEqual(['07']);
+    expect(await nums('#claude-academy')).toEqual(['07', '08', '09', '10', '11', '12']);
+    expect(await nums('#continuing-education')).toEqual(['13']);
     // And the cards carry those numerals in the owner's curated sequence, which
     // is what makes the order itself an assertion rather than a coincidence.
     const titles = await page
@@ -689,7 +883,8 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     // Same template parts as a Google card.
     await expect(el.locator('button[aria-expanded]')).toHaveCount(1);
     await expect(el.locator('[data-collapsible]')).toHaveCount(1);
-    await expect(el.locator('[data-ledger-index]')).toHaveText('07');
+    // Last row of the coursework ledger: 06 Google Skills + 06 Claude Academy.
+    await expect(el.locator('[data-ledger-index]')).toHaveText('13');
   });
 
   test('the Generative AI Leader card cannot be read as a held certification', async ({ page }) => {
@@ -708,9 +903,13 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     await expect(el.getByText(/no certificate/i)).toHaveCount(0);
   });
 
-  test('expand all / collapse all works on both sections', async ({ page }) => {
+  test('expand all / collapse all works on all three sections', async ({ page }) => {
     await page.goto('/certifications');
-    for (const [section, n] of [['google-skills', 6], ['continuing-education', 1]] as const) {
+    for (const [section, n] of [
+      ['google-skills', 6],
+      ['claude-academy', 6],
+      ['continuing-education', 1],
+    ] as const) {
       const btn = page.getByTestId(`expand-all-${section}`);
       const toggles = page.locator(`#${section} button[aria-expanded]`);
       await expect(toggles).toHaveCount(n);
@@ -736,11 +935,19 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     ).toHaveAttribute('aria-expanded', 'true');
   });
 
-  test('both jump pills are present and set apart from the four category pills', async ({ page }) => {
+  test('all three jump pills are present, in section order, set apart from the four category pills', async ({ page }) => {
     await page.goto('/certifications');
     const nav = page.getByRole('navigation', { name: /certification categories/i });
+    const hrefs = await nav
+      .locator('a')
+      .evaluateAll((els) => els.map((el) => el.getAttribute('href')));
+    expect(hrefs).toEqual([
+      '#group-ai', '#group-testing', '#group-leadership', '#group-engineering',
+      '#google-skills', '#claude-academy', '#continuing-education',
+    ]);
     for (const [href, label] of [
       ['#google-skills', 'Google Skills'],
+      ['#claude-academy', 'Claude Academy'],
       ['#continuing-education', 'Continuing Education'],
     ] as const) {
       const pill = nav.locator(`a[href="${href}"]`);
@@ -758,6 +965,10 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
       'XEE100', 'Internet of Things', 'SMB Learning Path', 'Generative AI Leader',
       'Agent Ecosystem', 'Beginner: Introduction to Generative AI',
       'Deploy Production Ready Agents',
+      // The Claude Academy six emit none either, now that they are coursework:
+      // portfolio.ts is the only feed for that schema node and they left it.
+      ...CLAUDE_ROWS.map((r) => r.title),
+      'Claude Academy',
     ]) {
       expect(html).not.toMatch(
         new RegExp(`EducationalOccupationalCredential[^]{0,400}${esc(needle)}`),
@@ -772,22 +983,101 @@ test.describe('Certifications — completed coursework (Google Skills + Continui
     for (const pass of ['collapsed', 'expanded'] as const) {
       if (pass === 'expanded') {
         await expandAll(page, 'google-skills');
+        await expandAll(page, 'claude-academy');
         await expandAll(page, 'continuing-education');
       }
-      for (const id of ['google-skills', 'continuing-education']) {
+      for (const id of ['google-skills', 'claude-academy', 'continuing-education']) {
         const delta = await page.locator(`#${id}`).evaluate((el) => el.scrollWidth - el.clientWidth);
         expect(delta, `#${id} overflows by ${delta}px (${pass})`).toBeLessThanOrEqual(0);
       }
       const cards = await page
-        .locator('article[id^="ce-"]')
+        .locator('article[id^="ce-"], #claude-academy article')
         .evaluateAll((els) => els.map((el) => [el.id, el.scrollWidth - el.clientWidth] as const));
-      expect(cards).toHaveLength(7);
+      expect(cards).toHaveLength(13);
       for (const [id, d] of cards) expect(d, `${id} overflows by ${d}px (${pass})`).toBeLessThanOrEqual(0);
       const doc = await page.evaluate(
         () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
       );
       expect(doc, `document overflows by ${doc}px (${pass})`).toBeLessThanOrEqual(0);
     }
+  });
+
+  test('at 375px every row title shows in FULL, and nothing collides with the numeral, chevron or Verify control', async ({ page }) => {
+    // Owner, 2026-09-13: "For Mobile mode, dynamically inflate the headers to
+    // contain full subject title." `line-clamp-2` used to cut "Building
+    // Effective Human Agent Teams (Beta)" to "Building Effective…". The clamp
+    // is gone below `md`; `md:line-clamp-1` is untouched, so desktop rows keep
+    // their height (asserted in the companion test below).
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto('/certifications');
+    const titles = page.locator('article h3 button > span:first-child, section h3 button > span:first-child');
+    // Every row on the page, counted rows included — the clamp lives on the
+    // shared template, so this change reaches all of them.
+    expect(await titles.count()).toBe(await page.locator('h3 button[aria-expanded]').count());
+    const rows = await titles.evaluateAll((els) =>
+      els.map((el) => {
+        const cs = getComputedStyle(el);
+        const lineH = parseFloat(cs.lineHeight);
+        return {
+          text: (el.textContent ?? '').trim(),
+          clamp: cs.webkitLineClamp,
+          overflow: cs.overflow,
+          // The one measurement that proves nothing is cut off: a box that is
+          // hiding text lays out taller than it paints.
+          clipped: el.scrollHeight > el.clientHeight + 1,
+          // How many line boxes the title actually occupies.
+          lines: Math.round(el.getBoundingClientRect().height / lineH),
+        };
+      }),
+    );
+    for (const row of rows) {
+      // No clamp at all below md — the title may take as many lines as it needs.
+      expect(row.clamp, `${row.text} is still clamped`).toBe('none');
+      expect(row.overflow, `${row.text} still hides its overflow`).toBe('visible');
+      expect(row.clipped, `${row.text} is cut off at 375px`).toBe(false);
+    }
+    // The three longest titles on the page each need more than the two lines
+    // the old clamp allowed, and must show every one of them.
+    for (const needle of [
+      'Software Testing Foundations: Integrating AI into the Quality Process',
+      'Introduction to Agents and Google’s Agent Ecosystem',
+      'Building Effective Human Agent Teams (Beta)',
+    ]) {
+      const row = rows.find((r) => r.text === needle);
+      expect(row, `missing row: ${needle}`).toBeDefined();
+      expect(row!.lines, `${needle} did not grow past the old 2-line clamp`).toBeGreaterThan(2);
+    }
+    // Nothing overlaps: for every row, the title's painted box must end left of
+    // the Verify/issuer control and of the chevron, and must not cross into the
+    // ledger numeral's column. The numeral is `sm:block`, so at 375 it is not
+    // rendered at all — the assertion that matters here is the right edge.
+    const overlaps = await page.evaluate(() => {
+      const bad: string[] = [];
+      for (const card of Array.from(document.querySelectorAll('article[id], section[id]'))) {
+        const title = card.querySelector('h3 button > span:first-child');
+        if (!title) continue;
+        const t = title.getBoundingClientRect();
+        for (const sel of ['[data-verify]', '[data-coursework-link]', 'h3 ~ span[aria-hidden]']) {
+          const other = card.querySelector(sel);
+          if (!other) continue;
+          const o = other.getBoundingClientRect();
+          const overlap = t.right > o.left + 0.5 && t.left < o.right - 0.5
+            && t.bottom > o.top + 0.5 && t.top < o.bottom - 0.5;
+          if (overlap) bad.push(`${card.id} title overlaps ${sel}`);
+        }
+      }
+      return bad;
+    });
+    expect(overlaps).toEqual([]);
+  });
+
+  test('above md the title keeps its single-line clamp, so desktop rows do not change height', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/certifications');
+    const clamps = await page
+      .locator('article h3 button > span:first-child, section h3 button > span:first-child')
+      .evaluateAll((els) => els.map((el) => getComputedStyle(el).webkitLineClamp));
+    expect(new Set(clamps)).toEqual(new Set(['1']));
   });
 
   test.describe('with prefers-reduced-motion: reduce', () => {

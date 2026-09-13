@@ -80,13 +80,14 @@ export default function CertificationsPage() {
             );
           })}
 
-          {/* These two are not category peers, so they sit past a divider, wear
-              no category hue (their accent is neutral) and carry no "· {n}"
+          {/* These three (Google Skills, Claude Academy, Continuing Education)
+              are not category peers, so they sit past a divider, wear no
+              category hue (their accent is neutral) and carry no "· {n}"
               count where the four pills above end with one. The absence of a
               number is what marks them as a different kind of section, and it
               does so without spending the label on a disclaimer.
               The nav's accessible name stays "Certification categories" —
-              slightly imprecise for these two, and a knowingly accepted wart:
+              slightly imprecise for these three, and a knowingly accepted wart:
               certifications.spec.ts matches the nav by that name and must pass
               unchanged. */}
           <span aria-hidden className="mx-1 h-5 w-px shrink-0 bg-line/15" />
