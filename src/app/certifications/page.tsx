@@ -2,7 +2,7 @@ import React from "react";
 import { Award } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CredentialLedger } from "@/components/certifications/CredentialLedger";
-import { CERT_STATS, COURSEWORK_GROUPS, CREDENTIAL_GROUPS } from "./data";
+import { ALL_SECTIONS, CERT_STATS, COURSEWORK_GROUPS } from "./data";
 
 // Server Component by design: the hero, stats, and jump pills are static
 // SEO-critical HTML; all interactivity lives in <CredentialLedger />.
@@ -63,44 +63,26 @@ export default function CertificationsPage() {
           aria-label="Certification categories"
           className="-mx-6 mt-6 flex snap-x items-center gap-2 overflow-x-auto px-6 pb-1 md:mx-0 md:flex-wrap md:justify-center md:overflow-visible md:px-0"
         >
-          {CREDENTIAL_GROUPS.map((group) => {
+          {ALL_SECTIONS.map((group) => {
             const Icon = group.icon;
+            const isCoursework = COURSEWORK_GROUPS.some((g) => g.id === group.id);
             return (
               <a
                 key={group.id}
                 href={`#${group.id}`}
                 className="inline-flex shrink-0 snap-start items-center gap-2 rounded-full border border-line/10 bg-ink/[0.05] dark:bg-ink/[0.03] px-4 py-2 t-label font-bold uppercase tracking-wider text-ink/70 dark:text-ink/60 transition-colors hover:border-line/25 hover:text-ink"
               >
-                <Icon className={cn("h-3.5 w-3.5", group.accent.eyebrow)} aria-hidden />
+                <Icon
+                  className={cn(
+                    "h-3.5 w-3.5",
+                    isCoursework ? "text-ink/60 dark:text-ink/50" : group.accent.eyebrow
+                  )}
+                  aria-hidden
+                />
                 {group.title}
-                {/* 60% ink lands at 4.4:1 on the light pill fill — one notch
-                    down from the label but still clear of AA at 65%. */}
-                <span className="text-ink/65 dark:text-ink/50">· {group.credentials.length}</span>
-              </a>
-            );
-          })}
-
-          {/* These three (Google Skills, Claude Academy, Continuing Education)
-              are not category peers, so they sit past a divider, wear no
-              category hue (their accent is neutral) and carry no "· {n}"
-              count where the four pills above end with one. The absence of a
-              number is what marks them as a different kind of section, and it
-              does so without spending the label on a disclaimer.
-              The nav's accessible name stays "Certification categories" —
-              slightly imprecise for these three, and a knowingly accepted wart:
-              certifications.spec.ts matches the nav by that name and must pass
-              unchanged. */}
-          <span aria-hidden className="mx-1 h-5 w-px shrink-0 bg-line/15" />
-          {COURSEWORK_GROUPS.map((group) => {
-            const Icon = group.icon;
-            return (
-              <a
-                key={group.id}
-                href={`#${group.id}`}
-                className="inline-flex shrink-0 snap-start items-center gap-2 rounded-full border border-line/10 bg-ink/[0.05] dark:bg-ink/[0.03] px-4 py-2 t-label font-bold uppercase tracking-wider text-ink/70 dark:text-ink/60 transition-colors hover:border-line/25 hover:text-ink"
-              >
-                <Icon className="h-3.5 w-3.5 text-ink/60 dark:text-ink/50" aria-hidden />
-                {group.title}
+                {!isCoursework && (
+                  <span className="text-ink/65 dark:text-ink/50">· {group.credentials.length}</span>
+                )}
               </a>
             );
           })}

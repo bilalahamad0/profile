@@ -362,14 +362,15 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
             ['google-skills', 'claude-academy', 'continuing-education'].includes(id),
           ),
       );
-    expect(ids).toEqual(['google-skills', 'claude-academy', 'continuing-education']);
-    // And all three sit below every counted group.
+    expect(ids).toEqual(['claude-academy', 'google-skills', 'continuing-education']);
+    // And all seven sections render in the owner's curated sequence.
     const order = await page
-      .locator('section[id^="group-"], #google-skills, #claude-academy, #continuing-education')
+      .locator('section[id^="group-"], #claude-academy, #google-skills, #continuing-education')
       .evaluateAll((els) => els.map((el) => el.id));
     expect(order).toEqual([
-      'group-ai', 'group-testing', 'group-leadership', 'group-engineering',
-      'google-skills', 'claude-academy', 'continuing-education',
+      'group-ai', 'group-leadership', 'group-testing',
+      'claude-academy', 'google-skills', 'continuing-education',
+      'group-engineering',
     ]);
   });
 
@@ -410,10 +411,6 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       .locator('article h3 button > span:first-child')
       .evaluateAll((els) => els.map((e) => e.textContent?.trim()));
     expect(titles).toEqual(CLAUDE_ROWS.map((r) => r.title));
-    const nums = await academy
-      .locator('[data-ledger-index]')
-      .evaluateAll((els) => els.map((e) => e.textContent?.trim()));
-    expect(nums).toEqual(CLAUDE_ROWS.map((r) => r.numeral));
 
     for (const row of CLAUDE_ROWS) {
       const el = page.locator(`#${row.id}`);
@@ -496,21 +493,13 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       const chip = el.getByText(card.chip, { exact: true });
       await (wideViewport(page) ? expect(chip).toBeVisible() : expect(chip).toBeAttached());
       await expect(el.locator('[data-collapsible]')).toHaveCount(1);
-      await expect(el.locator('[data-ledger-index]')).toHaveText(card.numeral);
     }
   });
 
-  test('the coursework sections each run distinct numbering: 01–06, 01–06, and 01', async ({ page }) => {
+  test('ledger numbering is removed from all cards', async ({ page }) => {
     await page.goto('/certifications');
-    const nums = (sel: string) =>
-      page.locator(`${sel} [data-ledger-index]`).evaluateAll((els) =>
-        els.map((e) => e.textContent?.trim()),
-      );
-    expect(await nums('#google-skills')).toEqual(['01', '02', '03', '04', '05', '06']);
-    expect(await nums('#claude-academy')).toEqual(['01', '02', '03', '04', '05', '06']);
-    expect(await nums('#continuing-education')).toEqual(['01']);
-    // And the cards carry those numerals in the owner's curated sequence, which
-    // is what makes the order itself an assertion rather than a coincidence.
+    await expect(page.locator('[data-ledger-index]')).toHaveCount(0);
+    // And the cards carry their titles in the owner's curated sequence.
     const titles = await page
       .locator('#google-skills article[id^="ce-"] h3 button > span:first-child')
       .evaluateAll((els) => els.map((e) => e.textContent?.trim()));
@@ -883,8 +872,6 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     // Same template parts as a Google card.
     await expect(el.locator('button[aria-expanded]')).toHaveCount(1);
     await expect(el.locator('[data-collapsible]')).toHaveCount(1);
-    // Row of the Stanford Continuing Education section: restarts numbering at 01.
-    await expect(el.locator('[data-ledger-index]')).toHaveText('01');
   });
 
   test('the Generative AI Leader card cannot be read as a held certification', async ({ page }) => {
@@ -935,19 +922,20 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     ).toHaveAttribute('aria-expanded', 'true');
   });
 
-  test('all three jump pills are present, in section order, set apart from the four category pills', async ({ page }) => {
+  test('all jump pills are present in curated section order', async ({ page }) => {
     await page.goto('/certifications');
     const nav = page.getByRole('navigation', { name: /certification categories/i });
     const hrefs = await nav
       .locator('a')
       .evaluateAll((els) => els.map((el) => el.getAttribute('href')));
     expect(hrefs).toEqual([
-      '#group-ai', '#group-testing', '#group-leadership', '#group-engineering',
-      '#google-skills', '#claude-academy', '#continuing-education',
+      '#group-ai', '#group-leadership', '#group-testing',
+      '#claude-academy', '#google-skills', '#continuing-education',
+      '#group-engineering',
     ]);
     for (const [href, label] of [
-      ['#google-skills', 'Google Skills'],
       ['#claude-academy', 'Claude Academy'],
+      ['#google-skills', 'Google Skills'],
       ['#continuing-education', 'Continuing Education'],
     ] as const) {
       const pill = nav.locator(`a[href="${href}"]`);

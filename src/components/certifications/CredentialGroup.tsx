@@ -27,14 +27,12 @@ const eyebrowTone = (accentEyebrow: string) =>
 
 export function CredentialGroup({
   group,
-  startIndex,
   openIds,
   onToggle,
   onToggleAll,
   onInspect,
 }: {
   group: CredentialGroupDef;
-  startIndex: number; // 0-based ledger index of this group's first row
   openIds: ReadonlySet<string>;
   onToggle: (slug: string, category: string) => void;
   onToggleAll: (group: CredentialGroupDef, expand: boolean) => void;
@@ -103,13 +101,12 @@ export function CredentialGroup({
 
       {/* Rows */}
       <div className="flex flex-col gap-3 md:gap-4">
-        {group.credentials.map((credential, i) => {
+        {group.credentials.map((credential) => {
           const slug = credentialSlug(credential);
           return (
             <CredentialRow
               key={slug}
               credential={credential}
-              index={startIndex + i}
               accent={group.accent}
               open={openIds.has(slug)}
               onToggle={() => onToggle(slug, group.id)}

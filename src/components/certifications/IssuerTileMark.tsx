@@ -34,7 +34,7 @@ export function IssuerTileMark({ tile }: { tile: IssuerTile }) {
   return (
     <span
       className={cn(
-        "relative flex h-11 w-16 shrink-0 flex-col items-center justify-center gap-0.5 overflow-hidden rounded-lg ring-1 ring-inset ring-white/25 md:h-14 md:w-[76px]",
+        "relative flex h-12 w-12 shrink-0 flex-col items-center justify-center gap-0.5 overflow-hidden rounded-xl ring-1 ring-inset ring-white/25 md:h-16 md:w-16",
         tile.tile,
       )}
     >

@@ -112,7 +112,7 @@ test.describe('Certifications — Page-level layout', () => {
     const groups = page.locator('section[id^="group-"]');
     await expect(groups).toHaveCount(4);
     const ids = await groups.evaluateAll((els) => els.map((el) => el.id));
-    expect(ids).toEqual(['group-ai', 'group-testing', 'group-leadership', 'group-engineering']);
+    expect(ids).toEqual(['group-ai', 'group-leadership', 'group-testing', 'group-engineering']);
 
     // Jump pills navigate to each group.
     const nav = page.getByRole('navigation', { name: /certification categories/i });
