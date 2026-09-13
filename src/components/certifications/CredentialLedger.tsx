@@ -23,16 +23,10 @@ const ALL_SLUGS = new Set(
 const startIndexes = (groups: readonly { credentials: readonly unknown[] }[]) =>
   groups.map((_, i) => groups.slice(0, i).reduce((n, g) => n + g.credentials.length, 0));
 
-// 0-based ledger index of each group's first row (the 01…15 numerals).
+// 0-based ledger index of each credential group's first row (the 01…15 numerals).
 const GROUP_START_INDEXES = startIndexes(CREDENTIAL_GROUPS);
-// The coursework sections are a SEPARATE ledger: their numerals restart at 01
-// and then run continuously across the three sections (01–06 Google Skills,
-// 07–12 Claude Academy, 13 Continuing Education), exactly as the credential
-// ledger runs 01–15 across its four group headers. Continuing to 16 would
-// number these as items of the credential ledger — the one numeric claim on
-// this page that would be false, and visibly at odds with the stats strip's
-// "15 Credentials".
-const COURSEWORK_START_INDEXES = startIndexes(COURSEWORK_GROUPS);
+// Coursework sections (Google Skills, Claude Academy, Continuing Education)
+// each start their own distinct numbering from 01 separately.
 
 // Both ledgers share one open-state store and therefore one pair of GA events,
 // whose names ("credential_expand") predate the coursework sections and cannot
@@ -142,11 +136,11 @@ export function CredentialLedger() {
           `> section` probe in mobile-spacing.spec.ts stays unmatched exactly as
           it is today. */}
       <div className="mt-16 space-y-14 border-t border-line/10 pt-12 md:mt-24 md:space-y-20 md:pt-16">
-        {COURSEWORK_GROUPS.map((group, i) => (
+        {COURSEWORK_GROUPS.map((group) => (
           <CredentialGroup
             key={group.id}
             group={group}
-            startIndex={COURSEWORK_START_INDEXES[i]}
+            startIndex={0}
             openIds={openIds}
             onToggle={handleToggle}
             onToggleAll={handleToggleAll}

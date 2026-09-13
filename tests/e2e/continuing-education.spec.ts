@@ -76,22 +76,22 @@ const STANFORD_MODULES = ['Cool Applications', 'Sensors', 'Embedded Systems', 'N
  *  their product in the title at all, which is why the label is data and never
  *  a title match. */
 const CLAUDE_ROWS = [
-  { id: 'cert-ai-5', numeral: '07', title: 'Claude Code in Action', product: 'Claude Code',
+  { id: 'cert-ai-5', numeral: '01', title: 'Claude Code in Action', product: 'Claude Code',
     verify: 'https://academy.claude.com/verify/4d7c863adbe9b8db4d518c6800d494ea',
     course: 'https://academy.claude.com/courses/claude-code-in-action' },
-  { id: 'cert-ai-6', numeral: '08', title: 'AI Fluency: Framework & Foundations', product: 'Claude.ai',
+  { id: 'cert-ai-6', numeral: '02', title: 'AI Fluency: Framework & Foundations', product: 'Claude.ai',
     verify: 'https://academy.claude.com/verify/87cca4700437d5b08cdfc43b538849e0',
     course: 'https://academy.claude.com/courses/ai-fluency-framework-foundations' },
-  { id: 'cert-ai-8', numeral: '09', title: 'Building Effective Human Agent Teams (Beta)', product: 'Claude Teams',
+  { id: 'cert-ai-8', numeral: '03', title: 'Building Effective Human Agent Teams (Beta)', product: 'Claude Teams',
     verify: 'https://academy.claude.com/verify/158250357ac93005cec8552388fb168a',
     course: 'https://academy.claude.com/courses/building-effective-human-agent-teams' },
-  { id: 'cert-ai-7', numeral: '10', title: 'Introduction to Claude Cowork', product: 'Claude Cowork',
+  { id: 'cert-ai-7', numeral: '04', title: 'Introduction to Claude Cowork', product: 'Claude Cowork',
     verify: 'https://academy.claude.com/verify/fcf45c0d8bd08cfbdfe1cda2716ed394',
     course: 'https://academy.claude.com/courses/introduction-to-claude-cowork' },
-  { id: 'cert-ai-4', numeral: '11', title: 'Claude Code 101', product: 'Claude Code',
+  { id: 'cert-ai-4', numeral: '05', title: 'Claude Code 101', product: 'Claude Code',
     verify: 'https://academy.claude.com/verify/906865ee77b53507c289141ed39e25f3',
     course: 'https://academy.claude.com/courses/claude-code-101' },
-  { id: 'cert-ai-3', numeral: '12', title: 'Claude 101', product: 'Claude.ai',
+  { id: 'cert-ai-3', numeral: '06', title: 'Claude 101', product: 'Claude.ai',
     verify: 'https://academy.claude.com/verify/26fc2b7fb0801c5c6d8168316b99dcae',
     course: 'https://academy.claude.com/courses/claude-101' },
 ] as const;
@@ -170,7 +170,7 @@ const CARDS: Card[] = [
   { section: 'continuing-education', id: 'ce-stanford-xee100',
     title: 'Introduction to Internet of Things',
     meta: 'Stanford School of Engineering · 2026 · 5-Module Course',
-    chip: '5 Modules', numeral: '13',
+    chip: '5 Modules', numeral: '01',
     linkLabel: 'Course page', urlNoun: 'course', issuerShort: 'Stanford',
     url: /^https:\/\/online\.stanford\.edu\/courses\/xee100-introduction-internet-things$/,
     courses: STANFORD_MODULES, badges: 0, credly: 0, pill: /^5 course modules$/i },
@@ -500,15 +500,15 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     }
   });
 
-  test('the coursework sections run one continuous ledger, 01–06, 07–12 then 13, never past 15', async ({ page }) => {
+  test('the coursework sections each run distinct numbering: 01–06, 01–06, and 01', async ({ page }) => {
     await page.goto('/certifications');
     const nums = (sel: string) =>
       page.locator(`${sel} [data-ledger-index]`).evaluateAll((els) =>
         els.map((e) => e.textContent?.trim()),
       );
     expect(await nums('#google-skills')).toEqual(['01', '02', '03', '04', '05', '06']);
-    expect(await nums('#claude-academy')).toEqual(['07', '08', '09', '10', '11', '12']);
-    expect(await nums('#continuing-education')).toEqual(['13']);
+    expect(await nums('#claude-academy')).toEqual(['01', '02', '03', '04', '05', '06']);
+    expect(await nums('#continuing-education')).toEqual(['01']);
     // And the cards carry those numerals in the owner's curated sequence, which
     // is what makes the order itself an assertion rather than a coincidence.
     const titles = await page
@@ -883,8 +883,8 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     // Same template parts as a Google card.
     await expect(el.locator('button[aria-expanded]')).toHaveCount(1);
     await expect(el.locator('[data-collapsible]')).toHaveCount(1);
-    // Last row of the coursework ledger: 06 Google Skills + 06 Claude Academy.
-    await expect(el.locator('[data-ledger-index]')).toHaveText('13');
+    // Row of the Stanford Continuing Education section: restarts numbering at 01.
+    await expect(el.locator('[data-ledger-index]')).toHaveText('01');
   });
 
   test('the Generative AI Leader card cannot be read as a held certification', async ({ page }) => {
