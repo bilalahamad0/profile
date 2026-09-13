@@ -27,7 +27,7 @@ const socialLinks = [
     icon: Github,
   },
   {
-    href: "mailto:bilal.ahamad@gmail.com",
+    href: "mailto:contact@bilalahamad.com",
     label: "Email",
     icon: Mail,
   },

@@ -69,7 +69,7 @@ export function buildLlmsTxt(input: LlmsTxtInput): string {
   lines.push(`- Site: ${SITE_URL}`);
   lines.push("- Role: Systems Validation Architect");
   lines.push("- Location: Sunnyvale, CA, US");
-  lines.push("- Contact: bilal.ahamad@gmail.com");
+  lines.push("- Contact: contact@bilalahamad.com");
 
   lines.push("");
   lines.push("## Pages");

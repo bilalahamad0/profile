@@ -51,7 +51,7 @@ const personSchema = {
   alternateName: ["Bilal Ahmad", "B. Ahamad", "bilalahamad0"],
   description:
     "Senior/Staff Firmware and Systems Quality Leader with 18+ years on high-stakes launch programs at Amazon, Google, Rivian, Cruise, and Samsara. Specializing in firmware validation, test automation architecture, HIL/SIL, functional safety, AI/ML product quality, and NPI bringup.",
-  email: "bilal.ahamad@gmail.com",
+  email: "contact@bilalahamad.com",
   url: "https://bilalahamad.com",
   image: "https://bilalahamad.com/og-image.png",
   address: {
