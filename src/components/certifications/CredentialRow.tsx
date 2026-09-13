@@ -272,7 +272,7 @@ export function CredentialRow({
           </Chip>
         )}
         {product && (
-          <Chip className={cn("hidden lg:inline-flex", CHIP_PRODUCT)}>{product}</Chip>
+          <Chip className={cn("hidden lg:inline-flex normal-case", CHIP_PRODUCT)}>{product}</Chip>
         )}
         {aiSkills && (
           <Chip className={cn("hidden lg:inline-flex", CHIP_SKILLS)}>

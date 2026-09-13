@@ -178,7 +178,10 @@ export const SingleCertBody = ({
           <button
             type="button"
             onClick={() => onInspect(cert)}
-            className="inline-flex items-center gap-2 rounded-2xl border border-line/10 bg-ink/5 px-5 py-3 t-small font-semibold text-ink/70 transition-colors hover:bg-ink/10 hover:text-ink"
+            className={cn(
+              "inline-flex items-center gap-2 rounded-2xl border border-line/10 bg-ink/5 px-5 py-3 t-small font-semibold text-ink/70 transition-colors hover:bg-ink/10 hover:text-ink",
+              cert.courseBadge && "md:hidden"
+            )}
           >
             <Search className="h-4 w-4" aria-hidden />
             View full size
