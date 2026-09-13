@@ -86,14 +86,12 @@ const CHIP_PRODUCT = "border-line/15 bg-ink/[0.06] text-ink/70 dark:text-ink/60"
 
 export function CredentialRow({
   credential,
-  index,
   accent,
   open,
   onToggle,
   onInspect,
 }: {
   credential: Credential;
-  index: number; // 0-based position across the whole ledger
   accent: GroupAccent;
   open: boolean;
   onToggle: () => void;
@@ -147,24 +145,14 @@ export function CredentialRow({
       onClick={handleRowClick}
       className="flex min-h-[72px] cursor-pointer items-center gap-3 px-4 py-3 md:min-h-[96px] md:gap-4 md:px-6 md:py-4"
     >
-      {/* Continuous ledger index 01…15 — decorative ordering cue */}
-      <span
-        aria-hidden
-        data-ledger-index
-        className="hidden w-7 shrink-0 t-label tabular-nums text-ink-subtle transition-colors group-hover/row:text-ink/70 sm:block dark:text-ink/50"
-      >
-        {String(index + 1).padStart(2, "0")}
-      </span>
-
-      {/* Visual — parent badge for specs, issuer tile for paths, thumbnail for
-          singles. A path earned no path-level badge: a fabricated parent badge,
-          a certificate thumbnail, or a cluster of its own course badges would
-          each present something as awarded FOR THE PATH. The rectangular
-          single-cert slot already means "artifact, not award". */}
+      {/* Visual — uniform 48×48 (mobile) / 64×64 (desktop) across all types:
+          parent badge for specs, issuer tile for paths, award decagon/seal,
+          or certificate thumbnail for singles. Standardized so all card titles
+          align to the exact same horizontal starting placement. */}
       {credential.kind === "path" ? (
         <IssuerTileMark tile={credential.tile} />
       ) : isSpec ? (
-        <span className="relative h-11 w-11 shrink-0 md:h-14 md:w-14">
+        <span className="relative h-12 w-12 shrink-0 md:h-16 md:w-16">
           <span
             aria-hidden
             className={cn(
@@ -176,7 +164,7 @@ export function CredentialRow({
             src={credential.parentBadge.image}
             alt=""
             fill
-            sizes="56px"
+            sizes="64px"
             className="relative object-contain"
           />
         </span>
@@ -195,15 +183,7 @@ export function CredentialRow({
           />
         </span>
       ) : courseBadge ? (
-        /* Course-completion decagon: header VISUAL only. No halo sibling and no
-           drop-shadow — the art is an opaque tinted square that carries its own
-           ground, and a coloured bloom behind it would both fight the palette
-           and borrow the accreditation seal's vocabulary. `rounded-[22%]`
-           squares it off into the same squircle the ledger's other marks read
-           as. It runs one step narrower than the seal at the base breakpoint:
-           "Claude Academy · 2026" is the longest meta line in the ledger and
-           overflowed its truncate box by 2px at 375. */
-        <span className="relative h-11 w-11 shrink-0 md:h-16 md:w-16">
+        <span className="relative h-12 w-12 shrink-0 md:h-16 md:w-16">
           <Image
             src={courseBadge}
             alt={`${title} course completion badge`}
@@ -213,12 +193,12 @@ export function CredentialRow({
           />
         </span>
       ) : (
-        <span className="relative h-11 w-16 shrink-0 overflow-hidden rounded-lg bg-black/20 ring-1 ring-line/10 md:h-14 md:w-[76px]">
+        <span className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-black/20 ring-1 ring-line/10 md:h-16 md:w-16">
           <Image
             src={credential.image}
             alt=""
             fill
-            sizes="76px"
+            sizes="64px"
             className={credential.id === "g-2" ? "bg-white object-contain" : "object-cover"}
           />
         </span>

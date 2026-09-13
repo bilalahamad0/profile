@@ -437,8 +437,8 @@ describe("coursework is never counted as a credential", () => {
     expect(CREDENTIAL_GROUPS).toHaveLength(4);
     expect(CREDENTIAL_GROUPS.map((g) => g.id)).toEqual([
       "group-ai",
-      "group-testing",
       "group-leadership",
+      "group-testing",
       "group-engineering",
     ]);
     for (const g of CREDENTIAL_GROUPS) {
@@ -454,12 +454,10 @@ describe("coursework is never counted as a credential", () => {
   });
 
   it("renders coursework through groups whose ids can never match section[id^='group-']", () => {
-    // Owner-confirmed page order: "Place Claude section after Google Skills
-    // section". The array IS the rendered order — nothing sorts at runtime —
-    // so this equality is what stops a later edit resequencing the sections.
+    // Owner-confirmed page order: Claude Academy → Google Skills → Continuing Education.
     expect(COURSEWORK_GROUPS.map((g) => g.id)).toEqual([
-      "google-skills",
       "claude-academy",
+      "google-skills",
       "continuing-education",
     ]);
     for (const g of COURSEWORK_GROUPS) {
@@ -562,7 +560,7 @@ describe("the three coursework group headers", () => {
     const courseEntries = LEARNING_PATHS.reduce((n, e) => n + e.courses.length, 0);
     expect(courseEntries).toBe(31);
     expect(courseEntries).toBe(badged.length);
-    expect(COURSEWORK_GROUPS[0].countLabel).toBe("6 learning paths · 26 course badges");
+    expect(COURSEWORK_GROUPS[1].countLabel).toBe("6 learning paths · 26 course badges");
     expect(COURSEWORK_GROUPS[2].countLabel).toBe("1 short course · 5 modules");
   });
 
@@ -570,7 +568,7 @@ describe("the three coursework group headers", () => {
     // Six courses, six distinct verify pages, so six completion badges. The
     // counted groups print "N credentials · all verified" from the derived
     // line; this section states what it holds and borrows neither noun.
-    const academy = COURSEWORK_GROUPS[1];
+    const academy = COURSEWORK_GROUPS[0];
     expect(academy.id).toBe("claude-academy");
     expect(academy.title).toBe("Claude Academy");
     expect(academy.eyebrow).toBe("Completed Courses");

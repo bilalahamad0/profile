@@ -3,8 +3,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { trackEvent } from "@/components/analytics/google-analytics";
 import {
+  ALL_SECTIONS,
   COURSEWORK_GROUPS,
-  CREDENTIAL_GROUPS,
   DEFAULT_OPEN_IDS,
   credentialSlug,
   type CredentialGroupDef,
@@ -13,20 +13,10 @@ import {
 import { CredentialGroup } from "./CredentialGroup";
 import { CertLightbox } from "./CertLightbox";
 
-// Deep links must reach the coursework rows too.
+// Deep links must reach all sections.
 const ALL_SLUGS = new Set(
-  [...CREDENTIAL_GROUPS, ...COURSEWORK_GROUPS].flatMap((g) =>
-    g.credentials.map(credentialSlug),
-  )
+  ALL_SECTIONS.flatMap((g) => g.credentials.map(credentialSlug)),
 );
-
-const startIndexes = (groups: readonly { credentials: readonly unknown[] }[]) =>
-  groups.map((_, i) => groups.slice(0, i).reduce((n, g) => n + g.credentials.length, 0));
-
-// 0-based ledger index of each credential group's first row (the 01…15 numerals).
-const GROUP_START_INDEXES = startIndexes(CREDENTIAL_GROUPS);
-// Coursework sections (Google Skills, Claude Academy, Continuing Education)
-// each start their own distinct numbering from 01 separately.
 
 // Both ledgers share one open-state store and therefore one pair of GA events,
 // whose names ("credential_expand") predate the coursework sections and cannot
@@ -115,32 +105,10 @@ export function CredentialLedger() {
   return (
     <>
       <div className="space-y-14 md:space-y-20">
-        {CREDENTIAL_GROUPS.map((group, i) => (
+        {ALL_SECTIONS.map((group) => (
           <CredentialGroup
             key={group.id}
             group={group}
-            startIndex={GROUP_START_INDEXES[i]}
-            openIds={openIds}
-            onToggle={handleToggle}
-            onToggleAll={handleToggleAll}
-            onInspect={setInspected}
-          />
-        ))}
-      </div>
-
-      {/* Completed coursework, below the credential ledger and behind a rule.
-          The ledger states its standard four times before a reader arrives
-          here, so the boundary reads as a boundary rather than an apology.
-          This wrapper is a <div> on purpose: it keeps every new <section> a
-          GRANDCHILD of the page's .max-w-7xl.mx-auto.px-6 container, so the
-          `> section` probe in mobile-spacing.spec.ts stays unmatched exactly as
-          it is today. */}
-      <div className="mt-16 space-y-14 border-t border-line/10 pt-12 md:mt-24 md:space-y-20 md:pt-16">
-        {COURSEWORK_GROUPS.map((group) => (
-          <CredentialGroup
-            key={group.id}
-            group={group}
-            startIndex={0}
             openIds={openIds}
             onToggle={handleToggle}
             onToggleAll={handleToggleAll}

@@ -835,7 +835,7 @@ export const CREDENTIAL_GROUPS: LedgerGroupDef[] = [
   {
     id: "group-ai",
     eyebrow: "AI & Next-Gen Skills",
-    title: "AI & Prompt Engineering",
+    title: "AI Engineering & Agentic Systems",
     icon: Sparkles,
     accent: {
       eyebrow: "text-violet-300",
@@ -850,33 +850,9 @@ export const CREDENTIAL_GROUPS: LedgerGroupDef[] = [
       bySpecId("spec-google-ai-professional"),
       bySpecId("spec-google-ai-essentials"),
       bySpecId("spec-google-prompting-essentials"),
-      // Singles, date desc. This group's rule is still completion-date
-      // descending; it governs these two and nothing else. The six Claude
-      // Academy courses that sat here until 2026-09-12 are in their own
-      // uncounted section now and carry a CURATED order of the owner's, which
-      // is not derived from any date — see CLAUDE_ACADEMY_COURSES.
       byCertId("ai-2"),
       byCertId("ai-1"),
     ],
-  },
-  {
-    id: "group-testing",
-    eyebrow: "The Core Discipline",
-    title: "Software Testing",
-    icon: ShieldCheck,
-    accent: {
-      eyebrow: "text-blue-300",
-      iconTile: "border-blue-400/20 bg-blue-500/10 text-blue-300",
-      hairline: "from-blue-400/40 via-blue-400/10",
-      hoverBorder: "hover:border-blue-400/30",
-      openRing:
-        "data-[open=true]:border-blue-400/25 data-[open=true]:shadow-[0_0_30px_-12px_rgba(59,130,246,0.35)]",
-      disclosureOpen: "border-blue-400/30 bg-blue-400/10",
-    },
-    // ISTQB leads on prominence, not recency: it is the only formally
-    // accredited, proctored certification on the page, so it stays above the
-    // newer coursework in its own group.
-    credentials: [byCertId("g-1"), byCertId("g-7")],
   },
   {
     id: "group-leadership",
@@ -903,6 +879,25 @@ export const CREDENTIAL_GROUPS: LedgerGroupDef[] = [
     ],
   },
   {
+    id: "group-testing",
+    eyebrow: "The Core Discipline",
+    title: "Software Testing & Quality Engineering",
+    icon: ShieldCheck,
+    accent: {
+      eyebrow: "text-blue-300",
+      iconTile: "border-blue-400/20 bg-blue-500/10 text-blue-300",
+      hairline: "from-blue-400/40 via-blue-400/10",
+      hoverBorder: "hover:border-blue-400/30",
+      openRing:
+        "data-[open=true]:border-blue-400/25 data-[open=true]:shadow-[0_0_30px_-12px_rgba(59,130,246,0.35)]",
+      disclosureOpen: "border-blue-400/30 bg-blue-400/10",
+    },
+    // ISTQB leads on prominence, not recency: it is the only formally
+    // accredited, proctored certification on the page, so it stays above the
+    // newer coursework in its own group.
+    credentials: [byCertId("g-1"), byCertId("g-7")],
+  },
+  {
     id: "group-engineering",
     eyebrow: "Builder Foundations",
     title: "Engineering Foundations",
@@ -921,7 +916,7 @@ export const CREDENTIAL_GROUPS: LedgerGroupDef[] = [
 ];
 
 /** Rows that start expanded on load — the flagship specialization of each
- *  track (AI & Prompt Engineering, Leadership & Project Management).
+ *  track (AI Engineering & Agentic Systems, Leadership & Project Management).
  *  SSR-deterministic so there is never a hydration mismatch. */
 export const DEFAULT_OPEN_IDS = [
   "spec-google-ai-professional",
@@ -1683,30 +1678,10 @@ const totalUnits = (paths: readonly LearningPathData[]) =>
   paths.reduce((n, p) => n + p.totalCourses, 0);
 const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
 
-/** Rendered AFTER the ledger, by CredentialLedger, in exactly this order:
- *  Google Skills → Claude Academy → Continuing Education (owner-confirmed,
- *  2026-09-12). Deliberately NOT part of CREDENTIAL_GROUPS — a path there is a
- *  compile error, and the Claude singles are kept out of it by their absence
- *  from AI_CERTIFICATES, which is what keeps them out of CERT_STATS too. Ids
- *  deliberately not "group-*", and no `countLabel` says "credential", "all
- *  verified" or "certified". */
+/** Coursework groups — practical completed courses and paths.
+ *  Order: Claude Academy → Google Skills → Continuing Education. */
 export const COURSEWORK_GROUPS: CourseworkGroupDef[] = [
   {
-    id: "google-skills",
-    eyebrow: "Completed Learning Paths",
-    title: "Google Skills",
-    icon: GraduationCap,
-    accent: COURSEWORK_ACCENT,
-    countLabel: `${plural(LEARNING_PATHS.length, "learning path", "learning paths")} · ${plural(
-      distinctBadges(LEARNING_PATHS),
-      "course badge",
-      "course badges",
-    )}`,
-    credentials: LEARNING_PATHS.map(asPath),
-  },
-  {
-    // Owner-confirmed placement: "Place Claude section after Google Skills
-    // section". The array IS the page order, so this position is the assertion.
     id: "claude-academy",
     eyebrow: "Completed Courses",
     title: "Claude Academy",
@@ -1724,6 +1699,19 @@ export const COURSEWORK_GROUPS: CourseworkGroupDef[] = [
     credentials: CLAUDE_ACADEMY_COURSES.map(asSingle),
   },
   {
+    id: "google-skills",
+    eyebrow: "Completed Learning Paths",
+    title: "Google Skills",
+    icon: GraduationCap,
+    accent: COURSEWORK_ACCENT,
+    countLabel: `${plural(LEARNING_PATHS.length, "learning path", "learning paths")} · ${plural(
+      distinctBadges(LEARNING_PATHS),
+      "course badge",
+      "course badges",
+    )}`,
+    credentials: LEARNING_PATHS.map(asPath),
+  },
+  {
     id: "continuing-education",
     eyebrow: "Stanford School of Engineering",
     title: "Continuing Education",
@@ -1736,4 +1724,23 @@ export const COURSEWORK_GROUPS: CourseworkGroupDef[] = [
     )}`,
     credentials: CONTINUING_EDUCATION.map(asPath),
   },
+];
+
+/** All 7 sections across the page in the owner's curated sequence:
+ *  1. AI Engineering & Agentic Systems
+ *  2. Leadership & Project Management
+ *  3. Software Testing & Quality Engineering
+ *  4. Claude Academy
+ *  5. Google Skills
+ *  6. Continuing Education
+ *  7. Engineering Foundations
+ */
+export const ALL_SECTIONS: CredentialGroupDef[] = [
+  CREDENTIAL_GROUPS[0], // 1. AI Engineering & Agentic Systems (group-ai)
+  CREDENTIAL_GROUPS[1], // 2. Leadership & Project Management (group-leadership)
+  CREDENTIAL_GROUPS[2], // 3. Software Testing & Quality Engineering (group-testing)
+  COURSEWORK_GROUPS[0], // 4. Claude Academy (claude-academy)
+  COURSEWORK_GROUPS[1], // 5. Google Skills (google-skills)
+  COURSEWORK_GROUPS[2], // 6. Continuing Education (continuing-education)
+  CREDENTIAL_GROUPS[3], // 7. Engineering Foundations (group-engineering)
 ];
