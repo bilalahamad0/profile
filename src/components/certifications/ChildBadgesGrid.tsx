@@ -351,6 +351,22 @@ export const CourseBadgesGrid = ({ path }: { path: LearningPathData }) => {
                 </span>
               </span>
               <span className={COURSE_TILE_TEXT}>
+                {course.level && (
+                  <span
+                    data-level={course.level}
+                    className={cn(
+                      "inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider",
+                      course.level === "Beginner" &&
+                        "border-emerald-500/30 bg-emerald-500/10 text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-300",
+                      course.level === "Intermediate" &&
+                        "border-sky-500/30 bg-sky-500/10 text-sky-800 dark:border-sky-400/30 dark:bg-sky-400/10 dark:text-sky-300",
+                      course.level === "Advanced" &&
+                        "border-purple-500/30 bg-purple-500/10 text-purple-800 dark:border-purple-400/30 dark:bg-purple-400/10 dark:text-purple-300",
+                    )}
+                  >
+                    {course.level}
+                  </span>
+                )}
                 {/* The ISSUER'S course title, and nothing after it. A muted
                     "(Credly: …)" parenthetical used to follow on the one tile
                     whose destination page carries a different name; the owner

@@ -126,7 +126,7 @@ export const PathBody = ({ path }: { path: LearningPathData }) => {
           // pill in CourseBadgesGrid.
           <div className="flex items-center gap-2 self-start rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1.5 t-label font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
             <CheckCircle2 className="h-3.5 w-3.5" aria-hidden />
-            {badges} public course badges
+            {badges} public course {badges === 1 ? "badge" : "badges"}
           </div>
         ) : (
           // Nothing to verify, so nothing emerald. Neutral ink, and it labels

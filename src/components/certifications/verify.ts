@@ -63,7 +63,7 @@ export function trackCourseworkPage(meta: {
  *  here has no Credly twin, so neither field may be derived from the other. */
 export function trackCourseBadge(meta: {
   title: string;
-  provider: "Google Skills" | "Credly";
+  provider: "Google Skills" | "Credly" | "Claude Academy";
   kind: "completion" | "skill";
   coursework: string;
 }) {
