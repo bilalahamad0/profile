@@ -207,7 +207,7 @@ describe("coursework is never counted as a credential", () => {
 
   it("pins every Claude Academy course and verify URL", () => {
     const allCourses = CLAUDE_ACADEMY_PATHS.flatMap((p) => p.courses);
-    expect(allCourses).toHaveLength(9);
+    expect(allCourses).toHaveLength(10);
     for (const c of allCourses) {
       expect(c.badge?.url).toMatch(/^https:\/\/academy\.claude\.com\/(verify\/[0-9a-f]{32}|badges\/[0-9a-f-]{36}|courses\/[a-z0-9-]+)$/);
       expect(existsSync(path.join(PUBLIC_DIR, c.badge!.image)), `${c.badge!.image} missing`).toBe(true);
@@ -265,7 +265,7 @@ describe("coursework is never counted as a credential", () => {
     );
     const onDisk = readdirSync(path.join(PUBLIC_DIR, "badges/claude-academy"));
     expect([...onDisk].sort()).toEqual([...referenced].sort());
-    expect(referenced.size).toBe(9);
+    expect(referenced.size).toBe(10);
     for (const stale of RETIRED_SKILLJAR_THUMBS) {
       expect(existsSync(path.join(PUBLIC_DIR, stale)), `${stale} should be deleted`).toBe(false);
     }
@@ -398,14 +398,14 @@ describe("the three coursework group headers", () => {
   });
 
   it("count DISTINCT badge pages, not badge references", () => {
-    // 31 references resolve to 26 distinct badge pages for Google Skills, plus 9 for Claude Academy: 40 total, 35 distinct.
-    expect(badged).toHaveLength(40);
-    expect(new Set(badged.map((b) => b.badge.url)).size).toBe(35);
+    // 31 references resolve to 26 distinct badge pages for Google Skills, plus 10 for Claude Academy: 41 total, 36 distinct.
+    expect(badged).toHaveLength(41);
+    expect(new Set(badged.map((b) => b.badge.url)).size).toBe(36);
     const googleEntries = LEARNING_PATHS.reduce((n, e) => n + e.courses.length, 0);
     expect(googleEntries).toBe(31);
     const claudeEntries = CLAUDE_ACADEMY_PATHS.reduce((n, e) => n + e.courses.length, 0);
-    expect(claudeEntries).toBe(9);
-    expect(COURSEWORK_GROUPS[0].countLabel).toBe("4 learning paths · 9 course badges");
+    expect(claudeEntries).toBe(10);
+    expect(COURSEWORK_GROUPS[0].countLabel).toBe("4 learning paths · 10 course badges");
     expect(COURSEWORK_GROUPS[1].countLabel).toBe("6 learning paths · 26 course badges");
     expect(COURSEWORK_GROUPS[2].countLabel).toBe("1 short course · 5 modules");
   });
@@ -415,9 +415,9 @@ describe("the three coursework group headers", () => {
     expect(academy.id).toBe("claude-academy");
     expect(academy.title).toBe("Claude Academy");
     expect(academy.eyebrow).toBe("Completed Learning Paths");
-    expect(academy.countLabel).toBe("4 learning paths · 9 course badges");
+    expect(academy.countLabel).toBe("4 learning paths · 10 course badges");
     expect(academy.credentials).toHaveLength(4);
-    expect(new Set(CLAUDE_ACADEMY_PATHS.flatMap((p) => p.courses.map((c) => c.badge?.url))).size).toBe(9);
+    expect(new Set(CLAUDE_ACADEMY_PATHS.flatMap((p) => p.courses.map((c) => c.badge?.url))).size).toBe(10);
   });
 });
 
@@ -447,7 +447,7 @@ describe("the row template's own fields are populated for every card", () => {
       "ce-claude-academy-platform": [1, "Course", 1],
       "ce-claude-academy-code": [2, "Courses", 2],
       "ce-claude-academy-cowork": [2, "Courses", 2],
-      "ce-claude-academy-chat": [4, "Courses", 4],
+      "ce-claude-academy-chat": [5, "Courses", 5],
       "ce-google-skills-multi-agent-4459": [3, "Courses", 3],
       "ce-google-skills-deploy-agents-3802": [3, "Courses", 3],
       "ce-google-skills-beginner-gen-ai-118": [4, "Courses", 4],
@@ -519,7 +519,7 @@ describe("course-level badges", () => {
       "ce-claude-academy-platform": [1, 1],
       "ce-claude-academy-code": [2, 2],
       "ce-claude-academy-cowork": [2, 2],
-      "ce-claude-academy-chat": [4, 4],
+      "ce-claude-academy-chat": [5, 5],
       "ce-google-skills-multi-agent-4459": [3, 3],
       "ce-google-skills-deploy-agents-3802": [3, 3],
       "ce-google-skills-beginner-gen-ai-118": [4, 4],
@@ -683,8 +683,8 @@ describe("course-level badges", () => {
       if (seen) expect(seen).toBe(badge.image);
       else imageByUrl.set(badge.url, badge.image);
     }
-    expect(imageByUrl.size).toBe(35);
-    expect(new Set(imageByUrl.values()).size).toBe(35);
+    expect(imageByUrl.size).toBe(36);
+    expect(new Set(imageByUrl.values()).size).toBe(36);
     // 27855015 was withheld while path 4459 was unfinished. The path completed
     // on 2026-09-11, so its three badges are now on the page — this asserts
     // they arrived, and with the art the scrape recorded for them.

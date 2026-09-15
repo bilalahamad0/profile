@@ -1685,7 +1685,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
     id: "ce-claude-academy-chat",
     headingId: "ce-claude-academy-chat-heading",
     testId: "coursework-courses-claude-ai",
-    titleLines: ["Claude.ai", "4-Course Track"],
+    titleLines: ["Claude.ai", "5-Course Track"],
     issuer: "Claude Academy",
     issuerShort: "Claude Academy",
     date: "2026",
@@ -1696,7 +1696,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
     tile: CLAUDE_ACADEMY_TILE,
     description:
       "Core Claude features, LLM mental models, and the 4D AI Fluency Framework: Delegation, Description, Discernment, and Diligence — collaborating with AI systems effectively, efficiently, and responsibly from everyday workflows to builder tasks.",
-    totalCourses: 4,
+    totalCourses: 5,
     unitNoun: "Courses",
     gradient: "from-orange-600/20 via-amber-500/10 to-amber-600/20",
     aiSkills: true,
@@ -1732,6 +1732,14 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
         badge: claudeBadge(
           "ai-fluency-for-builders",
           "https://academy.claude.com/badges/98e570fd-babb-4016-9fe6-07acf81cfb27",
+        ),
+      },
+      {
+        step: 5,
+        title: "AI Fluency for Creative Work",
+        badge: claudeBadge(
+          "ai-fluency-for-creative-work",
+          "https://academy.claude.com/badges/cd9f0b1e-f2b6-4814-a6cb-d10c364955c3",
         ),
       },
     ],
