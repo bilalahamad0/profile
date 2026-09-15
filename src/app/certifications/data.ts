@@ -71,14 +71,17 @@ export type GalleryCertificate = {
    *  mechanism (it also renders on the expanded thumbnail) and is untouched. */
   aiSkills?: boolean;
   /** The issuer's own product this course teaches — "Claude Code", "Claude.ai",
-   *  "Claude Teams", "Claude Cowork". Rendered as the FIRST chip in the
-   *  qualifier run, ahead of AI Skills (see CHIP_PRODUCT in CredentialRow).
+   *  "Claude Teams", "Claude Cowork". Rendered as the product chip in the
+   *  qualifier run (see CHIP_PRODUCT in CredentialRow).
    *
    *  Set explicitly per row and never derived from the title: "Claude Code 101"
    *  and "Claude Code in Action" happen to name their product, "AI Fluency" and
    *  "Claude 101" (both Claude.ai) do not, and two labels legitimately repeat
    *  across the six rows. A factual label, not a status. */
   product?: string;
+  /** Course difficulty / experience level — "Beginner" or "Intermediate"
+   *  (Claude Academy courses). Rendered as an uppercase chip ahead of product. */
+  level?: "Beginner" | "Intermediate";
 };
 
 export type CredlyBadgeRef = { image: string; credlyUrl: string };
@@ -1546,7 +1549,7 @@ export const CONTINUING_EDUCATION: readonly LearningPathData[] = [
 // its badge's dominant colour so the expanded wash is visually consistent.
 //
 //   Terra-cotta / orange badges  →  "from-orange-600/20 to-amber-600/20"
-//     (Claude 101, Claude Code 101, AI Fluency)
+//     (Claude 101, Claude Code 101, AI Fluency, AI Capabilities and Limitations)
 //   Green / sage badges          →  "from-emerald-600/20 to-teal-600/20"
 //     (Claude Code in Action, Introduction to Claude Cowork)
 //   Violet / purple badges       →  "from-indigo-600/20 to-violet-600/20"
@@ -1567,60 +1570,8 @@ export const CLAUDE_ACADEMY_COURSES: GalleryCertificate[] = [
     courseBadge: "/badges/claude-academy/claude-code-in-action.webp",
     logoWordmark: true,
     aiSkills: true,
-    product: "Claude Code"
-  },
-  {
-    id: "ai-6",
-    title: "AI Fluency: Framework & Foundations",
-    issuer: "Claude Academy",
-    date: "2026",
-    image: "/certificates/claude_academy_ai_fluency_framework_foundations_badge.webp",
-    url: "https://academy.claude.com/verify/87cca4700437d5b08cdfc43b538849e0",
-    courseUrl: "https://academy.claude.com/courses/ai-fluency-framework-foundations",
-    logo: "/logos/anthropic.png",
-    description: "Collaborating with AI systems effectively, efficiently, ethically and safely — recognising what AI can and cannot do, where it hallucinates, and how to verify its output before trusting it.",
-    gradient: "from-orange-600/20 to-amber-600/20",
-    courseBadge: "/badges/claude-academy/ai-fluency-framework-foundations.webp",
-    logoWordmark: true,
-    aiSkills: true,
-    product: "Claude.ai"
-  },
-  {
-    // "(Beta)" is kept because that is how Claude Academy itself names the
-    // course, on the badge and on the course page. It describes the COURSE's
-    // release stage, not the award: the completion badge is issued and publicly
-    // verifiable exactly like the other five. Completed 2026-09-12, the newest
-    // of the six, and it sits THIRD — see the curated order above.
-    id: "ai-8",
-    title: "Building Effective Human Agent Teams (Beta)",
-    issuer: "Claude Academy",
-    date: "2026",
-    image: "/certificates/claude_academy_building_effective_human_agent_teams_badge.webp",
-    url: "https://academy.claude.com/verify/158250357ac93005cec8552388fb168a",
-    courseUrl: "https://academy.claude.com/courses/building-effective-human-agent-teams",
-    logo: "/logos/anthropic.png",
-    description: "Designing the division of labour between people and agents: where to delegate, where to keep a human decision, and the review loops that hold a team accountable for agent work.",
-    gradient: "from-indigo-600/20 to-violet-600/20",
-    courseBadge: "/badges/claude-academy/building-effective-human-agent-teams.webp",
-    logoWordmark: true,
-    aiSkills: true,
-    product: "Claude Teams"
-  },
-  {
-    id: "ai-7",
-    title: "Introduction to Claude Cowork",
-    issuer: "Claude Academy",
-    date: "2026",
-    image: "/certificates/claude_academy_introduction_to_claude_cowork_badge.webp",
-    url: "https://academy.claude.com/verify/fcf45c0d8bd08cfbdfe1cda2716ed394",
-    courseUrl: "https://academy.claude.com/courses/introduction-to-claude-cowork",
-    logo: "/logos/anthropic.png",
-    description: "The Cowork task loop, plugins and skills, and how to steer multi-step work on real files responsibly.",
-    gradient: "from-emerald-600/20 to-teal-600/20",
-    courseBadge: "/badges/claude-academy/introduction-to-claude-cowork.webp",
-    logoWordmark: true,
-    aiSkills: true,
-    product: "Claude Cowork"
+    product: "Claude Code",
+    level: "Intermediate",
   },
   {
     id: "ai-4",
@@ -1636,7 +1587,80 @@ export const CLAUDE_ACADEMY_COURSES: GalleryCertificate[] = [
     courseBadge: "/badges/claude-academy/claude-code-101.webp",
     logoWordmark: true,
     aiSkills: true,
-    product: "Claude Code"
+    product: "Claude Code",
+    level: "Beginner",
+  },
+  {
+    // "(Beta)" is kept because that is how Claude Academy itself names the
+    // course, on the badge and on the course page. It describes the COURSE's
+    // release stage, not the award: the completion badge is issued and publicly
+    // verifiable exactly like the other courses.
+    id: "ai-8",
+    title: "Building Effective Human Agent Teams (Beta)",
+    issuer: "Claude Academy",
+    date: "2026",
+    image: "/certificates/claude_academy_building_effective_human_agent_teams_badge.webp",
+    url: "https://academy.claude.com/verify/158250357ac93005cec8552388fb168a",
+    courseUrl: "https://academy.claude.com/courses/building-effective-human-agent-teams",
+    logo: "/logos/anthropic.png",
+    description: "Designing the division of labour between people and agents: where to delegate, where to keep a human decision, and the review loops that hold a team accountable for agent work.",
+    gradient: "from-indigo-600/20 to-violet-600/20",
+    courseBadge: "/badges/claude-academy/building-effective-human-agent-teams.webp",
+    logoWordmark: true,
+    aiSkills: true,
+    product: "Claude Teams",
+    level: "Beginner",
+  },
+  {
+    id: "ai-7",
+    title: "Introduction to Claude Cowork",
+    issuer: "Claude Academy",
+    date: "2026",
+    image: "/certificates/claude_academy_introduction_to_claude_cowork_badge.webp",
+    url: "https://academy.claude.com/verify/fcf45c0d8bd08cfbdfe1cda2716ed394",
+    courseUrl: "https://academy.claude.com/courses/introduction-to-claude-cowork",
+    logo: "/logos/anthropic.png",
+    description: "The Cowork task loop, plugins and skills, and how to steer multi-step work on real files responsibly.",
+    gradient: "from-emerald-600/20 to-teal-600/20",
+    courseBadge: "/badges/claude-academy/introduction-to-claude-cowork.webp",
+    logoWordmark: true,
+    aiSkills: true,
+    product: "Claude Cowork",
+    level: "Beginner",
+  },
+  {
+    id: "ai-6",
+    title: "AI Fluency: Framework & Foundations",
+    issuer: "Claude Academy",
+    date: "2026",
+    image: "/certificates/claude_academy_ai_fluency_framework_foundations_badge.webp",
+    url: "https://academy.claude.com/verify/87cca4700437d5b08cdfc43b538849e0",
+    courseUrl: "https://academy.claude.com/courses/ai-fluency-framework-foundations",
+    logo: "/logos/anthropic.png",
+    description: "Collaborating with AI systems effectively, efficiently, ethically and safely — recognising what AI can and cannot do, where it hallucinates, and how to verify its output before trusting it.",
+    gradient: "from-orange-600/20 to-amber-600/20",
+    courseBadge: "/badges/claude-academy/ai-fluency-framework-foundations.webp",
+    logoWordmark: true,
+    aiSkills: true,
+    product: "Claude.ai",
+    level: "Beginner",
+  },
+  {
+    id: "ai-9",
+    title: "AI Capabilities and Limitations",
+    issuer: "Claude Academy",
+    date: "2026",
+    image: "/certificates/claude_academy_ai_capabilities_and_limitations_badge.webp",
+    url: "https://academy.claude.com/badges/f4e2d9ea-b48c-4a71-92f0-a618a6775c84",
+    courseUrl: "https://academy.claude.com/courses/ai-capabilities-and-limitations",
+    logo: "/logos/anthropic.png",
+    description: "Build an accurate mental model of what large language models can and cannot do: next-token prediction, knowledge, working memory, steerability, and context limits.",
+    gradient: "from-orange-600/20 to-amber-600/20",
+    courseBadge: "/badges/claude-academy/ai-capabilities-and-limitations.webp",
+    logoWordmark: true,
+    aiSkills: true,
+    product: "Claude.ai",
+    level: "Beginner",
   },
   {
     // The id `ai-3` was previously "AI for App Building", which was retired
@@ -1656,7 +1680,8 @@ export const CLAUDE_ACADEMY_COURSES: GalleryCertificate[] = [
     courseBadge: "/badges/claude-academy/claude-101.webp",
     logoWordmark: true,
     aiSkills: true,
-    product: "Claude.ai"
+    product: "Claude.ai",
+    level: "Beginner",
   },
 ];
 

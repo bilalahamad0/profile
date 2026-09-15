@@ -132,6 +132,7 @@ export function CredentialRow({
    *  the same fact through `ribbon` and are untouched by either flag. */
   const aiSkills = !isSpec && credential.aiSkills === true;
   const product = isSingle ? credential.product : undefined;
+  const level = isSingle ? credential.level : undefined;
 
   const handleRowClick = (e: React.MouseEvent<HTMLDivElement>) => {
     // The heading button and Verify button handle their own clicks; every
@@ -250,6 +251,9 @@ export function CredentialRow({
             <span aria-hidden>{credential.ribbon.emoji}</span>
             {credential.ribbon.label}
           </Chip>
+        )}
+        {level && (
+          <Chip className={cn("hidden lg:inline-flex", CHIP_PRODUCT)}>{level}</Chip>
         )}
         {product && (
           <Chip className={cn("hidden lg:inline-flex normal-case", CHIP_PRODUCT)}>{product}</Chip>

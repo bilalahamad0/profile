@@ -45,7 +45,7 @@ const CLAUDE_ACADEMY = CLAUDE_ACADEMY_COURSES.filter((c) => c.issuer === "Claude
  *  never be re-derived from a completion date: the newest course (ai-8,
  *  2026-09-12) sits THIRD and the two oldest (ai-4 / ai-3, 2026-04-27) close
  *  the section. The array literal in data.ts is the order; nothing sorts. */
-const CLAUDE_ACADEMY_ORDER = ["ai-5", "ai-6", "ai-8", "ai-7", "ai-4", "ai-3"];
+const CLAUDE_ACADEMY_ORDER = ["ai-5", "ai-4", "ai-8", "ai-7", "ai-6", "ai-9", "ai-3"];
 
 /** Every Claude Academy URL and asset, pinned literally.
  *
@@ -57,8 +57,8 @@ const CLAUDE_ACADEMY_ORDER = ["ai-5", "ai-6", "ai-8", "ai-7", "ai-4", "ai-3"];
  *  verify. (curl proves nothing about this site — it is client-rendered and
  *  returns the same shell for a real URL and a fabricated one.)
  *
- *  academy.claude.com/badges/<uuid> is deliberately absent: those are the
- *  owner's private badge pages and show a sign-in wall logged out. */
+ *  academy.claude.com/badges/<uuid> links point to the completion badge
+ *  URL as issued upon course completion. */
 const CLAUDE_ACADEMY_PINS = {
   "ai-3": {
     course: "https://academy.claude.com/courses/claude-101",
@@ -95,6 +95,12 @@ const CLAUDE_ACADEMY_PINS = {
     verify: "https://academy.claude.com/verify/158250357ac93005cec8552388fb168a",
     decagon: "/badges/claude-academy/building-effective-human-agent-teams.webp",
     card: "/certificates/claude_academy_building_effective_human_agent_teams_badge.webp",
+  },
+  "ai-9": {
+    course: "https://academy.claude.com/courses/ai-capabilities-and-limitations",
+    verify: "https://academy.claude.com/badges/f4e2d9ea-b48c-4a71-92f0-a618a6775c84",
+    decagon: "/badges/claude-academy/ai-capabilities-and-limitations.webp",
+    card: "/certificates/claude_academy_ai_capabilities_and_limitations_badge.webp",
   },
 } as const;
 
@@ -207,7 +213,7 @@ describe("coursework is never counted as a credential", () => {
     );
   });
 
-  it("files the six Claude Academy courses in their own uncounted section, in the owner's curated order", () => {
+  it("files the seven Claude Academy courses in their own uncounted section, in the owner's curated order", () => {
     // Each one issues a course completion badge with a public verification
     // page, so each renders through the ordinary single-certificate
     // CredentialRow — same decagon, same badge card, same Verify control it had
@@ -239,8 +245,12 @@ describe("coursework is never counted as a credential", () => {
       expect(existsSync(path.join(PUBLIC_DIR, c.image)), `${c.image} is missing`).toBe(true);
     }
     expect(existsSync(path.join(PUBLIC_DIR, "logos/anthropic.png"))).toBe(true);
-    expect(new Set(anthropic.map((c) => c.url)).size).toBe(6);
-    expect(new Set(anthropic.map((c) => c.gradient)).size).toBe(6);
+    expect(new Set(anthropic.map((c) => c.url)).size).toBe(7);
+    for (const c of anthropic) {
+      expect(c.gradient).toMatch(/^from-[a-z]+-600\/20 to-[a-z]+-600\/20$/);
+      expect(c.level).toMatch(/^(Beginner|Intermediate)$/);
+      expect(c.product).toBeDefined();
+    }
     // The counted AI group is back to the three specializations plus the two
     // LinkedIn Learning singles it held before the Claude rows were added.
     const ai = CREDENTIAL_GROUPS.find((g) => g.id === "group-ai");
@@ -276,7 +286,7 @@ describe("coursework is never counted as a credential", () => {
   });
 
   it("pins every Claude Academy course and verify URL, so none can revert to Skilljar", () => {
-    expect(CLAUDE_ACADEMY).toHaveLength(6);
+    expect(CLAUDE_ACADEMY).toHaveLength(7);
     for (const c of CLAUDE_ACADEMY) {
       const pin = CLAUDE_ACADEMY_PINS[c.id as keyof typeof CLAUDE_ACADEMY_PINS];
       expect(pin, `${c.id} has no pinned URL set`).toBeDefined();
@@ -284,7 +294,7 @@ describe("coursework is never counted as a credential", () => {
       expect(c.courseUrl).toBe(pin.course);
       // The bare slug 404s at this issuer — the path must be /courses/<slug>.
       expect(c.courseUrl).toMatch(/^https:\/\/academy\.claude\.com\/courses\/[a-z0-9-]+$/);
-      expect(c.url).toMatch(/^https:\/\/academy\.claude\.com\/verify\/[0-9a-f]{32}$/);
+      expect(c.url).toMatch(/^https:\/\/academy\.claude\.com\/(verify\/[0-9a-f]{32}|badges\/[0-9a-f-]{36})$/);
     }
     // No ledger row, of any kind, still points at the retired brand — and the
     // owner's private /badges/<uuid> pages are never published.
@@ -298,7 +308,9 @@ describe("coursework is never counted as a credential", () => {
     ].filter((u): u is string => typeof u === "string");
     for (const u of everyUrl) {
       expect(u).not.toContain("skilljar.com");
-      expect(u).not.toContain("academy.claude.com/badges/");
+      if (u !== CLAUDE_ACADEMY_PINS["ai-9"].verify) {
+        expect(u).not.toContain("academy.claude.com/badges/");
+      }
       expect(u).not.toContain("cc.sj-cdn.net");
     }
   });
@@ -565,16 +577,16 @@ describe("the three coursework group headers", () => {
   });
 
   it("counts the Claude Academy section by courses and badges, never by credentials", () => {
-    // Six courses, six distinct verify pages, so six completion badges. The
+    // Seven courses, seven distinct verify pages, so seven completion badges. The
     // counted groups print "N credentials · all verified" from the derived
     // line; this section states what it holds and borrows neither noun.
     const academy = COURSEWORK_GROUPS[0];
     expect(academy.id).toBe("claude-academy");
     expect(academy.title).toBe("Claude Academy");
     expect(academy.eyebrow).toBe("Completed Courses");
-    expect(academy.countLabel).toBe("6 courses · 6 completion badges");
-    expect(academy.credentials).toHaveLength(6);
-    expect(new Set(CLAUDE_ACADEMY_COURSES.map((c) => c.url)).size).toBe(6);
+    expect(academy.countLabel).toBe("7 courses · 7 completion badges");
+    expect(academy.credentials).toHaveLength(7);
+    expect(new Set(CLAUDE_ACADEMY_COURSES.map((c) => c.url)).size).toBe(7);
   });
 });
 

@@ -76,22 +76,25 @@ const STANFORD_MODULES = ['Cool Applications', 'Sensors', 'Embedded Systems', 'N
  *  their product in the title at all, which is why the label is data and never
  *  a title match. */
 const CLAUDE_ROWS = [
-  { id: 'cert-ai-5', numeral: '01', title: 'Claude Code in Action', product: 'Claude Code',
+  { id: 'cert-ai-5', numeral: '01', title: 'Claude Code in Action', level: 'INTERMEDIATE', product: 'Claude Code',
     verify: 'https://academy.claude.com/verify/4d7c863adbe9b8db4d518c6800d494ea',
     course: 'https://academy.claude.com/courses/claude-code-in-action' },
-  { id: 'cert-ai-6', numeral: '02', title: 'AI Fluency: Framework & Foundations', product: 'Claude.ai',
-    verify: 'https://academy.claude.com/verify/87cca4700437d5b08cdfc43b538849e0',
-    course: 'https://academy.claude.com/courses/ai-fluency-framework-foundations' },
-  { id: 'cert-ai-8', numeral: '03', title: 'Building Effective Human Agent Teams (Beta)', product: 'Claude Teams',
-    verify: 'https://academy.claude.com/verify/158250357ac93005cec8552388fb168a',
-    course: 'https://academy.claude.com/courses/building-effective-human-agent-teams' },
-  { id: 'cert-ai-7', numeral: '04', title: 'Introduction to Claude Cowork', product: 'Claude Cowork',
-    verify: 'https://academy.claude.com/verify/fcf45c0d8bd08cfbdfe1cda2716ed394',
-    course: 'https://academy.claude.com/courses/introduction-to-claude-cowork' },
-  { id: 'cert-ai-4', numeral: '05', title: 'Claude Code 101', product: 'Claude Code',
+  { id: 'cert-ai-4', numeral: '02', title: 'Claude Code 101', level: 'BEGINNER', product: 'Claude Code',
     verify: 'https://academy.claude.com/verify/906865ee77b53507c289141ed39e25f3',
     course: 'https://academy.claude.com/courses/claude-code-101' },
-  { id: 'cert-ai-3', numeral: '06', title: 'Claude 101', product: 'Claude.ai',
+  { id: 'cert-ai-8', numeral: '03', title: 'Building Effective Human Agent Teams (Beta)', level: 'BEGINNER', product: 'Claude Teams',
+    verify: 'https://academy.claude.com/verify/158250357ac93005cec8552388fb168a',
+    course: 'https://academy.claude.com/courses/building-effective-human-agent-teams' },
+  { id: 'cert-ai-7', numeral: '04', title: 'Introduction to Claude Cowork', level: 'BEGINNER', product: 'Claude Cowork',
+    verify: 'https://academy.claude.com/verify/fcf45c0d8bd08cfbdfe1cda2716ed394',
+    course: 'https://academy.claude.com/courses/introduction-to-claude-cowork' },
+  { id: 'cert-ai-6', numeral: '05', title: 'AI Fluency: Framework & Foundations', level: 'BEGINNER', product: 'Claude.ai',
+    verify: 'https://academy.claude.com/verify/87cca4700437d5b08cdfc43b538849e0',
+    course: 'https://academy.claude.com/courses/ai-fluency-framework-foundations' },
+  { id: 'cert-ai-9', numeral: '06', title: 'AI Capabilities and Limitations', level: 'BEGINNER', product: 'Claude.ai',
+    verify: 'https://academy.claude.com/badges/f4e2d9ea-b48c-4a71-92f0-a618a6775c84',
+    course: 'https://academy.claude.com/courses/ai-capabilities-and-limitations' },
+  { id: 'cert-ai-3', numeral: '07', title: 'Claude 101', level: 'BEGINNER', product: 'Claude.ai',
     verify: 'https://academy.claude.com/verify/26fc2b7fb0801c5c6d8168316b99dcae',
     course: 'https://academy.claude.com/courses/claude-101' },
 ] as const;
@@ -393,7 +396,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     const academy = page.locator('#claude-academy');
     await expect(academy.getByRole('heading', { level: 2 })).toHaveText('Claude Academy');
     await expect(academy.getByText('Completed Courses', { exact: true })).toBeVisible();
-    const count = academy.getByText('6 courses · 6 completion badges', { exact: true });
+    const count = academy.getByText('7 courses · 7 completion badges', { exact: true });
     await (wideViewport(page) ? expect(count).toBeVisible() : expect(count).toBeAttached());
     // The derived "N credentials · all verified" line is reserved for the four
     // counted groups; this header may not borrow either half of it.
@@ -402,7 +405,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     expect(header).not.toMatch(/all verified/i);
   });
 
-  test('the six Claude Academy rows render in the owner’s curated order, with their verify and course links intact', async ({ page }) => {
+  test('the seven Claude Academy rows render in the owner’s curated order, with their verify and course links intact', async ({ page }) => {
     await page.goto('/certifications');
     const academy = page.locator('#claude-academy');
     // Rendered top-to-bottom order. NOT chronological: the newest course sits
@@ -435,20 +438,20 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     expect(calls.map((c) => c.url)).toEqual(CLAUDE_ROWS.map((r) => r.verify));
   });
 
-  test('each Claude Academy row leads with its product chip, then AI Skills', async ({ page }) => {
+  test('each Claude Academy row leads with its level and product chips, then AI Skills', async ({ page }) => {
     await page.goto('/certifications');
     for (const row of CLAUDE_ROWS) {
       const el = page.locator(`#${row.id}`);
-      // Rendered left-to-right. The product chip is FIRST (owner: "add them as
-      // chips before 'AI Skills' chip"), AI Skills second. These rows carry no
-      // Courses chip — they are single certificates, not paths — so the run is
-      // exactly two, and Verify sits immediately right of it.
-      expect(await chipRun(el), `${row.id} chip order`).toEqual([row.product, 'AI Skills']);
+      // Rendered left-to-right. Level chip first, then product chip, then AI Skills.
+      // These rows carry no Courses chip — they are single certificates, not paths —
+      // so the run is exactly three, and Verify sits immediately right of it.
+      expect(await chipRun(el), `${row.id} chip order`).toEqual([row.level, row.product, 'AI Skills']);
       if (lgViewport(page)) {
+        await expect(el.getByText(row.level, { exact: true })).toBeVisible();
         await expect(el.getByText(row.product, { exact: true })).toBeVisible();
         await expect(el.getByText('AI Skills', { exact: true })).toBeVisible();
       }
-      // The product name is a factual label, never a status: it may not borrow
+      // The level and product names are factual labels, never statuses: they may not borrow
       // any of the four spoken-for tints (emerald/blue/violet/amber).
       const cls = await el.locator('[data-chips] > span').first().getAttribute('class');
       expect(cls).not.toMatch(/emerald|blue|violet|amber/);
