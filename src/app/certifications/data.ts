@@ -1565,7 +1565,7 @@ function claudeBadge(slug: string, url: string): CourseBadge {
 }
 
 export const CLAUDE_ACADEMY_TILE: IssuerTile = {
-  tile: "bg-[#141413]",
+  tile: "bg-[#D97757]",
   wordmark: "Claude",
   code: "Academy",
   wordmarkFamily: "font-serif",
