@@ -451,10 +451,23 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
         await expect(el.getByText(row.product, { exact: true })).toBeVisible();
         await expect(el.getByText('AI Skills', { exact: true })).toBeVisible();
       }
-      // The level and product names are factual labels, never statuses: they may not borrow
-      // any of the four spoken-for tints (emerald/blue/violet/amber).
-      const cls = await el.locator('[data-chips] > span').first().getAttribute('class');
-      expect(cls).not.toMatch(/emerald|blue|violet|amber/);
+      // Color-coded difficulty levels and product types
+      const levelChip = el.locator('[data-chips] > span').first();
+      const productChip = el.locator('[data-chips] > span').nth(1);
+      if (row.level === 'INTERMEDIATE') {
+        expect(await levelChip.getAttribute('class')).toContain('sky');
+      } else if (row.level === 'BEGINNER') {
+        expect(await levelChip.getAttribute('class')).toContain('emerald');
+      }
+      if (row.product === 'Claude Code') {
+        expect(await productChip.getAttribute('class')).toContain('cyan');
+      } else if (row.product === 'Claude Teams') {
+        expect(await productChip.getAttribute('class')).toContain('indigo');
+      } else if (row.product === 'Claude Cowork') {
+        expect(await productChip.getAttribute('class')).toContain('teal');
+      } else if (row.product === 'Claude.ai') {
+        expect(await productChip.getAttribute('class')).toContain('orange');
+      }
     }
   });
 

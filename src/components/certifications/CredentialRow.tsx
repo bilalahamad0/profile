@@ -64,25 +64,29 @@ const CHIP_COURSES = "border-violet-400/25 bg-violet-400/10 text-violet-700 dark
  *  category, so they share a tint and are told apart by their emoji/icon. */
 const CHIP_SKILLS = "border-amber-400/30 bg-amber-400/10 text-amber-800 dark:text-amber-300";
 const CHIP_OFFICIAL = "border-blue-400/25 bg-blue-400/10 text-blue-700 dark:text-blue-300";
-/** The product chip ("Claude Code", "Claude.ai", …) is NEUTRAL INK on purpose,
- *  not a fifth tint. Every hue on this page is already a claim — emerald =
- *  verification, blue = Verify / Official Badge, violet = Courses, amber =
- *  Skills — so a coloured product chip would read as a fifth status and put
- *  the loudest thing on the row on the least consequential fact. The product
- *  name is a factual label, so it wears the page's own ink at chip weight and
- *  lets the qualifier chips beside it keep their meaning.
- *
- *  Contrast is measured from real PAINTED PIXELS, not computed from the class
- *  names: Tailwind v4 emits `oklch()` and the card sits under a
- *  `backdrop-filter`, so arithmetic on the declared values would be fiction.
- *  A 3x screenshot of the chip itself, glyph core against the chip's own fill
- *  (scratchpad/chips-contrast2.mjs, 2026-09-13):
- *    light  rgb(88,88,91) on rgb(239,239,240) → 6.17:1
- *    dark   rgb(165,165,166) on rgb(31,31,32) → 6.69:1
- *  Both clear WCAG AA (4.5:1) for the 11px `t-label` text, and both land in
- *  the same 6–7:1 band as the four coloured chips beside them (6.0–6.6 light,
- *  6.7–10.9 dark), so it reads as a peer and not as a disabled control. */
 const CHIP_PRODUCT = "border-line/15 bg-ink/[0.06] text-ink/70 dark:text-ink/60";
+
+/** Level chips: progressive difficulty tiers.
+ *  - Beginner: Emerald / Green (welcoming foundation)
+ *  - Intermediate: Sky / Blue (applied competency)
+ *  - Advanced: Purple / Violet (mastery tier) */
+const LEVEL_CHIP_MAP: Record<string, string> = {
+  Beginner: "border-emerald-500/25 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
+  Intermediate: "border-sky-500/25 bg-sky-500/10 text-sky-700 dark:text-sky-300",
+  Advanced: "border-purple-500/25 bg-purple-500/10 text-purple-700 dark:text-purple-300",
+};
+
+/** Product chips: brand-aligned product hues.
+ *  - Claude.ai: Anthropic terracotta / orange
+ *  - Claude Code: CLI terminal cyan
+ *  - Claude Cowork: Collaborative agent teal
+ *  - Claude Teams: Organization indigo */
+const PRODUCT_CHIP_MAP: Record<string, string> = {
+  "Claude.ai": "border-orange-500/25 bg-orange-500/10 text-orange-700 dark:text-orange-300",
+  "Claude Code": "border-cyan-500/25 bg-cyan-500/10 text-cyan-700 dark:text-cyan-300",
+  "Claude Cowork": "border-teal-500/25 bg-teal-500/10 text-teal-700 dark:text-teal-300",
+  "Claude Teams": "border-indigo-500/25 bg-indigo-500/10 text-indigo-700 dark:text-indigo-300",
+};
 
 export function CredentialRow({
   credential,
@@ -253,10 +257,14 @@ export function CredentialRow({
           </Chip>
         )}
         {level && (
-          <Chip className={cn("hidden lg:inline-flex", CHIP_PRODUCT)}>{level}</Chip>
+          <Chip className={cn("hidden lg:inline-flex", LEVEL_CHIP_MAP[level] ?? CHIP_PRODUCT)}>
+            {level}
+          </Chip>
         )}
         {product && (
-          <Chip className={cn("hidden lg:inline-flex normal-case", CHIP_PRODUCT)}>{product}</Chip>
+          <Chip className={cn("hidden lg:inline-flex normal-case", PRODUCT_CHIP_MAP[product] ?? CHIP_PRODUCT)}>
+            {product}
+          </Chip>
         )}
         {aiSkills && (
           <Chip className={cn("hidden lg:inline-flex", CHIP_SKILLS)}>

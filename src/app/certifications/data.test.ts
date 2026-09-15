@@ -248,7 +248,7 @@ describe("coursework is never counted as a credential", () => {
     expect(new Set(anthropic.map((c) => c.url)).size).toBe(7);
     for (const c of anthropic) {
       expect(c.gradient).toMatch(/^from-[a-z]+-600\/20 to-[a-z]+-600\/20$/);
-      expect(c.level).toMatch(/^(Beginner|Intermediate)$/);
+      expect(c.level).toMatch(/^(Beginner|Intermediate|Advanced)$/);
       expect(c.product).toBeDefined();
     }
     // The counted AI group is back to the three specializations plus the two
