@@ -167,19 +167,19 @@ describe("coursework is never counted as a credential", () => {
     for (const p of paths) {
       expect(p.id.startsWith("ce-claude-academy-")).toBe(true);
       expect(p.issuer).toBe("Claude Academy");
-      expect(p.logo).toBe("/logos/anthropic.png");
+      expect(p.logo).toBe("/logos/claude.png");
       expect(p.tile.tile).toBe("bg-[#141413]");
       expect(p.tile.wordmark).toBe("Claude");
       expect(p.tile.code).toBe("Academy");
       expect(p.courses.length).toBeGreaterThan(0);
       for (const c of p.courses) {
-        expect(c.level).toMatch(/^(Beginner|Intermediate|Advanced)$/);
+        expect(c.level).toBeUndefined();
         expect(c.badge).toBeDefined();
         expect(c.badge?.provider).toBe("Claude Academy");
         expect(existsSync(path.join(PUBLIC_DIR, c.badge!.image)), `${c.badge!.image} missing`).toBe(true);
       }
     }
-    expect(existsSync(path.join(PUBLIC_DIR, "logos/anthropic.png"))).toBe(true);
+    expect(existsSync(path.join(PUBLIC_DIR, "logos/claude.png"))).toBe(true);
     // The counted AI group holds the three specializations plus the two
     // LinkedIn Learning singles.
     const ai = CREDENTIAL_GROUPS.find((g) => g.id === "group-ai");
@@ -472,7 +472,7 @@ describe("the row template's own fields are populated for every card", () => {
       expect(existsSync(path.join(PUBLIC_DIR, e.logo as string))).toBe(true);
     }
     for (const e of CLAUDE_ACADEMY_PATHS) {
-      expect(e.logo).toBe("/logos/anthropic.png");
+      expect(e.logo).toBe("/logos/claude.png");
       expect(existsSync(path.join(PUBLIC_DIR, e.logo as string))).toBe(true);
     }
     expect(byId("ce-stanford-xee100")?.logo).toBeUndefined();
@@ -497,7 +497,7 @@ describe("the row template's own fields are populated for every card", () => {
     expect(LEARNING_PATHS.every((e) => e.tile.tile === "bg-[#174EA6]")).toBe(true);
     expect(LEARNING_PATHS.every((e) => e.tile.wordmarkFamily === undefined)).toBe(true);
     expect(CLAUDE_ACADEMY_PATHS.every((e) => e.tile.tile === "bg-[#141413]")).toBe(true);
-    expect(CLAUDE_ACADEMY_PATHS.every((e) => e.tile.wordmark === "Claude" && e.tile.code === "Academy")).toBe(true);
+    expect(CLAUDE_ACADEMY_PATHS.every((e) => e.tile.wordmark === "Claude" && e.tile.code === "Academy" && e.tile.wordmarkFamily === "font-serif")).toBe(true);
   });
 
   it("puts the badge grid on Google and Claude paths and the list on Stanford", () => {

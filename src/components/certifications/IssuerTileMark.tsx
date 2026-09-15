@@ -31,6 +31,8 @@ import type { IssuerTile } from "@/app/certifications/data";
  *  class only, never a weight. `font-semibold` would be legal on the wordmark
  *  beside `t-label`; it is still not used, so the mark stays one voice. */
 export function IssuerTileMark({ tile }: { tile: IssuerTile }) {
+  const isClaude = tile.wordmark === "Claude" && tile.code === "Academy";
+
   return (
     <span
       className={cn(
@@ -43,10 +45,20 @@ export function IssuerTileMark({ tile }: { tile: IssuerTile }) {
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-black/25"
       />
-      <span className={cn("relative t-label text-white", tile.wordmarkFamily)}>
+      <span
+        className={cn(
+          "relative t-label text-white",
+          isClaude ? "font-claude-serif text-sm md:text-base tracking-normal font-medium" : tile.wordmarkFamily,
+        )}
+      >
         {tile.wordmark}
       </span>
-      <span className="relative t-label font-bold uppercase tracking-wider text-white/80">
+      <span
+        className={cn(
+          "relative t-label font-bold uppercase tracking-wider text-white/80",
+          isClaude && "font-claude-sans tracking-widest text-[9px] md:text-[10px]",
+        )}
+      >
         {tile.code}
       </span>
     </span>

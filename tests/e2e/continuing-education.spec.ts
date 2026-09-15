@@ -425,27 +425,19 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     }
   });
 
-  test('courses in Claude Academy cards display color-coded level chips (Beginner / Intermediate)', async ({ page }) => {
+  test('Claude Academy courses do not display level chips', async ({ page }) => {
     await page.goto('/certifications');
-    // Check Claude Platform (Beginner)
-    await openRow(page, 'ce-claude-academy-platform');
-    const platformCard = page.locator('#ce-claude-academy-platform');
-    const platformLevel = platformCard.locator('li').first().locator('[data-level]');
-    await expect(platformLevel).toBeVisible();
-    await expect(platformLevel).toHaveText('Beginner');
-    expect(await platformLevel.getAttribute('class')).toContain('emerald');
-
-    // Check Claude Code (Beginner & Intermediate)
-    await openRow(page, 'ce-claude-academy-code');
-    const codeCard = page.locator('#ce-claude-academy-code');
-    const code101Level = codeCard.locator('li').first().locator('[data-level]');
-    const inActionLevel = codeCard.locator('li').nth(1).locator('[data-level]');
-    await expect(code101Level).toBeVisible();
-    await expect(code101Level).toHaveText('Beginner');
-    await expect(inActionLevel).toBeVisible();
-    await expect(inActionLevel).toHaveText('Intermediate');
-    expect(await code101Level.getAttribute('class')).toContain('emerald');
-    expect(await inActionLevel.getAttribute('class')).toContain('sky');
+    // Expand all Claude Academy cards and verify no [data-level] chips appear
+    for (const cardId of [
+      'ce-claude-academy-platform',
+      'ce-claude-academy-code',
+      'ce-claude-academy-cowork',
+      'ce-claude-academy-chat',
+    ]) {
+      await openRow(page, cardId);
+      const card = page.locator(`#${cardId}`);
+      await expect(card.locator('[data-level]')).toHaveCount(0);
+    }
   });
 
   test('every Google Skills and Claude Academy path carries AI Skills before its Courses chip; Stanford carries neither', async ({ page }) => {
