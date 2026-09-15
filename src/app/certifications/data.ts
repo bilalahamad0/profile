@@ -79,9 +79,9 @@ export type GalleryCertificate = {
    *  "Claude 101" (both Claude.ai) do not, and two labels legitimately repeat
    *  across the six rows. A factual label, not a status. */
   product?: string;
-  /** Course difficulty / experience level — "Beginner" or "Intermediate"
+  /** Course difficulty / experience level — "Beginner", "Intermediate", or "Advanced"
    *  (Claude Academy courses). Rendered as an uppercase chip ahead of product. */
-  level?: "Beginner" | "Intermediate";
+  level?: "Beginner" | "Intermediate" | "Advanced";
 };
 
 export type CredlyBadgeRef = { image: string; credlyUrl: string };
