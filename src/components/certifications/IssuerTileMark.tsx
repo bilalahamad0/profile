@@ -48,7 +48,7 @@ export function IssuerTileMark({ tile }: { tile: IssuerTile }) {
       <span
         className={cn(
           "relative t-label text-white",
-          isClaude ? "font-claude-serif text-sm md:text-base tracking-normal font-medium" : tile.wordmarkFamily,
+          isClaude ? "font-claude-serif text-xs md:text-sm tracking-normal font-medium" : tile.wordmarkFamily,
         )}
       >
         {tile.wordmark}
@@ -56,7 +56,7 @@ export function IssuerTileMark({ tile }: { tile: IssuerTile }) {
       <span
         className={cn(
           "relative t-label font-bold uppercase tracking-wider text-white/80",
-          isClaude && "font-claude-sans tracking-widest text-[9px] md:text-[10px]",
+          isClaude ? "font-claude-sans tracking-widest text-[8px] md:text-[9px]" : undefined,
         )}
       >
         {tile.code}

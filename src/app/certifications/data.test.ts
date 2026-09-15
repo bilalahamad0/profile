@@ -168,7 +168,7 @@ describe("coursework is never counted as a credential", () => {
       expect(p.id.startsWith("ce-claude-academy-")).toBe(true);
       expect(p.issuer).toBe("Claude Academy");
       expect(p.logo).toBe("/logos/claude.png");
-      expect(p.tile.tile).toBe("bg-[#141413]");
+      expect(p.tile.tile).toBe("bg-[#D97757]");
       expect(p.tile.wordmark).toBe("Claude");
       expect(p.tile.code).toBe("Academy");
       expect(p.courses.length).toBeGreaterThan(0);
@@ -496,7 +496,7 @@ describe("the row template's own fields are populated for every card", () => {
     expect(byId("ce-stanford-xee100")?.tile.wordmarkFamily).toBe("font-serif");
     expect(LEARNING_PATHS.every((e) => e.tile.tile === "bg-[#174EA6]")).toBe(true);
     expect(LEARNING_PATHS.every((e) => e.tile.wordmarkFamily === undefined)).toBe(true);
-    expect(CLAUDE_ACADEMY_PATHS.every((e) => e.tile.tile === "bg-[#141413]")).toBe(true);
+    expect(CLAUDE_ACADEMY_PATHS.every((e) => e.tile.tile === "bg-[#D97757]")).toBe(true);
     expect(CLAUDE_ACADEMY_PATHS.every((e) => e.tile.wordmark === "Claude" && e.tile.code === "Academy" && e.tile.wordmarkFamily === "font-serif")).toBe(true);
   });
 
