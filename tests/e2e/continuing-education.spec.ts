@@ -65,7 +65,12 @@ const LEADER_COURSES = [
 const STANFORD_MODULES = ['Cool Applications', 'Sensors', 'Embedded Systems', 'Networking', 'Circuits'];
 
 const CLAUDE_PLATFORM_COURSES = ['Claude Platform 101'];
-const CLAUDE_CODE_COURSES = ['Claude Code 101', 'Claude Code in Action'];
+const CLAUDE_CODE_COURSES = [
+  'Claude Code 101',
+  'Claude Code in Action',
+  'Introduction to Agent Skills',
+  'Introduction to Subagents',
+];
 const CLAUDE_COWORK_COURSES = ['Introduction to Claude Cowork', 'Building Effective Human Agent Teams (Beta)'];
 const CLAUDE_CHAT_COURSES = [
   'Claude 101',
@@ -114,11 +119,11 @@ const CLAUDE_CARDS: Card[] = [
     courses: CLAUDE_PLATFORM_COURSES, badges: 1, credly: 0, pill: /^1 public course badge$/i },
   { section: 'claude-academy', id: 'ce-claude-academy-code',
     title: 'Claude Code',
-    meta: 'Claude Academy · 2026 · 2-Course Track',
-    chip: '2 Courses', numeral: '02',
+    meta: 'Claude Academy · 2026 · 4-Course Track',
+    chip: '4 Courses', numeral: '02',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Claude Academy',
     url: /^https:\/\/academy\.claude\.com\/all\?kind=course&product=code$/,
-    courses: CLAUDE_CODE_COURSES, badges: 2, credly: 0, pill: /^2 public course badges$/i },
+    courses: CLAUDE_CODE_COURSES, badges: 4, credly: 0, pill: /^4 public course badges$/i },
   { section: 'claude-academy', id: 'ce-claude-academy-cowork',
     title: 'Claude Cowork',
     meta: 'Claude Academy · 2026 · 2-Course Track',
@@ -292,7 +297,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       'Google Skills', 'Continuing Education', 'Completed Learning Paths',
       'Claude Academy',
       'Stanford School of Engineering', 'XEE100',
-      '4 learning paths · 10 course badges',
+      '4 learning paths · 12 course badges',
       '6 learning paths · 26 course badges', '1 short course · 5 modules',
       'Generative AI Leader Certification', 'Train for the exam',
       'Google Cloud Generative AI Leader certification',
@@ -397,7 +402,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     const academy = page.locator('#claude-academy');
     await expect(academy.getByRole('heading', { level: 2 })).toHaveText('Claude Academy');
     await expect(academy.getByText('Completed Learning Paths', { exact: true })).toBeVisible();
-    const count = academy.getByText('4 learning paths · 10 course badges', { exact: true });
+    const count = academy.getByText('4 learning paths · 12 course badges', { exact: true });
     await (wideViewport(page) ? expect(count).toBeVisible() : expect(count).toBeAttached());
     // The derived "N credentials · all verified" line is reserved for the four
     // counted groups; this header may not borrow either half of it.
