@@ -159,7 +159,7 @@ export type CourseBadge = {
    *  parenthetical on 2026-09-11, and the field with it, so the tile shows the
    *  issuer's course name alone. The naming difference is recorded in a comment
    *  at that course instead — see the Prompt Design entry in path 118. */
-  provider: "Google Skills" | "Credly";
+  provider: "Google Skills" | "Credly" | "Claude Academy";
   /** Local WebP under /public. Google Skills art in /badges/google-skills/,
    *  Credly art flat in /badges/ beside the ledger's other Credly art.
    *  The art is an OPAQUE white rectangular card (lossy VP8, no alpha, ~600px
@@ -188,6 +188,7 @@ export type PathCourse = {
   step: number;
   title: string;
   badge?: CourseBadge;
+  level?: "Beginner" | "Intermediate" | "Advanced";
 };
 
 /** A typeset issuer mark. Never a downloaded logo and never a reconstructed
@@ -269,7 +270,7 @@ export type LearningPathData = {
   officialTitleNote?: string;
   totalCourses: number;
   /** The issuer's noun for a unit — drives the row chip and the counter. */
-  unitNoun: "Courses" | "Modules";
+  unitNoun: "Course" | "Courses" | "Modules";
   gradient: string;
   /** Renders the amber "AI Skills" qualifier chip on the collapsed row — the
    *  same flag, the same chip and the same slot as `GalleryCertificate.aiSkills`
@@ -592,11 +593,10 @@ export const SPECIALIZATIONS: SpecializationData[] = [
   },
 ];
 
-// The two LinkedIn Learning AI singles. The six Claude Academy courses used to
-// live here and were counted alongside them; on 2026-09-12 the owner moved them
-// into their own uncounted section ("Own section, not counted"), so they are now
-// CLAUDE_ACADEMY_COURSES down in the COURSEWORK block and reach neither
-// ALL_SINGLES nor CERT_STATS. Nothing about the rows themselves changed.
+// The two LinkedIn Learning AI singles. Claude Academy courses live in their
+// own uncounted learning paths section ("Own section, not counted") as
+// CLAUDE_ACADEMY_PATHS down in the COURSEWORK block and reach neither
+// ALL_SINGLES nor CERT_STATS.
 export const AI_CERTIFICATES: GalleryCertificate[] = [
   {
     id: "ai-2",
@@ -1555,146 +1555,201 @@ export const CONTINUING_EDUCATION: readonly LearningPathData[] = [
 //   Violet / purple badges       →  "from-indigo-600/20 to-violet-600/20"
 //     (Building Effective Human Agent Teams)
 //
-export const CLAUDE_ACADEMY_COURSES: GalleryCertificate[] = [
+function claudeBadge(slug: string, url: string): CourseBadge {
+  return {
+    url,
+    image: `/badges/claude-academy/${slug}.webp`,
+    kind: "completion",
+    provider: "Claude Academy",
+  };
+}
+
+export const CLAUDE_ACADEMY_TILE: IssuerTile = {
+  tile: "bg-[#141413]",
+  wordmark: "Claude",
+  code: "Academy",
+};
+
+export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
   {
-    id: "ai-5",
-    title: "Claude Code in Action",
+    id: "ce-claude-academy-platform",
+    headingId: "ce-claude-academy-platform-heading",
+    testId: "coursework-courses-claude-platform",
+    titleLines: ["Claude Platform", "Developer Path"],
     issuer: "Claude Academy",
+    issuerShort: "Claude Academy",
     date: "2026",
-    image: "/certificates/claude_academy_claude_code_in_action_badge.webp",
-    url: "https://academy.claude.com/verify/4d7c863adbe9b8db4d518c6800d494ea",
-    courseUrl: "https://academy.claude.com/courses/claude-code-in-action",
+    url: "https://academy.claude.com/all?kind=course&product=api",
+    urlLabel: "Path page",
+    urlNoun: "path",
     logo: "/logos/anthropic.png",
-    description: "Running long, hands-off Claude Code sessions you can trust: steering, configuring, automating and verifying agent work.",
-    gradient: "from-emerald-600/20 to-teal-600/20",
-    courseBadge: "/badges/claude-academy/claude-code-in-action.webp",
-    logoWordmark: true,
+    tile: CLAUDE_ACADEMY_TILE,
+    description:
+      "Learn to build on the Claude Platform from the ground up: API implementation, prompt engineering, tool use, RAG, agents, Model Context Protocol (MCP), and production deployment patterns across providers.",
+    totalCourses: 1,
+    unitNoun: "Course",
+    gradient: "from-blue-600/20 via-indigo-500/10 to-purple-600/20",
     aiSkills: true,
-    product: "Claude Code",
-    level: "Intermediate",
+    coursesLayout: "badges",
+    courses: [
+      {
+        step: 1,
+        title: "Claude Platform 101",
+        badge: claudeBadge(
+          "claude-platform-101",
+          "https://academy.claude.com/courses/claude-platform-101",
+        ),
+        level: "Beginner",
+      },
+    ],
   },
   {
-    id: "ai-4",
-    title: "Claude Code 101",
+    id: "ce-claude-academy-code",
+    headingId: "ce-claude-academy-code-heading",
+    testId: "coursework-courses-claude-code",
+    titleLines: ["Claude Code", "2-Course Track"],
     issuer: "Claude Academy",
+    issuerShort: "Claude Academy",
     date: "2026",
-    image: "/certificates/claude_academy_claude_code_101_badge.webp",
-    url: "https://academy.claude.com/verify/906865ee77b53507c289141ed39e25f3",
-    courseUrl: "https://academy.claude.com/courses/claude-code-101",
+    url: "https://academy.claude.com/all?kind=course&product=code",
+    urlLabel: "Path page",
+    urlNoun: "path",
     logo: "/logos/anthropic.png",
-    description: "Using Claude Code effectively inside a daily development workflow.",
-    gradient: "from-orange-600/20 to-amber-600/20",
-    courseBadge: "/badges/claude-academy/claude-code-101.webp",
-    logoWordmark: true,
+    tile: CLAUDE_ACADEMY_TILE,
+    description:
+      "An agentic coding tool that lives in your terminal. Learn what Claude Code is, how it works, and core workflows to run long, hands-off coding sessions you can trust with custom subagents, skills, and MCP tools.",
+    totalCourses: 2,
+    unitNoun: "Courses",
+    gradient: "from-cyan-600/20 via-teal-500/10 to-emerald-600/20",
     aiSkills: true,
-    product: "Claude Code",
-    level: "Beginner",
+    coursesLayout: "badges",
+    courses: [
+      {
+        step: 1,
+        title: "Claude Code 101",
+        badge: claudeBadge(
+          "claude-code-101",
+          "https://academy.claude.com/verify/906865ee77b53507c289141ed39e25f3",
+        ),
+        level: "Beginner",
+      },
+      {
+        step: 2,
+        title: "Claude Code in Action",
+        badge: claudeBadge(
+          "claude-code-in-action",
+          "https://academy.claude.com/verify/4d7c863adbe9b8db4d518c6800d494ea",
+        ),
+        level: "Intermediate",
+      },
+    ],
   },
   {
-    // "(Beta)" is kept because that is how Claude Academy itself names the
-    // course, on the badge and on the course page. It describes the COURSE's
-    // release stage, not the award: the completion badge is issued and publicly
-    // verifiable exactly like the other courses.
-    id: "ai-8",
-    title: "Building Effective Human Agent Teams (Beta)",
+    id: "ce-claude-academy-cowork",
+    headingId: "ce-claude-academy-cowork-heading",
+    testId: "coursework-courses-claude-cowork",
+    titleLines: ["Claude Cowork", "2-Course Track"],
     issuer: "Claude Academy",
+    issuerShort: "Claude Academy",
     date: "2026",
-    image: "/certificates/claude_academy_building_effective_human_agent_teams_badge.webp",
-    url: "https://academy.claude.com/verify/158250357ac93005cec8552388fb168a",
-    courseUrl: "https://academy.claude.com/courses/building-effective-human-agent-teams",
+    url: "https://academy.claude.com/all?kind=course&product=cowork",
+    urlLabel: "Path page",
+    urlNoun: "path",
     logo: "/logos/anthropic.png",
-    description: "Designing the division of labour between people and agents: where to delegate, where to keep a human decision, and the review loops that hold a team accountable for agent work.",
-    gradient: "from-indigo-600/20 to-violet-600/20",
-    courseBadge: "/badges/claude-academy/building-effective-human-agent-teams.webp",
-    logoWordmark: true,
+    tile: CLAUDE_ACADEMY_TILE,
+    description:
+      "Delegate multi-step work to Claude in Cowork: set up workspaces, run task loops, use plugins for research, documents, and browser tasks, and design effective human-agent team workflows with clear review loops.",
+    totalCourses: 2,
+    unitNoun: "Courses",
+    gradient: "from-teal-600/20 via-emerald-500/10 to-cyan-600/20",
     aiSkills: true,
-    product: "Claude Teams",
-    level: "Beginner",
+    coursesLayout: "badges",
+    courses: [
+      {
+        step: 1,
+        title: "Introduction to Claude Cowork",
+        badge: claudeBadge(
+          "introduction-to-claude-cowork",
+          "https://academy.claude.com/verify/fcf45c0d8bd08cfbdfe1cda2716ed394",
+        ),
+        level: "Beginner",
+      },
+      {
+        step: 2,
+        title: "Building Effective Human Agent Teams (Beta)",
+        badge: claudeBadge(
+          "building-effective-human-agent-teams",
+          "https://academy.claude.com/verify/158250357ac93005cec8552388fb168a",
+        ),
+        level: "Beginner",
+      },
+    ],
   },
   {
-    id: "ai-7",
-    title: "Introduction to Claude Cowork",
+    id: "ce-claude-academy-chat",
+    headingId: "ce-claude-academy-chat-heading",
+    testId: "coursework-courses-claude-ai",
+    titleLines: ["Claude.ai", "4-Course Track"],
     issuer: "Claude Academy",
+    issuerShort: "Claude Academy",
     date: "2026",
-    image: "/certificates/claude_academy_introduction_to_claude_cowork_badge.webp",
-    url: "https://academy.claude.com/verify/fcf45c0d8bd08cfbdfe1cda2716ed394",
-    courseUrl: "https://academy.claude.com/courses/introduction-to-claude-cowork",
+    url: "https://academy.claude.com/all?kind=course&product=chat",
+    urlLabel: "Path page",
+    urlNoun: "path",
     logo: "/logos/anthropic.png",
-    description: "The Cowork task loop, plugins and skills, and how to steer multi-step work on real files responsibly.",
-    gradient: "from-emerald-600/20 to-teal-600/20",
-    courseBadge: "/badges/claude-academy/introduction-to-claude-cowork.webp",
-    logoWordmark: true,
+    tile: CLAUDE_ACADEMY_TILE,
+    description:
+      "Core Claude features, LLM mental models, and the 4D AI Fluency Framework: Delegation, Description, Discernment, and Diligence — collaborating with AI systems effectively, efficiently, and responsibly from everyday workflows to builder tasks.",
+    totalCourses: 4,
+    unitNoun: "Courses",
+    gradient: "from-orange-600/20 via-amber-500/10 to-amber-600/20",
     aiSkills: true,
-    product: "Claude Cowork",
-    level: "Beginner",
-  },
-  {
-    id: "ai-6",
-    title: "AI Fluency: Framework & Foundations",
-    issuer: "Claude Academy",
-    date: "2026",
-    image: "/certificates/claude_academy_ai_fluency_framework_foundations_badge.webp",
-    url: "https://academy.claude.com/verify/87cca4700437d5b08cdfc43b538849e0",
-    courseUrl: "https://academy.claude.com/courses/ai-fluency-framework-foundations",
-    logo: "/logos/anthropic.png",
-    description: "Collaborating with AI systems effectively, efficiently, ethically and safely — recognising what AI can and cannot do, where it hallucinates, and how to verify its output before trusting it.",
-    gradient: "from-orange-600/20 to-amber-600/20",
-    courseBadge: "/badges/claude-academy/ai-fluency-framework-foundations.webp",
-    logoWordmark: true,
-    aiSkills: true,
-    product: "Claude.ai",
-    level: "Beginner",
-  },
-  {
-    id: "ai-9",
-    title: "AI Capabilities and Limitations",
-    issuer: "Claude Academy",
-    date: "2026",
-    image: "/certificates/claude_academy_ai_capabilities_and_limitations_badge.webp",
-    url: "https://academy.claude.com/badges/f4e2d9ea-b48c-4a71-92f0-a618a6775c84",
-    courseUrl: "https://academy.claude.com/courses/ai-capabilities-and-limitations",
-    logo: "/logos/anthropic.png",
-    description: "Build an accurate mental model of what large language models can and cannot do: next-token prediction, knowledge, working memory, steerability, and context limits.",
-    gradient: "from-orange-600/20 to-amber-600/20",
-    courseBadge: "/badges/claude-academy/ai-capabilities-and-limitations.webp",
-    logoWordmark: true,
-    aiSkills: true,
-    product: "Claude.ai",
-    level: "Beginner",
-  },
-  {
-    // The id `ai-3` was previously "AI for App Building", which was retired
-    // from AI_CERTIFICATES in 2026 because it is now child #7 of the Google AI
-    // Professional specialization. The free id is reused here; the two entries
-    // have nothing to do with each other.
-    id: "ai-3",
-    title: "Claude 101",
-    issuer: "Claude Academy",
-    date: "2026",
-    image: "/certificates/claude_academy_claude_101_badge.webp",
-    url: "https://academy.claude.com/verify/26fc2b7fb0801c5c6d8168316b99dcae",
-    courseUrl: "https://academy.claude.com/courses/claude-101",
-    logo: "/logos/anthropic.png",
-    description: "Core Claude features and everyday working patterns — the shared foundation every certification track starts from.",
-    gradient: "from-orange-600/20 to-amber-600/20",
-    courseBadge: "/badges/claude-academy/claude-101.webp",
-    logoWordmark: true,
-    aiSkills: true,
-    product: "Claude.ai",
-    level: "Beginner",
+    coursesLayout: "badges",
+    courses: [
+      {
+        step: 1,
+        title: "Claude 101",
+        badge: claudeBadge(
+          "claude-101",
+          "https://academy.claude.com/verify/26fc2b7fb0801c5c6d8168316b99dcae",
+        ),
+        level: "Beginner",
+      },
+      {
+        step: 2,
+        title: "AI Capabilities and Limitations",
+        badge: claudeBadge(
+          "ai-capabilities-and-limitations",
+          "https://academy.claude.com/badges/f4e2d9ea-b48c-4a71-92f0-a618a6775c84",
+        ),
+        level: "Beginner",
+      },
+      {
+        step: 3,
+        title: "AI Fluency: Framework & Foundations",
+        badge: claudeBadge(
+          "ai-fluency-framework-foundations",
+          "https://academy.claude.com/verify/87cca4700437d5b08cdfc43b538849e0",
+        ),
+        level: "Beginner",
+      },
+      {
+        step: 4,
+        title: "AI Fluency for Builders",
+        badge: claudeBadge(
+          "ai-fluency-for-builders",
+          "https://academy.claude.com/badges/98e570fd-babb-4016-9fe6-07acf81cfb27",
+        ),
+        level: "Intermediate",
+      },
+    ],
   },
 ];
 
 const asPath = (p: LearningPathData): PathCredential => ({ kind: "path", ...p });
-const asSingle = (c: GalleryCertificate): SingleCredential => ({ kind: "single", ...c });
 
-/** DISTINCT badge PAGES, not badge references. Across the six Google paths
- *  there are 31 references but only 26 distinct badges — Google reuses five
- *  courses between paths. Printing 31 would overstate the awards held, which is
- *  the exact class of overclaim this rebuild exists to prevent. The 31
- *  references are exactly the 31 course entries: every listed course carries a
- *  badge, so the chip's count and the reference count cannot disagree. Computed
- *  with a Set so it cannot drift; every number is asserted in data.test.ts. */
+/** DISTINCT badge PAGES, not badge references. Across the paths
+ *  there are course references but only distinct badges count. */
 const distinctBadges = (paths: readonly LearningPathData[]) =>
   new Set(
     paths.flatMap((p) => p.courses.flatMap((c) => (c.badge ? [c.badge.url] : []))),
@@ -1708,20 +1763,16 @@ const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one :
 export const COURSEWORK_GROUPS: CourseworkGroupDef[] = [
   {
     id: "claude-academy",
-    eyebrow: "Completed Courses",
+    eyebrow: "Completed Learning Paths",
     title: "Claude Academy",
     icon: Bot,
     accent: COURSEWORK_ACCENT,
-    // Factual, and deliberately NOT the derived "N credentials · all verified"
-    // line the counted groups print. Every row here does carry a working
-    // Verify Certificate control, so naming the badges is accurate — it just
-    // never borrows the "credentials" noun the counted ledger reserves.
-    countLabel: `${plural(CLAUDE_ACADEMY_COURSES.length, "course", "courses")} · ${plural(
-      new Set(CLAUDE_ACADEMY_COURSES.map((c) => c.url)).size,
-      "completion badge",
-      "completion badges",
+    countLabel: `${plural(CLAUDE_ACADEMY_PATHS.length, "learning path", "learning paths")} · ${plural(
+      distinctBadges(CLAUDE_ACADEMY_PATHS),
+      "course badge",
+      "course badges",
     )}`,
-    credentials: CLAUDE_ACADEMY_COURSES.map(asSingle),
+    credentials: CLAUDE_ACADEMY_PATHS.map(asPath),
   },
   {
     id: "google-skills",
