@@ -1607,7 +1607,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
     id: "ce-claude-academy-code",
     headingId: "ce-claude-academy-code-heading",
     testId: "coursework-courses-claude-code",
-    titleLines: ["Claude Code", "4-Course Track"],
+    titleLines: ["Claude Code", "5-Course Track"],
     issuer: "Claude Academy",
     issuerShort: "Claude Academy",
     date: "2026",
@@ -1618,7 +1618,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
     tile: CLAUDE_ACADEMY_TILE,
     description:
       "An agentic coding tool that lives in your terminal. Learn what Claude Code is, how it works, and core workflows to run long, hands-off coding sessions you can trust with custom subagents, skills, and MCP tools.",
-    totalCourses: 4,
+    totalCourses: 5,
     unitNoun: "Courses",
     gradient: "from-cyan-600/20 via-teal-500/10 to-emerald-600/20",
     aiSkills: true,
@@ -1654,6 +1654,14 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
         badge: claudeBadge(
           "introduction-to-subagents",
           "https://academy.claude.com/courses/introduction-to-subagents",
+        ),
+      },
+      {
+        step: 5,
+        title: "The AI-Native SDLC Playbook",
+        badge: claudeBadge(
+          "ai-native-sdlc-playbook",
+          "https://academy.claude.com/courses/ai-native-sdlc-playbook",
         ),
       },
     ],
@@ -1701,7 +1709,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
     id: "ce-claude-academy-chat",
     headingId: "ce-claude-academy-chat-heading",
     testId: "coursework-courses-claude-ai",
-    titleLines: ["Claude.ai", "5-Course Track"],
+    titleLines: ["Claude.ai", "6-Course Track"],
     issuer: "Claude Academy",
     issuerShort: "Claude Academy",
     date: "2026",
@@ -1712,7 +1720,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
     tile: CLAUDE_ACADEMY_TILE,
     description:
       "Core Claude features, LLM mental models, and the 4D AI Fluency Framework: Delegation, Description, Discernment, and Diligence — collaborating with AI systems effectively, efficiently, and responsibly from everyday workflows to builder tasks.",
-    totalCourses: 5,
+    totalCourses: 6,
     unitNoun: "Courses",
     gradient: "from-orange-600/20 via-amber-500/10 to-amber-600/20",
     aiSkills: true,
@@ -1756,6 +1764,14 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
         badge: claudeBadge(
           "ai-fluency-for-creative-work",
           "https://academy.claude.com/badges/cd9f0b1e-f2b6-4814-a6cb-d10c364955c3",
+        ),
+      },
+      {
+        step: 6,
+        title: "AI Fluency for Small Businesses",
+        badge: claudeBadge(
+          "ai-fluency-for-small-businesses",
+          "https://academy.claude.com/badges/9f17edad-5b1a-489c-aa62-fe29d2440724",
         ),
       },
     ],
