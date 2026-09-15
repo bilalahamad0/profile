@@ -72,6 +72,7 @@ const CLAUDE_CHAT_COURSES = [
   'AI Capabilities and Limitations',
   'AI Fluency: Framework & Foundations',
   'AI Fluency for Builders',
+  'AI Fluency for Creative Work',
 ];
 
 /** The chip run of one row, in RENDERED left-to-right order. Chips are
@@ -127,11 +128,11 @@ const CLAUDE_CARDS: Card[] = [
     courses: CLAUDE_COWORK_COURSES, badges: 2, credly: 0, pill: /^2 public course badges$/i },
   { section: 'claude-academy', id: 'ce-claude-academy-chat',
     title: 'Claude.ai',
-    meta: 'Claude Academy · 2026 · 4-Course Track',
-    chip: '4 Courses', numeral: '04',
+    meta: 'Claude Academy · 2026 · 5-Course Track',
+    chip: '5 Courses', numeral: '04',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Claude Academy',
     url: /^https:\/\/academy\.claude\.com\/all\?kind=course&product=chat$/,
-    courses: CLAUDE_CHAT_COURSES, badges: 4, credly: 0, pill: /^4 public course badges$/i },
+    courses: CLAUDE_CHAT_COURSES, badges: 5, credly: 0, pill: /^5 public course badges$/i },
 ];
 
 /** The CURATED top-to-bottom order the owner chose on 2026-09-11 and 2026-09-15.
@@ -291,7 +292,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       'Google Skills', 'Continuing Education', 'Completed Learning Paths',
       'Claude Academy',
       'Stanford School of Engineering', 'XEE100',
-      '4 learning paths · 9 course badges',
+      '4 learning paths · 10 course badges',
       '6 learning paths · 26 course badges', '1 short course · 5 modules',
       'Generative AI Leader Certification', 'Train for the exam',
       'Google Cloud Generative AI Leader certification',
@@ -396,7 +397,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     const academy = page.locator('#claude-academy');
     await expect(academy.getByRole('heading', { level: 2 })).toHaveText('Claude Academy');
     await expect(academy.getByText('Completed Learning Paths', { exact: true })).toBeVisible();
-    const count = academy.getByText('4 learning paths · 9 course badges', { exact: true });
+    const count = academy.getByText('4 learning paths · 10 course badges', { exact: true });
     await (wideViewport(page) ? expect(count).toBeVisible() : expect(count).toBeAttached());
     // The derived "N credentials · all verified" line is reserved for the four
     // counted groups; this header may not borrow either half of it.
