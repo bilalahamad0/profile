@@ -1568,6 +1568,7 @@ export const CLAUDE_ACADEMY_TILE: IssuerTile = {
   tile: "bg-[#141413]",
   wordmark: "Claude",
   code: "Academy",
+  wordmarkFamily: "font-serif",
 };
 
 export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
@@ -1582,7 +1583,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
     url: "https://academy.claude.com/all?kind=course&product=api",
     urlLabel: "Path page",
     urlNoun: "path",
-    logo: "/logos/anthropic.png",
+    logo: "/logos/claude.png",
     tile: CLAUDE_ACADEMY_TILE,
     description:
       "Learn to build on the Claude Platform from the ground up: API implementation, prompt engineering, tool use, RAG, agents, Model Context Protocol (MCP), and production deployment patterns across providers.",
@@ -1597,9 +1598,8 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
         title: "Claude Platform 101",
         badge: claudeBadge(
           "claude-platform-101",
-          "https://academy.claude.com/courses/claude-platform-101",
+          "https://academy.claude.com/badges/19d840c1-afd4-4598-a887-92143b8e02be",
         ),
-        level: "Beginner",
       },
     ],
   },
@@ -1614,7 +1614,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
     url: "https://academy.claude.com/all?kind=course&product=code",
     urlLabel: "Path page",
     urlNoun: "path",
-    logo: "/logos/anthropic.png",
+    logo: "/logos/claude.png",
     tile: CLAUDE_ACADEMY_TILE,
     description:
       "An agentic coding tool that lives in your terminal. Learn what Claude Code is, how it works, and core workflows to run long, hands-off coding sessions you can trust with custom subagents, skills, and MCP tools.",
@@ -1631,7 +1631,6 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
           "claude-code-101",
           "https://academy.claude.com/verify/906865ee77b53507c289141ed39e25f3",
         ),
-        level: "Beginner",
       },
       {
         step: 2,
@@ -1640,7 +1639,6 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
           "claude-code-in-action",
           "https://academy.claude.com/verify/4d7c863adbe9b8db4d518c6800d494ea",
         ),
-        level: "Intermediate",
       },
     ],
   },
@@ -1655,7 +1653,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
     url: "https://academy.claude.com/all?kind=course&product=cowork",
     urlLabel: "Path page",
     urlNoun: "path",
-    logo: "/logos/anthropic.png",
+    logo: "/logos/claude.png",
     tile: CLAUDE_ACADEMY_TILE,
     description:
       "Delegate multi-step work to Claude in Cowork: set up workspaces, run task loops, use plugins for research, documents, and browser tasks, and design effective human-agent team workflows with clear review loops.",
@@ -1672,7 +1670,6 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
           "introduction-to-claude-cowork",
           "https://academy.claude.com/verify/fcf45c0d8bd08cfbdfe1cda2716ed394",
         ),
-        level: "Beginner",
       },
       {
         step: 2,
@@ -1681,7 +1678,6 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
           "building-effective-human-agent-teams",
           "https://academy.claude.com/verify/158250357ac93005cec8552388fb168a",
         ),
-        level: "Beginner",
       },
     ],
   },
@@ -1696,7 +1692,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
     url: "https://academy.claude.com/all?kind=course&product=chat",
     urlLabel: "Path page",
     urlNoun: "path",
-    logo: "/logos/anthropic.png",
+    logo: "/logos/claude.png",
     tile: CLAUDE_ACADEMY_TILE,
     description:
       "Core Claude features, LLM mental models, and the 4D AI Fluency Framework: Delegation, Description, Discernment, and Diligence — collaborating with AI systems effectively, efficiently, and responsibly from everyday workflows to builder tasks.",
@@ -1713,7 +1709,6 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
           "claude-101",
           "https://academy.claude.com/verify/26fc2b7fb0801c5c6d8168316b99dcae",
         ),
-        level: "Beginner",
       },
       {
         step: 2,
@@ -1722,7 +1717,6 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
           "ai-capabilities-and-limitations",
           "https://academy.claude.com/badges/f4e2d9ea-b48c-4a71-92f0-a618a6775c84",
         ),
-        level: "Beginner",
       },
       {
         step: 3,
@@ -1731,7 +1725,6 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
           "ai-fluency-framework-foundations",
           "https://academy.claude.com/verify/87cca4700437d5b08cdfc43b538849e0",
         ),
-        level: "Beginner",
       },
       {
         step: 4,
@@ -1740,7 +1733,6 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
           "ai-fluency-for-builders",
           "https://academy.claude.com/badges/98e570fd-babb-4016-9fe6-07acf81cfb27",
         ),
-        level: "Intermediate",
       },
     ],
   },

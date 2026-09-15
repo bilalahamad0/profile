@@ -7,6 +7,30 @@
    <html class="dark"> instead. */
 @custom-variant dark (&:where(.dark, .dark *));
 
+@font-face {
+  font-family: 'Anthropic Serif';
+  src: url('/fonts/AnthropicSerif.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Anthropic Sans';
+  src: url('/fonts/AnthropicSans.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-claude-serif {
+  font-family: 'Anthropic Serif', Georgia, serif;
+}
+
+.font-claude-sans {
+  font-family: 'Anthropic Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
 /* ============================================================
    THEME SURFACES — the only colours that flip between themes.
    Components reference these through the semantic utilities below
