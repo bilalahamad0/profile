@@ -1558,7 +1558,7 @@ export const CONTINUING_EDUCATION: readonly LearningPathData[] = [
 function claudeBadge(slug: string, url: string): CourseBadge {
   return {
     url,
-    image: `/badges/claude-academy/${slug}.webp`,
+    image: `/badges/claude-academy/${slug}-seal.webp`,
     kind: "completion",
     provider: "Claude Academy",
   };
