@@ -1607,7 +1607,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
     id: "ce-claude-academy-code",
     headingId: "ce-claude-academy-code-heading",
     testId: "coursework-courses-claude-code",
-    titleLines: ["Claude Code", "2-Course Track"],
+    titleLines: ["Claude Code", "4-Course Track"],
     issuer: "Claude Academy",
     issuerShort: "Claude Academy",
     date: "2026",
@@ -1618,7 +1618,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
     tile: CLAUDE_ACADEMY_TILE,
     description:
       "An agentic coding tool that lives in your terminal. Learn what Claude Code is, how it works, and core workflows to run long, hands-off coding sessions you can trust with custom subagents, skills, and MCP tools.",
-    totalCourses: 2,
+    totalCourses: 4,
     unitNoun: "Courses",
     gradient: "from-cyan-600/20 via-teal-500/10 to-emerald-600/20",
     aiSkills: true,
@@ -1638,6 +1638,22 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
         badge: claudeBadge(
           "claude-code-in-action",
           "https://academy.claude.com/verify/4d7c863adbe9b8db4d518c6800d494ea",
+        ),
+      },
+      {
+        step: 3,
+        title: "Introduction to Agent Skills",
+        badge: claudeBadge(
+          "introduction-to-agent-skills",
+          "https://academy.claude.com/courses/introduction-to-agent-skills",
+        ),
+      },
+      {
+        step: 4,
+        title: "Introduction to Subagents",
+        badge: claudeBadge(
+          "introduction-to-subagents",
+          "https://academy.claude.com/courses/introduction-to-subagents",
         ),
       },
     ],
