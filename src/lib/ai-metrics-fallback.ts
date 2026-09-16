@@ -106,7 +106,7 @@ export const STATIC_FALLBACK: Record<string, AIMetrics> = {
   },
   "adhan-ce": {
     projectId: "adhan-ce",
-    lastUpdated: "2026-09-06",
+    lastUpdated: "2026-09-13",
     aiContribution: 95,
     agents: [
       {
@@ -119,7 +119,7 @@ export const STATIC_FALLBACK: Record<string, AIMetrics> = {
       },
     ],
     totalTokens: 103522508,
-    totalCommits: 121,
+    totalCommits: 122,
     linesOfCode: 8909,
     devCycleDays: 1,
     manualEstimateDays: 14,

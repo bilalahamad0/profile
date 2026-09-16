@@ -380,17 +380,16 @@ export const projectsData = [
     // Marketplace availability — one row per browser store (see StoreListing).
     // The rows are independent on purpose: stores approve at their own pace, so
     // each keeps the version actually published there rather than the repo's
-    // latest tag. Firefox and Edge both moved to 2.0.4 on 2026-08-17; Chrome
-    // stayed on 2.0.3 because that release changed nothing in its package, so
-    // resubmitting would have shipped a byte-identical CRX through a review
-    // cycle. Verify against the live listings before editing.
+    // latest tag. All three browser stores (Chrome, Firefox, Edge) are live on
+    // version 2.0.5 (updated 2026-09-15). Verify against the live listings
+    // before editing.
     storeListings: [
       {
         browser: "Chrome",
         store: "Chrome Web Store",
         status: "live",
         url: "https://chromewebstore.google.com/detail/adhan-caster-muslim-praye/jfjknglldcdminelckmmfdbnlikiogia",
-        version: "2.0.3",
+        version: "2.0.5",
         listingName: "Adhan Caster: Muslim Prayer Times & Auto-Pause",
       },
       {
@@ -398,7 +397,7 @@ export const projectsData = [
         store: "Firefox Add-ons",
         status: "live",
         url: "https://addons.mozilla.org/en-US/firefox/addon/adhan-caster-prayer-times/",
-        version: "2.0.4",
+        version: "2.0.5",
         listingName: "Adhan Caster: Prayer Times",
       },
       {
@@ -406,7 +405,7 @@ export const projectsData = [
         store: "Edge Add-ons",
         status: "live",
         url: "https://microsoftedge.microsoft.com/addons/detail/adhan-caster-muslim-pray/kapmpaofgphfbkpkmhhiooafplhckblg",
-        version: "2.0.4",
+        version: "2.0.5",
         listingName: "Adhan Caster: Muslim Prayer Times & Auto-Pause",
       },
     ] as StoreListing[],
