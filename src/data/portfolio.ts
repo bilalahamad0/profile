@@ -412,7 +412,7 @@ export const projectsData = [
     isAI: true,
     aiTools: ["Claude Code (Opus 4.7)"],
     aiContribution: 95,
-    impact: "Live on the Chrome Web Store, Firefox Add-ons and Edge Add-ons · auto-pauses media across every open tab at Adhan time · cross-tab prayer-focus mode · 194 tests, 14 suites",
+    impact: "Live on the Chrome Web Store, Firefox Add-ons and Edge Add-ons · auto-pauses media across every open tab at Adhan time · cross-tab prayer-focus mode · 221 tests, 14 suites",
     gradient: "from-emerald-600/20 via-emerald-500/10 to-transparent",
     accent: "emerald",
     relatedPosts: [
@@ -439,7 +439,7 @@ export const projectsData = [
     isAI: true,
     aiTools: ["Antigravity", "Gemini 2.5 Flash/Pro", "Cursor", "Claude Code"],
     aiContribution: 85,
-    impact: "Full-stack portfolio deployed to production · 358M+ tokens",
+    impact: "Full-stack portfolio deployed to production · 421M+ tokens",
     gradient: "from-violet-600/20 via-purple-500/10 to-transparent",
     accent: "violet",
     relatedPosts: [],

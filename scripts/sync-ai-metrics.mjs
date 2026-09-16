@@ -251,7 +251,7 @@ const updateLocal = ({ check }) => {
 
 const fetchSidecar = async (repo) => {
   for (const branch of ['main', 'master']) {
-    const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${repo}/${branch}/ai-metrics.json`;
+    const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${repo}/${branch}/ai-metrics.json?t=${Date.now()}`;
     try {
       const res = await fetch(url, { headers: { 'User-Agent': 'sync-ai-metrics/1.0' } });
       if (res.ok) return { data: await res.json(), source: `sidecar@${branch}` };
