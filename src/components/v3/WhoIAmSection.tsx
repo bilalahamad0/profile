@@ -69,7 +69,7 @@ export function WhoIAmSection() {
           <h2 id="who-i-am-heading" className="t-h2 text-ink">
             The Architecture of{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 via-blue-600 to-cyan-600 dark:from-violet-400 dark:via-blue-400 dark:to-cyan-400">
-              Reliability
+              System Validation
             </span>
           </h2>
           <p className="t-lead text-ink-muted font-light leading-relaxed">
