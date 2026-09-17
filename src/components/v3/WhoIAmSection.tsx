@@ -16,7 +16,7 @@ const PHILOSOPHY_PILLARS: Pillar[] = [
     icon: Cpu,
     title: "The Physical-Digital Frontier",
     tagline: "Where failure has physical consequences",
-    body: "Most software architectures live in the cloud, where an unhandled exception restarts a container in milliseconds. Embedded firmware, autonomous vehicles, and industrial telematics operate under entirely different stakes. Silicon interacts with physical forces, high voltage, and irreversible mechanical states. My career is dedicated to this boundary—ensuring bare-metal code, real-time operating systems, and distributed intelligence behave predictably under real-world conditions.",
+    body: "Most software architectures live in the cloud, where an unhandled exception restarts a container in milliseconds. Embedded firmware, autonomous vehicles, and industrial telematics operate under entirely different stakes. Physical boards and embedded systems interact with mechanical forces, high voltage, and irreversible operational states. My career is dedicated to this boundary—ensuring bare-metal firmware, real-time operating systems, and end-to-end connected ecosystems behave predictably under real-world conditions.",
     color: "text-violet-700 dark:text-violet-400",
     spotlight: "rgba(139, 92, 246, 0.12)",
   },
@@ -32,7 +32,7 @@ const PHILOSOPHY_PILLARS: Pillar[] = [
     icon: Compass,
     title: "Systems-Level Stewardship",
     tagline: "Quality as an architectural foundation",
-    body: "Over nearly two decades across Amazon Lab126, Google, Rivian, Cruise, and Samsara, I have observed how ambitious hardware programs stumble: through uncommunicated assumptions between silicon, firmware, software, and operations. True quality is an architectural discipline established at NPI bring-up. It means designing multi-ECU arbitration, cryptographically verified A/B rollbacks, and zero-escape release gates that let engineering teams ship fearlessly.",
+    body: "Over nearly two decades across Amazon Lab126, Google, Rivian, Cruise, and Samsara, I have observed how ambitious hardware programs stumble: through uncommunicated assumptions between board hardware, firmware, software, and the broader cloud ecosystem. True quality is an architectural discipline established at NPI bring-up. It means designing multi-ECU arbitration, cryptographically verified A/B rollbacks, and zero-escape release gates that let engineering teams ship fearlessly.",
     color: "text-amber-700 dark:text-amber-400",
     spotlight: "rgba(245, 158, 11, 0.12)",
   },
@@ -74,7 +74,7 @@ export function WhoIAmSection() {
           </h2>
           <p className="t-lead text-ink-muted font-light leading-relaxed">
             Software operating in the physical world cannot afford the luxury of undefined behavior.
-            Here is the engineering mental model that guides my work across firmware, silicon, and autonomous systems.
+            Here is the engineering mental model that guides my work across embedded systems, firmware, and autonomous ecosystems.
           </p>
         </div>
 
