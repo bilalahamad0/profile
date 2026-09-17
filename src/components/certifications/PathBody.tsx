@@ -29,7 +29,7 @@ import { trackCourseworkPage } from "./verify";
 export const PathBody = ({ path }: { path: LearningPathData }) => {
   const reduceMotion = useReducedMotion();
   const itemVariants = reduceMotion ? reducedItemVariants : panelItemVariants;
-  const badges = path.courses.filter((c) => c.badge).length;
+  const badges = path.courses.filter((c) => c.badge && c.badge.isVerifiable !== false).length;
   const track = () =>
     trackCourseworkPage({
       id: path.id,

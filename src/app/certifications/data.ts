@@ -168,6 +168,9 @@ export type CourseBadge = {
    *  `bg-white` — a round clip would cut the card's corners — and why no
    *  sentence anywhere on this page has to state what kind of badge it is. */
   image: string;
+  /** If false, this course tile displays its thumbnail art and title, but does not carry
+   *  an issued public credential/badge and thus does not display the "Verify" tag. */
+  isVerifiable?: boolean;
 };
 
 /** One unit inside a path.
@@ -1555,12 +1558,13 @@ export const CONTINUING_EDUCATION: readonly LearningPathData[] = [
 //   Violet / purple badges       →  "from-indigo-600/20 to-violet-600/20"
 //     (Building Effective Human Agent Teams)
 //
-function claudeBadge(slug: string, url: string): CourseBadge {
+function claudeBadge(slug: string, url: string, isVerifiable = true): CourseBadge {
   return {
     url,
     image: `/badges/claude-academy/${slug}-seal.webp`,
     kind: "completion",
     provider: "Claude Academy",
+    ...(isVerifiable ? {} : { isVerifiable: false }),
   };
 }
 
@@ -1646,6 +1650,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
         badge: claudeBadge(
           "introduction-to-agent-skills",
           "https://academy.claude.com/courses/introduction-to-agent-skills",
+          false,
         ),
       },
       {
@@ -1654,6 +1659,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
         badge: claudeBadge(
           "introduction-to-subagents",
           "https://academy.claude.com/courses/introduction-to-subagents",
+          false,
         ),
       },
       {
@@ -1662,6 +1668,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
         badge: claudeBadge(
           "ai-native-sdlc-playbook",
           "https://academy.claude.com/courses/ai-native-sdlc-playbook",
+          false,
         ),
       },
     ],
@@ -1784,7 +1791,11 @@ const asPath = (p: LearningPathData): PathCredential => ({ kind: "path", ...p })
  *  there are course references but only distinct badges count. */
 const distinctBadges = (paths: readonly LearningPathData[]) =>
   new Set(
-    paths.flatMap((p) => p.courses.flatMap((c) => (c.badge ? [c.badge.url] : []))),
+    paths.flatMap((p) =>
+      p.courses.flatMap((c) =>
+        c.badge && c.badge.isVerifiable !== false ? [c.badge.url] : [],
+      ),
+    ),
   ).size;
 const totalUnits = (paths: readonly LearningPathData[]) =>
   paths.reduce((n, p) => n + p.totalCourses, 0);

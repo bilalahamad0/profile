@@ -284,6 +284,7 @@ export const CourseBadgesGrid = ({ path }: { path: LearningPathData }) => {
         // A lab-based skill badge, hosted on Credly. Read from the DATA, so a
         // sixth path with a Credly badge lights up without touching this file.
         const glow = badge.provider === "Credly";
+        const isVerifiable = badge.isVerifiable !== false;
         return (
           <motion.li
             key={course.step}
@@ -376,53 +377,55 @@ export const CourseBadgesGrid = ({ path }: { path: LearningPathData }) => {
                 <span className="min-w-0 break-words t-small font-semibold text-ink/88">
                   {course.title}
                 </span>
-                <span
-                  className={cn(
-                    TILE_PILL,
-                    // `max-w-full` + the default `whitespace-normal` let the
-                    // longer Credly label WRAP inside the pill rather than
-                    // overflow a narrow tile — the label is never truncated
-                    // and never abbreviated. It sets on one line in the
-                    // sideways unit at 375px and on two in a gallery column
-                    // at 1440px; either way scrollWidth === clientWidth on every
-                    // visible span, asserted in the e2e at both widths.
-                    "mt-auto max-w-full text-center",
-                    // emerald-800 replaces TILE_PILL's emerald-700 (twMerge keeps
-                    // the later text-*). Measured by reading the painted pixel
-                    // under the glyphs on the OPEN card — the only state this
-                    // pill has, and the one where the gradient wash is applied at
-                    // opacity-50: the pill's own bg-emerald-500/10 resolves to
-                    // rgb(213,239,238) light, where emerald-700 is 4.55:1 —
-                    // riding the AA line — and emerald-800 is 6.31:1. Dark is
-                    // unchanged (emerald-300, 10.07:1). emerald-800 is already
-                    // the hover colour, so resting and hover now agree. Scoped to
-                    // this grid on purpose: the specialization Verify pill that
-                    // shares TILE_PILL is frozen art (and measures 4.35:1 light
-                    // on its own card — a pre-existing defect, not this branch's
-                    // to fix).
-                    "text-emerald-800 group-hover/badge:border-emerald-300/60 group-hover/badge:bg-emerald-500/20 group-hover/badge:text-emerald-800 dark:group-hover/badge:text-emerald-200",
-                  )}
-                >
-                  {/* "Verify in Credly" on a Credly badge; a bare "Verify"
-                      on every other provider (today only Google Skills) —
-                      the owner's wording, 2026-09-11. Driven off
-                      `badge.provider`, never off a per-course list, so a
-                      seventh path's badges label themselves.
+                {isVerifiable && (
+                  <span
+                    className={cn(
+                      TILE_PILL,
+                      // `max-w-full` + the default `whitespace-normal` let the
+                      // longer Credly label WRAP inside the pill rather than
+                      // overflow a narrow tile — the label is never truncated
+                      // and never abbreviated. It sets on one line in the
+                      // sideways unit at 375px and on two in a gallery column
+                      // at 1440px; either way scrollWidth === clientWidth on every
+                      // visible span, asserted in the e2e at both widths.
+                      "mt-auto max-w-full text-center",
+                      // emerald-800 replaces TILE_PILL's emerald-700 (twMerge keeps
+                      // the later text-*). Measured by reading the painted pixel
+                      // under the glyphs on the OPEN card — the only state this
+                      // pill has, and the one where the gradient wash is applied at
+                      // opacity-50: the pill's own bg-emerald-500/10 resolves to
+                      // rgb(213,239,238) light, where emerald-700 is 4.55:1 —
+                      // riding the AA line — and emerald-800 is 6.31:1. Dark is
+                      // unchanged (emerald-300, 10.07:1). emerald-800 is already
+                      // the hover colour, so resting and hover now agree. Scoped to
+                      // this grid on purpose: the specialization Verify pill that
+                      // shares TILE_PILL is frozen art (and measures 4.35:1 light
+                      // on its own card — a pre-existing defect, not this branch's
+                      // to fix).
+                      "text-emerald-800 group-hover/badge:border-emerald-300/60 group-hover/badge:bg-emerald-500/20 group-hover/badge:text-emerald-800 dark:group-hover/badge:text-emerald-200",
+                    )}
+                  >
+                    {/* "Verify in Credly" on a Credly badge; a bare "Verify"
+                        on every other provider (today only Google Skills) —
+                        the owner's wording, 2026-09-11. Driven off
+                        `badge.provider`, never off a per-course list, so a
+                        seventh path's badges label themselves.
 
-                      WCAG 2.5.3 (Label in Name) holds either way: the
-                      accessible name of this <a> is composed of the course
-                      title, this pill's text and the sr-only suffix, so it
-                      CONTAINS the visible string — "Verify" on a Google
-                      Skills tile, "Verify in Credly" on a Credly one. The
-                      sr-only suffix below still names the platform, which is
-                      what a screen-reader user loses when the visible label
-                      stops saying where the link goes. */}
-                  {badge.provider === "Credly" ? "Verify in Credly" : "Verify"}
-                  <ExternalLink
-                    className="h-3 w-3 shrink-0 transition-transform group-hover/badge:translate-x-0.5"
-                    aria-hidden
-                  />
-                </span>
+                        WCAG 2.5.3 (Label in Name) holds either way: the
+                        accessible name of this <a> is composed of the course
+                        title, this pill's text and the sr-only suffix, so it
+                        CONTAINS the visible string — "Verify" on a Google
+                        Skills tile, "Verify in Credly" on a Credly one. The
+                        sr-only suffix below still names the platform, which is
+                        what a screen-reader user loses when the visible label
+                        stops saying where the link goes. */}
+                    {badge.provider === "Credly" ? "Verify in Credly" : "Verify"}
+                    <ExternalLink
+                      className="h-3 w-3 shrink-0 transition-transform group-hover/badge:translate-x-0.5"
+                      aria-hidden
+                    />
+                  </span>
+                )}
               </span>
               {/* `kind` changes ONLY this spoken suffix — a lab-based skill
                   badge and an on-demand completion badge look identical on
@@ -431,7 +434,9 @@ export const CourseBadgesGrid = ({ path }: { path: LearningPathData }) => {
                   changes the suffix AND the pill's visible label above.
                   The two fields are independent: read both, derive neither. */}
               <span className="sr-only">
-                {` — ${badge.kind} badge on ${badge.provider}, opens in a new tab`}
+                {isVerifiable
+                  ? ` — ${badge.kind} badge on ${badge.provider}, opens in a new tab`
+                  : ` — course on ${badge.provider}, opens in a new tab`}
               </span>
             </a>
           </motion.li>
