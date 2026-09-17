@@ -398,14 +398,14 @@ describe("the three coursework group headers", () => {
   });
 
   it("count DISTINCT badge pages, not badge references", () => {
-    // 31 references resolve to 26 distinct badge pages for Google Skills, plus 14 for Claude Academy: 45 total, 40 distinct.
+    // 31 references resolve to 26 distinct badge pages for Google Skills, plus 11 verifiable for Claude Academy.
     expect(badged).toHaveLength(45);
     expect(new Set(badged.map((b) => b.badge.url)).size).toBe(40);
     const googleEntries = LEARNING_PATHS.reduce((n, e) => n + e.courses.length, 0);
     expect(googleEntries).toBe(31);
     const claudeEntries = CLAUDE_ACADEMY_PATHS.reduce((n, e) => n + e.courses.length, 0);
     expect(claudeEntries).toBe(14);
-    expect(COURSEWORK_GROUPS[0].countLabel).toBe("4 learning paths · 14 course badges");
+    expect(COURSEWORK_GROUPS[0].countLabel).toBe("4 learning paths · 11 course badges");
     expect(COURSEWORK_GROUPS[1].countLabel).toBe("6 learning paths · 26 course badges");
     expect(COURSEWORK_GROUPS[2].countLabel).toBe("1 short course · 5 modules");
   });
@@ -415,9 +415,17 @@ describe("the three coursework group headers", () => {
     expect(academy.id).toBe("claude-academy");
     expect(academy.title).toBe("Claude Academy");
     expect(academy.eyebrow).toBe("Completed Learning Paths");
-    expect(academy.countLabel).toBe("4 learning paths · 14 course badges");
+    expect(academy.countLabel).toBe("4 learning paths · 11 course badges");
     expect(academy.credentials).toHaveLength(4);
-    expect(new Set(CLAUDE_ACADEMY_PATHS.flatMap((p) => p.courses.map((c) => c.badge?.url))).size).toBe(14);
+    expect(
+      new Set(
+        CLAUDE_ACADEMY_PATHS.flatMap((p) =>
+          p.courses.flatMap((c) =>
+            c.badge && c.badge.isVerifiable !== false ? [c.badge.url] : [],
+          ),
+        ),
+      ).size,
+    ).toBe(11);
   });
 });
 
@@ -512,12 +520,15 @@ describe("course-level badges", () => {
     const shape = Object.fromEntries(
       ALL_COURSEWORK.map((e) => [
         e.id,
-        [e.courses.length, e.courses.filter((c) => c.badge).length],
+        [
+          e.courses.length,
+          e.courses.filter((c) => c.badge && c.badge.isVerifiable !== false).length,
+        ],
       ]),
     );
     expect(shape).toEqual({
       "ce-claude-academy-platform": [1, 1],
-      "ce-claude-academy-code": [5, 5],
+      "ce-claude-academy-code": [5, 2],
       "ce-claude-academy-cowork": [2, 2],
       "ce-claude-academy-chat": [6, 6],
       "ce-google-skills-multi-agent-4459": [3, 3],
@@ -718,7 +729,11 @@ describe("course-level badges", () => {
     // Skill Badge" would make the card disagree with the path page it links to.
     for (const { badge } of badged) {
       expect(badge).not.toHaveProperty("linkTitle");
-      expect(Object.keys(badge).sort()).toEqual(["image", "kind", "provider", "url"]);
+      expect(
+        Object.keys(badge)
+          .filter((k) => k !== "isVerifiable")
+          .sort(),
+      ).toEqual(["image", "kind", "provider", "url"]);
     }
     const promptDesign = badged.find(({ badge }) => badge.url === CREDLY_BADGE_URLS[0]);
     expect(promptDesign?.course.title).toBe("Prompt Design in Agent Platform");

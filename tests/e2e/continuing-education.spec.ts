@@ -107,6 +107,8 @@ type Card = {
   /** Badge links on the card. Equals courses.length on every Google and Claude card —
    *  every listed course carries a badge — and 0 on Stanford. */
   badges: number;
+  /** Image count if different from verifiable badges count (e.g. Claude Code where 3 courses have no verifiable badge). */
+  images?: number;
   credly: number;
   pill: RegExp;
 };
@@ -125,7 +127,7 @@ const CLAUDE_CARDS: Card[] = [
     chip: '5 Courses', numeral: '02',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Claude Academy',
     url: /^https:\/\/academy\.claude\.com\/all\?kind=course&product=code$/,
-    courses: CLAUDE_CODE_COURSES, badges: 5, credly: 0, pill: /^5 public course badges$/i },
+    courses: CLAUDE_CODE_COURSES, badges: 2, images: 5, credly: 0, pill: /^2 public course badges$/i },
   { section: 'claude-academy', id: 'ce-claude-academy-cowork',
     title: 'Claude Cowork',
     meta: 'Claude Academy · 2026 · 2-Course Track',
@@ -299,7 +301,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       'Google Skills', 'Continuing Education', 'Completed Learning Paths',
       'Claude Academy',
       'Stanford School of Engineering', 'XEE100',
-      '4 learning paths · 14 course badges',
+      '4 learning paths · 11 course badges',
       '6 learning paths · 26 course badges', '1 short course · 5 modules',
       'Generative AI Leader Certification', 'Train for the exam',
       'Google Cloud Generative AI Leader certification',
@@ -404,7 +406,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     const academy = page.locator('#claude-academy');
     await expect(academy.getByRole('heading', { level: 2 })).toHaveText('Claude Academy');
     await expect(academy.getByText('Completed Learning Paths', { exact: true })).toBeVisible();
-    const count = academy.getByText('4 learning paths · 14 course badges', { exact: true });
+    const count = academy.getByText('4 learning paths · 11 course badges', { exact: true });
     await (wideViewport(page) ? expect(count).toBeVisible() : expect(count).toBeAttached());
     // The derived "N credentials · all verified" line is reserved for the four
     // counted groups; this header may not borrow either half of it.
@@ -534,7 +536,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       }
       // Badge art count is scoped to the list — the panel's issuer logo is not
       // part of it.
-      await expect(list.locator('img')).toHaveCount(card.badges);
+      await expect(list.locator('img')).toHaveCount(card.images ?? card.badges);
       await expect(badgeLinks(el)).toHaveCount(card.badges);
       await expect(credlyLinks(el)).toHaveCount(card.credly);
       // Two issuer-page controls, each with its own accessible name — and the
