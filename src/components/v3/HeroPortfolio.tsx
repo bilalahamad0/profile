@@ -176,8 +176,8 @@ const coreCards = [
   },
   {
     icon: Zap,
-    label: "Firmware & Silicon",
-    sub: "Bring-Up & Low-Level Kernels",
+    label: "Firmware & Board Bring-Up",
+    sub: "Board Validation & Low-Level Kernels",
     iconColor: "text-amber-700 dark:text-amber-400",
     spotlight: "rgba(245, 158, 11, 0.15)",
   },
@@ -276,7 +276,7 @@ export function HeroPortfolio() {
             Architecting Systems <br />
             at the Edge of{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 via-cyan-600 to-blue-600 dark:from-violet-400 dark:via-cyan-400 dark:to-blue-400">
-              Silicon, Software &amp; Safety.
+              Embedded Systems, Firmware &amp; Safety.
             </span>
           </motion.h1>
 

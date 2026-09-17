@@ -33,9 +33,9 @@ const DISCIPLINES: Discipline[] = [
     icon: Cpu,
     title: "Embedded Firmware & Hardware Bring-Up",
     badge: "RTOS · QNX · Linux",
-    lead: "Guiding silicon and board bring-up from initial power-on through production firmware release, standardizing low-level bus protocols and physical-layer stability.",
+    lead: "Guiding embedded board bring-up and firmware validation from initial power-on through production release, standardizing low-level bus protocols and physical-layer stability.",
     capabilities: [
-      "Silicon bring-up across ARM, ESP32, and custom SoCs",
+      "Board bring-up & embedded validation across ARM, ESP32, and custom SoCs",
       "CAN bus, UART, I2C, SPI & Ethernet protocol validation",
       "Low-power state transitions & battery lifecycle profiling",
       "Optical bench camera module & image quality verification",
@@ -48,7 +48,7 @@ const DISCIPLINES: Discipline[] = [
     icon: Layers,
     title: "HIL / SIL Simulation & Virtualization",
     badge: "Virtual-ECU · QEMU · Docker",
-    lead: "Creating pre-silicon virtualization harnesses and automated HIL benches that detach validation velocity from physical hardware availability.",
+    lead: "Creating virtual-ECU simulation harnesses and automated HIL benches that detach validation velocity from physical board availability.",
     capabilities: [
       "QEMU & Docker-based virtual-ECU simulation environments",
       "Automated Hardware-in-the-Loop (HIL) chassis test racks",
