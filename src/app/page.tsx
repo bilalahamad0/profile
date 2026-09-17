@@ -4,7 +4,6 @@
 import type { Metadata } from "next";
 import { HeroPortfolio } from "@/components/v3/HeroPortfolio";
 import { WhoIAmSection } from "@/components/v3/WhoIAmSection";
-import { DisciplinesSection } from "@/components/v3/DisciplinesSection";
 import { CuratedSystemsSection } from "@/components/v3/CuratedSystemsSection";
 import { BlogPreview, ContactCTA } from "@/components/v3/HomePageSections";
 import { getAllPosts } from "@/lib/blog";
@@ -125,23 +124,19 @@ export default async function HomePage() {
         {/* ── 1. Hero: Executive Architectural Presence ── */}
         <HeroPortfolio />
 
-        {/* ── 2. Who I Am: Engineering Philosophy ──────── */}
-        <div className="section-divider" />
-        <WhoIAmSection />
-
-        {/* ── 3. Core Architectural Disciplines ────────── */}
-        <div className="section-divider" />
-        <DisciplinesSection />
-
-        {/* ── 4. Selected Systems & Frontiers ──────────── */}
+        {/* ── 2. Selected Systems & Frontiers ──────────── */}
         <div className="section-divider" />
         <CuratedSystemsSection />
 
-        {/* ── 5. Lab Notes & Technical Insights ────────── */}
+        {/* ── 3. Who I Am: Engineering Philosophy ──────── */}
+        <div className="section-divider" />
+        <WhoIAmSection />
+
+        {/* ── 4. Lab Notes & Technical Insights ────────── */}
         <div className="section-divider" />
         <BlogPreview posts={posts} />
 
-        {/* ── 6. Executive Contact / Availability ──────── */}
+        {/* ── 5. Executive Contact / Availability ──────── */}
         <div className="section-divider" />
         <ContactCTA />
       </div>

@@ -311,10 +311,10 @@ export function HeroPortfolio() {
           className="flex flex-wrap gap-4 items-center pt-2"
         >
           <a
-            href="#who-i-am"
+            href="#curated-systems"
             className="group flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-ink text-surface font-semibold t-small hover:bg-ink/85 dark:hover:bg-zinc-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:scale-105 active:scale-95"
           >
-            <span>Explore Philosophy &amp; Mindset</span>
+            <span>Explore Selected Systems</span>
             <ArrowDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
           </a>
 

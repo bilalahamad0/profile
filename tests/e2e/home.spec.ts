@@ -11,17 +11,26 @@ test.describe('Homepage E2E', () => {
     const main = page.locator('main').first();
     await expect(main).toBeVisible();
 
-    // Check Who I Am section is present
-    const whoIAm = page.locator('#who-i-am');
-    await expect(whoIAm).toBeVisible();
-
-    // Check Core Disciplines section is present
-    const disciplines = page.locator('#disciplines');
-    await expect(disciplines).toBeVisible();
-
-    // Check Curated Systems section is present
+    // Check Curated Systems section is present before Who I Am
     const curatedSystems = page.locator('#curated-systems');
     await expect(curatedSystems).toBeVisible();
+
+    // Check Who I Am section is present with updated heading
+    const whoIAm = page.locator('#who-i-am');
+    await expect(whoIAm).toBeVisible();
+    await expect(whoIAm.getByText('The Architecture of System Validation')).toBeVisible();
+
+    // Verify DOM order: #curated-systems comes before #who-i-am
+    const order = await page.evaluate(() => {
+      const el1 = document.querySelector('#curated-systems');
+      const el2 = document.querySelector('#who-i-am');
+      if (!el1 || !el2) return false;
+      return Boolean(el1.compareDocumentPosition(el2) & Node.DOCUMENT_POSITION_FOLLOWING);
+    });
+    expect(order).toBe(true);
+
+    // Verify redundant Core Disciplines section is removed
+    await expect(page.locator('#disciplines')).toHaveCount(0);
 
     // Verify exact matching project names from projects data
     await expect(curatedSystems.getByText('US Live Layoff Monitoring Dashboard')).toBeVisible();
@@ -33,16 +42,12 @@ test.describe('Homepage E2E', () => {
     await expect(videos).toHaveCount(3);
 
     // Take component screenshots
-    if (await whoIAm.count() > 0) {
-      await whoIAm.screenshot({ path: 'verify-who-i-am.png' });
-    }
-
-    if (await disciplines.count() > 0) {
-      await disciplines.screenshot({ path: 'verify-disciplines.png' });
-    }
-
     if (await curatedSystems.count() > 0) {
       await curatedSystems.screenshot({ path: 'verify-curated-systems.png' });
+    }
+
+    if (await whoIAm.count() > 0) {
+      await whoIAm.screenshot({ path: 'verify-who-i-am.png' });
     }
 
 
