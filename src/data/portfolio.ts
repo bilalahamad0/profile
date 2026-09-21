@@ -375,29 +375,29 @@ export const projectsData = [
     tech: ["JavaScript", "WebExtensions", "Manifest V3", "Service Worker", "Cross-Browser", "Jest"],
     repo: "https://github.com/bilalahamad0/adhan-ce",
     architecture: "https://bilalahamad0.github.io/adhan-ce/architecture.html",
-    demo: "https://chromewebstore.google.com/detail/adhan-caster-muslim-praye/jfjknglldcdminelckmmfdbnlikiogia",
+    demo: "https://chromewebstore.google.com/detail/adhan-focus-muslim-prayer/jfjknglldcdminelckmmfdbnlikiogia",
     demoLabel: "Install for Chrome",
     // Marketplace availability — one row per browser store (see StoreListing).
     // The rows are independent on purpose: stores approve at their own pace, so
     // each keeps the version actually published there rather than the repo's
     // latest tag. All three browser stores (Chrome, Firefox, Edge) are live on
-    // version 2.0.5 (updated 2026-09-15). Verify against the live listings
+    // version 2.1.0 (updated 2026-09-20). Verify against the live listings
     // before editing.
     storeListings: [
       {
         browser: "Chrome",
         store: "Chrome Web Store",
         status: "live",
-        url: "https://chromewebstore.google.com/detail/adhan-caster-muslim-praye/jfjknglldcdminelckmmfdbnlikiogia",
-        version: "2.0.5",
-        listingName: "Adhan Caster: Muslim Prayer Times & Auto-Pause",
+        url: "https://chromewebstore.google.com/detail/adhan-focus-muslim-prayer/jfjknglldcdminelckmmfdbnlikiogia",
+        version: "2.1.0",
+        listingName: "Adhan Focus: Muslim Prayer Times & Auto-Pause",
       },
       {
         browser: "Firefox",
         store: "Firefox Add-ons",
         status: "live",
         url: "https://addons.mozilla.org/en-US/firefox/addon/adhan-caster-prayer-times/",
-        version: "2.0.5",
+        version: "2.1.0",
         listingName: "Adhan Caster: Prayer Times",
       },
       {
@@ -405,14 +405,14 @@ export const projectsData = [
         store: "Edge Add-ons",
         status: "live",
         url: "https://microsoftedge.microsoft.com/addons/detail/adhan-caster-muslim-pray/kapmpaofgphfbkpkmhhiooafplhckblg",
-        version: "2.0.5",
-        listingName: "Adhan Caster: Muslim Prayer Times & Auto-Pause",
+        version: "2.1.0",
+        listingName: "Adhan Focus: Muslim Prayer Times & Auto-Pause",
       },
     ] as StoreListing[],
     isAI: true,
     aiTools: ["Claude Code (Opus 4.7)"],
     aiContribution: 95,
-    impact: "Live on the Chrome Web Store, Firefox Add-ons and Edge Add-ons · auto-pauses media across every open tab at Adhan time · cross-tab prayer-focus mode · 221 tests, 14 suites",
+    impact: "Live on the Chrome Web Store, Firefox Add-ons and Edge Add-ons · auto-pauses media across every open tab at Adhan time · cross-tab prayer-focus mode · 249 tests, 15 suites",
     gradient: "from-emerald-600/20 via-emerald-500/10 to-transparent",
     accent: "emerald",
     relatedPosts: [

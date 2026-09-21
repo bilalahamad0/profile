@@ -109,3 +109,4 @@ small **UX decisions** — not infrastructure.
 | 2026-06-08 | 4D/4B/2A | 375px Playwright mobile audit — 0px overflow on all routes + a post (4D ✅). Decisions: keep hero CTA→/experience (4B ✅); case studies via dedicated /case-studies route (2A). | _this branch_ |
 | 2026-06-25 | SEO/#178 | Structured-data module + `<JsonLd>`; WebSite/Blog/credentials/projects JSON-LD; AI-crawler robots + host; content-driven sitemap lastModified; dynamic /llms.txt; tests for structured-data, llms-txt, sitemap, robots, manifest, llms.txt route. | _this branch_ |
 | 2026-09-15 | data/projects | Updated Adhan Caster (adhan-ce) store listings to v2.0.5 across Chrome, Firefox, and Edge; synchronized ai-metrics-fallback. | _this branch_ |
+| 2026-09-21 | data/projects | Updated Adhan Caster (adhan-ce) store listings to v2.1.0 across Chrome, Firefox, and Edge; synchronized ai-metrics-fallback. | _this branch_ |
