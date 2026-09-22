@@ -397,7 +397,7 @@ export const projectsData = [
         store: "Firefox Add-ons",
         status: "live",
         url: "https://addons.mozilla.org/en-US/firefox/addon/adhan-caster-prayer-times/",
-        version: "2.1.0",
+        version: "2.1.1",
         listingName: "Adhan Caster: Prayer Times",
       },
       {
