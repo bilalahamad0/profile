@@ -370,7 +370,7 @@ export const projectsData = [
     id: "adhan-ce",
     name: "Adhan Caster — Cross-Browser Extension",
     tagline: "Auto-pauses media in every tab at Adhan time",
-    description: "A Manifest V3 browser extension that auto-pauses every playing video and audio across all open tabs at Adhan time, with a live countdown to the next prayer. One codebase live on the Chrome Web Store, Firefox Add-ons and Edge Add-ons — built in one day with Claude Code.",
+    description: "A Manifest V3 browser extension that auto-pauses every playing video and audio across all open tabs at Adhan time, with a live countdown to the next prayer. One codebase live on the Chrome Web Store, Firefox Add-ons, Edge Add-ons, and Opera Add-ons — built in one day with Claude Code.",
     category: "AI-Powered" as ProjectCategory,
     tech: ["JavaScript", "WebExtensions", "Manifest V3", "Service Worker", "Cross-Browser", "Jest"],
     repo: "https://github.com/bilalahamad0/adhan-ce",
@@ -380,16 +380,16 @@ export const projectsData = [
     // Marketplace availability — one row per browser store (see StoreListing).
     // The rows are independent on purpose: stores approve at their own pace, so
     // each keeps the version actually published there rather than the repo's
-    // latest tag. Firefox is live on version 2.1.1 (updated 2026-09-21); Chrome
-    // and Edge are live on version 2.1.0 (updated 2026-09-20). Verify against
-    // the live listings before editing.
+    // latest tag. All four browser stores (Chrome, Firefox, Edge, Opera) are
+    // updated to version 2.1.1 (updated 2026-09-22). Verify against the live
+    // listings before editing.
     storeListings: [
       {
         browser: "Chrome",
         store: "Chrome Web Store",
         status: "live",
         url: "https://chromewebstore.google.com/detail/adhan-focus-muslim-prayer/jfjknglldcdminelckmmfdbnlikiogia",
-        version: "2.1.0",
+        version: "2.1.1",
         listingName: "Adhan Focus: Muslim Prayer Times & Auto-Pause",
       },
       {
@@ -405,14 +405,22 @@ export const projectsData = [
         store: "Edge Add-ons",
         status: "live",
         url: "https://microsoftedge.microsoft.com/addons/detail/adhan-caster-muslim-pray/kapmpaofgphfbkpkmhhiooafplhckblg",
-        version: "2.1.0",
+        version: "2.1.1",
+        listingName: "Adhan Focus: Muslim Prayer Times & Auto-Pause",
+      },
+      {
+        browser: "Opera",
+        store: "Opera Add-ons",
+        status: "live",
+        url: "https://addons.opera.com/extensions/details/adhan-focus-muslim-prayer-times-auto-pause/",
+        version: "2.1.1",
         listingName: "Adhan Focus: Muslim Prayer Times & Auto-Pause",
       },
     ] as StoreListing[],
     isAI: true,
     aiTools: ["Claude Code (Opus 4.7)"],
     aiContribution: 95,
-    impact: "Live on the Chrome Web Store, Firefox Add-ons and Edge Add-ons · auto-pauses media across every open tab at Adhan time · cross-tab prayer-focus mode · 249 tests, 15 suites",
+    impact: "Live on the Chrome Web Store, Firefox Add-ons, Edge Add-ons, and Opera Add-ons · auto-pauses media across every open tab at Adhan time · cross-tab prayer-focus mode · 253 tests, 15 suites",
     gradient: "from-emerald-600/20 via-emerald-500/10 to-transparent",
     accent: "emerald",
     relatedPosts: [

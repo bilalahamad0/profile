@@ -127,7 +127,7 @@ export const STATIC_FALLBACK: Record<string, AIMetrics> = {
     cycle: "1 day",
     beforeAI: "Manual prayer tracking; media kept playing during Adhan",
     afterAI: "One-click extension pauses every tab at prayer time",
-    tests: 249,
+    tests: 253,
     testSuites: 15,
   },
   tmo: {
