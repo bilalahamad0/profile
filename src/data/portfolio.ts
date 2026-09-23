@@ -380,9 +380,9 @@ export const projectsData = [
     // Marketplace availability — one row per browser store (see StoreListing).
     // The rows are independent on purpose: stores approve at their own pace, so
     // each keeps the version actually published there rather than the repo's
-    // latest tag. All three browser stores (Chrome, Firefox, Edge) are live on
-    // version 2.1.0 (updated 2026-09-20). Verify against the live listings
-    // before editing.
+    // latest tag. Firefox is live on version 2.1.1 (updated 2026-09-21); Chrome
+    // and Edge are live on version 2.1.0 (updated 2026-09-20). Verify against
+    // the live listings before editing.
     storeListings: [
       {
         browser: "Chrome",
@@ -397,7 +397,7 @@ export const projectsData = [
         store: "Firefox Add-ons",
         status: "live",
         url: "https://addons.mozilla.org/en-US/firefox/addon/adhan-caster-prayer-times/",
-        version: "2.1.0",
+        version: "2.1.1",
         listingName: "Adhan Caster: Prayer Times",
       },
       {
