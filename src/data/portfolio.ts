@@ -389,7 +389,7 @@ export const projectsData = [
         store: "Chrome Web Store",
         status: "live",
         url: "https://chromewebstore.google.com/detail/adhan-focus-muslim-prayer/jfjknglldcdminelckmmfdbnlikiogia",
-        version: "2.1.1",
+        version: "2.1.0",
         listingName: "Adhan Focus: Muslim Prayer Times & Auto-Pause",
       },
       {
@@ -405,7 +405,7 @@ export const projectsData = [
         store: "Edge Add-ons",
         status: "live",
         url: "https://microsoftedge.microsoft.com/addons/detail/adhan-caster-muslim-pray/kapmpaofgphfbkpkmhhiooafplhckblg",
-        version: "2.1.1",
+        version: "2.1.0",
         listingName: "Adhan Focus: Muslim Prayer Times & Auto-Pause",
       },
       {
