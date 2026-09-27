@@ -380,16 +380,14 @@ export const projectsData = [
     // Marketplace availability — one row per browser store (see StoreListing).
     // The rows are independent on purpose: stores approve at their own pace, so
     // each keeps the version actually published there rather than the repo's
-    // latest tag. All four browser stores (Chrome, Firefox, Edge, Opera) are
-    // updated to version 2.1.1 (updated 2026-09-22). Verify against the live
-    // listings before editing.
+    // latest tag. Verify against the live listings before editing.
     storeListings: [
       {
         browser: "Chrome",
         store: "Chrome Web Store",
         status: "live",
         url: "https://chromewebstore.google.com/detail/adhan-focus-muslim-prayer/jfjknglldcdminelckmmfdbnlikiogia",
-        version: "2.1.1",
+        version: "2.1.0",
         listingName: "Adhan Focus: Muslim Prayer Times & Auto-Pause",
       },
       {
@@ -405,7 +403,7 @@ export const projectsData = [
         store: "Edge Add-ons",
         status: "live",
         url: "https://microsoftedge.microsoft.com/addons/detail/adhan-caster-muslim-pray/kapmpaofgphfbkpkmhhiooafplhckblg",
-        version: "2.1.1",
+        version: "2.1.0",
         listingName: "Adhan Focus: Muslim Prayer Times & Auto-Pause",
       },
       {
