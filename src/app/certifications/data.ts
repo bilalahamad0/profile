@@ -1122,19 +1122,38 @@ const FIRST_GEMINI_ENTERPRISE_APP = {
     "create-your-first-gemini-enterprise-application",
   ),
 } as const;
+// Shared by the SMB Learning Path (4020) and Google Workspace with Gemini (249).
+const WORKSPACE_GEMINI_FOUNDATIONS = {
+  title: "Google Workspace with Gemini: Foundations of Your AI Workflow",
+  badge: gsBadge(27848970, "google-workspace-with-gemini-foundations"),
+} as const;
+const GEMINI_IN_GMAIL = {
+  title: "Gemini in Gmail",
+  badge: gsBadge(27849041, "gemini-in-gmail"),
+} as const;
+const GEMINI_IN_SHEETS = {
+  title: "Gemini in Google Sheets",
+  badge: gsBadge(27849084, "gemini-in-google-sheets"),
+} as const;
+const GEMINI_IN_VIDS = {
+  title: "Gemini in Google Vids",
+  badge: gsBadge(27849255, "gemini-in-google-vids"),
+} as const;
 
 /** THIS ARRAY'S ORDER IS THE DISPLAY ORDER, and it is the OWNER'S CHOICE, dated
  *  2026-09-11: Generative AI Leader (1951) · SMB Learning Path (4020) · Build
  *  High-Performance Multi-Agent Systems (4459) · Deploy Production Ready Agents
  *  (3802) · Introduction to Agents (3546) · Beginner: Introduction to
- *  Generative AI (118). Stanford follows alone in CONTINUING_EDUCATION, so the
- *  coursework ledger numerals run 01–06 here and 07 there.
+ *  Generative AI (118) — and, appended LAST at the owner's request on
+ *  2026-09-27, Google Workspace with Gemini (249). Stanford follows alone in
+ *  CONTINUING_EDUCATION.
  *
  *  IT IS CURATED, NOT DERIVED. Every earlier revision of this file sorted these
  *  cards newest-first and said so; that rule is GONE, not merely overridden.
  *  Nothing sorts at runtime, no `date` field is read for ordering, and a newly
  *  completed path does NOT go first — where it lands is the owner's call. Path
- *  3802 is the proof: it was completed LAST of the six and sits FOURTH.
+ *  3802 is the proof: it was completed last of the first six and sits FOURTH;
+ *  249 sits last because the owner placed it there, not because it is newest.
  *  `display_order_path_ids` / `display_order_rule` in
  *  scratchpad/google-skills-paths.json record the same order and the same rule;
  *  data.test.ts pins it as EXPECTED_ORDER. */
@@ -1225,13 +1244,13 @@ export const LEARNING_PATHS: readonly LearningPathData[] = [
       { step: 4, ...AGENT_FUNDAMENTALS },
       { step: 5, ...ENTERPRISE_AGENTS },
       { step: 6, ...FIRST_GEMINI_ENTERPRISE_APP },
-      { step: 7, title: "Google Workspace with Gemini: Foundations of Your AI Workflow", badge: gsBadge(27848970, "google-workspace-with-gemini-foundations") },
-      { step: 8, title: "Gemini in Gmail", badge: gsBadge(27849041, "gemini-in-gmail") },
-      { step: 9, title: "Gemini in Google Sheets", badge: gsBadge(27849084, "gemini-in-google-sheets") },
+      { step: 7, ...WORKSPACE_GEMINI_FOUNDATIONS },
+      { step: 8, ...GEMINI_IN_GMAIL },
+      { step: 9, ...GEMINI_IN_SHEETS },
       { step: 10, title: "AI Boost Bites: TL;DR with Gemini in Docs & Drive", badge: gsBadge(27849118, "ai-boost-bites-tldr-gemini-docs-drive") },
       { step: 11, title: "AI Boost Bites: Gemini Gems – Your ultimate marketing sidekick", badge: gsBadge(27849147, "ai-boost-bites-gemini-gems") },
       { step: 12, title: "AI Boost Bites: Content Generation with Gemini Made Easy", badge: gsBadge(27849164, "ai-boost-bites-content-generation") },
-      { step: 13, title: "Gemini in Google Vids", badge: gsBadge(27849255, "gemini-in-google-vids") },
+      { step: 13, ...GEMINI_IN_VIDS },
     ],
   },
   {
@@ -1455,6 +1474,48 @@ export const LEARNING_PATHS: readonly LearningPathData[] = [
         title: "Responsible AI: Applying AI Principles with Google Cloud",
         badge: gsBadge(27852150, "responsible-ai-applying-ai-principles"),
       },
+    ],
+  },
+  {
+    // Appended LAST at the owner's request (2026-09-27). All 11 course badges
+    // are on the public profile, the final two earned 2026-09-27. Google's
+    // JSON-LD for this page carries `@id` /paths/434, but /paths/249 is the URL
+    // the owner gave and the one that resolves to this path, so it is linked.
+    id: "ce-google-skills-workspace-gemini-249",
+    headingId: "ce-google-skills-workspace-gemini-249-heading",
+    testId: "coursework-courses-workspace-gemini",
+    titleLines: ["Google Workspace with Gemini", "11-Course Path"],
+    issuer: "Google Skills",
+    issuerShort: "Google Skills",
+    date: "Sep 2026",
+    url: "https://www.skills.google/paths/249",
+    urlLabel: "Path page",
+    urlNoun: "path",
+    logo: "/logos/google.png",
+    tile: GOOGLE_SKILLS_TILE,
+    // `description` arm 1 — Google's own path description, verbatim and
+    // complete (two sentences; nothing is trimmed).
+    description:
+      "Google Workspace with Gemini provides customers with generative AI features in Google Workspace. In this learning path, you learn about the key features of Gemini and how they can be used to improve productivity and efficiency in Google Workspace.",
+    totalCourses: 11,
+    unitNoun: "Courses",
+    gradient: "from-teal-600/20 via-sky-500/12 to-indigo-600/20",
+    aiSkills: true,
+    coursesLayout: "badges",
+    // Google's own order. Four courses are shared with path 4020 (same badge,
+    // one const each); the other seven are new to this page.
+    courses: [
+      { step: 1, ...WORKSPACE_GEMINI_FOUNDATIONS },
+      { step: 2, ...GEMINI_IN_GMAIL },
+      { step: 3, title: "Gemini in Google Docs", badge: gsBadge(28255460, "gemini-in-google-docs") },
+      { step: 4, title: "Gemini in Google Slides", badge: gsBadge(28256140, "gemini-in-google-slides") },
+      { step: 5, ...GEMINI_IN_SHEETS },
+      { step: 6, title: "Gemini in Google Meet", badge: gsBadge(28260465, "gemini-in-google-meet") },
+      { step: 7, title: "Gemini in Google Chat", badge: gsBadge(28260752, "gemini-in-google-chat") },
+      { step: 8, title: "Gemini in Google Drive", badge: gsBadge(28369521, "gemini-in-google-drive") },
+      { step: 9, ...GEMINI_IN_VIDS },
+      { step: 10, title: "Introduction to the Gemini App", badge: gsBadge(28409981, "intro-gemini-app") },
+      { step: 11, title: "Gemini in Google Workspace Studio", badge: gsBadge(28410479, "gemini-in-google-workspace-studio") },
     ],
   },
 ];

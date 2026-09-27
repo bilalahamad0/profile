@@ -128,9 +128,13 @@ const COURSE_GRID_COLS_DEFAULT = "grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:g
 
 /** Counts whose DESKTOP shape cannot be written as "n equal columns".
  *
- *  The SMB path is the only one: 13 tiles in a 5-column track come out 5·5·3,
+ *  The SMB path was the first: 13 tiles in a 5-column track come out 5·5·3,
  *  and the short last row hangs on the left edge with two tiles' worth of hole
  *  beside it. The owner asked for 4·5·4 with every row centred (desktop only).
+ *  Google Workspace with Gemini (11 tiles) would come out 5·5·1 — one orphan on
+ *  the left — so it takes the same treatment as 3·5·3: the same narrow-wide-
+ *  narrow silhouette, every row centred, a row of 3 starting at col 5 with four
+ *  columns of margin each side.
  *
  *  Rows of 4 and rows of 5 cannot both be full rows of the same track, so the
  *  centring is done on a 20-COLUMN track with every tile spanning 4:
@@ -161,6 +165,15 @@ const COURSE_GRID_ROW_PLANS: Record<
       "lg:col-start-3", "", "", "",
       "lg:col-start-1", "", "", "", "",
       "lg:col-start-3", "", "", "",
+    ],
+  },
+  11: {
+    track: "grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-20",
+    span: "lg:col-span-4",
+    starts: [
+      "lg:col-start-5", "", "",
+      "lg:col-start-1", "", "", "", "",
+      "lg:col-start-5", "", "",
     ],
   },
 };

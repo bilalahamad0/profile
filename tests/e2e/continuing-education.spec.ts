@@ -62,6 +62,19 @@ const LEADER_COURSES = [
   'Gen AI Apps: Transform Your Work',
   'Gen AI Agents: Transform Your Organization',
 ];
+const WORKSPACE_COURSES = [
+  'Google Workspace with Gemini: Foundations of Your AI Workflow',
+  'Gemini in Gmail',
+  'Gemini in Google Docs',
+  'Gemini in Google Slides',
+  'Gemini in Google Sheets',
+  'Gemini in Google Meet',
+  'Gemini in Google Chat',
+  'Gemini in Google Drive',
+  'Gemini in Google Vids',
+  'Introduction to the Gemini App',
+  'Gemini in Google Workspace Studio',
+];
 const STANFORD_MODULES = ['Cool Applications', 'Sensors', 'Embedded Systems', 'Networking', 'Circuits'];
 
 const CLAUDE_PLATFORM_COURSES = ['Claude Platform 101'];
@@ -185,6 +198,13 @@ const CARDS: Card[] = [
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/118$/,
     courses: BEGINNER_COURSES, badges: 4, credly: 1, pill: /^4 public course badges$/i },
+  // Appended last at the owner's request, 2026-09-27.
+  { section: 'google-skills', id: 'ce-google-skills-workspace-gemini-249',
+    title: 'Google Workspace with Gemini',
+    meta: 'Google Skills · Sep 2026 · 11-Course Path', chip: '11 Courses', numeral: '07',
+    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
+    url: /^https:\/\/www\.skills\.google\/paths\/249$/,
+    courses: WORKSPACE_COURSES, badges: 11, credly: 0, pill: /^11 public course badges$/i },
   { section: 'continuing-education', id: 'ce-stanford-xee100',
     title: 'Introduction to Internet of Things',
     meta: 'Stanford School of Engineering · 2026 · 5-Module Course',
@@ -302,7 +322,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       'Claude Academy',
       'Stanford School of Engineering', 'XEE100',
       '4 learning paths · 11 course badges',
-      '6 learning paths · 26 course badges', '1 short course · 5 modules',
+      '7 learning paths · 33 course badges', '1 short course · 5 modules',
       'Generative AI Leader Certification', 'Train for the exam',
       'Google Cloud Generative AI Leader certification',
       'six Stanford faculty members will deliver an overview',
@@ -392,7 +412,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     const google = page.locator('#google-skills');
     await expect(google.getByRole('heading', { level: 2 })).toHaveText('Google Skills');
     await expect(google.getByText('Completed Learning Paths', { exact: true })).toBeVisible();
-    const googleCount = google.getByText('6 learning paths · 26 course badges', { exact: true });
+    const googleCount = google.getByText('7 learning paths · 33 course badges', { exact: true });
     await (wideViewport(page) ? expect(googleCount).toBeVisible() : expect(googleCount).toBeAttached());
     const cont = page.locator('#continuing-education');
     await expect(cont.getByRole('heading', { level: 2 })).toHaveText('Continuing Education');
@@ -592,7 +612,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     await page.goto('/certifications');
     await expandAll(page, 'google-skills');
     const links = badgeLinks(page.locator('#google-skills'));
-    await expect(links).toHaveCount(31);
+    await expect(links).toHaveCount(42);
     const rows = await links.evaluateAll((els) =>
       els.map((el) => ({
         text: (el.textContent ?? '').replace(/\s+/g, ' '),
@@ -632,7 +652,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     }
     expect(rows.filter((r) => r.text.includes('Verify in Credly'))).toHaveLength(4);
     expect(rows.filter((r) => r.text.includes('Verify in Google Skills'))).toHaveLength(0);
-    expect(rows.filter((r) => r.text.includes('Verify'))).toHaveLength(31);
+    expect(rows.filter((r) => r.text.includes('Verify'))).toHaveLength(42);
   });
 
   test('only the Credly skill badges glow', async ({ page }) => {
@@ -661,7 +681,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     await page.goto('/certifications');
     await expandAll(page, 'google-skills');
     const links = badgeLinks(page.locator('#google-skills'));
-    await expect(links).toHaveCount(31);
+    await expect(links).toHaveCount(42);
     const rows = await links.evaluateAll((els) =>
       els.map((e) => [e.getAttribute('href') ?? '', e.textContent ?? ''] as const),
     );
@@ -670,10 +690,10 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       expect(href).toMatch(/badge on Credly/i.test(text) ? CREDLY_BADGE_URL : GOOGLE_SKILLS_BADGE_URL);
     }
     const hrefs = rows.map(([h]) => h);
-    // 31 references, 26 distinct badge pages — the number the header prints.
-    expect(new Set(hrefs).size).toBe(26);
+    // 42 references, 33 distinct badge pages — the number the header prints.
+    expect(new Set(hrefs).size).toBe(33);
     expect(hrefs.filter((h) => CREDLY_BADGE_URL.test(h))).toHaveLength(4);
-    expect(hrefs.filter((h) => GOOGLE_SKILLS_BADGE_URL.test(h))).toHaveLength(27);
+    expect(hrefs.filter((h) => GOOGLE_SKILLS_BADGE_URL.test(h))).toHaveLength(38);
     // Path 4459's badges (withheld while it was unfinished) and path 3802's.
     for (const id of ['27855015', '27885513', '27886491', '27888328', '27888392']) {
       expect(hrefs.some((h) => h.endsWith(`/badges/${id}`)), `badge ${id} missing`).toBe(true);
@@ -762,6 +782,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       ['coursework-courses-agents', 3, 3],
       ['coursework-courses-smb', 13, 13],
       ['coursework-courses-gen-ai-leader', 5, 5],
+      ['coursework-courses-workspace-gemini', 11, 11],
     ] as const) {
       const items = page.getByTestId(testId).locator('li');
       await expect(items).toHaveCount(tiles);
@@ -769,7 +790,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     }
   });
 
-  test('the SMB grid is 4·5·4 with every row centred at desktop width', async ({ page }) => {
+  test('the SMB grid is 4·5·4 and the Workspace grid 3·5·3, every row centred at desktop width', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.goto('/certifications');
     // Row counts and per-row margins for every badge grid on the page, measured
@@ -833,6 +854,18 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     expect(smb[0].left).toBeGreaterThan(smb[1].left + 20);
     expect(smb[1].left).toBeLessThanOrEqual(1);
 
+    // 11 tiles would default to 5·5·1 — one orphan on the left. The same
+    // narrow-wide-narrow silhouette instead, every row centred.
+    await openRow(page, 'ce-google-skills-workspace-gemini-249');
+    const ws = await measure('coursework-courses-workspace-gemini');
+    expect(ws.map((r) => r.n), `Workspace rows were ${JSON.stringify(ws)}`).toEqual([3, 5, 3]);
+    for (const row of ws) {
+      expect(Math.abs(row.left - row.right), `row ${row.n} is off-centre by ${row.left - row.right}px`)
+        .toBeLessThanOrEqual(2);
+    }
+    expect(ws[0].left).toBeGreaterThan(ws[1].left + 20);
+    expect(ws[1].left).toBeLessThanOrEqual(1);
+
     // The other counts still read as ONE deliberate full-width row.
     for (const [id, testId, n] of [
       ['ce-google-skills-multi-agent-4459', 'coursework-courses-multi-agent', 3],
@@ -889,7 +922,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
   test('expand all / collapse all works on all three sections', async ({ page }) => {
     await page.goto('/certifications');
     for (const [section, n] of [
-      ['google-skills', 6],
+      ['google-skills', 7],
       ['claude-academy', 4],
       ['continuing-education', 1],
     ] as const) {
@@ -977,7 +1010,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       const cards = await page
         .locator('article[id^="ce-"], #claude-academy article')
         .evaluateAll((els) => els.map((el) => [el.id, el.scrollWidth - el.clientWidth] as const));
-      expect(cards).toHaveLength(11);
+      expect(cards).toHaveLength(12);
       for (const [id, d] of cards) expect(d, `${id} overflows by ${d}px (${pass})`).toBeLessThanOrEqual(0);
       const doc = await page.evaluate(
         () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
@@ -1077,7 +1110,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     test('every course tile and module row is visible in a row opened by hand', async ({ page }) => {
       await page.goto('/certifications');
       for (const id of [
-        // Coursework rows: all seven start collapsed.
+        // Coursework rows: every one starts collapsed.
         'ce-google-skills-beginner-gen-ai-118',
         'ce-google-skills-deploy-agents-3802',
         'ce-google-skills-smb-4020',
