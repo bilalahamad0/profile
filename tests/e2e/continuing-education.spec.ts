@@ -75,6 +75,51 @@ const WORKSPACE_COURSES = [
   'Introduction to the Gemini App',
   'Gemini in Google Workspace Studio',
 ];
+const ABB_COURSES = [
+  'AI Boost Bites: Gemini Gems – Your ultimate marketing sidekick',
+  'AI Boost Bites: Content Generation with Gemini Made Easy',
+  'AI Boost Bites: Prompting like a Pro with Google Workspace',
+  'AI Boost Bites: TL;DR with Gemini in Docs & Drive',
+  'AI Boost Bites: Personalization with customized prompts',
+  'AI Boost Bites: Poke Holes in Your Strategy',
+  'AI Boost Bites: Gemini Image-to-Sheets Hack',
+  'AI Boost Bites: Automate tasks with Gemini and Apps Script',
+  'AI Boost Bites: Exec Summaries with Gemini Gems',
+  'AI Boost Bites: Amplify Exec Voices with AI',
+  'AI Boost Bites: No-Code Sheets & Scripts',
+  'AI Boost Bites: Gemini Slide Summaries',
+  'AI Boost Bites: Tame Your Inbox with AI',
+  'AI Boost Bites: Create Docs in Seconds',
+  'AI Boost Bites: Email Content Creation',
+  'AI Boost Bites: Presentation Scripts with Gemini',
+  'AI Boost Bites: Your Personal Feedback Agent',
+  'AI Boost Bites: From Napkin Sketch to Functional App',
+  'AI Boost Bites: One-Click Campaign Visuals',
+  'AI Boost Bites: Create Your Ultimate College Scouting Report',
+  'AI Boost Bites: Become a “Vibe DJ”',
+  'AI Boost Bites: Create Your Own Retro Arcade Game',
+  'AI Boost Bites: Guided Learning with Gemini',
+  'AI Boost Bites: Create Your Own Productivity Tools',
+  'AI Boost Bites: Create a 3D Solar System',
+  'AI Boost Bites: Build a Personalized Weather App',
+  'AI Boost Bites: Get Your Competitor’s Playbook in Minutes',
+  'AI Boost Bites: Gamify Your Study Guides',
+  'AI Boost Bites: Your Personal AI Tutor',
+  'AI Boost Bites: Turn Your Ideas into Animated Art',
+  'AI Boost Bites: Animated Charts with Gemini',
+  'AI Boost Bites: Make Any Big Purchase with Confidence',
+  'AI Boost Bites: Supercharge Research with Gemini',
+  'AI Boost Bites: Streamline Event Planning with AI',
+  'AI Boost Bites: Create the Perfect Portrait',
+  'AI Boost Bites: Become an AI Art Director for Your World',
+  'AI Boost Bites: Become a Creative Mashup Artist',
+  'AI Boost Bites: AI Magic in a Sheets Cell',
+  'AI Boost Bites: Talk to Your Data in Sheets',
+  'AI Boost Bites: Build Slides Fast with Gemini',
+  'AI Boost Bites: Gemini Calendar Hacks in Gmail',
+  'AI Boost Bites: Notes to Sheets with Gemini',
+  'AI Boost Bites: Advanced Analysis in Sheets',
+];
 const STANFORD_MODULES = ['Cool Applications', 'Sensors', 'Embedded Systems', 'Networking', 'Circuits'];
 
 const CLAUDE_PLATFORM_COURSES = ['Claude Platform 101'];
@@ -205,6 +250,13 @@ const CARDS: Card[] = [
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/249$/,
     courses: WORKSPACE_COURSES, badges: 11, credly: 0, pill: /^11 public course badges$/i },
+  // Appended last at the owner's request, 2026-10-02.
+  { section: 'google-skills', id: 'ce-google-skills-ai-boost-bites-2480',
+    title: 'AI Boost Bites: Your Edge in the AI-Powered World',
+    meta: 'Google Skills · Oct 2026 · 43-Course Path', chip: '43 Courses', numeral: '08',
+    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
+    url: /^https:\/\/www\.skills\.google\/paths\/2480$/,
+    courses: ABB_COURSES, badges: 43, credly: 0, pill: /^43 public course badges$/i },
   { section: 'continuing-education', id: 'ce-stanford-xee100',
     title: 'Introduction to Internet of Things',
     meta: 'Stanford School of Engineering · 2026 · 5-Module Course',
@@ -322,7 +374,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       'Claude Academy',
       'Stanford School of Engineering', 'XEE100',
       '4 learning paths · 11 course badges',
-      '7 learning paths · 33 course badges', '1 short course · 5 modules',
+      '8 learning paths · 73 course badges', '1 short course · 5 modules',
       'Generative AI Leader Certification', 'Train for the exam',
       'Google Cloud Generative AI Leader certification',
       'six Stanford faculty members will deliver an overview',
@@ -412,7 +464,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     const google = page.locator('#google-skills');
     await expect(google.getByRole('heading', { level: 2 })).toHaveText('Google Skills');
     await expect(google.getByText('Completed Learning Paths', { exact: true })).toBeVisible();
-    const googleCount = google.getByText('7 learning paths · 33 course badges', { exact: true });
+    const googleCount = google.getByText('8 learning paths · 73 course badges', { exact: true });
     await (wideViewport(page) ? expect(googleCount).toBeVisible() : expect(googleCount).toBeAttached());
     const cont = page.locator('#continuing-education');
     await expect(cont.getByRole('heading', { level: 2 })).toHaveText('Continuing Education');
@@ -612,7 +664,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     await page.goto('/certifications');
     await expandAll(page, 'google-skills');
     const links = badgeLinks(page.locator('#google-skills'));
-    await expect(links).toHaveCount(42);
+    await expect(links).toHaveCount(85);
     const rows = await links.evaluateAll((els) =>
       els.map((el) => ({
         text: (el.textContent ?? '').replace(/\s+/g, ' '),
@@ -652,7 +704,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     }
     expect(rows.filter((r) => r.text.includes('Verify in Credly'))).toHaveLength(4);
     expect(rows.filter((r) => r.text.includes('Verify in Google Skills'))).toHaveLength(0);
-    expect(rows.filter((r) => r.text.includes('Verify'))).toHaveLength(42);
+    expect(rows.filter((r) => r.text.includes('Verify'))).toHaveLength(85);
   });
 
   test('only the Credly skill badges glow', async ({ page }) => {
@@ -681,7 +733,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     await page.goto('/certifications');
     await expandAll(page, 'google-skills');
     const links = badgeLinks(page.locator('#google-skills'));
-    await expect(links).toHaveCount(42);
+    await expect(links).toHaveCount(85);
     const rows = await links.evaluateAll((els) =>
       els.map((e) => [e.getAttribute('href') ?? '', e.textContent ?? ''] as const),
     );
@@ -690,10 +742,10 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       expect(href).toMatch(/badge on Credly/i.test(text) ? CREDLY_BADGE_URL : GOOGLE_SKILLS_BADGE_URL);
     }
     const hrefs = rows.map(([h]) => h);
-    // 42 references, 33 distinct badge pages — the number the header prints.
-    expect(new Set(hrefs).size).toBe(33);
+    // 85 references, 73 distinct badge pages — the number the header prints.
+    expect(new Set(hrefs).size).toBe(73);
     expect(hrefs.filter((h) => CREDLY_BADGE_URL.test(h))).toHaveLength(4);
-    expect(hrefs.filter((h) => GOOGLE_SKILLS_BADGE_URL.test(h))).toHaveLength(38);
+    expect(hrefs.filter((h) => GOOGLE_SKILLS_BADGE_URL.test(h))).toHaveLength(81);
     // Path 4459's badges (withheld while it was unfinished) and path 3802's.
     for (const id of ['27855015', '27885513', '27886491', '27888328', '27888392']) {
       expect(hrefs.some((h) => h.endsWith(`/badges/${id}`)), `badge ${id} missing`).toBe(true);
@@ -783,6 +835,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       ['coursework-courses-smb', 13, 13],
       ['coursework-courses-gen-ai-leader', 5, 5],
       ['coursework-courses-workspace-gemini', 11, 11],
+      ['coursework-courses-ai-boost-bites', 43, 43],
     ] as const) {
       const items = page.getByTestId(testId).locator('li');
       await expect(items).toHaveCount(tiles);
@@ -790,7 +843,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     }
   });
 
-  test('the SMB grid is 4·5·4 and the Workspace grid 3·5·3, every row centred at desktop width', async ({ page }) => {
+  test('the SMB, Workspace and AI Boost Bites grids keep a centred narrow-wide-narrow shape at desktop width', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.goto('/certifications');
     // Row counts and per-row margins for every badge grid on the page, measured
@@ -866,6 +919,18 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     expect(ws[0].left).toBeGreaterThan(ws[1].left + 20);
     expect(ws[1].left).toBeLessThanOrEqual(1);
 
+    // 43 tiles would end on a short row of 3 hanging left. 4·5×7·4 instead.
+    await openRow(page, 'ce-google-skills-ai-boost-bites-2480');
+    const abb = await measure('coursework-courses-ai-boost-bites');
+    expect(abb.map((r) => r.n), `AI Boost Bites rows were ${JSON.stringify(abb)}`)
+      .toEqual([4, 5, 5, 5, 5, 5, 5, 5, 4]);
+    for (const row of abb) {
+      expect(Math.abs(row.left - row.right), `row ${row.n} is off-centre by ${row.left - row.right}px`)
+        .toBeLessThanOrEqual(2);
+    }
+    expect(abb[0].left).toBeGreaterThan(abb[1].left + 20);
+    expect(abb[abb.length - 1].left).toBe(abb[0].left);
+
     // The other counts still read as ONE deliberate full-width row.
     for (const [id, testId, n] of [
       ['ce-google-skills-multi-agent-4459', 'coursework-courses-multi-agent', 3],
@@ -922,7 +987,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
   test('expand all / collapse all works on all three sections', async ({ page }) => {
     await page.goto('/certifications');
     for (const [section, n] of [
-      ['google-skills', 7],
+      ['google-skills', 8],
       ['claude-academy', 4],
       ['continuing-education', 1],
     ] as const) {
@@ -1010,7 +1075,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       const cards = await page
         .locator('article[id^="ce-"], #claude-academy article')
         .evaluateAll((els) => els.map((el) => [el.id, el.scrollWidth - el.clientWidth] as const));
-      expect(cards).toHaveLength(12);
+      expect(cards).toHaveLength(13);
       for (const [id, d] of cards) expect(d, `${id} overflows by ${d}px (${pass})`).toBeLessThanOrEqual(0);
       const doc = await page.evaluate(
         () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
