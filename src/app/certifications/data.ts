@@ -249,8 +249,8 @@ export type LearningPathData = {
   /** The issuer's own words. Exactly three arms are permitted, and the comment
    *  at each use site says which one it is and what was dropped:
    *
-   *  1. VERBATIM, or a contiguous trim of the issuer's description — paths 118,
-   *     3546 and 4020. The only edit allowed is straight → typographic quotes
+   *  1. VERBATIM, or a contiguous trim of the issuer's description — every
+   *     Google Skills path except 1951. The only edit allowed is straight → typographic quotes
    *     (" → “ ”, ' → ’), matching the rest of the site's copy; no word,
    *     punctuation mark or order ever changes.
    *  2. A SELECTION of the issuer's own sentences, each one verbatim and
@@ -1139,13 +1139,27 @@ const GEMINI_IN_VIDS = {
   title: "Gemini in Google Vids",
   badge: gsBadge(27849255, "gemini-in-google-vids"),
 } as const;
+// Shared by the SMB Learning Path (4020) and AI Boost Bites (2480).
+const ABB_TLDR_DOCS_DRIVE = {
+  title: "AI Boost Bites: TL;DR with Gemini in Docs & Drive",
+  badge: gsBadge(27849118, "ai-boost-bites-tldr-gemini-docs-drive"),
+} as const;
+const ABB_GEMINI_GEMS = {
+  title: "AI Boost Bites: Gemini Gems – Your ultimate marketing sidekick",
+  badge: gsBadge(27849147, "ai-boost-bites-gemini-gems"),
+} as const;
+const ABB_CONTENT_GENERATION = {
+  title: "AI Boost Bites: Content Generation with Gemini Made Easy",
+  badge: gsBadge(27849164, "ai-boost-bites-content-generation"),
+} as const;
 
 /** THIS ARRAY'S ORDER IS THE DISPLAY ORDER, and it is the OWNER'S CHOICE, dated
  *  2026-09-11: Generative AI Leader (1951) · SMB Learning Path (4020) · Build
  *  High-Performance Multi-Agent Systems (4459) · Deploy Production Ready Agents
  *  (3802) · Introduction to Agents (3546) · Beginner: Introduction to
- *  Generative AI (118) — and, appended LAST at the owner's request on
- *  2026-09-27, Google Workspace with Gemini (249). Stanford follows alone in
+ *  Generative AI (118) — then, each appended LAST at the owner's request,
+ *  Google Workspace with Gemini (249, 2026-09-27) and AI Boost Bites: Your Edge
+ *  in the AI-Powered World (2480, 2026-10-02). Stanford follows alone in
  *  CONTINUING_EDUCATION.
  *
  *  IT IS CURATED, NOT DERIVED. Every earlier revision of this file sorted these
@@ -1153,7 +1167,8 @@ const GEMINI_IN_VIDS = {
  *  Nothing sorts at runtime, no `date` field is read for ordering, and a newly
  *  completed path does NOT go first — where it lands is the owner's call. Path
  *  3802 is the proof: it was completed last of the first six and sits FOURTH;
- *  249 sits last because the owner placed it there, not because it is newest.
+ *  249 and 2480 sit last because the owner placed them there, not because they
+ *  are newest.
  *  `display_order_path_ids` / `display_order_rule` in
  *  scratchpad/google-skills-paths.json record the same order and the same rule;
  *  data.test.ts pins it as EXPECTED_ORDER. */
@@ -1247,9 +1262,9 @@ export const LEARNING_PATHS: readonly LearningPathData[] = [
       { step: 7, ...WORKSPACE_GEMINI_FOUNDATIONS },
       { step: 8, ...GEMINI_IN_GMAIL },
       { step: 9, ...GEMINI_IN_SHEETS },
-      { step: 10, title: "AI Boost Bites: TL;DR with Gemini in Docs & Drive", badge: gsBadge(27849118, "ai-boost-bites-tldr-gemini-docs-drive") },
-      { step: 11, title: "AI Boost Bites: Gemini Gems – Your ultimate marketing sidekick", badge: gsBadge(27849147, "ai-boost-bites-gemini-gems") },
-      { step: 12, title: "AI Boost Bites: Content Generation with Gemini Made Easy", badge: gsBadge(27849164, "ai-boost-bites-content-generation") },
+      { step: 10, ...ABB_TLDR_DOCS_DRIVE },
+      { step: 11, ...ABB_GEMINI_GEMS },
+      { step: 12, ...ABB_CONTENT_GENERATION },
       { step: 13, ...GEMINI_IN_VIDS },
     ],
   },
@@ -1516,6 +1531,85 @@ export const LEARNING_PATHS: readonly LearningPathData[] = [
       { step: 9, ...GEMINI_IN_VIDS },
       { step: 10, title: "Introduction to the Gemini App", badge: gsBadge(28409981, "intro-gemini-app") },
       { step: 11, title: "Gemini in Google Workspace Studio", badge: gsBadge(28410479, "gemini-in-google-workspace-studio") },
+    ],
+  },
+  {
+    // Appended LAST at the owner's request (2026-10-02). All 43 course badges
+    // are on the public profile, the final ones earned 2026-10-02, and each
+    // badge page was checked logged-out. Google's JSON-LD for this page carries
+    // `@id` /paths/4293, but /paths/2480 is the URL the owner gave and the one
+    // that resolves to this path, so it is linked.
+    id: "ce-google-skills-ai-boost-bites-2480",
+    headingId: "ce-google-skills-ai-boost-bites-2480-heading",
+    testId: "coursework-courses-ai-boost-bites",
+    titleLines: ["AI Boost Bites: Your Edge in the AI-Powered World", "43-Course Path"],
+    issuer: "Google Skills",
+    issuerShort: "Google Skills",
+    date: "Oct 2026",
+    url: "https://www.skills.google/paths/2480",
+    urlLabel: "Path page",
+    urlNoun: "path",
+    logo: "/logos/google.png",
+    tile: GOOGLE_SKILLS_TILE,
+    // `description` arm 1 — Google's own first sentence, verbatim, a
+    // contiguous prefix (straight → typographic apostrophes only). Dropped:
+    // sentences 2–5, which are promotional copy rather than a description
+    // ("battle-tested strategies", "active transformation", "Unleash your
+    // potential…") — the same call made for 4020's CTA.
+    description:
+      "In just 10 minutes per session, you’ll discover how Google’s own experts wield AI tools like Gemini, Gemini for Workspace, Gemini Notebook, and AI Studio.",
+    totalCourses: 43,
+    unitNoun: "Courses",
+    gradient: "from-violet-600/20 via-blue-500/12 to-teal-600/20",
+    aiSkills: true,
+    coursesLayout: "badges",
+    // Google's order. Three courses are shared with path 4020 (same badge, one
+    // const each); the other forty are new to this page. Titles keep Google's
+    // wording; only straight quotes become typographic, as the art prints them.
+    courses: [
+      { step: 1, ...ABB_GEMINI_GEMS },
+      { step: 2, ...ABB_CONTENT_GENERATION },
+      { step: 3, title: "AI Boost Bites: Prompting like a Pro with Google Workspace", badge: gsBadge(28441286, "ai-boost-bites-prompting-like-a-pro-with-google-workspace") },
+      { step: 4, ...ABB_TLDR_DOCS_DRIVE },
+      { step: 5, title: "AI Boost Bites: Personalization with customized prompts", badge: gsBadge(28441476, "ai-boost-bites-personalization-with-customized-prompts") },
+      { step: 6, title: "AI Boost Bites: Poke Holes in Your Strategy", badge: gsBadge(28441663, "ai-boost-bites-poke-holes-in-your-strategy") },
+      { step: 7, title: "AI Boost Bites: Gemini Image-to-Sheets Hack", badge: gsBadge(28441835, "ai-boost-bites-gemini-image-to-sheets-hack") },
+      { step: 8, title: "AI Boost Bites: Automate tasks with Gemini and Apps Script", badge: gsBadge(28442367, "ai-boost-bites-automate-tasks-with-gemini-and-apps-script") },
+      { step: 9, title: "AI Boost Bites: Exec Summaries with Gemini Gems", badge: gsBadge(28442598, "ai-boost-bites-exec-summaries-with-gemini-gems") },
+      { step: 10, title: "AI Boost Bites: Amplify Exec Voices with AI", badge: gsBadge(28443014, "ai-boost-bites-amplify-exec-voices-with-ai") },
+      { step: 11, title: "AI Boost Bites: No-Code Sheets & Scripts", badge: gsBadge(28450022, "ai-boost-bites-no-code-sheets-scripts") },
+      { step: 12, title: "AI Boost Bites: Gemini Slide Summaries", badge: gsBadge(28488141, "ai-boost-bites-gemini-slide-summaries") },
+      { step: 13, title: "AI Boost Bites: Tame Your Inbox with AI", badge: gsBadge(28523953, "ai-boost-bites-tame-your-inbox-with-ai") },
+      { step: 14, title: "AI Boost Bites: Create Docs in Seconds", badge: gsBadge(28524003, "ai-boost-bites-create-docs-in-seconds") },
+      { step: 15, title: "AI Boost Bites: Email Content Creation", badge: gsBadge(28524043, "ai-boost-bites-email-content-creation") },
+      { step: 16, title: "AI Boost Bites: Presentation Scripts with Gemini", badge: gsBadge(28524276, "ai-boost-bites-presentation-scripts-with-gemini") },
+      { step: 17, title: "AI Boost Bites: Your Personal Feedback Agent", badge: gsBadge(28524346, "ai-boost-bites-your-personal-feedback-agent") },
+      { step: 18, title: "AI Boost Bites: From Napkin Sketch to Functional App", badge: gsBadge(28524389, "ai-boost-bites-from-napkin-sketch-to-functional-app") },
+      { step: 19, title: "AI Boost Bites: One-Click Campaign Visuals", badge: gsBadge(28538442, "ai-boost-bites-one-click-campaign-visuals") },
+      { step: 20, title: "AI Boost Bites: Create Your Ultimate College Scouting Report", badge: gsBadge(28538848, "ai-boost-bites-create-your-ultimate-college-scouting-report") },
+      { step: 21, title: "AI Boost Bites: Become a “Vibe DJ”", badge: gsBadge(28539243, "ai-boost-bites-become-a-vibe-dj") },
+      { step: 22, title: "AI Boost Bites: Create Your Own Retro Arcade Game", badge: gsBadge(28539391, "ai-boost-bites-create-your-own-retro-arcade-game") },
+      { step: 23, title: "AI Boost Bites: Guided Learning with Gemini", badge: gsBadge(28578713, "ai-boost-bites-guided-learning-with-gemini") },
+      { step: 24, title: "AI Boost Bites: Create Your Own Productivity Tools", badge: gsBadge(28597756, "ai-boost-bites-create-your-own-productivity-tools") },
+      { step: 25, title: "AI Boost Bites: Create a 3D Solar System", badge: gsBadge(28605833, "ai-boost-bites-create-a-3d-solar-system") },
+      { step: 26, title: "AI Boost Bites: Build a Personalized Weather App", badge: gsBadge(28608722, "ai-boost-bites-build-a-personalized-weather-app") },
+      { step: 27, title: "AI Boost Bites: Get Your Competitor’s Playbook in Minutes", badge: gsBadge(28608777, "ai-boost-bites-get-your-competitors-playbook-in-minutes") },
+      { step: 28, title: "AI Boost Bites: Gamify Your Study Guides", badge: gsBadge(28608833, "ai-boost-bites-gamify-your-study-guides") },
+      { step: 29, title: "AI Boost Bites: Your Personal AI Tutor", badge: gsBadge(28608882, "ai-boost-bites-your-personal-ai-tutor") },
+      { step: 30, title: "AI Boost Bites: Turn Your Ideas into Animated Art", badge: gsBadge(28608941, "ai-boost-bites-turn-your-ideas-into-animated-art") },
+      { step: 31, title: "AI Boost Bites: Animated Charts with Gemini", badge: gsBadge(28609012, "ai-boost-bites-animated-charts-with-gemini") },
+      { step: 32, title: "AI Boost Bites: Make Any Big Purchase with Confidence", badge: gsBadge(28609085, "ai-boost-bites-make-any-big-purchase-with-confidence") },
+      { step: 33, title: "AI Boost Bites: Supercharge Research with Gemini", badge: gsBadge(28609218, "ai-boost-bites-supercharge-research-with-gemini") },
+      { step: 34, title: "AI Boost Bites: Streamline Event Planning with AI", badge: gsBadge(28609285, "ai-boost-bites-streamline-event-planning-with-ai") },
+      { step: 35, title: "AI Boost Bites: Create the Perfect Portrait", badge: gsBadge(28609364, "ai-boost-bites-create-the-perfect-portrait") },
+      { step: 36, title: "AI Boost Bites: Become an AI Art Director for Your World", badge: gsBadge(28609430, "ai-boost-bites-become-an-ai-art-director-for-your-world") },
+      { step: 37, title: "AI Boost Bites: Become a Creative Mashup Artist", badge: gsBadge(28609496, "ai-boost-bites-become-a-creative-mashup-artist") },
+      { step: 38, title: "AI Boost Bites: AI Magic in a Sheets Cell", badge: gsBadge(28609542, "ai-boost-bites-ai-magic-in-a-sheets-cell") },
+      { step: 39, title: "AI Boost Bites: Talk to Your Data in Sheets", badge: gsBadge(28609607, "ai-boost-bites-talk-to-your-data-in-sheets") },
+      { step: 40, title: "AI Boost Bites: Build Slides Fast with Gemini", badge: gsBadge(28609659, "ai-boost-bites-build-slides-fast-with-gemini") },
+      { step: 41, title: "AI Boost Bites: Gemini Calendar Hacks in Gmail", badge: gsBadge(28609704, "ai-boost-bites-gemini-calendar-hacks-in-gmail") },
+      { step: 42, title: "AI Boost Bites: Notes to Sheets with Gemini", badge: gsBadge(28609770, "ai-boost-bites-notes-to-sheets-with-gemini") },
+      { step: 43, title: "AI Boost Bites: Advanced Analysis in Sheets", badge: gsBadge(28609833, "ai-boost-bites-advanced-analysis-in-sheets") },
     ],
   },
 ];

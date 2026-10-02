@@ -134,7 +134,9 @@ const COURSE_GRID_COLS_DEFAULT = "grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:g
  *  Google Workspace with Gemini (11 tiles) would come out 5·5·1 — one orphan on
  *  the left — so it takes the same treatment as 3·5·3: the same narrow-wide-
  *  narrow silhouette, every row centred, a row of 3 starting at col 5 with four
- *  columns of margin each side.
+ *  columns of margin each side. AI Boost Bites (43 tiles) would end 5·…·5·3 with
+ *  the short row hanging left; it reads 4·5·5·5·5·5·5·5·4 — the same silhouette
+ *  stretched, and 4 + 7×5 + 4 = 43 exactly.
  *
  *  Rows of 4 and rows of 5 cannot both be full rows of the same track, so the
  *  centring is done on a 20-COLUMN track with every tile spanning 4:
@@ -154,28 +156,29 @@ const COURSE_GRID_COLS_DEFAULT = "grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:g
  *
  *  DESKTOP ONLY (`lg`, 1024px+). Below `sm` the unit turns sideways in one
  *  column; `sm` and `md` keep the track they already had. */
-const COURSE_GRID_ROW_PLANS: Record<
-  number,
-  { track: string; span: string; starts: readonly string[] }
-> = {
-  13: {
-    track: "grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-20",
-    span: "lg:col-span-4",
-    starts: [
-      "lg:col-start-3", "", "", "",
-      "lg:col-start-1", "", "", "", "",
-      "lg:col-start-3", "", "", "",
-    ],
-  },
-  11: {
-    track: "grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-20",
-    span: "lg:col-span-4",
-    starts: [
-      "lg:col-start-5", "", "",
-      "lg:col-start-1", "", "", "", "",
-      "lg:col-start-5", "", "",
-    ],
-  },
+type CourseGridRowPlan = { track: string; span: string; starts: readonly string[] };
+
+/** The `col-start` that centres a row of `w` span-4 tiles on the 20-column
+ *  track: 5 is full bleed, 4 leaves two columns of margin each side, 3 leaves
+ *  four. Written out as literals so Tailwind's source scan generates them. */
+const CENTRED_ROW_START: Record<3 | 4 | 5, string> = {
+  5: "lg:col-start-1",
+  4: "lg:col-start-3",
+  3: "lg:col-start-5",
+};
+
+/** A plan from its row widths, top to bottom — e.g. [4, 5, 4]. Only each row's
+ *  first tile carries a start; the rest auto-flow beside it. */
+const centredRows = (widths: readonly (3 | 4 | 5)[]): CourseGridRowPlan => ({
+  track: "grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-20",
+  span: "lg:col-span-4",
+  starts: widths.flatMap((w) => [CENTRED_ROW_START[w], ...Array<string>(w - 1).fill("")]),
+});
+
+const COURSE_GRID_ROW_PLANS: Record<number, CourseGridRowPlan> = {
+  11: centredRows([3, 5, 3]),
+  13: centredRows([4, 5, 4]),
+  43: centredRows([4, 5, 5, 5, 5, 5, 5, 5, 4]),
 };
 
 /** The unit itself: a ROW below `sm`, and the same centred stack TILE_ITEM
