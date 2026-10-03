@@ -1169,7 +1169,12 @@ const ABB_CONTENT_GENERATION = {
 } as const;
 
 /** The owner's four Google Skills categories, top to bottom, with their own
- *  names and descriptions (2026-10-03). Each lists its paths in display order.
+ *  names and descriptions (2026-10-03). Each lists its paths in display order,
+ *  and that order is a STANDING RULE (owner, 2026-10-03): highest impact first,
+ *  descending — e.g. multi-agent orchestration and production deployment above
+ *  the introductory and fundamentals paths. A newly completed path is placed by
+ *  its impact within its category, never appended by date; where it lands is
+ *  the owner's call.
  *  They PARTITION LEARNING_PATHS exactly — every path in one category, none
  *  twice — and data.test.ts asserts it, so a path added later fails the build
  *  until the owner says where it belongs. Headings only: they count nothing. */
@@ -1180,10 +1185,10 @@ export const GOOGLE_SKILLS_CATEGORIES: readonly GroupCategory[] = [
     description:
       "Technical development, multi-agent coordination, tool integration, and cloud deployment.",
     ids: [
-      "ce-google-skills-agents-3546",
-      "ce-google-skills-adk-3473",
       "ce-google-skills-multi-agent-4459",
       "ce-google-skills-deploy-agents-3802",
+      "ce-google-skills-agents-3546",
+      "ce-google-skills-adk-3473",
     ],
   },
   {
@@ -1209,10 +1214,10 @@ export const GOOGLE_SKILLS_CATEGORIES: readonly GroupCategory[] = [
 ];
 
 /** THIS ARRAY'S ORDER IS THE DISPLAY ORDER, and it is the OWNER'S CHOICE: the
- *  four categories above, top to bottom, each in the order the owner listed its
- *  paths (2026-10-03) — Introduction to Agents (3546) · Fundamentals of ADK
- *  (3473) · Build High-Performance Multi-Agent Systems (4459) · Deploy
- *  Production Ready Agents (3802) | Generative AI Leader (1951) · SMB Learning
+ *  four categories above, top to bottom, each highest-impact first (owner,
+ *  2026-10-03) — Build High-Performance Multi-Agent Systems (4459) · Deploy
+ *  Production Ready Agents (3802) · Introduction to Agents (3546) · Fundamentals
+ *  of ADK (3473) | Generative AI Leader (1951) · SMB Learning
  *  Path (4020) | Beginner: Introduction to Generative AI (118) | Google
  *  Workspace with Gemini (249) · AI Boost Bites (2480). This replaces the flat
  *  curated order of 2026-09-11. Stanford follows alone in CONTINUING_EDUCATION.
@@ -1223,87 +1228,6 @@ export const GOOGLE_SKILLS_CATEGORIES: readonly GroupCategory[] = [
  *  puts it. data.test.ts pins this array to the categories' concatenation and
  *  to EXPECTED_ORDER. */
 export const LEARNING_PATHS: readonly LearningPathData[] = [
-  {
-    id: "ce-google-skills-agents-3546",
-    headingId: "ce-google-skills-agents-3546-heading",
-    testId: "coursework-courses-agents",
-    titleLines: [
-      "Introduction to Agents and Google’s Agent Ecosystem",
-      "3-Course Path",
-    ],
-    issuer: "Google Skills",
-    issuerShort: "Google Skills",
-    date: "2026",
-    url: "https://www.skills.google/paths/3546",
-    urlLabel: "Path page",
-    urlNoun: "path",
-    logo: "/logos/google.png",
-    tile: GOOGLE_SKILLS_TILE,
-    // `description` arm 1 — Google's own sentences 1–2, a contiguous prefix.
-    // The ONE edit is typographic: Google's source writes 'the essentials of
-    // "what is an agent,"' with straight quotes (U+0022); the site renders the
-    // same words with “ ” like every other quotation on it. No word or mark of
-    // punctuation is otherwise changed. Its trailing call to action — "Explore other paths in the Gemini Enterprise
-    // Agent Ready (GEAR) series" — is dropped rather than restated: a
-    // declarative rewrite ("Part of the … series") would be prose AUTHORED here,
-    // which this field forbids, and Google's literal CTA is not a claim about
-    // this résumé. The series name Google records for the path lives in
-    // scratchpad/google-skills-paths.json (`series`) and reaches the page only
-    // where Google itself writes it into a description (path 4020, below).
-    description:
-      "Gain a foundational understanding of AI agents, from their core architecture to their real-world business impact. Cover the essentials of “what is an agent,” understand Google Cloud's unified stack for agent development, and gain practical experience by creating your first Gemini Enterprise application to earn a skill badge.",
-    // THREE courses, not the five activities Google's path page counts. The
-    // first and last of those five are the "Welcome:" and "Wrap Up:" bookends,
-    // which are never courses (see PathCourse) — they taught nothing, earned no
-    // badge, and counting them would inflate the chip, the meta line and the
-    // panel's badge counter alike. scratchpad/google-skills-paths.json records
-    // the same split: `activities: 5`, `site_course_count: 3`.
-    totalCourses: 3,
-    unitNoun: "Courses",
-    gradient: "from-indigo-600/20 via-blue-500/12 to-cyan-600/20",
-    aiSkills: true,
-    coursesLayout: "badges",
-    courses: [
-      { step: 1, ...AGENT_FUNDAMENTALS },
-      { step: 2, ...ENTERPRISE_AGENTS },
-      { step: 3, ...FIRST_GEMINI_ENTERPRISE_APP },
-    ],
-  },
-  {
-    // Added at the owner's request (2026-10-03). All three course
-    // badges are on the public profile, the last earned 2026-10-03; both new
-    // badge pages were checked logged-out. Google's JSON-LD for this page
-    // carries `@id` /paths/6014, but /paths/3473 is the URL the owner gave and
-    // the one that resolves to this path, so it is linked.
-    id: "ce-google-skills-adk-3473",
-    headingId: "ce-google-skills-adk-3473-heading",
-    testId: "coursework-courses-adk",
-    titleLines: ["Fundamentals of Agent Development Kit (ADK)", "3-Course Path"],
-    issuer: "Google Skills",
-    issuerShort: "Google Skills",
-    date: "2026",
-    url: "https://www.skills.google/paths/3473",
-    urlLabel: "Path page",
-    urlNoun: "path",
-    logo: "/logos/google.png",
-    tile: GOOGLE_SKILLS_TILE,
-    // `description` arm 1 — Google's own path description, verbatim and
-    // complete (two sentences; nothing is trimmed).
-    description:
-      "This learning path explores the evolution of AI agents that move beyond text generation to autonomous execution using Agent Development Kit (ADK). You will learn how to build and configure agents using Python and YAML, progressing from basic setups to sophisticated assistants with advanced planning and structured output capabilities.",
-    totalCourses: 3,
-    unitNoun: "Courses",
-    gradient: "from-indigo-600/20 via-violet-500/12 to-sky-600/20",
-    aiSkills: true,
-    coursesLayout: "badges",
-    // Google's order. Agent Fundamentals is the same course (same badge) that
-    // paths 4020 and 3546 carry; the other two are new to this page.
-    courses: [
-      { step: 1, ...AGENT_FUNDAMENTALS },
-      { step: 2, title: "Build Your First Agent with Agent Development Kit (ADK)", badge: gsBadge(28611290, "build-your-first-agent-with-adk") },
-      { step: 3, title: "Optimize Agent Behavior", badge: gsBadge(28628972, "optimize-agent-behavior") },
-    ],
-  },
   {
     id: "ce-google-skills-multi-agent-4459",
     headingId: "ce-google-skills-multi-agent-4459-heading",
@@ -1423,6 +1347,87 @@ export const LEARNING_PATHS: readonly LearningPathData[] = [
           "deploy-multi-agent-architectures",
         ),
       },
+    ],
+  },
+  {
+    id: "ce-google-skills-agents-3546",
+    headingId: "ce-google-skills-agents-3546-heading",
+    testId: "coursework-courses-agents",
+    titleLines: [
+      "Introduction to Agents and Google’s Agent Ecosystem",
+      "3-Course Path",
+    ],
+    issuer: "Google Skills",
+    issuerShort: "Google Skills",
+    date: "2026",
+    url: "https://www.skills.google/paths/3546",
+    urlLabel: "Path page",
+    urlNoun: "path",
+    logo: "/logos/google.png",
+    tile: GOOGLE_SKILLS_TILE,
+    // `description` arm 1 — Google's own sentences 1–2, a contiguous prefix.
+    // The ONE edit is typographic: Google's source writes 'the essentials of
+    // "what is an agent,"' with straight quotes (U+0022); the site renders the
+    // same words with “ ” like every other quotation on it. No word or mark of
+    // punctuation is otherwise changed. Its trailing call to action — "Explore other paths in the Gemini Enterprise
+    // Agent Ready (GEAR) series" — is dropped rather than restated: a
+    // declarative rewrite ("Part of the … series") would be prose AUTHORED here,
+    // which this field forbids, and Google's literal CTA is not a claim about
+    // this résumé. The series name Google records for the path lives in
+    // scratchpad/google-skills-paths.json (`series`) and reaches the page only
+    // where Google itself writes it into a description (path 4020, below).
+    description:
+      "Gain a foundational understanding of AI agents, from their core architecture to their real-world business impact. Cover the essentials of “what is an agent,” understand Google Cloud's unified stack for agent development, and gain practical experience by creating your first Gemini Enterprise application to earn a skill badge.",
+    // THREE courses, not the five activities Google's path page counts. The
+    // first and last of those five are the "Welcome:" and "Wrap Up:" bookends,
+    // which are never courses (see PathCourse) — they taught nothing, earned no
+    // badge, and counting them would inflate the chip, the meta line and the
+    // panel's badge counter alike. scratchpad/google-skills-paths.json records
+    // the same split: `activities: 5`, `site_course_count: 3`.
+    totalCourses: 3,
+    unitNoun: "Courses",
+    gradient: "from-indigo-600/20 via-blue-500/12 to-cyan-600/20",
+    aiSkills: true,
+    coursesLayout: "badges",
+    courses: [
+      { step: 1, ...AGENT_FUNDAMENTALS },
+      { step: 2, ...ENTERPRISE_AGENTS },
+      { step: 3, ...FIRST_GEMINI_ENTERPRISE_APP },
+    ],
+  },
+  {
+    // Added at the owner's request (2026-10-03). All three course
+    // badges are on the public profile, the last earned 2026-10-03; both new
+    // badge pages were checked logged-out. Google's JSON-LD for this page
+    // carries `@id` /paths/6014, but /paths/3473 is the URL the owner gave and
+    // the one that resolves to this path, so it is linked.
+    id: "ce-google-skills-adk-3473",
+    headingId: "ce-google-skills-adk-3473-heading",
+    testId: "coursework-courses-adk",
+    titleLines: ["Fundamentals of Agent Development Kit (ADK)", "3-Course Path"],
+    issuer: "Google Skills",
+    issuerShort: "Google Skills",
+    date: "2026",
+    url: "https://www.skills.google/paths/3473",
+    urlLabel: "Path page",
+    urlNoun: "path",
+    logo: "/logos/google.png",
+    tile: GOOGLE_SKILLS_TILE,
+    // `description` arm 1 — Google's own path description, verbatim and
+    // complete (two sentences; nothing is trimmed).
+    description:
+      "This learning path explores the evolution of AI agents that move beyond text generation to autonomous execution using Agent Development Kit (ADK). You will learn how to build and configure agents using Python and YAML, progressing from basic setups to sophisticated assistants with advanced planning and structured output capabilities.",
+    totalCourses: 3,
+    unitNoun: "Courses",
+    gradient: "from-indigo-600/20 via-violet-500/12 to-sky-600/20",
+    aiSkills: true,
+    coursesLayout: "badges",
+    // Google's order. Agent Fundamentals is the same course (same badge) that
+    // paths 4020 and 3546 carry; the other two are new to this page.
+    courses: [
+      { step: 1, ...AGENT_FUNDAMENTALS },
+      { step: 2, title: "Build Your First Agent with Agent Development Kit (ADK)", badge: gsBadge(28611290, "build-your-first-agent-with-adk") },
+      { step: 3, title: "Optimize Agent Behavior", badge: gsBadge(28628972, "optimize-agent-behavior") },
     ],
   },
   {
