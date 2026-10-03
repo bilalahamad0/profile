@@ -120,6 +120,11 @@ const ABB_COURSES = [
   'AI Boost Bites: Notes to Sheets with Gemini',
   'AI Boost Bites: Advanced Analysis in Sheets',
 ];
+const ADK_COURSES = [
+  'Agent Fundamentals',
+  'Build Your First Agent with Agent Development Kit (ADK)',
+  'Optimize Agent Behavior',
+];
 const STANFORD_MODULES = ['Cool Applications', 'Sensors', 'Embedded Systems', 'Networking', 'Circuits'];
 
 const CLAUDE_PLATFORM_COURSES = ['Claude Platform 101'];
@@ -243,17 +248,24 @@ const CARDS: Card[] = [
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/118$/,
     courses: BEGINNER_COURSES, badges: 4, credly: 1, pill: /^4 public course badges$/i },
+  // Placed directly after path 118 at the owner's request, 2026-10-03.
+  { section: 'google-skills', id: 'ce-google-skills-adk-3473',
+    title: 'Fundamentals of Agent Development Kit (ADK)',
+    meta: 'Google Skills · Oct 2026 · 3-Course Path', chip: '3 Courses', numeral: '07',
+    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
+    url: /^https:\/\/www\.skills\.google\/paths\/3473$/,
+    courses: ADK_COURSES, badges: 3, credly: 0, pill: /^3 public course badges$/i },
   // Appended last at the owner's request, 2026-09-27.
   { section: 'google-skills', id: 'ce-google-skills-workspace-gemini-249',
     title: 'Google Workspace with Gemini',
-    meta: 'Google Skills · Sep 2026 · 11-Course Path', chip: '11 Courses', numeral: '07',
+    meta: 'Google Skills · Sep 2026 · 11-Course Path', chip: '11 Courses', numeral: '08',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/249$/,
     courses: WORKSPACE_COURSES, badges: 11, credly: 0, pill: /^11 public course badges$/i },
   // Appended last at the owner's request, 2026-10-02.
   { section: 'google-skills', id: 'ce-google-skills-ai-boost-bites-2480',
     title: 'AI Boost Bites: Your Edge in the AI-Powered World',
-    meta: 'Google Skills · Oct 2026 · 43-Course Path', chip: '43 Courses', numeral: '08',
+    meta: 'Google Skills · Oct 2026 · 43-Course Path', chip: '43 Courses', numeral: '09',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/2480$/,
     courses: ABB_COURSES, badges: 43, credly: 0, pill: /^43 public course badges$/i },
@@ -374,7 +386,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       'Claude Academy',
       'Stanford School of Engineering', 'XEE100',
       '4 learning paths · 11 course badges',
-      '8 learning paths · 73 course badges', '1 short course · 5 modules',
+      '9 learning paths · 75 course badges', '1 short course · 5 modules',
       'Generative AI Leader Certification', 'Train for the exam',
       'Google Cloud Generative AI Leader certification',
       'six Stanford faculty members will deliver an overview',
@@ -464,7 +476,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     const google = page.locator('#google-skills');
     await expect(google.getByRole('heading', { level: 2 })).toHaveText('Google Skills');
     await expect(google.getByText('Completed Learning Paths', { exact: true })).toBeVisible();
-    const googleCount = google.getByText('8 learning paths · 73 course badges', { exact: true });
+    const googleCount = google.getByText('9 learning paths · 75 course badges', { exact: true });
     await (wideViewport(page) ? expect(googleCount).toBeVisible() : expect(googleCount).toBeAttached());
     const cont = page.locator('#continuing-education');
     await expect(cont.getByRole('heading', { level: 2 })).toHaveText('Continuing Education');
@@ -664,7 +676,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     await page.goto('/certifications');
     await expandAll(page, 'google-skills');
     const links = badgeLinks(page.locator('#google-skills'));
-    await expect(links).toHaveCount(85);
+    await expect(links).toHaveCount(88);
     const rows = await links.evaluateAll((els) =>
       els.map((el) => ({
         text: (el.textContent ?? '').replace(/\s+/g, ' '),
@@ -704,7 +716,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     }
     expect(rows.filter((r) => r.text.includes('Verify in Credly'))).toHaveLength(4);
     expect(rows.filter((r) => r.text.includes('Verify in Google Skills'))).toHaveLength(0);
-    expect(rows.filter((r) => r.text.includes('Verify'))).toHaveLength(85);
+    expect(rows.filter((r) => r.text.includes('Verify'))).toHaveLength(88);
   });
 
   test('only the Credly skill badges glow', async ({ page }) => {
@@ -733,7 +745,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     await page.goto('/certifications');
     await expandAll(page, 'google-skills');
     const links = badgeLinks(page.locator('#google-skills'));
-    await expect(links).toHaveCount(85);
+    await expect(links).toHaveCount(88);
     const rows = await links.evaluateAll((els) =>
       els.map((e) => [e.getAttribute('href') ?? '', e.textContent ?? ''] as const),
     );
@@ -742,10 +754,10 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       expect(href).toMatch(/badge on Credly/i.test(text) ? CREDLY_BADGE_URL : GOOGLE_SKILLS_BADGE_URL);
     }
     const hrefs = rows.map(([h]) => h);
-    // 85 references, 73 distinct badge pages — the number the header prints.
-    expect(new Set(hrefs).size).toBe(73);
+    // 88 references, 75 distinct badge pages — the number the header prints.
+    expect(new Set(hrefs).size).toBe(75);
     expect(hrefs.filter((h) => CREDLY_BADGE_URL.test(h))).toHaveLength(4);
-    expect(hrefs.filter((h) => GOOGLE_SKILLS_BADGE_URL.test(h))).toHaveLength(81);
+    expect(hrefs.filter((h) => GOOGLE_SKILLS_BADGE_URL.test(h))).toHaveLength(84);
     // Path 4459's badges (withheld while it was unfinished) and path 3802's.
     for (const id of ['27855015', '27885513', '27886491', '27888328', '27888392']) {
       expect(hrefs.some((h) => h.endsWith(`/badges/${id}`)), `badge ${id} missing`).toBe(true);
@@ -836,6 +848,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       ['coursework-courses-gen-ai-leader', 5, 5],
       ['coursework-courses-workspace-gemini', 11, 11],
       ['coursework-courses-ai-boost-bites', 43, 43],
+      ['coursework-courses-adk', 3, 3],
     ] as const) {
       const items = page.getByTestId(testId).locator('li');
       await expect(items).toHaveCount(tiles);
@@ -938,6 +951,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       ['ce-google-skills-agents-3546', 'coursework-courses-agents', 3],
       ['ce-google-skills-beginner-gen-ai-118', 'coursework-courses-beginner-gen-ai', 4],
       ['ce-google-skills-gen-ai-leader-1951', 'coursework-courses-gen-ai-leader', 5],
+      ['ce-google-skills-adk-3473', 'coursework-courses-adk', 3],
     ] as const) {
       await openRow(page, id);
       const rows = await measure(testId);
@@ -987,7 +1001,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
   test('expand all / collapse all works on all three sections', async ({ page }) => {
     await page.goto('/certifications');
     for (const [section, n] of [
-      ['google-skills', 8],
+      ['google-skills', 9],
       ['claude-academy', 4],
       ['continuing-education', 1],
     ] as const) {
@@ -1075,7 +1089,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       const cards = await page
         .locator('article[id^="ce-"], #claude-academy article')
         .evaluateAll((els) => els.map((el) => [el.id, el.scrollWidth - el.clientWidth] as const));
-      expect(cards).toHaveLength(13);
+      expect(cards).toHaveLength(14);
       for (const [id, d] of cards) expect(d, `${id} overflows by ${d}px (${pass})`).toBeLessThanOrEqual(0);
       const doc = await page.evaluate(
         () => document.documentElement.scrollWidth - document.documentElement.clientWidth,

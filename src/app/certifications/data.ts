@@ -1157,9 +1157,10 @@ const ABB_CONTENT_GENERATION = {
  *  2026-09-11: Generative AI Leader (1951) · SMB Learning Path (4020) · Build
  *  High-Performance Multi-Agent Systems (4459) · Deploy Production Ready Agents
  *  (3802) · Introduction to Agents (3546) · Beginner: Introduction to
- *  Generative AI (118) — then, each appended LAST at the owner's request,
- *  Google Workspace with Gemini (249, 2026-09-27) and AI Boost Bites: Your Edge
- *  in the AI-Powered World (2480, 2026-10-02). Stanford follows alone in
+ *  Generative AI (118) · Fundamentals of Agent Development Kit (ADK) (3473,
+ *  placed directly after 118 by the owner on 2026-10-03) · Google Workspace
+ *  with Gemini (249, appended 2026-09-27) · AI Boost Bites: Your Edge in the
+ *  AI-Powered World (2480, appended 2026-10-02). Stanford follows alone in
  *  CONTINUING_EDUCATION.
  *
  *  IT IS CURATED, NOT DERIVED. Every earlier revision of this file sorted these
@@ -1167,8 +1168,8 @@ const ABB_CONTENT_GENERATION = {
  *  Nothing sorts at runtime, no `date` field is read for ordering, and a newly
  *  completed path does NOT go first — where it lands is the owner's call. Path
  *  3802 is the proof: it was completed last of the first six and sits FOURTH;
- *  249 and 2480 sit last because the owner placed them there, not because they
- *  are newest.
+ *  3473, completed after 249 and 2480, sits AHEAD of both — every position here
+ *  is where the owner put it.
  *  `display_order_path_ids` / `display_order_rule` in
  *  scratchpad/google-skills-paths.json record the same order and the same rule;
  *  data.test.ts pins it as EXPECTED_ORDER. */
@@ -1489,6 +1490,42 @@ export const LEARNING_PATHS: readonly LearningPathData[] = [
         title: "Responsible AI: Applying AI Principles with Google Cloud",
         badge: gsBadge(27852150, "responsible-ai-applying-ai-principles"),
       },
+    ],
+  },
+  {
+    // Placed directly after path 118 at the owner's request (2026-10-03) — a
+    // chosen position, not an append and not a date sort. All three course
+    // badges are on the public profile, the last earned 2026-10-03; both new
+    // badge pages were checked logged-out. Google's JSON-LD for this page
+    // carries `@id` /paths/6014, but /paths/3473 is the URL the owner gave and
+    // the one that resolves to this path, so it is linked.
+    id: "ce-google-skills-adk-3473",
+    headingId: "ce-google-skills-adk-3473-heading",
+    testId: "coursework-courses-adk",
+    titleLines: ["Fundamentals of Agent Development Kit (ADK)", "3-Course Path"],
+    issuer: "Google Skills",
+    issuerShort: "Google Skills",
+    date: "Oct 2026",
+    url: "https://www.skills.google/paths/3473",
+    urlLabel: "Path page",
+    urlNoun: "path",
+    logo: "/logos/google.png",
+    tile: GOOGLE_SKILLS_TILE,
+    // `description` arm 1 — Google's own path description, verbatim and
+    // complete (two sentences; nothing is trimmed).
+    description:
+      "This learning path explores the evolution of AI agents that move beyond text generation to autonomous execution using Agent Development Kit (ADK). You will learn how to build and configure agents using Python and YAML, progressing from basic setups to sophisticated assistants with advanced planning and structured output capabilities.",
+    totalCourses: 3,
+    unitNoun: "Courses",
+    gradient: "from-indigo-600/20 via-violet-500/12 to-sky-600/20",
+    aiSkills: true,
+    coursesLayout: "badges",
+    // Google's order. Agent Fundamentals is the same course (same badge) that
+    // paths 4020 and 3546 carry; the other two are new to this page.
+    courses: [
+      { step: 1, ...AGENT_FUNDAMENTALS },
+      { step: 2, title: "Build Your First Agent with Agent Development Kit (ADK)", badge: gsBadge(28611290, "build-your-first-agent-with-adk") },
+      { step: 3, title: "Optimize Agent Behavior", badge: gsBadge(28628972, "optimize-agent-behavior") },
     ],
   },
   {
