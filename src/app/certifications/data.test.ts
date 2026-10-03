@@ -9,6 +9,7 @@ import {
   COURSEWORK_GROUPS,
   CREDENTIAL_GROUPS,
   GENERAL_CERTIFICATES,
+  GOOGLE_SKILLS_CATEGORIES,
   LEARNING_PATHS,
   SPECIALIZATIONS,
   credentialSlug,
@@ -112,17 +113,20 @@ const PRO_CERT_GRID_POSITIONS = [
  *  It is NOT chronological and must never be re-derived from a completion date. */
 const EXPECTED_ORDER = [
   ...CLAUDE_ACADEMY_ORDER,
-  "ce-google-skills-gen-ai-leader-1951",
-  "ce-google-skills-smb-4020",
+  // Google Skills, by the owner's four categories (2026-10-03).
+  // Agentic Engineering & Multi-Agent Architecture (GEAR Program)
+  "ce-google-skills-agents-3546",
+  "ce-google-skills-adk-3473",
   "ce-google-skills-multi-agent-4459",
   "ce-google-skills-deploy-agents-3802",
-  "ce-google-skills-agents-3546",
+  // Strategic Leadership & Business Transformation
+  "ce-google-skills-gen-ai-leader-1951",
+  "ce-google-skills-smb-4020",
+  // Generative AI Foundations & Responsible Principles
   "ce-google-skills-beginner-gen-ai-118",
-  // Placed directly after 118 by the owner, 2026-10-03 — not appended.
-  "ce-google-skills-adk-3473",
-  // Each appended last at the owner's request — placement, not recency.
-  "ce-google-skills-workspace-gemini-249", // 2026-09-27
-  "ce-google-skills-ai-boost-bites-2480", // 2026-10-02
+  // Applied Workplace Productivity & Micro-Learning
+  "ce-google-skills-workspace-gemini-249",
+  "ce-google-skills-ai-boost-bites-2480",
   "ce-stanford-xee100",
 ];
 const byId = (id: string) => ALL_COURSEWORK.find((e) => e.id === id);
@@ -388,6 +392,53 @@ describe("coursework is never counted as a credential", () => {
     expect(CLAUDE_ACADEMY_PATHS.map((e) => e.id)).toEqual(EXPECTED_ORDER.slice(0, 4));
     expect(LEARNING_PATHS.map((e) => e.id)).toEqual(EXPECTED_ORDER.slice(4, 13));
     expect(CONTINUING_EDUCATION.map((e) => e.id)).toEqual(["ce-stanford-xee100"]);
+  });
+});
+
+describe("the Google Skills categories", () => {
+  it("are the owner's four, verbatim and in order", () => {
+    expect(GOOGLE_SKILLS_CATEGORIES.map((c) => [c.title, c.description])).toEqual([
+      [
+        "Agentic Engineering & Multi-Agent Architecture (GEAR Program)",
+        "Technical development, multi-agent coordination, tool integration, and cloud deployment.",
+      ],
+      [
+        "Strategic Leadership & Business Transformation",
+        "Executive strategy, organizational AI adoption, and operational scaling for businesses.",
+      ],
+      [
+        "Generative AI Foundations & Responsible Principles",
+        "Core LLM concepts, multimodal prompt engineering, and safety frameworks.",
+      ],
+      [
+        "Applied Workplace Productivity & Micro-Learning",
+        "Practical integration of generative AI into daily workflows across applications.",
+      ],
+    ]);
+    expect(new Set(GOOGLE_SKILLS_CATEGORIES.map((c) => c.id)).size).toBe(4);
+  });
+
+  it("partition the paths exactly — every path once, in display order", () => {
+    // Concatenated, the categories ARE the array order: no path left out (it
+    // would not render), none in two categories, none that does not exist.
+    expect(GOOGLE_SKILLS_CATEGORIES.flatMap((c) => c.ids)).toEqual(
+      LEARNING_PATHS.map((p) => p.id),
+    );
+    expect(GOOGLE_SKILLS_CATEGORIES.every((c) => c.ids.length > 0)).toBe(true);
+  });
+
+  it("are what the Google Skills section renders, and only that section", () => {
+    const google = COURSEWORK_GROUPS.find((g) => g.id === "google-skills");
+    expect(google?.categories).toBe(GOOGLE_SKILLS_CATEGORIES);
+    for (const g of [...COURSEWORK_GROUPS, ...CREDENTIAL_GROUPS]) {
+      if (g.id !== "google-skills") expect(g.categories).toBeUndefined();
+    }
+    // Category DOM ids are `${group}-${id}` — never the counted "group-" space.
+    for (const c of GOOGLE_SKILLS_CATEGORIES) expect(`google-skills-${c.id}`).not.toMatch(/^group-/);
+  });
+
+  it("date every path by year only (owner, 2026-10-03)", () => {
+    for (const p of LEARNING_PATHS) expect(p.date, p.id).toMatch(/^\d{4}$/);
   });
 });
 

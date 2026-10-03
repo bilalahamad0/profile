@@ -4,6 +4,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import {
   credentialSlug,
+  type Credential,
   type CredentialGroupDef,
   type GalleryCertificate,
 } from "@/app/certifications/data";
@@ -25,6 +26,37 @@ const LIGHT_EYEBROW: Record<string, string> = {
 const eyebrowTone = (accentEyebrow: string) =>
   LIGHT_EYEBROW[accentEyebrow] ?? accentEyebrow;
 
+/** The group's rows, split into its categories in their declared order.
+ *
+ *  THROWS on any id that names no row, and on any row left out or placed
+ *  twice. A missing row would otherwise just not render — the header count
+ *  would say one number and the page show another, with nothing to notice.
+ *  /certifications is prerendered (○ Static), so a bad datum fails
+ *  `npm run build` instead of shipping; data.test.ts asserts the same
+ *  partition earlier. */
+function partition(group: CredentialGroupDef) {
+  const byId = new Map<string, Credential>(group.credentials.map((c) => [c.id, c]));
+  const placed = new Set<string>();
+  const sections = (group.categories ?? []).map((category) => ({
+    category,
+    rows: category.ids.map((id) => {
+      const row = byId.get(id);
+      if (!row || placed.has(id)) {
+        throw new Error(
+          `${group.id} / category "${category.id}": "${id}" ${row ? "is placed twice" : "names no row"}.`,
+        );
+      }
+      placed.add(id);
+      return row;
+    }),
+  }));
+  if (placed.size !== group.credentials.length) {
+    const missing = group.credentials.filter((c) => !placed.has(c.id)).map((c) => c.id);
+    throw new Error(`${group.id}: rows in no category: ${missing.join(", ")}.`);
+  }
+  return sections;
+}
+
 export function CredentialGroup({
   group,
   openIds,
@@ -42,6 +74,20 @@ export function CredentialGroup({
   const slugs = group.credentials.map(credentialSlug);
   const allOpen = slugs.every((s) => openIds.has(s));
   const count = group.credentials.length;
+  const renderRow = (credential: Credential, headingLevel: 3 | 4) => {
+    const slug = credentialSlug(credential);
+    return (
+      <CredentialRow
+        key={slug}
+        credential={credential}
+        accent={group.accent}
+        open={openIds.has(slug)}
+        onToggle={() => onToggle(slug, group.id)}
+        onInspect={onInspect}
+        headingLevel={headingLevel}
+      />
+    );
+  };
 
   return (
     <section id={group.id} aria-labelledby={`${group.id}-heading`} className="scroll-mt-28">
@@ -99,22 +145,41 @@ export function CredentialGroup({
         )}
       />
 
-      {/* Rows */}
-      <div className="flex flex-col gap-3 md:gap-4">
-        {group.credentials.map((credential) => {
-          const slug = credentialSlug(credential);
-          return (
-            <CredentialRow
-              key={slug}
-              credential={credential}
-              accent={group.accent}
-              open={openIds.has(slug)}
-              onToggle={() => onToggle(slug, group.id)}
-              onInspect={onInspect}
-            />
-          );
-        })}
-      </div>
+      {/* Rows — under the group's category headings when it has them (Google
+          Skills, owner 2026-10-03), otherwise as one run. */}
+      {group.categories ? (
+        <div className="flex flex-col gap-10 md:gap-12">
+          {partition(group).map(({ category, rows }) => {
+            const headingId = `${group.id}-${category.id}-heading`;
+            return (
+              <div
+                key={category.id}
+                id={`${group.id}-${category.id}`}
+                role="group"
+                aria-labelledby={headingId}
+                data-testid={`category-${group.id}-${category.id}`}
+                className="scroll-mt-28"
+              >
+                <div className="mb-4 border-l-2 border-line/20 pl-3 md:mb-5 md:pl-4">
+                  <h3 id={headingId} className="t-lead font-semibold text-ink">
+                    {category.title}
+                  </h3>
+                  <p className="mt-1 t-small text-ink/70 dark:text-ink/60">
+                    {category.description}
+                  </p>
+                </div>
+                <div className="flex flex-col gap-3 md:gap-4">
+                  {rows.map((credential) => renderRow(credential, 4))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-3 md:gap-4">
+          {group.credentials.map((credential) => renderRow(credential, 3))}
+        </div>
+      )}
     </section>
   );
 }
