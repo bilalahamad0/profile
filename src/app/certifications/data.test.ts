@@ -113,12 +113,13 @@ const PRO_CERT_GRID_POSITIONS = [
  *  It is NOT chronological and must never be re-derived from a completion date. */
 const EXPECTED_ORDER = [
   ...CLAUDE_ACADEMY_ORDER,
-  // Google Skills, by the owner's four categories (2026-10-03).
+  // Google Skills, by the owner's four categories, each highest-impact first
+  // (2026-10-03).
   // Agentic Engineering & Multi-Agent Architecture (GEAR Program)
-  "ce-google-skills-agents-3546",
-  "ce-google-skills-adk-3473",
   "ce-google-skills-multi-agent-4459",
   "ce-google-skills-deploy-agents-3802",
+  "ce-google-skills-agents-3546",
+  "ce-google-skills-adk-3473",
   // Strategic Leadership & Business Transformation
   "ce-google-skills-gen-ai-leader-1951",
   "ce-google-skills-smb-4020",
