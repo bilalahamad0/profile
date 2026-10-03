@@ -125,6 +125,23 @@ const ADK_COURSES = [
   'Build Your First Agent with Agent Development Kit (ADK)',
   'Optimize Agent Behavior',
 ];
+/** The owner's four Google Skills categories (2026-10-03), verbatim, with
+ *  their paths top to bottom. */
+const GOOGLE_SKILLS_CATEGORIES = [
+  { title: 'Agentic Engineering & Multi-Agent Architecture (GEAR Program)',
+    description: 'Technical development, multi-agent coordination, tool integration, and cloud deployment.',
+    ids: ['ce-google-skills-agents-3546', 'ce-google-skills-adk-3473',
+      'ce-google-skills-multi-agent-4459', 'ce-google-skills-deploy-agents-3802'] },
+  { title: 'Strategic Leadership & Business Transformation',
+    description: 'Executive strategy, organizational AI adoption, and operational scaling for businesses.',
+    ids: ['ce-google-skills-gen-ai-leader-1951', 'ce-google-skills-smb-4020'] },
+  { title: 'Generative AI Foundations & Responsible Principles',
+    description: 'Core LLM concepts, multimodal prompt engineering, and safety frameworks.',
+    ids: ['ce-google-skills-beginner-gen-ai-118'] },
+  { title: 'Applied Workplace Productivity & Micro-Learning',
+    description: 'Practical integration of generative AI into daily workflows across applications.',
+    ids: ['ce-google-skills-workspace-gemini-249', 'ce-google-skills-ai-boost-bites-2480'] },
+] as const;
 const STANFORD_MODULES = ['Cool Applications', 'Sensors', 'Embedded Systems', 'Networking', 'Circuits'];
 
 const CLAUDE_PLATFORM_COURSES = ['Claude Platform 101'];
@@ -211,61 +228,62 @@ const CLAUDE_CARDS: Card[] = [
  *  It is NOT chronological. Never re-sort this list by date. */
 const CARDS: Card[] = [
   ...CLAUDE_CARDS,
-  { section: 'google-skills', id: 'ce-google-skills-gen-ai-leader-1951',
-    title: 'Generative AI Leader',
-    meta: 'Google Skills · Sep 2026 · 5-Course Path · “Train for the exam”',
-    chip: '5 Courses', numeral: '01',
+  // Google Skills — Agentic Engineering & Multi-Agent Architecture (GEAR Program)
+  { section: 'google-skills', id: 'ce-google-skills-agents-3546',
+    title: 'Introduction to Agents and Google’s Agent Ecosystem',
+    meta: 'Google Skills · 2026 · 3-Course Path', chip: '3 Courses', numeral: '01',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
-    url: /^https:\/\/www\.skills\.google\/paths\/1951$/,
-    courses: LEADER_COURSES, badges: 5, credly: 0, pill: /^5 public course badges$/i },
-  { section: 'google-skills', id: 'ce-google-skills-smb-4020',
-    title: 'SMB Learning Path',
-    meta: 'Google Skills · Sep 2026 · 13-Course Path', chip: '13 Courses', numeral: '02',
+    url: /^https:\/\/www\.skills\.google\/paths\/3546$/,
+    courses: AGENTS_COURSES, badges: 3, credly: 1, pill: /^3 public course badges$/i },
+  { section: 'google-skills', id: 'ce-google-skills-adk-3473',
+    title: 'Fundamentals of Agent Development Kit (ADK)',
+    meta: 'Google Skills · 2026 · 3-Course Path', chip: '3 Courses', numeral: '02',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
-    url: /^https:\/\/www\.skills\.google\/paths\/4020$/,
-    courses: SMB_COURSES, badges: 13, credly: 1, pill: /^13 public course badges$/i },
+    url: /^https:\/\/www\.skills\.google\/paths\/3473$/,
+    courses: ADK_COURSES, badges: 3, credly: 0, pill: /^3 public course badges$/i },
   { section: 'google-skills', id: 'ce-google-skills-multi-agent-4459',
     title: 'Build High-Performance Multi-Agent Systems',
-    meta: 'Google Skills · Sep 2026 · 3-Course Path', chip: '3 Courses', numeral: '03',
+    meta: 'Google Skills · 2026 · 3-Course Path', chip: '3 Courses', numeral: '03',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/4459$/,
     courses: MULTI_AGENT_COURSES, badges: 3, credly: 0, pill: /^3 public course badges$/i },
   { section: 'google-skills', id: 'ce-google-skills-deploy-agents-3802',
     title: 'Deploy Production Ready Agents',
-    meta: 'Google Skills · Sep 2026 · 3-Course Path', chip: '3 Courses', numeral: '04',
+    meta: 'Google Skills · 2026 · 3-Course Path', chip: '3 Courses', numeral: '04',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/3802$/,
     courses: DEPLOY_COURSES, badges: 3, credly: 1, pill: /^3 public course badges$/i },
-  { section: 'google-skills', id: 'ce-google-skills-agents-3546',
-    title: 'Introduction to Agents and Google’s Agent Ecosystem',
-    meta: 'Google Skills · Sep 2026 · 3-Course Path', chip: '3 Courses', numeral: '05',
+  // Google Skills — Strategic Leadership & Business Transformation
+  { section: 'google-skills', id: 'ce-google-skills-gen-ai-leader-1951',
+    title: 'Generative AI Leader',
+    meta: 'Google Skills · 2026 · 5-Course Path · “Train for the exam”',
+    chip: '5 Courses', numeral: '05',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
-    url: /^https:\/\/www\.skills\.google\/paths\/3546$/,
-    courses: AGENTS_COURSES, badges: 3, credly: 1, pill: /^3 public course badges$/i },
+    url: /^https:\/\/www\.skills\.google\/paths\/1951$/,
+    courses: LEADER_COURSES, badges: 5, credly: 0, pill: /^5 public course badges$/i },
+  { section: 'google-skills', id: 'ce-google-skills-smb-4020',
+    title: 'SMB Learning Path',
+    meta: 'Google Skills · 2026 · 13-Course Path', chip: '13 Courses', numeral: '06',
+    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
+    url: /^https:\/\/www\.skills\.google\/paths\/4020$/,
+    courses: SMB_COURSES, badges: 13, credly: 1, pill: /^13 public course badges$/i },
+  // Google Skills — Generative AI Foundations & Responsible Principles
   { section: 'google-skills', id: 'ce-google-skills-beginner-gen-ai-118',
     title: 'Beginner: Introduction to Generative AI',
-    meta: 'Google Skills · Sep 2026 · 4-Course Path', chip: '4 Courses', numeral: '06',
+    meta: 'Google Skills · 2026 · 4-Course Path', chip: '4 Courses', numeral: '07',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/118$/,
     courses: BEGINNER_COURSES, badges: 4, credly: 1, pill: /^4 public course badges$/i },
-  // Placed directly after path 118 at the owner's request, 2026-10-03.
-  { section: 'google-skills', id: 'ce-google-skills-adk-3473',
-    title: 'Fundamentals of Agent Development Kit (ADK)',
-    meta: 'Google Skills · Oct 2026 · 3-Course Path', chip: '3 Courses', numeral: '07',
-    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
-    url: /^https:\/\/www\.skills\.google\/paths\/3473$/,
-    courses: ADK_COURSES, badges: 3, credly: 0, pill: /^3 public course badges$/i },
-  // Appended last at the owner's request, 2026-09-27.
+  // Google Skills — Applied Workplace Productivity & Micro-Learning
   { section: 'google-skills', id: 'ce-google-skills-workspace-gemini-249',
     title: 'Google Workspace with Gemini',
-    meta: 'Google Skills · Sep 2026 · 11-Course Path', chip: '11 Courses', numeral: '08',
+    meta: 'Google Skills · 2026 · 11-Course Path', chip: '11 Courses', numeral: '08',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/249$/,
     courses: WORKSPACE_COURSES, badges: 11, credly: 0, pill: /^11 public course badges$/i },
-  // Appended last at the owner's request, 2026-10-02.
   { section: 'google-skills', id: 'ce-google-skills-ai-boost-bites-2480',
     title: 'AI Boost Bites: Your Edge in the AI-Powered World',
-    meta: 'Google Skills · Oct 2026 · 43-Course Path', chip: '43 Courses', numeral: '09',
+    meta: 'Google Skills · 2026 · 43-Course Path', chip: '43 Courses', numeral: '09',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/2480$/,
     courses: ABB_COURSES, badges: 43, credly: 0, pill: /^43 public course badges$/i },
@@ -324,10 +342,11 @@ const detailsLink = (card: Locator, c: Card) =>
   card.getByRole('link', {
     name: `${c.title} ${c.urlNoun} details on ${c.issuerShort} (opens in a new tab)`,
   });
-/** The row title itself. The h3 wraps the whole toggle, so its textContent also
- *  carries the meta line — the title lives in the button's first span, exactly
- *  as it does on every specialization row. */
-const rowTitle = (card: Locator) => card.locator('h3 button > span').first();
+/** The row title itself. The heading wraps the whole toggle, so its textContent
+ *  also carries the meta line — the title lives in the button's first span,
+ *  exactly as it does on every specialization row. It is an h3, or an h4 when
+ *  the row sits under a category heading (Google Skills). */
+const rowTitle = (card: Locator) => card.locator(':is(h3, h4) button > span').first();
 /** Chips and the header count line are `hidden … sm:block/flex` on the shared
  *  template, so below 640px they are in the DOM but not painted. Mobile Chrome
  *  (Pixel 5, 393px) runs this file too. */
@@ -562,7 +581,8 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       // <article>, not <section> — that is what keeps the frozen counts at 4.
       expect(await el.evaluate((n) => n.tagName)).toBe('ARTICLE');
       await expect(el).toHaveAttribute('aria-labelledby', `${card.id}-heading`);
-      await expect(el.getByRole('heading', { level: 3 })).toHaveCount(1);
+      // Google Skills rows sit under a category h3, so their own heading is h4.
+      await expect(el.getByRole('heading', { level: card.section === 'google-skills' ? 4 : 3 })).toHaveCount(1);
       await expect(rowTitle(el)).toHaveText(card.title);
       const toggle = el.locator('button[aria-expanded]');
       await expect(toggle).toHaveCount(1);
@@ -576,12 +596,35 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     }
   });
 
+  test('Google Skills paths sit under the owner’s four category headings, in order', async ({ page }) => {
+    await page.goto('/certifications');
+    const google = page.locator('#google-skills');
+    const categories = google.locator('[data-testid^="category-google-skills-"]');
+    await expect(categories).toHaveCount(GOOGLE_SKILLS_CATEGORIES.length);
+    for (const [i, cat] of GOOGLE_SKILLS_CATEGORIES.entries()) {
+      const el = categories.nth(i);
+      await expect(el).toHaveAttribute('role', 'group');
+      // The heading names the group for assistive tech, and is an h3 under the
+      // section's h2; the paths inside it are h4.
+      const heading = el.getByRole('heading', { level: 3 });
+      await expect(heading).toHaveText(cat.title);
+      await expect(el).toHaveAttribute('aria-labelledby', (await heading.getAttribute('id')) ?? '');
+      await expect(el.getByText(cat.description, { exact: true })).toBeVisible();
+      const ids = await el.locator('article[id^="ce-"]').evaluateAll((els) => els.map((e) => e.id));
+      expect(ids, cat.title).toEqual(cat.ids);
+    }
+    // Every Google Skills row is inside exactly one category — none outside.
+    await expect(google.locator('article[id^="ce-"]')).toHaveCount(
+      GOOGLE_SKILLS_CATEGORIES.reduce((n, c) => n + c.ids.length, 0),
+    );
+  });
+
   test('ledger numbering is removed from all cards', async ({ page }) => {
     await page.goto('/certifications');
     await expect(page.locator('[data-ledger-index]')).toHaveCount(0);
     // And the cards carry their titles in the owner's curated sequence.
     const titles = await page
-      .locator('#google-skills article[id^="ce-"] h3 button > span:first-child')
+      .locator('#google-skills article[id^="ce-"] h4 button > span:first-child')
       .evaluateAll((els) => els.map((e) => e.textContent?.trim()));
     expect(titles).toEqual(
       CARDS.filter((c) => c.section === 'google-skills').map((c) => c.title),
@@ -988,7 +1031,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     await expect(rowTitle(el)).toHaveText('Generative AI Leader');
     await expect(rowTitle(el)).not.toContainText(/certification/i);
     await expect(
-      el.getByText('Google Skills · Sep 2026 · 5-Course Path · “Train for the exam”', { exact: true }),
+      el.getByText('Google Skills · 2026 · 5-Course Path · “Train for the exam”', { exact: true }),
     ).toBeVisible();
     await openRow(page, 'ce-google-skills-gen-ai-leader-1951');
     await expect(
@@ -1106,10 +1149,10 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     // their height (asserted in the companion test below).
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto('/certifications');
-    const titles = page.locator('article h3 button > span:first-child, section h3 button > span:first-child');
+    const titles = page.locator('article :is(h3, h4) button > span:first-child, section :is(h3, h4) button > span:first-child');
     // Every row on the page, counted rows included — the clamp lives on the
     // shared template, so this change reaches all of them.
-    expect(await titles.count()).toBe(await page.locator('h3 button[aria-expanded]').count());
+    expect(await titles.count()).toBe(await page.locator(':is(h3, h4) button[aria-expanded]').count());
     const rows = await titles.evaluateAll((els) =>
       els.map((el) => {
         const cs = getComputedStyle(el);
@@ -1149,10 +1192,10 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     const overlaps = await page.evaluate(() => {
       const bad: string[] = [];
       for (const card of Array.from(document.querySelectorAll('article[id], section[id]'))) {
-        const title = card.querySelector('h3 button > span:first-child');
+        const title = card.querySelector(':is(h3, h4) button > span:first-child');
         if (!title) continue;
         const t = title.getBoundingClientRect();
-        for (const sel of ['[data-verify]', '[data-coursework-link]', 'h3 ~ span[aria-hidden]']) {
+        for (const sel of ['[data-verify]', '[data-coursework-link]', ':is(h3, h4) ~ span[aria-hidden]']) {
           const other = card.querySelector(sel);
           if (!other) continue;
           const o = other.getBoundingClientRect();
@@ -1170,7 +1213,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto('/certifications');
     const clamps = await page
-      .locator('article h3 button > span:first-child, section h3 button > span:first-child')
+      .locator('article :is(h3, h4) button > span:first-child, section :is(h3, h4) button > span:first-child')
       .evaluateAll((els) => els.map((el) => getComputedStyle(el).webkitLineClamp));
     expect(new Set(clamps)).toEqual(new Set(['1']));
   });

@@ -94,13 +94,19 @@ export function CredentialRow({
   open,
   onToggle,
   onInspect,
+  headingLevel = 3,
 }: {
   credential: Credential;
   accent: GroupAccent;
   open: boolean;
   onToggle: () => void;
   onInspect: (cert: GalleryCertificate) => void;
+  /** 3 directly under a group's h2; 4 under a category's h3, so the outline
+   *  stays h2 → h3 → h4 with no level skipped or repeated. Visual size is the
+   *  same either way — `t-h3` sets it, not the tag. */
+  headingLevel?: 3 | 4;
 }) {
+  const Heading = headingLevel === 4 ? "h4" : "h3";
   const isSpec = credential.kind === "specialization";
   const isSingle = credential.kind === "single";
   const slug = credentialSlug(credential);
@@ -210,7 +216,7 @@ export function CredentialRow({
       )}
 
       {/* Title block — the accessible toggle */}
-      <h3 className="min-w-0 flex-1">
+      <Heading className="min-w-0 flex-1">
         <button
           type="button"
           id={headingId}
@@ -242,7 +248,7 @@ export function CredentialRow({
             {metaLine}
           </span>
         </button>
-      </h3>
+      </Heading>
 
       {/* Chips (≥sm) — fixed order across every group: qualifier chips first
           (product, then AI Skills / the specialization ribbon), then Courses,
