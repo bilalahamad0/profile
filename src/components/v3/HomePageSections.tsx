@@ -149,10 +149,14 @@ export function AILabPreview({ metrics = STATIC_FALLBACK }: { metrics?: AILabMet
                 {stats.map(({ label, value }) => (
                   <div
                     key={label}
-                    className="flex flex-col-reverse p-4 rounded-2xl bg-ink/[0.04] dark:bg-ink/[0.03] border border-line/10 dark:border-line/[0.06]"
+                    className="group relative flex flex-col-reverse p-4 sm:p-5 rounded-2xl bg-ink/[0.04] dark:bg-ink/[0.03] border border-line/10 dark:border-line/[0.08] hover:border-violet-500/40 dark:hover:border-violet-500/40 hover:bg-ink/[0.06] dark:hover:bg-ink/[0.06] hover:-translate-y-1.5 hover:scale-[1.02] hover:shadow-xl hover:shadow-violet-500/10 dark:hover:shadow-[0_12px_28px_-6px_rgba(139,92,246,0.18)] motion-reduce:hover:transform-none transition-all duration-300 ease-out cursor-default overflow-hidden"
                   >
-                    <dt className="t-label font-bold text-ink-muted uppercase tracking-widest">{label}</dt>
-                    <dd className="t-h2 text-ink mb-1">{value}</dd>
+                    <div
+                      className="absolute inset-0 bg-gradient-to-br from-violet-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl"
+                      aria-hidden="true"
+                    />
+                    <dt className="relative z-10 t-label font-bold text-ink-muted group-hover:text-ink transition-colors duration-300 uppercase tracking-widest">{label}</dt>
+                    <dd className="relative z-10 t-h2 text-ink group-hover:text-violet-600 dark:group-hover:text-violet-300 transition-colors duration-300 mb-1">{value}</dd>
                   </div>
                 ))}
               </dl>

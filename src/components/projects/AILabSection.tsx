@@ -113,9 +113,20 @@ export function AILabSection({
         {/* Aggregate headline stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-3xl mb-12">
           {heroStats.map(({ label, value }) => (
-            <div key={label} className="p-4 rounded-2xl bg-surface-card dark:bg-ink/[0.03] border border-line/10 dark:border-line/[0.06]">
-              <span className="block t-h2 text-ink mb-1">{value}</span>
-              <span className="block t-label font-bold text-ink-muted uppercase tracking-widest">{label}</span>
+            <div
+              key={label}
+              className="group relative p-4 sm:p-5 rounded-2xl bg-surface-card dark:bg-ink/[0.03] border border-line/10 dark:border-line/[0.08] hover:border-purple-500/40 dark:hover:border-purple-500/40 hover:bg-ink/[0.05] dark:hover:bg-ink/[0.06] hover:-translate-y-1.5 hover:scale-[1.02] hover:shadow-xl hover:shadow-purple-500/10 dark:hover:shadow-[0_12px_28px_-6px_rgba(168,85,247,0.18)] motion-reduce:hover:transform-none transition-all duration-300 ease-out cursor-default overflow-hidden"
+            >
+              <div
+                className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl"
+                aria-hidden="true"
+              />
+              <span className="relative z-10 block t-h2 text-ink group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors duration-300 mb-1">
+                {value}
+              </span>
+              <span className="relative z-10 block t-label font-bold text-ink-muted group-hover:text-ink transition-colors duration-300 uppercase tracking-widest">
+                {label}
+              </span>
             </div>
           ))}
         </div>
