@@ -6,13 +6,24 @@ import { BookingEmbed } from "@/components/sections/booking-embed";
 import { motion } from "framer-motion";
 
 export default function ContactPage() {
-  // "Book a Call" from the home CTA / footer lands on /contact#book, but the
-  // global ScrollToTop and the entry cover can beat the browser's native hash
-  // scroll. So once we arrive with #book in the URL, poll until the section is
-  // laid out and nothing is covering the page, then jump to it. Uses setTimeout
-  // (not requestAnimationFrame) so it still fires if the tab is backgrounded.
+  // Arriving via /book, /schedule, /calendar (or /contact#book / /contact?book=true)
+  // routes the visitor here. The global ScrollToTop and entry cover can beat
+  // native hash scroll, so we poll until the scheduler is laid out and visible,
+  // then smoothly scroll down to it. Also handles in-page hashchange events.
   useEffect(() => {
-    if (window.location.hash !== "#book") return;
+    const isBookIntent = () => {
+      if (typeof window === "undefined") return false;
+      const params = new URLSearchParams(window.location.search);
+      return (
+        window.location.hash === "#book" ||
+        params.has("book") ||
+        params.has("schedule") ||
+        params.has("calendar")
+      );
+    };
+
+    if (!isBookIntent()) return;
+
     let timer = 0;
     let tries = 0;
     const scrollToBook = () => {
@@ -21,13 +32,25 @@ export default function ContactPage() {
         document.body.style.overflow === "hidden"; // entry cover / splash up
       const el = document.getElementById("book");
       if (el && !covered) {
-        el.scrollIntoView({ block: "start" });
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
         return;
       }
       if (tries++ < 60) timer = window.setTimeout(scrollToBook, 50); // retry ~3s
     };
-    timer = window.setTimeout(scrollToBook, 0);
-    return () => window.clearTimeout(timer);
+    timer = window.setTimeout(scrollToBook, 80);
+
+    const handleHashChange = () => {
+      if (window.location.hash === "#book") {
+        tries = 0;
+        scrollToBook();
+      }
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener("hashchange", handleHashChange);
+    };
   }, []);
 
   return (

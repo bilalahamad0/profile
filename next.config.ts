@@ -54,6 +54,23 @@ const nextConfig: NextConfig = {
         destination: "/Bilal_Ahamad_Resume.pdf",
         permanent: true,
       },
+      // Direct shareable calendar & booking shortcuts that route visitors
+      // to the on-site scheduler on /contact with automatic loading and scrolling
+      {
+        source: "/book",
+        destination: "/contact?book=true#book",
+        permanent: false,
+      },
+      {
+        source: "/schedule",
+        destination: "/contact?book=true#book",
+        permanent: false,
+      },
+      {
+        source: "/calendar",
+        destination: "/contact?book=true#book",
+        permanent: false,
+      },
     ];
   },
 

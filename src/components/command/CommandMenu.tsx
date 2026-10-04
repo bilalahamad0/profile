@@ -8,7 +8,7 @@ import {
   FolderKanban, BookOpen, Moon, Sun, X,
   Check, Terminal, Cpu
 } from "lucide-react";
-import { BOOKING_ANCHOR } from "@/lib/contact";
+import { BOOKING_ANCHOR, BOOKING_SHARE_URL } from "@/lib/contact";
 import { cn } from "@/lib/utils";
 
 interface CommandItem {
@@ -26,6 +26,7 @@ export function CommandMenu() {
   const [search, setSearch] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [copiedCalendar, setCopiedCalendar] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const { theme, setTheme } = useTheme();
@@ -67,6 +68,19 @@ export function CommandMenu() {
       onSelect: () => {
         window.location.assign(BOOKING_ANCHOR);
         setIsOpen(false);
+      },
+    },
+    {
+      id: "copy-calendar",
+      label: "Copy Calendar / Booking Link",
+      category: "Actions",
+      icon: copiedCalendar ? Check : CalendarClock,
+      shortcut: "CAL",
+      keywords: ["calendar", "meeting", "call", "schedule", "share", "book", "invite"],
+      onSelect: () => {
+        navigator.clipboard.writeText(BOOKING_SHARE_URL);
+        setCopiedCalendar(true);
+        setTimeout(() => setCopiedCalendar(false), 2000);
       },
     },
 

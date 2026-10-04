@@ -21,3 +21,10 @@ export const SCHEDULING_EMBED_URL = `${SCHEDULING_URL}?gv=true`;
 // Call" affordances point here so booking happens on-site (inline), not via a
 // link-out to Google.
 export const BOOKING_ANCHOR = "/contact#book";
+
+// Canonical short path and public URL to share Bilal's calendar.
+// Routes visitors through bilalahamad.com, showcases the portfolio,
+// and automatically loads and scrolls to the booking schedule.
+export const BOOKING_SHARE_PATH = "/book";
+export const BOOKING_SHARE_URL = "https://bilalahamad.com/book";
+
