@@ -64,9 +64,13 @@ jobs:
 
       - name: Build Next.js (required for `next start` webServer)
         run: npm run build
+        env:
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET || 'ci-test-session-secret-at-least-32-chars-long' }}
 
       - name: Run Playwright Tests
         run: npx playwright test
+        env:
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET || 'ci-test-session-secret-at-least-32-chars-long' }}
         
       - uses: actions/upload-artifact@v7
         if: always()
