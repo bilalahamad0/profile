@@ -128,6 +128,7 @@ const EXPECTED_ORDER = [
   // Applied Workplace Productivity & Micro-Learning
   "ce-google-skills-workspace-gemini-249",
   "ce-google-skills-ai-boost-bites-2480",
+  "ce-google-skills-city-hall-4243",
   "ce-stanford-xee100",
 ];
 const byId = (id: string) => ALL_COURSEWORK.find((e) => e.id === id);
@@ -266,7 +267,7 @@ describe("coursework is never counted as a credential", () => {
       ...GENERAL_CERTIFICATES,
       ...ALL_COURSEWORK,
     ].filter((c) => c.aiSkills === true);
-    expect(flagged).toHaveLength(15);
+    expect(flagged).toHaveLength(16);
   });
 
   it("leaves no orphan decagon and no trace of the superseded Skilljar thumbnails", () => {
@@ -286,7 +287,7 @@ describe("coursework is never counted as a credential", () => {
     const singleIds = [...AI_CERTIFICATES, ...GENERAL_CERTIFICATES].map((c) => c.id);
     const specIds = SPECIALIZATIONS.map((s) => s.id);
     const schemaTitles = certifications.map((c) => c.title);
-    expect(ALL_COURSEWORK).toHaveLength(14);
+    expect(ALL_COURSEWORK).toHaveLength(15);
     for (const entry of ALL_COURSEWORK) {
       expect(ledgerSlugs).not.toContain(entry.id);
       expect(ledgerSlugs).not.toContain(`cert-${entry.id}`);
@@ -391,7 +392,7 @@ describe("coursework is never counted as a credential", () => {
     // at runtime and no date is read.
     expect(ALL_COURSEWORK.map((e) => e.id)).toEqual(EXPECTED_ORDER);
     expect(CLAUDE_ACADEMY_PATHS.map((e) => e.id)).toEqual(EXPECTED_ORDER.slice(0, 4));
-    expect(LEARNING_PATHS.map((e) => e.id)).toEqual(EXPECTED_ORDER.slice(4, 13));
+    expect(LEARNING_PATHS.map((e) => e.id)).toEqual(EXPECTED_ORDER.slice(4, 14));
     expect(CONTINUING_EDUCATION.map((e) => e.id)).toEqual(["ce-stanford-xee100"]);
   });
 });
@@ -455,17 +456,18 @@ describe("the three coursework group headers", () => {
   });
 
   it("count DISTINCT badge pages, not badge references", () => {
-    // 88 references resolve to 75 distinct badge pages for Google Skills (4020
-    // shares four courses with 249 and three with 2480; Agent Fundamentals sits
-    // in 4020, 3546 and 3473), plus 11 verifiable for Claude Academy.
-    expect(badged).toHaveLength(102);
-    expect(new Set(badged.map((b) => b.badge.url)).size).toBe(89);
+    // 109 references resolve to 76 distinct badge pages for Google Skills (4020
+    // shares four courses with 249 and three with 2480; 4243 shares ten
+    // courses; Agent Fundamentals sits in 4020, 3546 and 3473), plus 11
+    // verifiable for Claude Academy.
+    expect(badged).toHaveLength(123);
+    expect(new Set(badged.map((b) => b.badge.url)).size).toBe(90);
     const googleEntries = LEARNING_PATHS.reduce((n, e) => n + e.courses.length, 0);
-    expect(googleEntries).toBe(88);
+    expect(googleEntries).toBe(109);
     const claudeEntries = CLAUDE_ACADEMY_PATHS.reduce((n, e) => n + e.courses.length, 0);
     expect(claudeEntries).toBe(14);
     expect(COURSEWORK_GROUPS[0].countLabel).toBe("4 learning paths · 11 course badges");
-    expect(COURSEWORK_GROUPS[1].countLabel).toBe("9 learning paths · 75 course badges");
+    expect(COURSEWORK_GROUPS[1].countLabel).toBe("10 learning paths · 76 course badges");
     expect(COURSEWORK_GROUPS[2].countLabel).toBe("1 short course · 5 modules");
   });
 
@@ -502,8 +504,8 @@ describe("the row template's own fields are populated for every card", () => {
       headings.add(e.headingId);
       testIds.add(e.testId);
     }
-    expect(headings.size).toBe(14);
-    expect(testIds.size).toBe(14);
+    expect(headings.size).toBe(15);
+    expect(testIds.size).toBe(15);
   });
 
   it("keeps the chip noun and the unit count honest on every card", () => {
@@ -520,6 +522,7 @@ describe("the row template's own fields are populated for every card", () => {
       "ce-google-skills-beginner-gen-ai-118": [4, "Courses", 4],
       "ce-google-skills-workspace-gemini-249": [11, "Courses", 11],
       "ce-google-skills-ai-boost-bites-2480": [43, "Courses", 43],
+      "ce-google-skills-city-hall-4243": [21, "Courses", 21],
       "ce-google-skills-adk-3473": [3, "Courses", 3],
       "ce-google-skills-agents-3546": [3, "Courses", 3],
       "ce-google-skills-smb-4020": [13, "Courses", 13],
@@ -598,6 +601,7 @@ describe("course-level badges", () => {
       "ce-google-skills-beginner-gen-ai-118": [4, 4],
       "ce-google-skills-workspace-gemini-249": [11, 11],
       "ce-google-skills-ai-boost-bites-2480": [43, 43],
+      "ce-google-skills-city-hall-4243": [21, 21],
       "ce-google-skills-adk-3473": [3, 3],
       "ce-google-skills-agents-3546": [3, 3],
       "ce-google-skills-smb-4020": [13, 13],
@@ -708,7 +712,7 @@ describe("course-level badges", () => {
     expect(skill.map((b) => b.url).sort()).toEqual(
       [...CREDLY_BADGE_URLS, `${GS_PROFILE}/badges/27886491`].sort(),
     );
-    expect([...byUrl.values()].filter((b) => b.provider === "Google Skills")).toHaveLength(72);
+    expect([...byUrl.values()].filter((b) => b.provider === "Google Skills")).toHaveLength(73);
     // A course shared by two paths carries identical kind and provider in both.
     for (const { badge } of badged) {
       expect(byUrl.get(badge.url)?.kind).toBe(badge.kind);
@@ -748,7 +752,7 @@ describe("course-level badges", () => {
           .map(({ badge }) => badge.image),
       ),
     ].sort();
-    expect(referenced).toHaveLength(72);
+    expect(referenced).toHaveLength(73);
     expect(onDisk).toEqual(referenced);
   });
 
@@ -759,8 +763,8 @@ describe("course-level badges", () => {
       if (seen) expect(seen).toBe(badge.image);
       else imageByUrl.set(badge.url, badge.image);
     }
-    expect(imageByUrl.size).toBe(89);
-    expect(new Set(imageByUrl.values()).size).toBe(89);
+    expect(imageByUrl.size).toBe(90);
+    expect(new Set(imageByUrl.values()).size).toBe(90);
     // 27855015 was withheld while path 4459 was unfinished. The path completed
     // on 2026-09-11, so its three badges are now on the page — this asserts
     // they arrived, and with the art the scrape recorded for them.

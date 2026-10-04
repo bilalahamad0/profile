@@ -125,6 +125,29 @@ const ADK_COURSES = [
   'Build Your First Agent with Agent Development Kit (ADK)',
   'Optimize Agent Behavior',
 ];
+const CITY_HALL_COURSES = [
+  'Gen AI: Beyond the Chatbot',
+  'Gen AI: Unlock Foundational Concepts',
+  'Gen AI: Navigate the Landscape',
+  'Gen AI Apps: Transform Your Work',
+  'Gen AI Agents: Transform Your Organization',
+  'Google Workspace with Gemini: Foundations of Your AI Workflow',
+  'Gemini in Gmail',
+  'Gemini in Google Docs',
+  'Gemini in Google Slides',
+  'Gemini in Google Sheets',
+  'Gemini in Google Meet',
+  'Gemini in Google Drive',
+  'Gemini in Google Vids',
+  'Unlock Insights with Gemini Notebook',
+  'AI Boost Bites: Prompting like a Pro with Google Workspace',
+  'AI Boost Bites: Tame Your Inbox with AI',
+  'AI Boost Bites: Gemini Calendar Hacks in Gmail',
+  'AI Boost Bites: TL;DR with Gemini in Docs & Drive',
+  'AI Boost Bites: Exec Summaries with Gemini Gems',
+  'AI Boost Bites: Amplify Exec Voices with AI',
+  'AI Boost Bites: Personalization with customized prompts',
+];
 /** The owner's four Google Skills categories (2026-10-03), verbatim, with
  *  their paths top to bottom — highest impact first, a standing rule. */
 const GOOGLE_SKILLS_CATEGORIES = [
@@ -140,7 +163,7 @@ const GOOGLE_SKILLS_CATEGORIES = [
     ids: ['ce-google-skills-beginner-gen-ai-118'] },
   { title: 'Applied Workplace Productivity & Micro-Learning',
     description: 'Practical integration of generative AI into daily workflows across applications.',
-    ids: ['ce-google-skills-workspace-gemini-249', 'ce-google-skills-ai-boost-bites-2480'] },
+    ids: ['ce-google-skills-workspace-gemini-249', 'ce-google-skills-ai-boost-bites-2480', 'ce-google-skills-city-hall-4243'] },
 ] as const;
 const STANFORD_MODULES = ['Cool Applications', 'Sensors', 'Embedded Systems', 'Networking', 'Circuits'];
 
@@ -287,6 +310,12 @@ const CARDS: Card[] = [
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/2480$/,
     courses: ABB_COURSES, badges: 43, credly: 0, pill: /^43 public course badges$/i },
+  { section: 'google-skills', id: 'ce-google-skills-city-hall-4243',
+    title: 'AI for City Hall',
+    meta: 'Google Skills · 2026 · 21-Course Path', chip: '21 Courses', numeral: '10',
+    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
+    url: /^https:\/\/www\.skills\.google\/paths\/4243$/,
+    courses: CITY_HALL_COURSES, badges: 21, credly: 0, pill: /^21 public course badges$/i },
   { section: 'continuing-education', id: 'ce-stanford-xee100',
     title: 'Introduction to Internet of Things',
     meta: 'Stanford School of Engineering · 2026 · 5-Module Course',
@@ -891,6 +920,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       ['coursework-courses-gen-ai-leader', 5, 5],
       ['coursework-courses-workspace-gemini', 11, 11],
       ['coursework-courses-ai-boost-bites', 43, 43],
+      ['coursework-courses-city-hall', 21, 21],
       ['coursework-courses-adk', 3, 3],
     ] as const) {
       const items = page.getByTestId(testId).locator('li');

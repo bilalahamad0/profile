@@ -1137,7 +1137,7 @@ const FIRST_GEMINI_ENTERPRISE_APP = {
     "create-your-first-gemini-enterprise-application",
   ),
 } as const;
-// Shared by the SMB Learning Path (4020) and Google Workspace with Gemini (249).
+// Shared by SMB (4020), Google Workspace with Gemini (249), and AI for City Hall (4243).
 const WORKSPACE_GEMINI_FOUNDATIONS = {
   title: "Google Workspace with Gemini: Foundations of Your AI Workflow",
   badge: gsBadge(27848970, "google-workspace-with-gemini-foundations"),
@@ -1154,7 +1154,7 @@ const GEMINI_IN_VIDS = {
   title: "Gemini in Google Vids",
   badge: gsBadge(27849255, "gemini-in-google-vids"),
 } as const;
-// Shared by the SMB Learning Path (4020) and AI Boost Bites (2480).
+// Shared by SMB (4020), AI Boost Bites (2480), and AI for City Hall (4243).
 const ABB_TLDR_DOCS_DRIVE = {
   title: "AI Boost Bites: TL;DR with Gemini in Docs & Drive",
   badge: gsBadge(27849118, "ai-boost-bites-tldr-gemini-docs-drive"),
@@ -1209,7 +1209,11 @@ export const GOOGLE_SKILLS_CATEGORIES: readonly GroupCategory[] = [
     title: "Applied Workplace Productivity & Micro-Learning",
     description:
       "Practical integration of generative AI into daily workflows across applications.",
-    ids: ["ce-google-skills-workspace-gemini-249", "ce-google-skills-ai-boost-bites-2480"],
+    ids: [
+      "ce-google-skills-workspace-gemini-249",
+      "ce-google-skills-ai-boost-bites-2480",
+      "ce-google-skills-city-hall-4243",
+    ],
   },
 ];
 
@@ -1219,8 +1223,9 @@ export const GOOGLE_SKILLS_CATEGORIES: readonly GroupCategory[] = [
  *  Production Ready Agents (3802) · Introduction to Agents (3546) · Fundamentals
  *  of ADK (3473) | Generative AI Leader (1951) · SMB Learning
  *  Path (4020) | Beginner: Introduction to Generative AI (118) | Google
- *  Workspace with Gemini (249) · AI Boost Bites (2480). This replaces the flat
- *  curated order of 2026-09-11. Stanford follows alone in CONTINUING_EDUCATION.
+ *  Workspace with Gemini (249) · AI Boost Bites (2480) · AI for City Hall
+ *  (4243). This replaces the flat curated order of 2026-09-11. Stanford
+ *  follows alone in CONTINUING_EDUCATION.
  *
  *  IT IS CURATED, NOT DERIVED. Nothing sorts at runtime and no `date` is read
  *  for ordering — dates carry the year only (owner, 2026-10-03), so there is
@@ -1700,6 +1705,58 @@ export const LEARNING_PATHS: readonly LearningPathData[] = [
       { step: 41, title: "AI Boost Bites: Gemini Calendar Hacks in Gmail", badge: gsBadge(28609704, "ai-boost-bites-gemini-calendar-hacks-in-gmail") },
       { step: 42, title: "AI Boost Bites: Notes to Sheets with Gemini", badge: gsBadge(28609770, "ai-boost-bites-notes-to-sheets-with-gemini") },
       { step: 43, title: "AI Boost Bites: Advanced Analysis in Sheets", badge: gsBadge(28609833, "ai-boost-bites-advanced-analysis-in-sheets") },
+    ],
+  },
+  {
+    // Added at the owner's request (2026-10-04). All 21 course badges
+    // are on the public profile, with Unlock Insights with Gemini Notebook
+    // earned 2026-10-04, and each badge page checked logged-out.
+    id: "ce-google-skills-city-hall-4243",
+    headingId: "ce-google-skills-city-hall-4243-heading",
+    testId: "coursework-courses-city-hall",
+    titleLines: ["AI for City Hall", "21-Course Path"],
+    issuer: "Google Skills",
+    issuerShort: "Google Skills",
+    date: "2026",
+    url: "https://www.skills.google/paths/4243",
+    urlLabel: "Path page",
+    urlNoun: "path",
+    logo: "/logos/google.png",
+    tile: GOOGLE_SKILLS_TILE,
+    // `description` arm 1 — Google's own sentences 1–3, a contiguous prefix
+    // verbatim and unedited. Dropped: sentences 4–5 ("This path is your first
+    // step…", Workspace prerequisite guidance).
+    description:
+      "The AI for City Hall path is intended to help small to mid-sized cities who are starting out on Google Cloud products become more proficient on collaboration and generative AI tools. Within this path, you will find courses on generative AI, specific modules to help you master our suite of Google Workspace products, as well as videos with quick tips to develop specific skills or tasks. AI presents an immediate opportunity to build capacity, enabling governments to serve their communities faster and more equitably.",
+    totalCourses: 21,
+    unitNoun: "Courses",
+    gradient: "from-teal-600/20 via-blue-500/12 to-indigo-600/20",
+    aiSkills: true,
+    coursesLayout: "badges",
+    // Google's own order. Ten courses are shared with other paths (same badge,
+    // shared consts where available); the other eleven are specified here.
+    courses: [
+      { step: 1, title: "Gen AI: Beyond the Chatbot", badge: gsBadge(27812324, "gen-ai-beyond-the-chatbot") },
+      { step: 2, title: "Gen AI: Unlock Foundational Concepts", badge: gsBadge(27814445, "gen-ai-unlock-foundational-concepts") },
+      { step: 3, title: "Gen AI: Navigate the Landscape", badge: gsBadge(27825264, "gen-ai-navigate-the-landscape") },
+      { step: 4, title: "Gen AI Apps: Transform Your Work", badge: gsBadge(27846258, "gen-ai-apps-transform-your-work") },
+      { step: 5, title: "Gen AI Agents: Transform Your Organization", badge: gsBadge(27847477, "gen-ai-agents-transform-your-organization") },
+      { step: 6, ...WORKSPACE_GEMINI_FOUNDATIONS },
+      { step: 7, ...GEMINI_IN_GMAIL },
+      { step: 8, title: "Gemini in Google Docs", badge: gsBadge(28255460, "gemini-in-google-docs") },
+      { step: 9, title: "Gemini in Google Slides", badge: gsBadge(28256140, "gemini-in-google-slides") },
+      { step: 10, ...GEMINI_IN_SHEETS },
+      { step: 11, title: "Gemini in Google Meet", badge: gsBadge(28260465, "gemini-in-google-meet") },
+      { step: 12, title: "Gemini in Google Drive", badge: gsBadge(28369521, "gemini-in-google-drive") },
+      { step: 13, ...GEMINI_IN_VIDS },
+      { step: 14, title: "Unlock Insights with Gemini Notebook", badge: gsBadge(28634715, "unlock-insights-with-gemini-notebook") },
+      { step: 15, title: "AI Boost Bites: Prompting like a Pro with Google Workspace", badge: gsBadge(28441286, "ai-boost-bites-prompting-like-a-pro-with-google-workspace") },
+      { step: 16, title: "AI Boost Bites: Tame Your Inbox with AI", badge: gsBadge(28523953, "ai-boost-bites-tame-your-inbox-with-ai") },
+      { step: 17, title: "AI Boost Bites: Gemini Calendar Hacks in Gmail", badge: gsBadge(28609704, "ai-boost-bites-gemini-calendar-hacks-in-gmail") },
+      { step: 18, ...ABB_TLDR_DOCS_DRIVE },
+      { step: 19, title: "AI Boost Bites: Exec Summaries with Gemini Gems", badge: gsBadge(28442598, "ai-boost-bites-exec-summaries-with-gemini-gems") },
+      { step: 20, title: "AI Boost Bites: Amplify Exec Voices with AI", badge: gsBadge(28443014, "ai-boost-bites-amplify-exec-voices-with-ai") },
+      { step: 21, title: "AI Boost Bites: Personalization with customized prompts", badge: gsBadge(28441476, "ai-boost-bites-personalization-with-customized-prompts") },
     ],
   },
 ];

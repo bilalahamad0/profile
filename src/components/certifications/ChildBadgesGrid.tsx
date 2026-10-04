@@ -178,6 +178,7 @@ const centredRows = (widths: readonly (3 | 4 | 5)[]): CourseGridRowPlan => ({
 const COURSE_GRID_ROW_PLANS: Record<number, CourseGridRowPlan> = {
   11: centredRows([3, 5, 3]),
   13: centredRows([4, 5, 4]),
+  21: centredRows([3, 5, 5, 5, 3]),
   43: centredRows([4, 5, 5, 5, 5, 5, 5, 5, 4]),
 };
 
