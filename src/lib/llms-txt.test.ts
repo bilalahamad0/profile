@@ -17,6 +17,7 @@ const input: LlmsTxtInput = {
       repo: "https://github.com/x/a",
       demo: "https://a.example",
       category: "AI-Powered",
+      appListings: [{ name: "OzLorien Labs", url: "https://example.com/app" }],
     },
     {
       name: "Project B",
@@ -60,6 +61,10 @@ describe("buildLlmsTxt", () => {
   it("links a project to its demo when present, else the repo", () => {
     expect(txt).toContain("[Project A](https://a.example)");
     expect(txt).toContain("[Project B](https://github.com/x/b)");
+  });
+
+  it("renders app directory listings when present", () => {
+    expect(txt).toContain("Featured on: [OzLorien Labs](https://example.com/app)");
   });
 
   it("links each post to its canonical blog URL", () => {

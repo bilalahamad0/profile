@@ -23,6 +23,8 @@ export type LlmsProject = {
   category: string;
   /** Browser-marketplace listings (extensions). `url` is null until published. */
   storeListings?: ReadonlyArray<{ store: string; url: string | null; status: string }>;
+  /** App showcase & directory listings (e.g. OzLorien Labs). */
+  appListings?: ReadonlyArray<{ name: string; url: string }>;
 };
 
 export type LlmsPost = {
@@ -100,6 +102,10 @@ export function buildLlmsTxt(input: LlmsTxtInput): string {
           : `${oneLine(listing.store)} (${oneLine(listing.status).replace(/-/g, " ")})`
       );
       if (stores.length) lines.push(`  - Available on: ${stores.join(" · ")}`);
+      const apps = (project.appListings ?? []).map(
+        (listing) => `[${oneLine(listing.name)}](${listing.url})`
+      );
+      if (apps.length) lines.push(`  - Featured on: ${apps.join(" · ")}`);
     }
   }
 

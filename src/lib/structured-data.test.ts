@@ -141,6 +141,24 @@ describe("projectsSchema", () => {
   it("falls back to the repo URL when a project has no demo", () => {
     expect(ld.mainEntity.itemListElement[1].item.url).toBe("https://github.com/x/b");
   });
+
+  it("emits sameAs when store listings or app listings are present", () => {
+    const withListings = projectsSchema([
+      {
+        id: "a",
+        name: "Project A",
+        tagline: "Tag A",
+        description: "Desc A",
+        category: "Data & Analytics",
+        tech: ["Python"],
+        repo: "https://github.com/x/a",
+        appListings: [{ url: "https://ozlorienlabs.com/apps/x" }],
+      },
+    ]);
+    expect(withListings.mainEntity.itemListElement[0].item.sameAs).toEqual([
+      "https://ozlorienlabs.com/apps/x",
+    ]);
+  });
 });
 
 describe("blogSchema", () => {

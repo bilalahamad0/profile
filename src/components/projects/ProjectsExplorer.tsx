@@ -8,7 +8,7 @@ import {
   Github, ExternalLink, Sparkles, Star, GitFork,
   Filter, BookOpen, Zap, ChevronUp, Network, MapPin,
 } from "lucide-react";
-import { projectsData, type ProjectCategory } from "@/data/portfolio";
+import { projectsData, type ProjectCategory, type AppListing } from "@/data/portfolio";
 import { DashboardFacade } from "@/components/projects/DashboardFacade";
 import { AIBuildBreakdown } from "@/components/projects/AIBuildBreakdown";
 import { LazyLoopVideo } from "@/components/media/LazyLoopVideo";
@@ -334,6 +334,8 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                 const subDashboards = project.subDashboards ?? [];
                 // Marketplace availability (browser extensions published to stores).
                 const storeListings = project.storeListings ?? [];
+                // External app directory & marketplace listings (e.g. OzLorien Labs).
+                const appListings: AppListing[] = ((project as unknown as { appListings?: AppListing[] }).appListings) ?? [];
 
                 return (
                   <motion.article
@@ -356,12 +358,26 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                       {/* Header */}
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
-                          {project.isAI && (
-                            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 mb-3">
-                              <Sparkles className="w-3 h-3 text-violet-700 fill-violet-700/30 dark:text-violet-400 dark:fill-violet-400/30" aria-hidden="true" />
-                              <span className="text-xs font-bold uppercase tracking-wider text-violet-700 dark:text-violet-300">AI-Built</span>
-                            </div>
-                          )}
+                          <div className="flex flex-wrap items-center gap-2 mb-3">
+                            {project.isAI && (
+                              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-violet-500/10 border border-violet-500/20">
+                                <Sparkles className="w-3 h-3 text-violet-700 fill-violet-700/30 dark:text-violet-400 dark:fill-violet-400/30" aria-hidden="true" />
+                                <span className="text-xs font-bold uppercase tracking-wider text-violet-700 dark:text-violet-300">AI-Built</span>
+                              </div>
+                            )}
+                            {appListings.map((listing) => (
+                              <a
+                                key={listing.url}
+                                href={listing.url}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 text-xs font-bold text-blue-700 dark:text-blue-300 transition-colors"
+                              >
+                                <span>Featured on {listing.name}</span>
+                                <ExternalLink className="w-3 h-3" aria-hidden="true" />
+                              </a>
+                            ))}
+                          </div>
                           <h2 className="t-h3 text-ink">
                             {project.name}
                           </h2>
@@ -586,6 +602,41 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                         </div>
                       )}
 
+                      {/* Marketplace & app showcases */}
+                      {appListings.length > 0 && (
+                        <div className="mb-6 pl-4 border-l-2 border-blue-500/30 flex flex-col gap-2">
+                          <span className="t-label font-black uppercase tracking-[0.2em] text-ink-muted">
+                            Featured On
+                          </span>
+                          <ul role="list" className="flex flex-col gap-2">
+                            {appListings.map((listing) => (
+                              <li key={listing.url}>
+                                <a
+                                  href={listing.url}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  title={`${listing.name} — ${listing.tagline}`}
+                                  className="group/app flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 rounded-2xl border border-line/10 dark:border-line/5 bg-ink/[0.03] px-4 py-3 hover:border-blue-500/30 hover:bg-ink/[0.06] transition-all"
+                                >
+                                  <span className="min-w-0">
+                                    <span className="flex items-center gap-1.5 text-sm font-bold text-ink">
+                                      <Sparkles className="w-3.5 h-3.5 text-blue-700 dark:text-blue-400 shrink-0" aria-hidden="true" />
+                                      {listing.name}
+                                    </span>
+                                    <span className="block text-xs text-ink-muted mt-0.5">{listing.tagline}</span>
+                                  </span>
+                                  <span className="flex items-center gap-1.5 shrink-0 text-xs font-bold text-blue-700 group-hover/app:text-blue-800 dark:text-blue-300 dark:group-hover/app:text-blue-200 transition-colors">
+                                    <span className="pulse-dot" aria-hidden="true" />
+                                    {listing.label}
+                                    <ExternalLink className="w-3 h-3" aria-hidden="true" />
+                                  </span>
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
                       {/* Marketplace availability — one row per browser store.
                           Twin of the Extended sub-group above: accent rail, t-label
                           caption, stacked rows; emerald to match this card's accent. */}
@@ -699,6 +750,18 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
                           >
                             <Network className="w-3.5 h-3.5 shrink-0" aria-hidden="true" /> Architecture
                           </a>
+                          {appListings.map((listing) => (
+                            <a
+                              key={listing.url}
+                              href={listing.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              title={`View app listing on ${listing.name}`}
+                              className="flex items-center gap-1.5 py-1 text-xs font-bold text-ink-muted hover:text-blue-700 dark:hover:text-blue-400 transition-colors whitespace-nowrap"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5 shrink-0" aria-hidden="true" /> {listing.name}
+                            </a>
+                          ))}
                           {project.relatedPosts?.map((post) => (
                             <Link
                               key={post.slug}

@@ -180,6 +180,17 @@ describe("projectsData", () => {
     }
   });
 
+  it("every app directory listing is well-formed and https", () => {
+    for (const project of projectsData) {
+      for (const listing of project.appListings ?? []) {
+        expect(listing.name.trim()).not.toBe("");
+        expect(listing.tagline.trim()).not.toBe("");
+        expect(listing.label.trim()).not.toBe("");
+        expect(isHttps(listing.url)).toBe(true);
+      }
+    }
+  });
+
   it("every related blog slug resolves to a real published post", () => {
     const realSlugs = new Set(getAllPosts().map((p) => p.slug));
     const broken: string[] = [];

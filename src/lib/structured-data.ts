@@ -212,6 +212,8 @@ export type ProjectLike = {
   demo?: string | null;
   /** Browser-marketplace listings (extensions). Only published ones carry a URL. */
   storeListings?: ReadonlyArray<{ url: string | null }>;
+  /** App showcase & directory listings (e.g. OzLorien Labs). */
+  appListings?: ReadonlyArray<{ url: string }>;
 };
 
 /** schema.org CollectionPage with an ItemList of the portfolio's projects (SoftwareSourceCode). */
@@ -228,10 +230,12 @@ export function projectsSchema(projects: ProjectLike[]) {
       numberOfItems: projects.length,
       itemListElement: projects.map((project, i) => {
         // Published marketplace listings — the crawler-visible proof that an
-        // extension ships to more than the one storefront `url` can name.
+        // extension or app ships to more than the one storefront `url` can name.
         const storeUrls = (project.storeListings ?? [])
           .map((listing) => listing.url)
           .filter((url): url is string => url !== null);
+        const appUrls = (project.appListings ?? []).map((listing) => listing.url);
+        const externalUrls = [...storeUrls, ...appUrls];
 
         return {
           "@type": "ListItem",
@@ -248,7 +252,7 @@ export function projectsSchema(projects: ProjectLike[]) {
             keywords: project.tech.join(", "),
             author: personRef,
             creator: personRef,
-            ...(storeUrls.length > 0 ? { sameAs: storeUrls } : {}),
+            ...(externalUrls.length > 0 ? { sameAs: externalUrls } : {}),
           },
         };
       }),

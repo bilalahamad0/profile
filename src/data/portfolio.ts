@@ -267,6 +267,18 @@ export type StoreListing =
       note: string;
     };
 
+/**
+ * An external marketplace or showcase listing for a standalone application
+ * or system (e.g. curated app directories, maker collectives, or product showcases).
+ * Rendered under "Featured On" in the project card.
+ */
+export type AppListing = {
+  name: string;
+  url: string;
+  tagline: string;
+  label: string;
+};
+
 export const projectsData = [
   {
     id: "warn",
@@ -289,6 +301,15 @@ export const projectsData = [
         demoLabel: "Live CA Dashboard",
       },
     ] as SubDashboard[],
+    // External directory & marketplace showcases
+    appListings: [
+      {
+        name: "OzLorien Labs",
+        url: "https://www.ozlorienlabs.com/apps/us-warn-layoff-tracker",
+        tagline: "Curated maker collective showcase & live web demo",
+        label: "Featured App Listing",
+      },
+    ] as AppListing[],
     isAI: true,
     aiTools: ["Antigravity", "Gemini 2.5 Flash/Pro", "Cursor", "Claude Sonnet 4"],
     aiContribution: 88,
