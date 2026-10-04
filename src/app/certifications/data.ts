@@ -1083,8 +1083,8 @@ function gsBadge(
 }
 
 /** The Credly copy of a lab-based skill badge. Its public_url page returns 200
- *  logged-out (verified 2026-09-11/12) and names both the issuer (Google Cloud)
- *  and the earner, which is why all three skill badges link here rather than at
+ *  logged-out (verified 2026-09-11/12/10-04) and names both the issuer (Google Cloud)
+ *  and the earner, which is why all four skill badges link here rather than at
  *  their Google Skills twins — the convention `skill_badge_rule` records in
  *  scratchpad/google-skills-paths.json.
  *
@@ -1092,12 +1092,13 @@ function gsBadge(
  *  than a Google Skills page. Nothing is invented: each UUID below appears
  *  verbatim in that same file, and each has a Google Skills twin recorded
  *  there — 27852046 for "Prompt Design in Agent Platform" (path 118), 27848848
- *  for "Create Your First Gemini Enterprise Application" (paths 3546 / 4020)
- *  and 27888420 for "Deploy Multi-Agent Architectures" (path 3802). The Credly
- *  copy is the one linked because its page names the issuer AND the earner, and
- *  because it is the art the owner asked to be displayed. data.test.ts pins all
- *  three Credly URLs exactly (CREDLY_BADGE_URLS); the twin ids are recorded
- *  here and at each call site. */
+ *  for "Create Your First Gemini Enterprise Application" (paths 3546 / 4020),
+ *  27888420 for "Deploy Multi-Agent Architectures" (path 3802), and 28637458
+ *  for "Store, Process, and Manage Data on Google Cloud - Console" (path 4666).
+ *  The Credly copy is the one linked because its page names the issuer AND the
+ *  earner, and because it is the art the owner asked to be displayed.
+ *  data.test.ts pins all four Credly URLs exactly (CREDLY_BADGE_URLS); the twin
+ *  ids are recorded here and at each call site. */
 function credlyBadge(uuid: string, image: string): CourseBadge {
   return {
     url: `https://www.credly.com/badges/${uuid}/public_url`,
@@ -1168,8 +1169,8 @@ const ABB_CONTENT_GENERATION = {
   badge: gsBadge(27849164, "ai-boost-bites-content-generation"),
 } as const;
 
-/** The owner's four Google Skills categories, top to bottom, with their own
- *  names and descriptions (2026-10-03). Each lists its paths in display order,
+/** The owner's five Google Skills categories, top to bottom, with their own
+ *  names and descriptions (2026-10-03/04). Each lists its paths in display order,
  *  and that order is a STANDING RULE (owner, 2026-10-03): highest impact first,
  *  descending — e.g. multi-agent orchestration and production deployment above
  *  the introductory and fundamentals paths. A newly completed path is placed by
@@ -1181,9 +1182,9 @@ const ABB_CONTENT_GENERATION = {
 export const GOOGLE_SKILLS_CATEGORIES: readonly GroupCategory[] = [
   {
     id: "agentic-engineering",
-    title: "Agentic Engineering & Multi-Agent Architecture (GEAR Program)",
+    title: "Agentic Engineering & Multi-Agent Ecosystems (GEAR Program)",
     description:
-      "Technical development, multi-agent coordination, tool integration, and cloud deployment.",
+      "Designing, orchestrating, deploying, and scaling autonomous agent networks using the Agent Development Kit (ADK), Model Context Protocol (MCP), and Agent-to-Agent (A2A) protocol.",
     ids: [
       "ce-google-skills-multi-agent-4459",
       "ce-google-skills-deploy-agents-3802",
@@ -1193,22 +1194,27 @@ export const GOOGLE_SKILLS_CATEGORIES: readonly GroupCategory[] = [
   },
   {
     id: "strategic-leadership",
-    title: "Strategic Leadership & Business Transformation",
+    title: "Strategic Leadership, Digital Transformation & Startup Operations",
     description:
-      "Executive strategy, organizational AI adoption, and operational scaling for businesses.",
-    ids: ["ce-google-skills-gen-ai-leader-1951", "ce-google-skills-smb-4020"],
+      "Executive AI vision, business model transformation, cloud digital literacy, startup resource management, and organizational enablement.",
+    ids: [
+      "ce-google-skills-gen-ai-leader-1951",
+      "ce-google-skills-smb-4020",
+      "ce-google-skills-startup-essentials-4666",
+    ],
   },
   {
     id: "gen-ai-foundations",
-    title: "Generative AI Foundations & Responsible Principles",
-    description: "Core LLM concepts, multimodal prompt engineering, and safety frameworks.",
+    title: "Generative AI Foundations & Prompt Engineering",
+    description:
+      "Core generative model mechanics, multimodal prompt design, Responsible AI guidelines, and foundational platform capabilities.",
     ids: ["ce-google-skills-beginner-gen-ai-118"],
   },
   {
     id: "workplace-productivity",
-    title: "Applied Workplace Productivity & Micro-Learning",
+    title: "Applied Productivity & Industry-Specific AI Solutions",
     description:
-      "Practical integration of generative AI into daily workflows across applications.",
+      "Daily workplace automation with Gemini across Google Workspace and specialized AI solutions for public sector, retail, and contact centers.",
     ids: [
       "ce-google-skills-workspace-gemini-249",
       "ce-google-skills-ai-boost-bites-2480",
@@ -1219,12 +1225,12 @@ export const GOOGLE_SKILLS_CATEGORIES: readonly GroupCategory[] = [
 
 /** THIS ARRAY'S ORDER IS THE DISPLAY ORDER, and it is the OWNER'S CHOICE: the
  *  four categories above, top to bottom, each highest-impact first (owner,
- *  2026-10-03) — Build High-Performance Multi-Agent Systems (4459) · Deploy
+ *  2026-10-03/04) — Build High-Performance Multi-Agent Systems (4459) · Deploy
  *  Production Ready Agents (3802) · Introduction to Agents (3546) · Fundamentals
  *  of ADK (3473) | Generative AI Leader (1951) · SMB Learning
- *  Path (4020) | Beginner: Introduction to Generative AI (118) | Google
- *  Workspace with Gemini (249) · AI Boost Bites (2480) · AI for City Hall
- *  (4243). This replaces the flat curated order of 2026-09-11. Stanford
+ *  Path (4020) · Google Cloud Console: Startup Essentials (4666) | Beginner:
+ *  Introduction to Generative AI (118) | Google Workspace with Gemini (249) ·
+ *  AI Boost Bites (2480) · AI for City Hall (4243). Stanford
  *  follows alone in CONTINUING_EDUCATION.
  *
  *  IT IS CURATED, NOT DERIVED. Nothing sorts at runtime and no `date` is read
@@ -1528,6 +1534,41 @@ export const LEARNING_PATHS: readonly LearningPathData[] = [
       { step: 11, ...ABB_GEMINI_GEMS },
       { step: 12, ...ABB_CONTENT_GENERATION },
       { step: 13, ...GEMINI_IN_VIDS },
+    ],
+  },
+  {
+    // Added at the owner's request (2026-10-04). Earned 2026-10-04,
+    // public Credly and Google Skills badge pages verified logged-out.
+    id: "ce-google-skills-startup-essentials-4666",
+    headingId: "ce-google-skills-startup-essentials-4666-heading",
+    testId: "coursework-courses-startup-essentials",
+    titleLines: ["Google Cloud Console: Startup Essentials", "1-Course Path"],
+    issuer: "Google Skills",
+    issuerShort: "Google Skills",
+    date: "2026",
+    url: "https://www.skills.google/paths/4666",
+    urlLabel: "Path page",
+    urlNoun: "path",
+    logo: "/logos/google.png",
+    tile: GOOGLE_SKILLS_TILE,
+    // `description` arm 1 — Google's own first sentence, verbatim and unedited;
+    // its onboarding CTA is dropped per the established convention.
+    description:
+      "This path focuses on accelerating startup growth by combining introductory Google Cloud Console navigation with foundational resource configuration and console-led data workflows.",
+    totalCourses: 1,
+    unitNoun: "Course",
+    gradient: "from-blue-600/20 via-sky-500/12 to-cyan-600/20",
+    aiSkills: true,
+    coursesLayout: "badges",
+    courses: [
+      {
+        step: 1,
+        title: "Store, Process, and Manage Data on Google Cloud - Console",
+        badge: credlyBadge(
+          "d1393a27-6858-4ce9-96a6-eb07a5d8578b",
+          "store-process-and-manage-data-on-google-cloud-console",
+        ),
+      },
     ],
   },
   {

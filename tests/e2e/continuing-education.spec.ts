@@ -148,21 +148,24 @@ const CITY_HALL_COURSES = [
   'AI Boost Bites: Amplify Exec Voices with AI',
   'AI Boost Bites: Personalization with customized prompts',
 ];
-/** The owner's four Google Skills categories (2026-10-03), verbatim, with
+const STARTUP_ESSENTIALS_COURSES = [
+  'Store, Process, and Manage Data on Google Cloud - Console',
+];
+/** The owner's four Google Skills categories (2026-10-03/04), verbatim, with
  *  their paths top to bottom — highest impact first, a standing rule. */
 const GOOGLE_SKILLS_CATEGORIES = [
-  { title: 'Agentic Engineering & Multi-Agent Architecture (GEAR Program)',
-    description: 'Technical development, multi-agent coordination, tool integration, and cloud deployment.',
+  { title: 'Agentic Engineering & Multi-Agent Ecosystems (GEAR Program)',
+    description: 'Designing, orchestrating, deploying, and scaling autonomous agent networks using the Agent Development Kit (ADK), Model Context Protocol (MCP), and Agent-to-Agent (A2A) protocol.',
     ids: ['ce-google-skills-multi-agent-4459', 'ce-google-skills-deploy-agents-3802',
       'ce-google-skills-agents-3546', 'ce-google-skills-adk-3473'] },
-  { title: 'Strategic Leadership & Business Transformation',
-    description: 'Executive strategy, organizational AI adoption, and operational scaling for businesses.',
-    ids: ['ce-google-skills-gen-ai-leader-1951', 'ce-google-skills-smb-4020'] },
-  { title: 'Generative AI Foundations & Responsible Principles',
-    description: 'Core LLM concepts, multimodal prompt engineering, and safety frameworks.',
+  { title: 'Strategic Leadership, Digital Transformation & Startup Operations',
+    description: 'Executive AI vision, business model transformation, cloud digital literacy, startup resource management, and organizational enablement.',
+    ids: ['ce-google-skills-gen-ai-leader-1951', 'ce-google-skills-smb-4020', 'ce-google-skills-startup-essentials-4666'] },
+  { title: 'Generative AI Foundations & Prompt Engineering',
+    description: 'Core generative model mechanics, multimodal prompt design, Responsible AI guidelines, and foundational platform capabilities.',
     ids: ['ce-google-skills-beginner-gen-ai-118'] },
-  { title: 'Applied Workplace Productivity & Micro-Learning',
-    description: 'Practical integration of generative AI into daily workflows across applications.',
+  { title: 'Applied Productivity & Industry-Specific AI Solutions',
+    description: 'Daily workplace automation with Gemini across Google Workspace and specialized AI solutions for public sector, retail, and contact centers.',
     ids: ['ce-google-skills-workspace-gemini-249', 'ce-google-skills-ai-boost-bites-2480', 'ce-google-skills-city-hall-4243'] },
 ] as const;
 const STANFORD_MODULES = ['Cool Applications', 'Sensors', 'Embedded Systems', 'Networking', 'Circuits'];
@@ -276,7 +279,7 @@ const CARDS: Card[] = [
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/3473$/,
     courses: ADK_COURSES, badges: 3, credly: 0, pill: /^3 public course badges$/i },
-  // Google Skills — Strategic Leadership & Business Transformation
+  // Google Skills — Strategic Leadership, Digital Transformation & Startup Operations
   { section: 'google-skills', id: 'ce-google-skills-gen-ai-leader-1951',
     title: 'Generative AI Leader',
     meta: 'Google Skills · 2026 · 5-Course Path · “Train for the exam”',
@@ -290,29 +293,35 @@ const CARDS: Card[] = [
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/4020$/,
     courses: SMB_COURSES, badges: 13, credly: 1, pill: /^13 public course badges$/i },
-  // Google Skills — Generative AI Foundations & Responsible Principles
+  { section: 'google-skills', id: 'ce-google-skills-startup-essentials-4666',
+    title: 'Google Cloud Console: Startup Essentials',
+    meta: 'Google Skills · 2026 · 1-Course Path', chip: '1 Course', numeral: '07',
+    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
+    url: /^https:\/\/www\.skills\.google\/paths\/4666$/,
+    courses: STARTUP_ESSENTIALS_COURSES, badges: 1, credly: 1, pill: /^1 public course badge$/i },
+  // Google Skills — Generative AI Foundations & Prompt Engineering
   { section: 'google-skills', id: 'ce-google-skills-beginner-gen-ai-118',
     title: 'Beginner: Introduction to Generative AI',
-    meta: 'Google Skills · 2026 · 4-Course Path', chip: '4 Courses', numeral: '07',
+    meta: 'Google Skills · 2026 · 4-Course Path', chip: '4 Courses', numeral: '08',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/118$/,
     courses: BEGINNER_COURSES, badges: 4, credly: 1, pill: /^4 public course badges$/i },
-  // Google Skills — Applied Workplace Productivity & Micro-Learning
+  // Google Skills — Applied Productivity & Industry-Specific AI Solutions
   { section: 'google-skills', id: 'ce-google-skills-workspace-gemini-249',
     title: 'Google Workspace with Gemini',
-    meta: 'Google Skills · 2026 · 11-Course Path', chip: '11 Courses', numeral: '08',
+    meta: 'Google Skills · 2026 · 11-Course Path', chip: '11 Courses', numeral: '09',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/249$/,
     courses: WORKSPACE_COURSES, badges: 11, credly: 0, pill: /^11 public course badges$/i },
   { section: 'google-skills', id: 'ce-google-skills-ai-boost-bites-2480',
     title: 'AI Boost Bites: Your Edge in the AI-Powered World',
-    meta: 'Google Skills · 2026 · 43-Course Path', chip: '43 Courses', numeral: '09',
+    meta: 'Google Skills · 2026 · 43-Course Path', chip: '43 Courses', numeral: '10',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/2480$/,
     courses: ABB_COURSES, badges: 43, credly: 0, pill: /^43 public course badges$/i },
   { section: 'google-skills', id: 'ce-google-skills-city-hall-4243',
     title: 'AI for City Hall',
-    meta: 'Google Skills · 2026 · 21-Course Path', chip: '21 Courses', numeral: '10',
+    meta: 'Google Skills · 2026 · 21-Course Path', chip: '21 Courses', numeral: '11',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/4243$/,
     courses: CITY_HALL_COURSES, badges: 21, credly: 0, pill: /^21 public course badges$/i },
@@ -786,9 +795,9 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       }
       expect(clipped, `a tile span is clipped in "${text}"`).toBe(false);
     }
-    expect(rows.filter((r) => r.text.includes('Verify in Credly'))).toHaveLength(4);
+    expect(rows.filter((r) => r.text.includes('Verify in Credly'))).toHaveLength(5);
     expect(rows.filter((r) => r.text.includes('Verify in Google Skills'))).toHaveLength(0);
-    expect(rows.filter((r) => r.text.includes('Verify'))).toHaveLength(88);
+    expect(rows.filter((r) => r.text.includes('Verify'))).toHaveLength(89);
   });
 
   test('only the Credly skill badges glow', async ({ page }) => {
@@ -806,7 +815,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
         };
       }),
     );
-    expect(tiles.filter((t) => t.credly)).toHaveLength(4);
+    expect(tiles.filter((t) => t.credly)).toHaveLength(5);
     for (const t of tiles) {
       expect(t.amber, 'glow must follow badge.provider === "Credly"').toBe(t.credly);
       expect(t.halo, 'halo must follow badge.provider === "Credly"').toBe(t.credly);
@@ -817,7 +826,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     await page.goto('/certifications');
     await expandAll(page, 'google-skills');
     const links = badgeLinks(page.locator('#google-skills'));
-    await expect(links).toHaveCount(88);
+    await expect(links).toHaveCount(89);
     const rows = await links.evaluateAll((els) =>
       els.map((e) => [e.getAttribute('href') ?? '', e.textContent ?? ''] as const),
     );
@@ -826,9 +835,9 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       expect(href).toMatch(/badge on Credly/i.test(text) ? CREDLY_BADGE_URL : GOOGLE_SKILLS_BADGE_URL);
     }
     const hrefs = rows.map(([h]) => h);
-    // 88 references, 75 distinct badge pages — the number the header prints.
-    expect(new Set(hrefs).size).toBe(75);
-    expect(hrefs.filter((h) => CREDLY_BADGE_URL.test(h))).toHaveLength(4);
+    // 89 references, 76 distinct badge pages — the number the header prints.
+    expect(new Set(hrefs).size).toBe(76);
+    expect(hrefs.filter((h) => CREDLY_BADGE_URL.test(h))).toHaveLength(5);
     expect(hrefs.filter((h) => GOOGLE_SKILLS_BADGE_URL.test(h))).toHaveLength(84);
     // Path 4459's badges (withheld while it was unfinished) and path 3802's.
     for (const id of ['27855015', '27885513', '27886491', '27888328', '27888392']) {
@@ -836,7 +845,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     }
   });
 
-  test('all three Credly badges are DISPLAYED as art, not merely linked', async ({ page }) => {
+  test('all four Credly badges are DISPLAYED as art, not merely linked', async ({ page }) => {
     await page.goto('/certifications');
     await expandAll(page, 'google-skills');
     const srcs = await page
@@ -847,6 +856,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       'create-your-first-gemini-enterprise-application',
       'prompt-design-in-vertex-ai',
       'deploy-multi-agent-architectures',
+      'store-process-and-manage-data-on-google-cloud-console',
     ]) {
       expect(
         srcs.some((s) => s.includes(`badges%2F${file}.webp`) || s.includes(`badges/${file}.webp`)),
@@ -921,6 +931,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       ['coursework-courses-workspace-gemini', 11, 11],
       ['coursework-courses-ai-boost-bites', 43, 43],
       ['coursework-courses-city-hall', 21, 21],
+      ['coursework-courses-startup-essentials', 1, 1],
       ['coursework-courses-adk', 3, 3],
     ] as const) {
       const items = page.getByTestId(testId).locator('li');
