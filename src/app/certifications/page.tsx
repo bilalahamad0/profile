@@ -61,7 +61,7 @@ export default function CertificationsPage() {
         {/* Jump pills — one per category group */}
         <nav
           aria-label="Certification categories"
-          className="-mx-6 mt-6 flex snap-x items-center gap-2 overflow-x-auto px-6 pb-1 md:mx-0 md:flex-wrap md:justify-center md:overflow-visible md:px-0"
+          className="mx-auto mt-6 flex max-w-4xl flex-wrap items-center justify-center gap-2"
         >
           {ALL_SECTIONS.map((group) => {
             const Icon = group.icon;
@@ -70,7 +70,7 @@ export default function CertificationsPage() {
               <a
                 key={group.id}
                 href={`#${group.id}`}
-                className="inline-flex shrink-0 snap-start items-center gap-2 rounded-full border border-line/10 bg-ink/[0.05] dark:bg-ink/[0.03] px-4 py-2 t-label font-bold uppercase tracking-wider text-ink/70 dark:text-ink/60 transition-colors hover:border-line/25 hover:text-ink"
+                className="inline-flex items-center gap-2 rounded-full border border-line/10 bg-ink/[0.05] dark:bg-ink/[0.03] px-3.5 py-1.5 sm:px-4 sm:py-2 t-label font-bold uppercase tracking-wider text-ink/70 dark:text-ink/60 transition-colors hover:border-line/25 hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-line/40"
               >
                 <Icon
                   className={cn(
@@ -79,7 +79,7 @@ export default function CertificationsPage() {
                   )}
                   aria-hidden
                 />
-                {group.title}
+                <span>{group.title}</span>
                 {!isCoursework && (
                   <span className="text-ink/65 dark:text-ink/50">· {group.credentials.length}</span>
                 )}

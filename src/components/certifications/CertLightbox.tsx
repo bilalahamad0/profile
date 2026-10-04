@@ -82,7 +82,7 @@ export function CertLightbox({
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
-            className="glass relative flex w-full max-w-5xl flex-col overflow-hidden rounded-3xl border border-line/10 shadow-2xl focus:outline-none md:flex-row"
+            className="glass relative flex w-full max-w-5xl flex-col max-h-[90vh] overflow-y-auto md:max-h-none md:overflow-hidden rounded-3xl border border-line/10 shadow-2xl focus:outline-none md:flex-row"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button Mobile */}

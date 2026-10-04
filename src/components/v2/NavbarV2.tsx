@@ -10,12 +10,12 @@ import { CommandMenu } from "@/components/command/CommandMenu";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { href: "/",              label: "Home",           icon: Home         },
-  { href: "/experience",    label: "Experience",     icon: Briefcase    },
-  { href: "/certifications", label: "Certifications", icon: Award        },
-  { href: "/projects",      label: "Projects",       icon: FolderKanban },
-  { href: "/blog",          label: "Blog",           icon: BookOpen     },
-  { href: "/contact",       label: "Contact",        icon: Mail         },
+  { href: "/",              label: "Home",           shortLabel: "Home",     icon: Home         },
+  { href: "/experience",    label: "Experience",     shortLabel: "Exp",      icon: Briefcase    },
+  { href: "/certifications", label: "Certifications", shortLabel: "Certs",    icon: Award        },
+  { href: "/projects",      label: "Projects",       shortLabel: "Projects", icon: FolderKanban },
+  { href: "/blog",          label: "Blog",           shortLabel: "Blog",     icon: BookOpen     },
+  { href: "/contact",       label: "Contact",        shortLabel: "Contact",  icon: Mail         },
 ];
 
 export function NavbarV2() {
@@ -61,7 +61,7 @@ export function NavbarV2() {
         </Link>
 
         {/* Nav links — icon + label on all sizes */}
-        {navLinks.map(({ href, label, icon: Icon }) => {
+        {navLinks.map(({ href, label, shortLabel, icon: Icon }) => {
           const isActive =
             href === "/" ? pathname === "/" : pathname.startsWith(href);
           return (
@@ -87,7 +87,8 @@ export function NavbarV2() {
                 aria-hidden="true"
               />
               <span className="text-[8px] sm:text-[10px] font-semibold leading-none tracking-tighter sm:tracking-normal">
-                {label}
+                <span className="hidden sm:inline">{label}</span>
+                <span className="sm:hidden">{shortLabel ?? label}</span>
               </span>
             </Link>
           );
