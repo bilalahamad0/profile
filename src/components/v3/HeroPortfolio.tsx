@@ -206,14 +206,14 @@ function CoreSpecCards() {
           <SpotlightCard
             key={card.label}
             spotlightColor={card.spotlight}
-            className="p-5 sm:p-6 flex flex-col items-start gap-4 rounded-2xl border-line/10 hover:border-line/20 bg-surface-card/90 dark:bg-black/40"
+            className="group h-full rounded-2xl border-line/10 hover:border-line/20 bg-surface-card/90 dark:bg-black/40 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
           >
-            <div className="p-2.5 rounded-xl border border-line/10 bg-ink/[0.04] dark:bg-ink/[0.03]">
-              <Icon className={`w-5 h-5 ${card.iconColor}`} aria-hidden="true" />
-            </div>
-            <div>
-              <p className="t-small font-bold text-ink leading-tight">{card.label}</p>
-              <p className="t-caption text-ink-muted mt-1 leading-snug">{card.sub}</p>
+            <div className="p-4 sm:p-5 flex flex-col justify-between h-full gap-3">
+              <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-line/10 group-hover:border-line/20 bg-ink/[0.04] dark:bg-ink/[0.03] group-hover:bg-ink/[0.06] transition-all">
+                <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${card.iconColor} shrink-0`} aria-hidden="true" />
+                <p className="t-small font-bold text-ink leading-tight">{card.label}</p>
+              </div>
+              <p className="t-caption text-ink-muted px-0.5 leading-snug">{card.sub}</p>
             </div>
           </SpotlightCard>
         );
