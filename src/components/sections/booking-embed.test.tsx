@@ -28,8 +28,8 @@ describe("BookingEmbed", () => {
 
   it("renders placeholder on demand by default when no booking intent is present", () => {
     render(<BookingEmbed />);
-    expect(screen.getByRole("button", { name: /Load booking calendar/i })).toBeInTheDocument();
-    expect(screen.queryByTitle(/Book a 1:1 call with Bilal Ahamad/i)).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Load booking calendar/i })).toBeDefined();
+    expect(screen.queryByTitle(/Book a 1:1 call with Bilal Ahamad/i)).toBeNull();
   });
 
   it("loads iframe when the load button is clicked", () => {
@@ -38,8 +38,8 @@ describe("BookingEmbed", () => {
     fireEvent.click(loadButton);
 
     const iframe = screen.getByTitle(/Book a 1:1 call with Bilal Ahamad/i);
-    expect(iframe).toBeInTheDocument();
-    expect(iframe).toHaveAttribute("src", SCHEDULING_EMBED_URL);
+    expect(iframe).toBeDefined();
+    expect(iframe.getAttribute("src")).toBe(SCHEDULING_EMBED_URL);
   });
 
   it("auto-loads iframe immediately when arriving with #book hash", async () => {
@@ -48,7 +48,7 @@ describe("BookingEmbed", () => {
 
     await waitFor(() => {
       const iframe = screen.getByTitle(/Book a 1:1 call with Bilal Ahamad/i);
-      expect(iframe).toBeInTheDocument();
+      expect(iframe).toBeDefined();
     });
   });
 
@@ -58,7 +58,7 @@ describe("BookingEmbed", () => {
 
     await waitFor(() => {
       const iframe = screen.getByTitle(/Book a 1:1 call with Bilal Ahamad/i);
-      expect(iframe).toBeInTheDocument();
+      expect(iframe).toBeDefined();
     });
   });
 
@@ -68,13 +68,13 @@ describe("BookingEmbed", () => {
 
     await waitFor(() => {
       const iframe = screen.getByTitle(/Book a 1:1 call with Bilal Ahamad/i);
-      expect(iframe).toBeInTheDocument();
+      expect(iframe).toBeDefined();
     });
   });
 
   it("auto-loads when hashchange event fires with #book", async () => {
     render(<BookingEmbed />);
-    expect(screen.queryByTitle(/Book a 1:1 call with Bilal Ahamad/i)).not.toBeInTheDocument();
+    expect(screen.queryByTitle(/Book a 1:1 call with Bilal Ahamad/i)).toBeNull();
 
     act(() => {
       window.location.hash = "#book";
@@ -82,7 +82,7 @@ describe("BookingEmbed", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByTitle(/Book a 1:1 call with Bilal Ahamad/i)).toBeInTheDocument();
+      expect(screen.getByTitle(/Book a 1:1 call with Bilal Ahamad/i)).toBeDefined();
     });
   });
 
@@ -93,7 +93,7 @@ describe("BookingEmbed", () => {
 
     expect(mockWriteText).toHaveBeenCalled();
     await waitFor(() => {
-      expect(screen.getByText(/Copied \/book link!/i)).toBeInTheDocument();
+      expect(screen.getByText(/Copied \/book link!/i)).toBeDefined();
     });
   });
 
