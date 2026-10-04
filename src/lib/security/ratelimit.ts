@@ -8,8 +8,12 @@
  * a hard dependency that could take the contact form or data routes down.
  */
 
-const KV_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-const KV_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+function getKvConfig(): { url: string; token: string } | null {
+  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (!url || !token) return null;
+  return { url, token };
+}
 
 export type RateLimitResult = { ok: boolean; remaining: number; limit: number };
 
@@ -26,13 +30,14 @@ export async function rateLimit(
   limit: number,
   windowSeconds: number
 ): Promise<RateLimitResult> {
-  if (!KV_URL || !KV_TOKEN) return { ok: true, remaining: limit, limit };
+  const kv = getKvConfig();
+  if (!kv) return { ok: true, remaining: limit, limit };
 
   const redisKey = `rl:${key}`;
   try {
-    const res = await fetch(`${KV_URL}/pipeline`, {
+    const res = await fetch(`${kv.url}/pipeline`, {
       method: "POST",
-      headers: { Authorization: `Bearer ${KV_TOKEN}`, "Content-Type": "application/json" },
+      headers: { Authorization: `Bearer ${kv.token}`, "Content-Type": "application/json" },
       cache: "no-store",
       body: JSON.stringify([
         ["INCR", redisKey],
