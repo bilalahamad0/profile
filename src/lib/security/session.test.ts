@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   issueSession,
   signSession,
@@ -42,6 +42,21 @@ describe("session token", () => {
     const { token } = await issueSession("UTC");
     process.env.SESSION_SECRET = "a-totally-different-secret-value";
     expect(await verifySession(token)).toBeNull();
+  });
+
+  it("fails closed in production if secret is unset or weak", async () => {
+    try {
+      vi.stubEnv("NODE_ENV", "production");
+      delete process.env.SESSION_SECRET;
+      await expect(issueSession("UTC")).rejects.toThrow("SESSION_SECRET is not configured");
+
+      process.env.SESSION_SECRET = "short";
+      await expect(issueSession("UTC")).rejects.toThrow("SESSION_SECRET is not configured");
+
+      expect(await verifySession("invalid.token")).toBeNull();
+    } finally {
+      vi.unstubAllEnvs();
+    }
   });
 });
 

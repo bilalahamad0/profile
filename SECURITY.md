@@ -53,8 +53,10 @@ is what raises the bar against those.
 This site runs on the Vercel **Hobby** plan. Plan-accurate options:
 
 1. **Set `SESSION_SECRET` (required).** Add a 32+ byte random secret to Vercel env
-   (and local `.env.local`). The token signer **fails closed in production** if it's
-   unset/weak, so the contact form would 403 without it. Generate with:
+   for **both Production and Preview** environments (and local `.env.local`). Next.js
+   preview deployments run with `NODE_ENV=production`, so they fail closed without it.
+   The token signer **fails closed in production** if it's unset/weak (<16 bytes),
+   so mutation endpoints (contact form) 403 without it. Generate with:
    ```
    node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
    ```
@@ -73,6 +75,22 @@ This site runs on the Vercel **Hobby** plan. Plan-accurate options:
 
 Note: the **managed Bot Protection ruleset Challenge action requires Pro** — on
 Hobby it only offers **Log** (observe, no blocking). Don't rely on it to block.
+
+## Critical Infrastructure Caveats & Gotchas
+
+1. **Do NOT place Cloudflare or external reverse proxies in front of Vercel.**
+   Vercel Bot Protection and BotID challenge scripts rely on seeing the original
+   client connection and headers directly (`x-vercel-forwarded-for`, `x-real-ip`).
+   Double-proxying breaks bot detection, client challenge validation, and edge firewall rules.
+2. **Automated browser testing (`navigator.webdriver`).**
+   Modern headless browsers (such as Playwright's new headless Chromium mode) do not
+   advertise `HeadlessChrome` in their User-Agent. Both the pre-paint inline cover
+   and `EntryGate` explicitly check `navigator.webdriver === true` and bypass the splash
+   overlay to keep CI E2E and a11y automated suites fast and green.
+3. **No extra infrastructure dependencies.**
+   Rate limiting strictly reuses existing Upstash Redis KV credentials already in use
+   by badge counters. If KV is unavailable or encounters a network partition, the
+   rate limiter safely fails open so legitimate users are never blocked.
 
 ## The Google Developer badges "sync"
 

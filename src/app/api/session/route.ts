@@ -31,14 +31,18 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, reason: validation.reason }, { status: 400 });
   }
 
-  const { token, maxAge } = await issueSession(validation.signals.tz);
-  const res = NextResponse.json({ ok: true });
-  res.cookies.set(SESSION_COOKIE, token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-    maxAge,
-  });
-  return res;
+  try {
+    const { token, maxAge } = await issueSession(validation.signals.tz);
+    const res = NextResponse.json({ ok: true });
+    res.cookies.set(SESSION_COOKIE, token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge,
+    });
+    return res;
+  } catch {
+    return NextResponse.json({ ok: false, reason: "server-error" }, { status: 500 });
+  }
 }

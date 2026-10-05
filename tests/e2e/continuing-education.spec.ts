@@ -443,7 +443,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       'Claude Academy',
       'Stanford School of Engineering', 'XEE100',
       '4 learning paths · 11 course badges',
-      '9 learning paths · 75 course badges', '1 short course · 5 modules',
+      '11 learning paths · 77 course badges', '1 short course · 5 modules',
       'Generative AI Leader Certification', 'Train for the exam',
       'Google Cloud Generative AI Leader certification',
       'six Stanford faculty members will deliver an overview',
@@ -533,7 +533,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     const google = page.locator('#google-skills');
     await expect(google.getByRole('heading', { level: 2 })).toHaveText('Google Skills');
     await expect(google.getByText('Completed Learning Paths', { exact: true })).toBeVisible();
-    const googleCount = google.getByText('9 learning paths · 75 course badges', { exact: true });
+    const googleCount = google.getByText('11 learning paths · 77 course badges', { exact: true });
     await (wideViewport(page) ? expect(googleCount).toBeVisible() : expect(googleCount).toBeAttached());
     const cont = page.locator('#continuing-education');
     await expect(cont.getByRole('heading', { level: 2 })).toHaveText('Continuing Education');
@@ -757,7 +757,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     await page.goto('/certifications');
     await expandAll(page, 'google-skills');
     const links = badgeLinks(page.locator('#google-skills'));
-    await expect(links).toHaveCount(88);
+    await expect(links).toHaveCount(110);
     const rows = await links.evaluateAll((els) =>
       els.map((el) => ({
         text: (el.textContent ?? '').replace(/\s+/g, ' '),
@@ -797,7 +797,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     }
     expect(rows.filter((r) => r.text.includes('Verify in Credly'))).toHaveLength(5);
     expect(rows.filter((r) => r.text.includes('Verify in Google Skills'))).toHaveLength(0);
-    expect(rows.filter((r) => r.text.includes('Verify'))).toHaveLength(89);
+    expect(rows.filter((r) => r.text.includes('Verify'))).toHaveLength(110);
   });
 
   test('only the Credly skill badges glow', async ({ page }) => {
@@ -826,7 +826,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     await page.goto('/certifications');
     await expandAll(page, 'google-skills');
     const links = badgeLinks(page.locator('#google-skills'));
-    await expect(links).toHaveCount(89);
+    await expect(links).toHaveCount(110);
     const rows = await links.evaluateAll((els) =>
       els.map((e) => [e.getAttribute('href') ?? '', e.textContent ?? ''] as const),
     );
@@ -835,10 +835,10 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       expect(href).toMatch(/badge on Credly/i.test(text) ? CREDLY_BADGE_URL : GOOGLE_SKILLS_BADGE_URL);
     }
     const hrefs = rows.map(([h]) => h);
-    // 89 references, 76 distinct badge pages — the number the header prints.
-    expect(new Set(hrefs).size).toBe(76);
+    // 110 references, 77 distinct badge pages — the number the header prints.
+    expect(new Set(hrefs).size).toBe(77);
     expect(hrefs.filter((h) => CREDLY_BADGE_URL.test(h))).toHaveLength(5);
-    expect(hrefs.filter((h) => GOOGLE_SKILLS_BADGE_URL.test(h))).toHaveLength(84);
+    expect(hrefs.filter((h) => GOOGLE_SKILLS_BADGE_URL.test(h))).toHaveLength(105);
     // Path 4459's badges (withheld while it was unfinished) and path 3802's.
     for (const id of ['27855015', '27885513', '27886491', '27888328', '27888392']) {
       expect(hrefs.some((h) => h.endsWith(`/badges/${id}`)), `badge ${id} missing`).toBe(true);
@@ -1085,7 +1085,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
   test('expand all / collapse all works on all three sections', async ({ page }) => {
     await page.goto('/certifications');
     for (const [section, n] of [
-      ['google-skills', 9],
+      ['google-skills', 11],
       ['claude-academy', 4],
       ['continuing-education', 1],
     ] as const) {
@@ -1173,7 +1173,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       const cards = await page
         .locator('article[id^="ce-"], #claude-academy article')
         .evaluateAll((els) => els.map((el) => [el.id, el.scrollWidth - el.clientWidth] as const));
-      expect(cards).toHaveLength(14);
+      expect(cards).toHaveLength(16);
       for (const [id, d] of cards) expect(d, `${id} overflows by ${d}px (${pass})`).toBeLessThanOrEqual(0);
       const doc = await page.evaluate(
         () => document.documentElement.scrollWidth - document.documentElement.clientWidth,

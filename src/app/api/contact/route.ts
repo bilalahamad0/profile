@@ -27,9 +27,16 @@ function isSafeHeaderValue(value: string): boolean {
 export async function POST(req: Request) {
   try {
     // 1. Vercel BotID (invisible, Basic): block automated clients the challenge
-    //    flags. In local dev / off-Vercel this always returns isBot:false.
-    const bot = await checkBotId();
-    if (bot.isBot) {
+    //    flags. In local dev / off-Vercel this returns isBot:false or throws if OIDC is absent;
+    //    fail-open so the signed session gate and rate limits enforce protection.
+    let isBot = false;
+    try {
+      const bot = await checkBotId();
+      isBot = Boolean(bot?.isBot);
+    } catch {
+      isBot = false;
+    }
+    if (isBot) {
       return NextResponse.json({ error: "Automated request blocked." }, { status: 403 });
     }
 
