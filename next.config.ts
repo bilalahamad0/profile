@@ -54,6 +54,27 @@ const nextConfig: NextConfig = {
         destination: "/Bilal_Ahamad_Resume.pdf",
         permanent: true,
       },
+      // Project vanity routes & external landing page shortcuts
+      {
+        source: "/adhan-ce",
+        destination: "https://adhan.bilalahamad.com",
+        permanent: true,
+      },
+      {
+        source: "/adhan-ce/:path*",
+        destination: "https://adhan.bilalahamad.com/:path*",
+        permanent: true,
+      },
+      {
+        source: "/adhan",
+        destination: "/projects#adhan",
+        permanent: true,
+      },
+      {
+        source: "/warn",
+        destination: "/projects#warn",
+        permanent: true,
+      },
       // Direct shareable calendar & booking shortcuts that route visitors
       // to the on-site scheduler on /contact with automatic loading and scrolling
       {
