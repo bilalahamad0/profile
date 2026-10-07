@@ -1083,8 +1083,8 @@ function gsBadge(
 }
 
 /** The Credly copy of a lab-based skill badge. Its public_url page returns 200
- *  logged-out (verified 2026-09-11/12/10-04) and names both the issuer (Google Cloud)
- *  and the earner, which is why all four skill badges link here rather than at
+ *  logged-out (verified 2026-09-11/12/10-04/10-07) and names both the issuer (Google Cloud)
+ *  and the earner, which is why all five skill badges link here rather than at
  *  their Google Skills twins — the convention `skill_badge_rule` records in
  *  scratchpad/google-skills-paths.json.
  *
@@ -1093,11 +1093,12 @@ function gsBadge(
  *  verbatim in that same file, and each has a Google Skills twin recorded
  *  there — 27852046 for "Prompt Design in Agent Platform" (path 118), 27848848
  *  for "Create Your First Gemini Enterprise Application" (paths 3546 / 4020),
- *  27888420 for "Deploy Multi-Agent Architectures" (path 3802), and 28637458
- *  for "Store, Process, and Manage Data on Google Cloud - Console" (path 4666).
+ *  27888420 for "Deploy Multi-Agent Architectures" (path 3802), 28637458
+ *  for "Store, Process, and Manage Data on Google Cloud - Console" (path 4666),
+ *  and 28698894 for "Orchestrate Multi-agent Workflows with Gemini Enterprise" (path 3980).
  *  The Credly copy is the one linked because its page names the issuer AND the
  *  earner, and because it is the art the owner asked to be displayed.
- *  data.test.ts pins all four Credly URLs exactly (CREDLY_BADGE_URLS); the twin
+ *  data.test.ts pins all five Credly URLs exactly (CREDLY_BADGE_URLS); the twin
  *  ids are recorded here and at each call site. */
 function credlyBadge(uuid: string, image: string): CourseBadge {
   return {
@@ -1187,6 +1188,7 @@ export const GOOGLE_SKILLS_CATEGORIES: readonly GroupCategory[] = [
       "Designing, orchestrating, deploying, and scaling autonomous agent networks using the Agent Development Kit (ADK), Model Context Protocol (MCP), and Agent-to-Agent (A2A) protocol.",
     ids: [
       "ce-google-skills-multi-agent-4459",
+      "ce-google-skills-scale-agents-3980",
       "ce-google-skills-deploy-agents-3802",
       "ce-google-skills-agents-3546",
       "ce-google-skills-adk-3473",
@@ -1225,13 +1227,13 @@ export const GOOGLE_SKILLS_CATEGORIES: readonly GroupCategory[] = [
 
 /** THIS ARRAY'S ORDER IS THE DISPLAY ORDER, and it is the OWNER'S CHOICE: the
  *  four categories above, top to bottom, each highest-impact first (owner,
- *  2026-10-03/04) — Build High-Performance Multi-Agent Systems (4459) · Deploy
- *  Production Ready Agents (3802) · Introduction to Agents (3546) · Fundamentals
- *  of ADK (3473) | Generative AI Leader (1951) · SMB Learning
- *  Path (4020) · Google Cloud Console: Startup Essentials (4666) | Beginner:
- *  Introduction to Generative AI (118) | Google Workspace with Gemini (249) ·
- *  AI Boost Bites (2480) · AI for City Hall (4243). Stanford
- *  follows alone in CONTINUING_EDUCATION.
+ *  2026-10-03/04/10-07) — Build High-Performance Multi-Agent Systems (4459) · Scale
+ *  Agents Across the Enterprise (3980) · Deploy Production Ready Agents (3802) ·
+ *  Introduction to Agents (3546) · Fundamentals of ADK (3473) | Generative AI
+ *  Leader (1951) · SMB Learning Path (4020) · Google Cloud Console: Startup
+ *  Essentials (4666) | Beginner: Introduction to Generative AI (118) | Google
+ *  Workspace with Gemini (249) · AI Boost Bites (2480) · AI for City Hall (4243).
+ *  Stanford follows alone in CONTINUING_EDUCATION.
  *
  *  IT IS CURATED, NOT DERIVED. Nothing sorts at runtime and no `date` is read
  *  for ordering — dates carry the year only (owner, 2026-10-03), so there is
@@ -1294,6 +1296,60 @@ export const LEARNING_PATHS: readonly LearningPathData[] = [
         // twin, so it stays `provider: "Google Skills"`; `kind` and `provider`
         // are independent (see CourseBadge).
         badge: gsBadge(27886491, "use-agent-skills-with-multi-agent-systems", "skill"),
+      },
+    ],
+  },
+  {
+    // Added at the owner's request (2026-10-07). All three course badges
+    // are on the public profile / Credly, earned 2026-10-07; public Credly and
+    // Google Skills badge pages verified logged-out. Placed second in Agentic
+    // Engineering by the owner's choice: after Build High-Performance
+    // Multi-Agent Systems.
+    id: "ce-google-skills-scale-agents-3980",
+    headingId: "ce-google-skills-scale-agents-3980-heading",
+    testId: "coursework-courses-scale-agents",
+    titleLines: ["Scale Agents Across the Enterprise", "3-Course Path"],
+    issuer: "Google Skills",
+    issuerShort: "Google Skills",
+    date: "2026",
+    url: "https://www.skills.google/paths/3980",
+    urlLabel: "Path page",
+    urlNoun: "path",
+    logo: "/logos/google.png",
+    tile: GOOGLE_SKILLS_TILE,
+    // `description` arm 1 — Google's own path description, verbatim except
+    // dropping the trailing GEAR registration CTA per established convention.
+    description:
+      "Learn to build and coordinate AI agents to solve complex business challenges. This path covers real-world applications across marketing, retail, and manufacturing, teaching you how to balance machine speed with human oversight to drive your organization's AI transformation. Complete the Orchestrate Multi-agent Workflows with Gemini Enterprise course to earn your Gemini Enterprise skill badge.",
+    // THREE courses, not the five activities Google's path page counts. The
+    // first and last are the "Welcome:" and "Wrap Up:" bookends, which are never
+    // courses.
+    totalCourses: 3,
+    unitNoun: "Courses",
+    gradient: "from-teal-600/20 via-cyan-500/12 to-blue-600/20",
+    aiSkills: true,
+    coursesLayout: "badges",
+    courses: [
+      {
+        step: 1,
+        title: "Gen AI Agents: Transform Your Organization",
+        badge: gsBadge(27847477, "gen-ai-agents-transform-your-organization"),
+      },
+      {
+        step: 2,
+        title: "Human-Centered AI",
+        badge: gsBadge(28674224, "human-centered-ai"),
+      },
+      {
+        // Skill badge on Credly (issued 2026-10-07; public page verified logged-out).
+        // Google Skills issued twin completion badge 28698894 for the same course;
+        // the Credly copy is linked because it names the issuer AND the earner.
+        step: 3,
+        title: "Orchestrate Multi-agent Workflows with Gemini Enterprise",
+        badge: credlyBadge(
+          "8487b712-c3c4-44ef-bf2a-ca537dc1d822",
+          "orchestrate-multi-agent-workflows-with-gemini-enterprise",
+        ),
       },
     ],
   },
