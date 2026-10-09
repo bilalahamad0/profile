@@ -25,7 +25,7 @@ determined headless-browser scraper. What this design *does*:
 | Layer | Mechanism | Where |
 |---|---|---|
 | Edge bot filtering | Vercel **Attack Mode** (free on Hobby) — challenges non-browser traffic, auto-allows the verified-bot directory + your own functions, SEO-safe long-term. The *managed* Bot Protection ruleset's **Challenge** action needs Pro; on Hobby that ruleset is **Log-only** (observe). **BotID Basic** (free, invisible `checkBotId()`) is the route-scoped alternative. | Vercel dashboard (no code) |
-| Cross-origin guard | `src/middleware.ts` rejects cross-site POSTs to `/api/contact` + `/api/session` via `Sec-Fetch-Site`. | Edge middleware |
+| Cross-origin guard | `src/proxy.ts` rejects cross-site POSTs to `/api/contact` + `/api/session` via `Sec-Fetch-Site`. | Proxy (Node.js runtime) |
 | Entry handshake | `/api/session` validates browser-only signals (IANA timezone **cross-checked against the reported UTC offset**, fresh client clock within ±5 min) and sets a 2h **HMAC-signed httpOnly `ba_entry` cookie**. Production fails **closed** if `SESSION_SECRET` is unset/weak (no forgeable tokens). | `src/lib/security/session.ts`, `src/app/api/session/route.ts` |
 | Form protection | `/api/contact` **requires** a valid `ba_entry` token + rate-limits 5/h per IP and 3/day per email + validates input (email format, length caps, header-injection guard). | `src/app/api/contact/route.ts` |
 | Read protection | `/api/{repos,badges,visitors,ai-metrics}` keep serving public cached data but are rate-limited 60/min per IP (fail-open). | the four route files |

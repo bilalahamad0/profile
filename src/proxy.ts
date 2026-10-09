@@ -1,7 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 /**
- * Edge guard for the two state-changing endpoints. It does NOT touch any HTML
+ * Proxy (Next 16's name for middleware; always the Node.js runtime) guarding
+ * the two state-changing endpoints. It does NOT touch any HTML
  * route — pages render fully for crawlers and the entry splash is a client-only
  * overlay — so there is zero SEO/ATS impact. The heavy lifting against scraping
  * platforms is Vercel's edge Bot Filter (enabled in the dashboard); this just
@@ -11,7 +12,7 @@ export const config = {
   matcher: ["/api/contact", "/api/session"],
 };
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   if (req.method !== "POST") return NextResponse.next();
 
   // Browsers send Sec-Fetch-Site. If it's explicitly cross-site/cross-origin,

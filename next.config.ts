@@ -114,13 +114,6 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        // All Next.js static assets — very long cache, fingerprinted by Webpack
-        source: "/_next/static/(.*)",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-        ],
-      },
-      {
         // Public assets — logo PNGs, PDFs, etc.
         source: "/((?!_next).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|pdf|woff2?))",
         headers: [

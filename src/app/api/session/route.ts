@@ -10,8 +10,6 @@ import { rateLimit, getClientIp } from "@/lib/security/ratelimit";
  * HMAC-signed httpOnly cookie that protected actions require. A bare scraper that
  * never runs the JS can't produce a valid body and never receives the cookie.
  */
-export const runtime = "edge";
-
 export async function POST(req: Request) {
   const ip = getClientIp(req);
   const limited = await rateLimit(`session:${ip}`, 30, 60); // 30 mints / minute / IP
