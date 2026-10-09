@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import {
@@ -275,8 +276,14 @@ export function CommandMenu() {
         <span className="text-[10px] tracking-tight">⌘K</span>
       </button>
 
-      {/* ── Modal Backdrop & Dialog ── */}
-      {isOpen && (
+      {/* ── Modal Backdrop & Dialog ──
+          Portaled to <body>. This component mounts inside NavbarV2's
+          `hidden md:flex` group, so rendered in place the open dialog was
+          display:none below 768px: ⌘K/Ctrl+K "opened" an invisible palette on
+          narrow windows and tablets. The portal also keeps `fixed inset-0`
+          relative to the viewport, not the navbar's glass/transformed boxes.
+          isOpen is only ever true on the client, so document.body exists. */}
+      {isOpen && createPortal(
         <div
           className="fixed inset-0 z-[200] flex items-start justify-center pt-20 px-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-200"
           onClick={() => setIsOpen(false)}
@@ -366,7 +373,8 @@ export function CommandMenu() {
               <span>ESC to close</span>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );

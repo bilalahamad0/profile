@@ -65,14 +65,37 @@ test.describe('Homepage E2E', () => {
     // Take full page screenshot
     await page.screenshot({ path: 'verify-home-full.png', fullPage: true });
 
-    // Test Command Menu trigger
-    await page.keyboard.press('Meta+k');
+    // Command Menu opens on ⌘K / Ctrl+K and closes on Escape
+    await page.keyboard.press('ControlOrMeta+k');
     const cmdInput = page.getByPlaceholder(/Type a command/i);
-    if (await cmdInput.count() > 0) {
-      await expect(cmdInput).toBeVisible();
-      await page.screenshot({ path: 'verify-cmdk.png' });
-      await page.keyboard.press('Escape');
-    }
+    await expect(cmdInput).toBeVisible();
+    await expect(cmdInput).toBeFocused();
+    await page.screenshot({ path: 'verify-cmdk.png' });
+    await page.keyboard.press('Escape');
+    await expect(cmdInput).toHaveCount(0);
+  });
+
+  // Below the md breakpoint the navbar hides the ⌘K chip's group with
+  // display:none. The palette must still open from the keyboard (narrow
+  // desktop windows, tablets with keyboards) instead of opening invisibly.
+  // CI only runs the desktop chromium project, so this pins a phone width.
+  test('command palette opens from the keyboard below the md breakpoint', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/');
+    await expect(page.locator('main').first()).toBeVisible();
+
+    await page.keyboard.press('ControlOrMeta+k');
+    const dialog = page.getByRole('dialog', { name: 'Command Menu' });
+    const cmdInput = dialog.getByPlaceholder(/Type a command/i);
+    await expect(cmdInput).toBeVisible();
+    await expect(cmdInput).toBeFocused();
+
+    // Fits the viewport: no horizontal overflow while open.
+    const box = await dialog.boundingBox();
+    expect(box?.width).toBe(390);
+
+    await page.keyboard.press('Escape');
+    await expect(dialog).toHaveCount(0);
   });
 
   test('should render properly on mobile 375px', async ({ page }) => {
