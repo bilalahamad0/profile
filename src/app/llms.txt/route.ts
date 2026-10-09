@@ -20,6 +20,10 @@ export function GET() {
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
       "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
+      // AI agents fetch this file directly; it should never rank in web search
+      // as a plain-text duplicate of the real pages. noindex doesn't block
+      // fetching, so robots.txt must keep allowing it.
+      "X-Robots-Tag": "noindex",
     },
   });
 }

@@ -7,7 +7,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Freshness signal for the index pages that surface the latest writing.
   // Content-driven (newest post date) rather than a hardcoded build date so it
-  // only changes when the content actually does.
+  // only changes when the content actually does. Publish dates only: these
+  // pages list posts, so a post's later `updated` edit doesn't change them.
   const newestPost = posts
     .map((p) => new Date(p.date))
     .filter((d) => !Number.isNaN(d.getTime()))
@@ -28,7 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const blogRoutes: MetadataRoute.Sitemap = posts.map((p) => ({
     url: `${SITE_URL}/blog/${p.slug}`,
-    lastModified: new Date(p.date),
+    lastModified: new Date(p.updated ?? p.date),
     priority: 0.7,
     changeFrequency: "monthly",
   }));

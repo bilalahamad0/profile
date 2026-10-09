@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import sitemap from "./sitemap";
+import { getAllPosts } from "@/lib/blog";
 
 const BASE = "https://bilalahamad.com";
 const STATIC = [
@@ -17,9 +18,6 @@ describe("sitemap", () => {
   const routes = sitemap();
   const byUrl = (url: string) => routes.find((r) => r.url === url);
   const blogPosts = routes.filter((r) => r.url.startsWith(`${BASE}/blog/`));
-  const validBlogTimes = blogPosts
-    .map((p) => (p.lastModified as Date).getTime())
-    .filter((t) => !Number.isNaN(t));
 
   it("includes every canonical static route", () => {
     for (const url of STATIC) expect(byUrl(url)).toBeDefined();
@@ -53,13 +51,24 @@ describe("sitemap", () => {
     }
   });
 
+  it("stamps each post with its `updated` date when set, else its publish date", () => {
+    for (const p of getAllPosts()) {
+      const entry = byUrl(`${BASE}/blog/${p.slug}`);
+      expect((entry?.lastModified as Date).getTime()).toBe(new Date(p.updated ?? p.date).getTime());
+    }
+  });
+
   it("emits at least one blog-post entry, each stamped with a lastModified date", () => {
     expect(blogPosts.length).toBeGreaterThan(0);
     for (const post of blogPosts) expect(post.lastModified).toBeInstanceOf(Date);
   });
 
-  it("dates the homepage and blog index from the newest post", () => {
-    const newest = Math.max(...validBlogTimes);
+  it("dates the homepage and blog index from the newest post's publish date", () => {
+    // Not the post entries' lastmod: a later `updated` edit to one post doesn't
+    // change the pages that list it.
+    const newest = Math.max(
+      ...getAllPosts().map((p) => new Date(p.date).getTime()).filter((t) => !Number.isNaN(t))
+    );
     expect((byUrl(BASE)?.lastModified as Date).getTime()).toBe(newest);
     expect((byUrl(`${BASE}/blog`)?.lastModified as Date).getTime()).toBe(newest);
   });

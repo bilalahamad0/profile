@@ -96,7 +96,7 @@ const ENTRY_PRELAUNCH = `(function(){try{
 if(navigator.webdriver)return;
 if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 var ua=navigator.userAgent||"";
-if(/bot|crawl|spider|slurp|googlebot|bingbot|duckduckbot|baiduspider|yandex|headless|lighthouse|facebookexternalhit|embedly|preview|whatsapp|telegram|slackbot|discordbot/i.test(ua))return;
+if(/bot|crawl|spider|slurp|googlebot|google-inspectiontool|googleother|bingbot|duckduckbot|baiduspider|yandex|headless|lighthouse|facebookexternalhit|embedly|preview|whatsapp|telegram|slackbot|discordbot/i.test(ua))return;
 var r=null;try{r=localStorage.getItem("ba_entered")}catch(e){}
 if(r){var t=Number(r);if(isFinite(t)&&Date.now()-t<2592000000)return;}
 document.documentElement.classList.add("ba-prelaunch");

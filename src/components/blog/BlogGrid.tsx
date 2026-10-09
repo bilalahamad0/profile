@@ -45,6 +45,11 @@ interface BlogGridProps {
 
 export function BlogGrid({ mdxPosts, linkedInPosts }: BlogGridProps) {
   const [active, setActive] = useState<FilterType>("All");
+  // Cards only fade in after the reader changes the filter. The first render
+  // (and the server HTML) starts fully visible. An initial opacity:0 would ship
+  // the whole post list hidden until hydration, which is how crawlers that
+  // don't run JS would see it.
+  const [hasFiltered, setHasFiltered] = useState(false);
 
   const allItems = [
     ...mdxPosts.map((p) => ({ ...p, type: "mdx" as const, url: undefined as string | undefined })),
@@ -83,7 +88,10 @@ export function BlogGrid({ mdxPosts, linkedInPosts }: BlogGridProps) {
           {FILTERS.map((f) => (
             <button
               key={f}
-              onClick={() => setActive(f)}
+              onClick={() => {
+                setActive(f);
+                setHasFiltered(true);
+              }}
               aria-pressed={active === f}
               className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${
                 active === f
@@ -112,7 +120,7 @@ export function BlogGrid({ mdxPosts, linkedInPosts }: BlogGridProps) {
                 const cardInner = (
                   <motion.div
                     key={post.slug}
-                    initial={{ opacity: 0 }}
+                    initial={hasFiltered ? { opacity: 0 } : false}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}

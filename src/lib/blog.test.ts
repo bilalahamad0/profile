@@ -76,6 +76,26 @@ describe("getAllPosts()", () => {
     expect(post.category).toBe("Project Story");
     expect(post.featured).toBe(false);
     expect(post.linkedinUrl).toBeUndefined();
+    expect(post.updated).toBeUndefined();
+  });
+
+  it("passes a quoted `updated` date through unchanged", () => {
+    readdirSync.mockReturnValue(["edited.mdx"]);
+    readFileSync.mockReturnValue('---\ntitle: Edited\ndate: "2025-08-20"\nupdated: "2026-08-08"\n---\nbody');
+    expect(getAllPosts()[0].updated).toBe("2026-08-08");
+  });
+
+  it("ignores an `updated` value that is not a YYYY-MM-DD date", () => {
+    readdirSync.mockReturnValue(["edited.mdx"]);
+    readFileSync.mockReturnValue('---\ntitle: Edited\nupdated: "08/08/2026"\n---\nbody');
+    expect(getAllPosts()[0].updated).toBeUndefined();
+  });
+
+  it("normalizes an unquoted YAML `updated` date to YYYY-MM-DD", () => {
+    // gray-matter parses a bare 2026-08-08 into a Date object.
+    readdirSync.mockReturnValue(["edited.mdx"]);
+    readFileSync.mockReturnValue("---\ntitle: Edited\nupdated: 2026-08-08\n---\nbody");
+    expect(getAllPosts()[0].updated).toBe("2026-08-08");
   });
 
   it("ignores files that are not .mdx", () => {
@@ -128,5 +148,11 @@ describe("getPostBySlug()", () => {
     expect(post?.category).toBe("Project Story");
     expect(post?.tags).toEqual([]);
     expect(post?.featured).toBe(false);
+    expect(post?.updated).toBeUndefined();
+  });
+
+  it("returns the `updated` date when present", () => {
+    readFileSync.mockReturnValue('---\ntitle: Edited\nupdated: "2026-08-08"\n---\nbody');
+    expect(getPostBySlug("edited")?.updated).toBe("2026-08-08");
   });
 });

@@ -1,13 +1,38 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbList } from "@/lib/structured-data";
+
+const DESCRIPTION =
+  "What bilalahamad.com collects, why, how long it is kept, and how to exercise your privacy rights.";
 
 export const metadata: Metadata = {
   // The root layout's title template appends " | Bilal Ahamad".
   title: "Privacy Policy",
-  description:
-    "What bilalahamad.com collects, why, how long it is kept, and how to exercise your privacy rights.",
+  description: DESCRIPTION,
   alternates: { canonical: "https://bilalahamad.com/privacy" },
+  // Without these, /privacy inherits the homepage's og:url and og:title.
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Bilal Ahamad Portfolio",
+    title: "Privacy Policy | Bilal Ahamad",
+    description: DESCRIPTION,
+    url: "https://bilalahamad.com/privacy",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Bilal Ahamad — Privacy Policy" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Privacy Policy | Bilal Ahamad",
+    description: DESCRIPTION,
+    images: ["/og-image.png"],
+  },
 };
+
+const breadcrumb = breadcrumbList([
+  { name: "Home", path: "" },
+  { name: "Privacy", path: "/privacy" },
+]);
 
 /** Kept in one place so the page and its footer agree. */
 const EFFECTIVE_DATE = "29 August 2026";
@@ -15,6 +40,7 @@ const EFFECTIVE_DATE = "29 August 2026";
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-surface text-ink">
+      <JsonLd data={breadcrumb} />
       <section className="border-b border-line/10 dark:border-line/5 px-6 pt-24 pb-8 md:pt-28 md:pb-10 lg:px-24 lg:pt-36">
         <div className="mx-auto max-w-3xl space-y-4">
           <h1 className="t-h1">
