@@ -14,6 +14,8 @@ export const metadata: Metadata = {
   // Without these, /privacy inherits the homepage's og:url and og:title.
   openGraph: {
     type: "website",
+    locale: "en_US",
+    siteName: "Bilal Ahamad Portfolio",
     title: "Privacy Policy | Bilal Ahamad",
     description: DESCRIPTION,
     url: "https://bilalahamad.com/privacy",

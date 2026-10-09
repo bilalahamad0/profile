@@ -85,6 +85,12 @@ describe("getAllPosts()", () => {
     expect(getAllPosts()[0].updated).toBe("2026-08-08");
   });
 
+  it("ignores an `updated` value that is not a YYYY-MM-DD date", () => {
+    readdirSync.mockReturnValue(["edited.mdx"]);
+    readFileSync.mockReturnValue('---\ntitle: Edited\nupdated: "08/08/2026"\n---\nbody');
+    expect(getAllPosts()[0].updated).toBeUndefined();
+  });
+
   it("normalizes an unquoted YAML `updated` date to YYYY-MM-DD", () => {
     // gray-matter parses a bare 2026-08-08 into a Date object.
     readdirSync.mockReturnValue(["edited.mdx"]);

@@ -25,9 +25,11 @@ export type BlogPost = {
 };
 
 // gray-matter turns an unquoted YAML date into a Date object; accept both.
+// Anything that isn't a plain calendar date is ignored rather than published
+// as dateModified/lastmod (an unparseable value would also crash the sitemap).
 function frontmatterDate(value: unknown): string | undefined {
-  if (value instanceof Date) return value.toISOString().slice(0, 10);
-  return typeof value === "string" && value ? value : undefined;
+  const iso = value instanceof Date ? value.toISOString().slice(0, 10) : value;
+  return typeof iso === "string" && /^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso : undefined;
 }
 
 function calcReadingTime(content: string): number {

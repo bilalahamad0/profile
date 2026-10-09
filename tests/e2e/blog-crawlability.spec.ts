@@ -13,10 +13,11 @@ import path from 'node:path';
  *  - Tag-only "Keep reading" ranking never linked ai-driven-development.
  */
 
+// Same slug rule as src/lib/blog.ts getAllPosts().
 const SLUGS = fs
   .readdirSync(path.join(process.cwd(), 'content/blog'))
   .filter((f) => f.endsWith('.mdx'))
-  .map((f) => f.replace(/\.mdx$/, ''));
+  .map((f) => f.replace(/\.mdx$/, '').replace(/[^a-zA-Z0-9-]/g, ''));
 
 test.describe('blog crawlability', () => {
   test('the /blog server HTML links every post', async ({ request }) => {
@@ -37,7 +38,7 @@ test.describe('blog crawlability', () => {
     const inbound = new Set<string>();
     for (const slug of SLUGS) {
       const html = await (await request.get(`/blog/${slug}`)).text();
-      for (const [, target] of html.matchAll(/href="\/blog\/([a-z0-9-]+)"/g)) {
+      for (const [, target] of html.matchAll(/href="\/blog\/([A-Za-z0-9-]+)"/g)) {
         if (target !== slug) inbound.add(target);
       }
     }

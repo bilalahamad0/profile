@@ -6,10 +6,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const posts = getAllPosts();
 
   // Freshness signal for the index pages that surface the latest writing.
-  // Content-driven (newest post publish or significant-update date) rather than
-  // a hardcoded build date so it only changes when the content actually does.
+  // Content-driven (newest post date) rather than a hardcoded build date so it
+  // only changes when the content actually does. Publish dates only: these
+  // pages list posts, so a post's later `updated` edit doesn't change them.
   const newestPost = posts
-    .map((p) => new Date(p.updated ?? p.date))
+    .map((p) => new Date(p.date))
     .filter((d) => !Number.isNaN(d.getTime()))
     .sort((a, b) => b.getTime() - a.getTime())[0];
 
