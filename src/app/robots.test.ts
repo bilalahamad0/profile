@@ -10,11 +10,20 @@ describe("robots", () => {
     expect(result.host).toBe("https://bilalahamad.com");
   });
 
-  it("allows all crawlers at the root while protecting internals", () => {
+  it("allows all crawlers at the root and disallows only the API", () => {
     const wildcard = rules.find((rule) => rule.userAgent === "*");
     expect(wildcard).toBeDefined();
     expect(wildcard?.allow).toBe("/");
-    expect(wildcard?.disallow).toEqual(expect.arrayContaining(["/api/", "/_next/"]));
+    expect(wildcard?.disallow).toEqual(["/api/"]);
+  });
+
+  // Regression guard: blocking /_next/ hides every CSS/JS chunk and next/image
+  // URL from Google's renderer (GSC live test: "15/16 resources blocked").
+  it("never blocks the render resources under /_next/", () => {
+    for (const rule of rules) {
+      const disallow = Array.isArray(rule.disallow) ? rule.disallow : [rule.disallow];
+      expect(disallow.some((path) => path?.startsWith("/_next"))).toBe(false);
+    }
   });
 
   it("explicitly welcomes the major AI/LLM crawlers", () => {
@@ -31,6 +40,6 @@ describe("robots", () => {
       (rule) => Array.isArray(rule.userAgent) && rule.userAgent.includes("GPTBot")
     );
     expect(aiRule?.allow).toBe("/");
-    expect(aiRule?.disallow).toEqual(expect.arrayContaining(["/api/", "/_next/"]));
+    expect(aiRule?.disallow).toEqual(["/api/"]);
   });
 });

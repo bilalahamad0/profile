@@ -1,3 +1,4 @@
+import type { ComponentPropsWithoutRef } from "react";
 import { getPostBySlug, getAllPosts, metaDescription } from "@/lib/blog";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
@@ -39,6 +40,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: `${post.title} | Bilal Ahamad`,
       description: desc,
       url: `https://bilalahamad.com/blog/${slug}`,
+      publishedTime: post.date,
+      modifiedTime: post.updated ?? post.date,
       images: [{ url: image, width: 1200, height: 630, alt: post.title }],
     },
     twitter: {
@@ -51,7 +54,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 const mdxComponents = {
-  h1: (props: any) => <h1 className="t-h2 text-ink mt-12 mb-6 first:mt-0" {...props} />,
+  // An MDX "# Heading" renders as <h2>: the page template already emits the
+  // post title as the page's single <h1>, and a second, differently worded <h1>
+  // muddies which title search engines treat as the page's topic.
+  h1: (props: ComponentPropsWithoutRef<"h2">) => <h2 className="t-h2 text-ink mt-12 mb-6 first:mt-0" {...props} />,
   h2: (props: any) => <h2 className="t-h3 text-ink mt-10 mb-4 border-b border-line/10 dark:border-line/5 pb-3" {...props} />,
   h3: (props: any) => <h3 className="t-h3 text-ink/90 mt-8 mb-3" {...props} />,
   p: (props: any) => <p className="t-body text-ink-muted mb-5" {...props} />,
@@ -103,15 +109,22 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const image = slugToThumb[slug];
 
   /**
-   * Related posts, ranked by shared tags then recency.
+   * Related posts: the two best matches by shared tags, then same category,
+   * then recency; the third card is the next-older post (wrapping around).
    *
    * The section below was labelled "Related Posts Nav" and contained a single
    * "All Posts" link — so every post was a dead end, and a reader who finished
    * the strongest piece on the site had nowhere to go but back. Same-category
    * posts break ties so there is always something to show even at zero tag
    * overlap.
+   *
+   * The next-older slot chains every post into a ring, so each one gets at
+   * least one internal link. Pure tag ranking never picked
+   * ai-driven-development (no tags shared with any other post), which left it
+   * with a single inbound link site-wide.
    */
-  const related = getAllPosts()
+  const allPosts = getAllPosts(); // newest first
+  const ranked = allPosts
     .filter((p) => p.slug !== slug)
     .map((p) => ({
       post: p,
@@ -124,8 +137,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         b.sameCategory - a.sameCategory ||
         new Date(b.post.date).getTime() - new Date(a.post.date).getTime()
     )
-    .slice(0, 3)
     .map((r) => r.post);
+  const index = allPosts.findIndex((p) => p.slug === slug);
+  const nextOlder = allPosts.length > 1 && index >= 0 ? allPosts[(index + 1) % allPosts.length] : undefined;
+  const topThree = ranked.slice(0, 3);
+  const related =
+    !nextOlder || topThree.some((p) => p.slug === nextOlder.slug)
+      ? topThree
+      : [...ranked.slice(0, 2), nextOlder];
 
   // Structured data — blog post pages are the most-indexed/most-shared URLs.
   // Canonical points at bilalahamad.com (not any LinkedIn cross-post) so the
@@ -143,7 +162,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     headline: post.title,
     description: post.description,
     datePublished: post.date,
-    dateModified: post.date,
+    dateModified: post.updated ?? post.date,
     image: ogImage,
     url: canonicalUrl,
     mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },

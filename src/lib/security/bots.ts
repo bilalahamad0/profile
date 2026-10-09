@@ -11,7 +11,8 @@
 
 const VERIFIED_BOTS: RegExp[] = [
   /googlebot/i,
-  /google-inspectiontool/i,
+  /google-inspectiontool/i, // Search Console URL Inspection / live test
+  /googleother/i, // Google's generic research/R&D crawler
   /storebot-google/i,
   /bingbot/i,
   /bingpreview/i,

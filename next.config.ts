@@ -32,18 +32,33 @@ const nextConfig: NextConfig = {
         destination: "https://bilalahamad.com/:path*",
         permanent: true,
       },
+      // The production deployment alias serves a full duplicate of the site.
+      // Fold it into the canonical host the same way as www. Per-deployment
+      // preview URLs have different hostnames and are unaffected.
+      {
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "resume-site-roan.vercel.app",
+          },
+        ],
+        destination: "https://bilalahamad.com/:path*",
+        permanent: true,
+      },
       {
         source: "/blog/adhan-caster-story",
         destination: "/blog/media-caster-story",
         permanent: true,
       },
-      // The AI Lab page was merged into /projects (2026-08). /ai stays indexed
-      // and linked from a published blog post, so it 301s rather than 404s.
+      // The AI Lab page was merged into /projects (2026-08). /ai was indexed and
+      // shared externally, so it 301s rather than 404s. Internal links point
+      // straight at /projects so crawlers never follow a redirect.
       //
       // The destination is DELIBERATELY bare. A fragment on the destination
       // would replace the incoming one; with none, browsers carry the original
-      // fragment over — so `/ai#adhan-ce` (content/blog/adhan-caster-extension-story.mdx)
-      // resolves to `/projects#adhan-ce`, which is that project's card.
+      // fragment over — so an old `/ai#adhan-ce` link resolves to
+      // `/projects#adhan-ce`, which is that project's card.
       {
         source: "/ai",
         destination: "/projects",
@@ -111,6 +126,14 @@ const nextConfig: NextConfig = {
         headers: [
           { key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" },
         ],
+      },
+      {
+        // The web app manifest is JSON for browsers, not a page. Say so, rather
+        // than letting it sit in Search Console as "Crawled - currently not
+        // indexed". Must stay crawlable (no robots.txt Disallow) so Google can
+        // read this header.
+        source: "/manifest.webmanifest",
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
       },
       {
         // Cached API routes — repos, badges, visitors

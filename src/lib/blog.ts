@@ -8,6 +8,13 @@ export type BlogPost = {
   slug: string;
   title: string;
   date: string;
+  /**
+   * Last SIGNIFICANT content change (new section, new links, rewritten
+   * argument), as a quoted "YYYY-MM-DD". Feeds the sitemap <lastmod> and
+   * BlogPosting dateModified. Leave it out for typo or rename edits: Google
+   * stops trusting lastmod that moves without real changes.
+   */
+  updated?: string;
   description: string;
   tags: string[];
   category: "Project Story" | "Whitepaper" | "LinkedIn" | "Tutorial";
@@ -16,6 +23,12 @@ export type BlogPost = {
   linkedinUrl?: string;
   content: string;
 };
+
+// gray-matter turns an unquoted YAML date into a Date object; accept both.
+function frontmatterDate(value: unknown): string | undefined {
+  if (value instanceof Date) return value.toISOString().slice(0, 10);
+  return typeof value === "string" && value ? value : undefined;
+}
 
 function calcReadingTime(content: string): number {
   const words = content.split(/\s+/).length;
@@ -53,6 +66,7 @@ export function getAllPosts(): Omit<BlogPost, "content">[] {
       slug,
       title: data.title ?? slug,
       date: data.date ?? "",
+      updated: frontmatterDate(data.updated),
       description: data.description ?? "",
       tags: data.tags ?? [],
       category: data.category ?? "Project Story",
@@ -79,6 +93,7 @@ export function getPostBySlug(slug: string): BlogPost | null {
     slug: safeSlug,
     title: data.title ?? slug,
     date: data.date ?? "",
+    updated: frontmatterDate(data.updated),
     description: data.description ?? "",
     tags: data.tags ?? [],
     category: data.category ?? "Project Story",

@@ -4,9 +4,11 @@ import { test, expect } from '@playwright/test';
  * Guards the /ai -> /projects merge (2026-08).
  *
  * Two things here are load-bearing and easy to break silently:
- *  1. content/blog/adhan-caster-extension-story.mdx links to
- *     https://bilalahamad.com/ai#adhan-ce — a published post, so that URL must
- *     keep resolving to something that actually contains #adhan-ce.
+ *  1. /ai#adhan-ce was published (it was linked from
+ *     content/blog/adhan-caster-extension-story.mdx and shared externally), so
+ *     that URL must keep resolving to something that actually contains
+ *     #adhan-ce. The post itself now links /projects#adhan-ce directly, so
+ *     crawlers never follow an internal redirect.
  *  2. The AI metrics are fed by the weekly `update-ai-metrics.yml` Action, and
  *     they must stay server-rendered (ATS / crawler requirement), not fetched
  *     on the client.
@@ -37,10 +39,13 @@ test.describe('AI Lab merged into /projects', () => {
     await expect(target).toContainText('Adhan Caster');
   });
 
-  test('the blog post still points somewhere that resolves', async ({ page }) => {
+  test('the blog post links the project card directly, not via the /ai redirect', async ({ page }) => {
     await page.goto('/blog/adhan-caster-extension-story');
-    const link = page.locator('a[href="https://bilalahamad.com/ai#adhan-ce"]');
-    await expect(link).toHaveCount(1);
+    await expect(page.getByRole('link', { name: 'AI Lab breakdown' })).toHaveAttribute(
+      'href',
+      'https://bilalahamad.com/projects#adhan-ce',
+    );
+    await expect(page.locator('a[href*="bilalahamad.com/ai#"]')).toHaveCount(0);
   });
 
   test('the AI Lab section and every project row are server-rendered', async ({ request }) => {

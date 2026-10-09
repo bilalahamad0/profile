@@ -6,6 +6,7 @@ describe("/llms.txt route", () => {
     const res = GET();
     expect(res.headers.get("content-type")).toContain("text/plain");
     expect(res.headers.get("content-type")).toContain("utf-8");
+    expect(res.headers.get("x-robots-tag")).toBe("noindex");
   });
 
   it("renders the llms.txt document from live portfolio + blog data", async () => {

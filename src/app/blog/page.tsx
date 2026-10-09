@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Clock, FileText, ArrowRight, BookOpen } from "lucide-react";
 import { linkedInPosts } from "@/data/portfolio";
 import { getAllPosts } from "@/lib/blog";
-import { BlogGridClient } from "@/components/blog/BlogGridClient";
+import { BlogGrid } from "@/components/blog/BlogGrid";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { blogSchema, breadcrumbList } from "@/lib/structured-data";
 
@@ -153,8 +153,10 @@ export default function BlogPage() {
           the theme ground (identical in dark, correct in light). */}
       <div className="mask-top-dark bg-surface!" aria-hidden="true" />
 
-      {/* Lazy-loaded interactive filter + grid — client component */}
-      <BlogGridClient mdxPosts={mdxPosts} linkedInPosts={linkedInPosts} />
+      {/* Interactive filter + grid. A client component, but server-rendered so
+          every post is a crawlable <a href> in the HTML. It used to be loaded
+          with ssr:false, which left /blog linking only the featured post. */}
+      <BlogGrid mdxPosts={mdxPosts} linkedInPosts={linkedInPosts} />
 
     </div>
     </>
