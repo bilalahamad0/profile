@@ -106,7 +106,7 @@ export const STATIC_FALLBACK: Record<string, AIMetrics> = {
   },
   "adhan-ce": {
     projectId: "adhan-ce",
-    lastUpdated: "2026-09-20",
+    lastUpdated: "2026-10-11",
     aiContribution: 95,
     agents: [
       {
@@ -119,16 +119,16 @@ export const STATIC_FALLBACK: Record<string, AIMetrics> = {
       },
     ],
     totalTokens: 103522508,
-    totalCommits: 130,
-    linesOfCode: 13362,
+    totalCommits: 143,
+    linesOfCode: 19949,
     devCycleDays: 1,
     manualEstimateDays: 14,
     impact: "Auto-pauses media across every open browser tab at Adhan time · cross-tab prayer-focus mode",
     cycle: "1 day",
     beforeAI: "Manual prayer tracking; media kept playing during Adhan",
     afterAI: "One-click extension pauses every tab at prayer time",
-    tests: 253,
-    testSuites: 15,
+    tests: 441,
+    testSuites: 18,
   },
   tmo: {
     projectId: "tmo",

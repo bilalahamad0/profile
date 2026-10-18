@@ -408,7 +408,7 @@ export const projectsData = [
         store: "Chrome Web Store",
         status: "live",
         url: "https://chromewebstore.google.com/detail/adhan-focus-muslim-prayer/jfjknglldcdminelckmmfdbnlikiogia",
-        version: "2.1.0",
+        version: "2.1.4",
         listingName: "Adhan Focus: Muslim Prayer Times & Auto-Pause",
       },
       {
@@ -416,7 +416,7 @@ export const projectsData = [
         store: "Firefox Add-ons",
         status: "live",
         url: "https://addons.mozilla.org/en-US/firefox/addon/adhan-caster-prayer-times/",
-        version: "2.1.1",
+        version: "2.1.4",
         listingName: "Adhan Caster: Prayer Times",
       },
       {
@@ -424,7 +424,7 @@ export const projectsData = [
         store: "Edge Add-ons",
         status: "live",
         url: "https://microsoftedge.microsoft.com/addons/detail/adhan-caster-muslim-pray/kapmpaofgphfbkpkmhhiooafplhckblg",
-        version: "2.1.0",
+        version: "2.1.4",
         listingName: "Adhan Focus: Muslim Prayer Times & Auto-Pause",
       },
       {
@@ -432,14 +432,14 @@ export const projectsData = [
         store: "Opera Add-ons",
         status: "live",
         url: "https://addons.opera.com/extensions/details/adhan-focus-muslim-prayer-times-auto-pause/",
-        version: "2.1.1",
+        version: "2.1.4",
         listingName: "Adhan Focus: Muslim Prayer Times & Auto-Pause",
       },
     ] as StoreListing[],
     isAI: true,
     aiTools: ["Claude Code (Opus 4.7)"],
     aiContribution: 95,
-    impact: "Live on the Chrome Web Store, Firefox Add-ons, Edge Add-ons, and Opera Add-ons · auto-pauses media across every open tab at Adhan time · cross-tab prayer-focus mode · 253 tests, 15 suites",
+    impact: "Live on the Chrome Web Store, Firefox Add-ons, Edge Add-ons, and Opera Add-ons · auto-pauses media across every open tab at Adhan time · cross-tab prayer-focus mode · 441 tests, 18 suites",
     gradient: "from-emerald-600/20 via-emerald-500/10 to-transparent",
     accent: "emerald",
     relatedPosts: [

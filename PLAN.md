@@ -112,3 +112,4 @@ small **UX decisions** — not infrastructure.
 | 2026-09-21 | data/projects | Updated Adhan Caster (adhan-ce) store listings to v2.1.0 across Chrome, Firefox, and Edge; synchronized ai-metrics-fallback. | _this branch_ |
 | 2026-09-22 | data/projects | Updated Adhan Caster (adhan-ce) Firefox store listing to v2.1.1 (AMO approved 2026-09-21); verified Chrome (v2.1.0) and Edge (v2.1.0). | _this branch_ |
 | 2026-09-22 | data/projects | Updated Adhan Caster (adhan-ce) to v2.1.1 across all 4 browser stores (Chrome, Firefox, Edge, Opera Add-ons); updated tests to 253. | _this branch_ |
+| 2026-10-17 | data/projects | Updated Adhan Caster (adhan-ce) to v2.1.4 across all 4 browser stores (Chrome, Firefox, Edge, Opera Add-ons); synchronized ai-metrics-fallback. | _this branch_ |
