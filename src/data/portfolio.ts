@@ -439,7 +439,7 @@ export const projectsData = [
     isAI: true,
     aiTools: ["Claude Code (Opus 4.7)"],
     aiContribution: 95,
-    impact: "Live on the Chrome Web Store, Firefox Add-ons, Edge Add-ons, and Opera Add-ons · auto-pauses media across every open tab at Adhan time · cross-tab prayer-focus mode · 441 tests, 18 suites",
+    impact: "Live on the Chrome Web Store, Firefox Add-ons, Edge Add-ons, and Opera Add-ons · auto-pauses media across every open tab at Adhan time · cross-tab prayer-focus mode · 564 tests, 20 suites",
     gradient: "from-emerald-600/20 via-emerald-500/10 to-transparent",
     accent: "emerald",
     relatedPosts: [

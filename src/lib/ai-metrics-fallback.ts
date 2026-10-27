@@ -21,7 +21,7 @@ import type { AIMetrics } from "@/lib/ai-metrics";
 export const STATIC_FALLBACK: Record<string, AIMetrics> = {
   warn: {
     projectId: "warn",
-    lastUpdated: "2026-09-16",
+    lastUpdated: "2026-10-25",
     aiContribution: 88,
     agents: [
       {
@@ -50,8 +50,8 @@ export const STATIC_FALLBACK: Record<string, AIMetrics> = {
       },
     ],
     totalTokens: 291611151,
-    totalCommits: 488,
-    linesOfCode: 55004,
+    totalCommits: 576,
+    linesOfCode: 56154,
     devCycleDays: 31,
     manualEstimateDays: 93,
     impact: "Automated 100% of data ingestion and alerting",
@@ -63,7 +63,7 @@ export const STATIC_FALLBACK: Record<string, AIMetrics> = {
   },
   adhan: {
     projectId: "adhan",
-    lastUpdated: "2026-09-16",
+    lastUpdated: "2026-10-25",
     aiContribution: 92,
     agents: [
       {
@@ -92,8 +92,8 @@ export const STATIC_FALLBACK: Record<string, AIMetrics> = {
       },
     ],
     totalTokens: 440479973,
-    totalCommits: 298,
-    linesOfCode: 12948,
+    totalCommits: 329,
+    linesOfCode: 16733,
     devCycleDays: 56,
     manualEstimateDays: 168,
     impact: "Zero-touch prayer-time audio notifications with automated media-state control (Raspberry Pi + Android TV via ADB) · 10 microservices",
@@ -106,7 +106,7 @@ export const STATIC_FALLBACK: Record<string, AIMetrics> = {
   },
   "adhan-ce": {
     projectId: "adhan-ce",
-    lastUpdated: "2026-10-11",
+    lastUpdated: "2026-10-25",
     aiContribution: 95,
     agents: [
       {
@@ -119,20 +119,20 @@ export const STATIC_FALLBACK: Record<string, AIMetrics> = {
       },
     ],
     totalTokens: 103522508,
-    totalCommits: 143,
-    linesOfCode: 19949,
+    totalCommits: 152,
+    linesOfCode: 22178,
     devCycleDays: 1,
     manualEstimateDays: 14,
     impact: "Auto-pauses media across every open browser tab at Adhan time · cross-tab prayer-focus mode",
     cycle: "1 day",
     beforeAI: "Manual prayer tracking; media kept playing during Adhan",
     afterAI: "One-click extension pauses every tab at prayer time",
-    tests: 441,
-    testSuites: 18,
+    tests: 564,
+    testSuites: 20,
   },
   tmo: {
     projectId: "tmo",
-    lastUpdated: "2026-09-16",
+    lastUpdated: "2026-10-25",
     aiContribution: 75,
     agents: [
       {
@@ -153,8 +153,8 @@ export const STATIC_FALLBACK: Record<string, AIMetrics> = {
       },
     ],
     totalTokens: 133305702,
-    totalCommits: 51,
-    linesOfCode: 5655,
+    totalCommits: 60,
+    linesOfCode: 5778,
     devCycleDays: 9,
     manualEstimateDays: 36,
     impact: "Zero-touch monthly billing cycle",
@@ -166,7 +166,7 @@ export const STATIC_FALLBACK: Record<string, AIMetrics> = {
   },
   profile: {
     projectId: "profile",
-    lastUpdated: "2026-09-15",
+    lastUpdated: "2026-10-27",
     aiContribution: 85,
     agents: [
       {
@@ -195,15 +195,15 @@ export const STATIC_FALLBACK: Record<string, AIMetrics> = {
       },
     ],
     totalTokens: 421958456,
-    totalCommits: 615,
-    linesOfCode: 20341,
+    totalCommits: 657,
+    linesOfCode: 21961,
     devCycleDays: 58,
     manualEstimateDays: 76,
     impact: "Full-stack portfolio deployed to production",
     cycle: "58 active days",
     beforeAI: "Static HTML/CSS resume site",
     afterAI: "AI-native Next.js portfolio with analytics",
-    tests: 367,
-    testSuites: 23,
+    tests: 431,
+    testSuites: 30,
   },
 };
