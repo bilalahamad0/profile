@@ -8,7 +8,7 @@ export const experienceData = [
     role: "System Architect &\nTechnical QA Lead",
     company: "Stealth Mode",
     location: "Remote / Sunnyvale, CA",
-    duration: "Sep 2025 - Aug 2026",
+    duration: "Sep 2025 - Oct 2026",
     desc: "Led architecture and validation for a sensor-integration developer IDE, from a LiDAR/Radar bring-up platform through to a Unified Sensor Test Platform.",
     highlights: [
       "Built a LiDAR/Radar bring-up platform in Python with Docker/QEMU SIL (virtual-ECU) environments and a pre-validated ARM/ESP32 compatibility layer, cutting bring-up cycles by 70%.",

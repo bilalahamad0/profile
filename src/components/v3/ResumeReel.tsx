@@ -63,7 +63,7 @@ const slides: Slide[] = [
     company: "Stealth Mode",
     accent: "#818cf8",
     bg: "from-indigo-950 via-slate-950 to-black",
-    label: "STEALTH MODE · SEP 2025 – AUG 2026",
+    label: "STEALTH MODE · SEP 2025 – OCT 2026",
     title: "Stealth Mode\nSystem Architect",
     icon: <Radar className="w-10 h-10 text-indigo-400" />,
     stat: { value: "70%", label: "LiDAR/Radar Bring-Up Cycle Cut" },
