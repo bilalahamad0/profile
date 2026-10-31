@@ -391,9 +391,11 @@ export function CredentialRow({
     </div>
   );
 
-  // Specialization rows keep their <section aria-labelledby> wrapper so the
-  // page's long-standing structural selectors (and e2e tests) hold.
-  return isSpec ? (
+  // Specialization rows keep their <section aria-labelledby> wrapper only for
+  // top-level ledger specializations so the page's long-standing structural
+  // selectors (and e2e tests) hold. Coursework specializations render as <article>.
+  const isTopSpec = isSpec && credential.id.startsWith("spec-");
+  return isTopSpec ? (
     <section id={slug} aria-labelledby={headingId} className="scroll-mt-28">
       {card}
     </section>

@@ -798,13 +798,15 @@ export type LedgerGroupDef = Omit<CredentialGroupDef, "credentials"> & {
   credentials: LedgerCredential[];
 };
 
-/** A coursework row: a learning path, or a single certificate the owner chose
- *  to file as coursework rather than count. Widened from paths-only on
- *  2026-09-12 for the Claude Academy section — those six ARE certificates with
- *  public verification pages, and forcing them into LearningPathData to fit the
- *  old type would have thrown away the badge, the certificate artwork and the
- *  verify control to satisfy a shape. */
-export type CourseworkCredential = PathCredential | SingleCredential;
+export type SpecializationCredential = { kind: "specialization" } & SpecializationData;
+
+/** A coursework row: a learning path, a single certificate, or a specialization
+ *  the owner chose to file as coursework rather than count in the top ledger.
+ *  Widened to include specializations (Generative AI Leader Certification). */
+export type CourseworkCredential =
+  | PathCredential
+  | SingleCredential
+  | SpecializationCredential;
 
 /** A coursework group, and `countLabel` is mandatory. The guard that matters
  *  runs the other way and is untouched: LedgerGroupDef.credentials is
@@ -1225,15 +1227,93 @@ export const GOOGLE_SKILLS_CATEGORIES: readonly GroupCategory[] = [
   },
 ];
 
+/** Official Google Cloud Certified Generative AI Leader certification.
+ *  Uses the exact Specialization/Certification card template (matching Google AI Professional).
+ *  Rendered inside Google Skills on top of Strategic Leadership. */
+export const GEN_AI_LEADER_SPEC: SpecializationData = {
+  id: "ce-google-skills-gen-ai-leader-1951",
+  headingId: "ce-google-skills-gen-ai-leader-1951-heading",
+  testId: "coursework-courses-gen-ai-leader",
+  titleLines: ["Generative AI Leader Certification", "5-Course Path"],
+  issuer: "Google Cloud",
+  date: "2026",
+  url: "https://www.credly.com/badges/83e6a77f-b58b-4741-9de9-88b258a53fc2/public_url",
+  logo: "/logos/google.png",
+  description:
+    "A Generative AI Leader articulates the capabilities of generative AI and understands how it can benefit an organization. This path focuses on the essential skills for the Generative AI Leader role, from understanding the fundamentals of generative AI to applying it for business innovation using tools like Gemini Advanced, Gemini Notebook, and Google AI Studio.",
+  totalCourses: 5,
+  image: "/certificates/google_cloud_generative_ai_leader_thumb.jpg",
+  gradient: "from-violet-600/25 via-indigo-500/15 to-blue-600/25",
+  badgeHalo: "bg-sky-400/30",
+  badgeShadow: "drop-shadow-[0_8px_30px_rgba(56,189,248,0.55)]",
+  ribbon: { emoji: "🌟", label: "AI Skills" },
+  childrenLayout: "badges",
+  parentBadge: {
+    image: "/badges/generative-ai-leader.webp",
+    credlyUrl:
+      "https://www.credly.com/badges/83e6a77f-b58b-4741-9de9-88b258a53fc2/public_url",
+  },
+  children: [
+    {
+      step: 1,
+      title: "Gen AI: Beyond the Chatbot",
+      url: `${GOOGLE_SKILLS_PROFILE}/badges/27812324`,
+      badge: {
+        image: "/badges/google-skills/gen-ai-beyond-the-chatbot.webp",
+        credlyUrl: `${GOOGLE_SKILLS_PROFILE}/badges/27812324`,
+      },
+    },
+    {
+      step: 2,
+      title: "Gen AI: Unlock Foundational Concepts",
+      url: `${GOOGLE_SKILLS_PROFILE}/badges/27814445`,
+      badge: {
+        image: "/badges/google-skills/gen-ai-unlock-foundational-concepts.webp",
+        credlyUrl: `${GOOGLE_SKILLS_PROFILE}/badges/27814445`,
+      },
+    },
+    {
+      step: 3,
+      title: "Gen AI: Navigate the Landscape",
+      url: `${GOOGLE_SKILLS_PROFILE}/badges/27825264`,
+      badge: {
+        image: "/badges/google-skills/gen-ai-navigate-the-landscape.webp",
+        credlyUrl: `${GOOGLE_SKILLS_PROFILE}/badges/27825264`,
+      },
+    },
+    {
+      step: 4,
+      title: "Gen AI Apps: Transform Your Work",
+      url: `${GOOGLE_SKILLS_PROFILE}/badges/27846258`,
+      badge: {
+        image: "/badges/google-skills/gen-ai-apps-transform-your-work.webp",
+        credlyUrl: `${GOOGLE_SKILLS_PROFILE}/badges/27846258`,
+      },
+    },
+    {
+      step: 5,
+      title: "Gen AI Agents: Transform Your Organization",
+      url: `${GOOGLE_SKILLS_PROFILE}/badges/27847477`,
+      badge: {
+        image: "/badges/google-skills/gen-ai-agents-transform-your-organization.webp",
+        credlyUrl: `${GOOGLE_SKILLS_PROFILE}/badges/27847477`,
+      },
+    },
+  ],
+};
+
 /** THIS ARRAY'S ORDER IS THE DISPLAY ORDER, and it is the OWNER'S CHOICE: the
  *  four categories above, top to bottom, each highest-impact first —
- *  Generative AI Leader (1951) · SMB Learning Path (4020) · Google Cloud
- *  Console: Startup Essentials (4666) | Build High-Performance Multi-Agent
- *  Systems (4459) · Scale Agents Across the Enterprise (3980) · Deploy
- *  Production Ready Agents (3802) · Introduction to Agents (3546) ·
- *  Fundamentals of ADK (3473) | Beginner: Introduction to Generative AI (118) |
- *  Google Workspace with Gemini (249) · AI Boost Bites (2480) · AI for City
- *  Hall (4243). Stanford follows alone in CONTINUING_EDUCATION.
+ *  SMB Learning Path (4020) · Google Cloud Console: Startup Essentials (4666) |
+ *  Build High-Performance Multi-Agent Systems (4459) · Scale Agents Across the
+ *  Enterprise (3980) · Deploy Production Ready Agents (3802) · Introduction to
+ *  Agents (3546) · Fundamentals of ADK (3473) | Beginner: Introduction to
+ *  Generative AI (118) | Google Workspace with Gemini (249) · AI Boost Bites
+ *  (2480) · AI for City Hall (4243).
+ *
+ *  Generative AI Leader (1951) is structured as a SpecializationData (GEN_AI_LEADER_SPEC)
+ *  above and rendered through the Google AI Professional specialization template at the top
+ *  of Strategic Leadership. Stanford follows alone in CONTINUING_EDUCATION.
  *
  *  IT IS CURATED, NOT DERIVED. Nothing sorts at runtime and no `date` is read
  *  for ordering — dates carry the year only (owner, 2026-10-03), so there is
@@ -1241,47 +1321,6 @@ export const GOOGLE_SKILLS_CATEGORIES: readonly GroupCategory[] = [
  *  puts it. data.test.ts pins this array to the categories' concatenation and
  *  to EXPECTED_ORDER. */
 export const LEARNING_PATHS: readonly LearningPathData[] = [
-  {
-    // Official Google Cloud Generative AI Leader certification and prep path.
-    // Series ID: 84586, Credly badge verified.
-    id: "ce-google-skills-gen-ai-leader-1951",
-    headingId: "ce-google-skills-gen-ai-leader-1951-heading",
-    testId: "coursework-courses-gen-ai-leader",
-    titleLines: ["Generative AI Leader Certification", "6-Course Path"],
-    issuer: "Google Skills",
-    issuerShort: "Google Skills",
-    date: "2026",
-    metaSuffix: "“Google Cloud Certification”",
-    url: "https://www.skills.google/paths/1951",
-    urlLabel: "Path page",
-    urlNoun: "path",
-    logo: "/logos/google.png",
-    tile: GOOGLE_SKILLS_TILE,
-    description:
-      "A Generative AI Leader articulates the capabilities of generative AI and understands how it can benefit an organization. This path focuses on the essential skills for the Generative AI Leader role, from understanding the fundamentals of generative AI to applying it for business innovation using tools like Gemini Advanced, Gemini Notebook, and Google AI Studio.",
-    officialTitleNote:
-      "Listed by Google as “Generative AI Leader Certification”, official Google Cloud certification.",
-    totalCourses: 6,
-    unitNoun: "Courses",
-    gradient: "from-violet-600/20 via-indigo-500/12 to-blue-600/20",
-    aiSkills: true,
-    coursesLayout: "badges",
-    courses: [
-      {
-        step: 1,
-        title: "Generative AI Leader Certification",
-        badge: credlyBadge(
-          "83e6a77f-b58b-4741-9de9-88b258a53fc2",
-          "generative-ai-leader",
-        ),
-      },
-      { step: 2, title: "Gen AI: Beyond the Chatbot", badge: gsBadge(27812324, "gen-ai-beyond-the-chatbot") },
-      { step: 3, title: "Gen AI: Unlock Foundational Concepts", badge: gsBadge(27814445, "gen-ai-unlock-foundational-concepts") },
-      { step: 4, title: "Gen AI: Navigate the Landscape", badge: gsBadge(27825264, "gen-ai-navigate-the-landscape") },
-      { step: 5, title: "Gen AI Apps: Transform Your Work", badge: gsBadge(27846258, "gen-ai-apps-transform-your-work") },
-      { step: 6, title: "Gen AI Agents: Transform Your Organization", badge: gsBadge(27847477, "gen-ai-agents-transform-your-organization") },
-    ],
-  },
   {
     id: "ce-google-skills-smb-4020",
     headingId: "ce-google-skills-smb-4020-heading",
@@ -2185,6 +2224,20 @@ const totalUnits = (paths: readonly LearningPathData[]) =>
   paths.reduce((n, p) => n + p.totalCourses, 0);
 const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
 
+export const GOOGLE_SKILLS_CREDENTIALS: CourseworkCredential[] = [
+  { kind: "specialization", ...GEN_AI_LEADER_SPEC },
+  ...LEARNING_PATHS.map(asPath),
+];
+
+const distinctGoogleBadges = new Set([
+  ...LEARNING_PATHS.flatMap((p) =>
+    p.courses.flatMap((c) =>
+      c.badge && c.badge.isVerifiable !== false ? [c.badge.url] : [],
+    ),
+  ),
+  ...GEN_AI_LEADER_SPEC.children.flatMap((c) => (c.badge ? [c.badge.credlyUrl] : [])),
+]).size;
+
 /** Coursework groups — practical completed courses and paths.
  *  Order: Claude Academy → Google Skills → Continuing Education. */
 export const COURSEWORK_GROUPS: CourseworkGroupDef[] = [
@@ -2207,13 +2260,13 @@ export const COURSEWORK_GROUPS: CourseworkGroupDef[] = [
     title: "Google Skills",
     icon: GraduationCap,
     accent: COURSEWORK_ACCENT,
-    countLabel: `${plural(LEARNING_PATHS.length, "learning path", "learning paths")} · ${plural(
-      distinctBadges(LEARNING_PATHS),
+    countLabel: `${plural(GOOGLE_SKILLS_CREDENTIALS.length, "learning path", "learning paths")} · ${plural(
+      distinctGoogleBadges,
       "course badge",
       "course badges",
     )}`,
     categories: GOOGLE_SKILLS_CATEGORIES,
-    credentials: LEARNING_PATHS.map(asPath),
+    credentials: GOOGLE_SKILLS_CREDENTIALS,
   },
   {
     id: "continuing-education",
