@@ -47,7 +47,7 @@ export default function CertificationsPage() {
         <nav
           aria-label="Featured credential badges"
           data-testid="featured-badges-row"
-          className="mx-auto mt-8 grid w-full max-w-3xl grid-cols-4 items-start justify-items-center gap-2 sm:gap-6 md:gap-8"
+          className="mx-auto mt-8 grid w-full max-w-4xl grid-cols-4 items-start justify-items-center gap-2 sm:gap-6 md:gap-8"
         >
           {FEATURED_BADGES.map((badge) => (
             <a
@@ -55,7 +55,7 @@ export default function CertificationsPage() {
               href={`#${badge.slug}`}
               title={`${badge.title} — ${badge.issuer}`}
               aria-label={`Jump to ${badge.title} credential card`}
-              className="group flex flex-col items-center gap-1.5 sm:gap-2 p-1 sm:p-2 rounded-2xl transition-transform duration-300 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
+              className="group flex w-full flex-col items-center gap-1.5 sm:gap-2 p-1 sm:p-2 rounded-2xl transition-transform duration-300 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
             >
               <div className="relative h-14 w-14 sm:h-20 sm:w-20 md:h-22 md:w-22 shrink-0 transition-transform duration-300 group-hover:scale-110">
                 <span
@@ -73,7 +73,7 @@ export default function CertificationsPage() {
                   className={cn("relative object-contain", badge.shadow)}
                 />
               </div>
-              <span className="text-center text-[10px] sm:text-xs font-semibold leading-tight text-ink/75 transition-colors group-hover:text-ink line-clamp-2">
+              <span className="text-center text-[10px] sm:text-xs font-semibold leading-tight text-ink/75 transition-colors group-hover:text-ink break-words">
                 {badge.title}
               </span>
             </a>
