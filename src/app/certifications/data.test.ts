@@ -9,7 +9,9 @@ import {
   COURSEWORK_GROUPS,
   CREDENTIAL_GROUPS,
   GENERAL_CERTIFICATES,
+  GEN_AI_LEADER_SPEC,
   GOOGLE_SKILLS_CATEGORIES,
+  GOOGLE_SKILLS_CREDENTIALS,
   LEARNING_PATHS,
   SPECIALIZATIONS,
   credentialSlug,
@@ -77,7 +79,6 @@ const CREDLY_BADGE_URLS = [
   "https://www.credly.com/badges/97b82f44-68ec-4c85-8847-4c488e076a9a/public_url",
   "https://www.credly.com/badges/d1393a27-6858-4ce9-96a6-eb07a5d8578b/public_url",
   "https://www.credly.com/badges/8487b712-c3c4-44ef-bf2a-ca537dc1d822/public_url",
-  "https://www.credly.com/badges/83e6a77f-b58b-4741-9de9-88b258a53fc2/public_url",
 ];
 const GS_PROFILE =
   "https://www.skills.google/public_profiles/aece174b-451d-4d6f-928d-6def28946025";
@@ -111,15 +112,14 @@ const PRO_CERT_GRID_POSITIONS = [
   "col-start-4 col-end-6",
 ];
 
-/** The CURATED top-to-bottom order of the coursework cards — the owner's
+/** The CURATED top-to-bottom order of the coursework paths — the owner's
  *  choice, dated 2026-09-11 (Google Skills/Stanford) and 2026-09-15 (Claude Academy).
  *  It is NOT chronological and must never be re-derived from a completion date. */
 const EXPECTED_ORDER = [
   ...CLAUDE_ACADEMY_ORDER,
-  // Google Skills, by the owner's four categories, each highest-impact first
+  // Google Skills paths, by the owner's four categories, each highest-impact first
   // (2026-10-03/04/10-07).
   // Strategic Leadership, Digital Transformation & Startup Operations
-  "ce-google-skills-gen-ai-leader-1951",
   "ce-google-skills-smb-4020",
   "ce-google-skills-startup-essentials-4666",
   // Agentic Engineering & Multi-Agent Ecosystems (GEAR Program)
@@ -135,6 +135,21 @@ const EXPECTED_ORDER = [
   "ce-google-skills-ai-boost-bites-2480",
   "ce-google-skills-city-hall-4243",
   "ce-stanford-xee100",
+];
+
+const EXPECTED_GOOGLE_SKILLS_CREDENTIALS = [
+  "ce-google-skills-gen-ai-leader-1951",
+  "ce-google-skills-smb-4020",
+  "ce-google-skills-startup-essentials-4666",
+  "ce-google-skills-multi-agent-4459",
+  "ce-google-skills-scale-agents-3980",
+  "ce-google-skills-deploy-agents-3802",
+  "ce-google-skills-agents-3546",
+  "ce-google-skills-adk-3473",
+  "ce-google-skills-beginner-gen-ai-118",
+  "ce-google-skills-workspace-gemini-249",
+  "ce-google-skills-ai-boost-bites-2480",
+  "ce-google-skills-city-hall-4243",
 ];
 const byId = (id: string) => ALL_COURSEWORK.find((e) => e.id === id);
 const badged = ALL_COURSEWORK.flatMap((entry) =>
@@ -272,7 +287,7 @@ describe("coursework is never counted as a credential", () => {
       ...GENERAL_CERTIFICATES,
       ...ALL_COURSEWORK,
     ].filter((c) => c.aiSkills === true);
-    expect(flagged).toHaveLength(18);
+    expect(flagged).toHaveLength(17);
   });
 
   it("leaves no orphan decagon and no trace of the superseded Skilljar thumbnails", () => {
@@ -292,7 +307,7 @@ describe("coursework is never counted as a credential", () => {
     const singleIds = [...AI_CERTIFICATES, ...GENERAL_CERTIFICATES].map((c) => c.id);
     const specIds = SPECIALIZATIONS.map((s) => s.id);
     const schemaTitles = certifications.map((c) => c.title);
-    expect(ALL_COURSEWORK).toHaveLength(17);
+    expect(ALL_COURSEWORK).toHaveLength(16);
     for (const entry of ALL_COURSEWORK) {
       expect(ledgerSlugs).not.toContain(entry.id);
       expect(ledgerSlugs).not.toContain(`cert-${entry.id}`);
@@ -333,9 +348,9 @@ describe("coursework is never counted as a credential", () => {
     ]);
     for (const g of COURSEWORK_GROUPS) {
       expect(g.id.startsWith("group-")).toBe(false);
-      // All coursework groups are learning paths.
+      // Coursework groups contain learning paths, and Google Skills also contains the Generative AI Leader specialization.
       const kinds = new Set(g.credentials.map((c) => c.kind));
-      expect([...kinds]).toEqual(["path"]);
+      expect([...kinds].every((k) => ["path", "specialization"].includes(k))).toBe(true);
     }
   });
 
@@ -355,7 +370,11 @@ describe("coursework is never counted as a credential", () => {
   it("slugs the coursework rows by their bare ids, with no collisions anywhere", () => {
     const ledgerSlugs = CREDENTIAL_GROUPS.flatMap((g) => g.credentials.map(credentialSlug));
     const courseworkSlugs = COURSEWORK_GROUPS.flatMap((g) => g.credentials.map(credentialSlug));
-    expect(courseworkSlugs).toEqual(ALL_COURSEWORK.map((p) => p.id));
+    expect(courseworkSlugs).toEqual([
+      ...CLAUDE_ACADEMY_PATHS.map((p) => p.id),
+      ...GOOGLE_SKILLS_CREDENTIALS.map((p) => p.id),
+      ...CONTINUING_EDUCATION.map((p) => p.id),
+    ]);
     const all = [...ledgerSlugs, ...courseworkSlugs];
     expect(new Set(all).size).toBe(all.length);
   });
@@ -397,7 +416,7 @@ describe("coursework is never counted as a credential", () => {
     // at runtime and no date is read.
     expect(ALL_COURSEWORK.map((e) => e.id)).toEqual(EXPECTED_ORDER);
     expect(CLAUDE_ACADEMY_PATHS.map((e) => e.id)).toEqual(EXPECTED_ORDER.slice(0, 4));
-    expect(LEARNING_PATHS.map((e) => e.id)).toEqual(EXPECTED_ORDER.slice(4, 16));
+    expect(LEARNING_PATHS.map((e) => e.id)).toEqual(EXPECTED_ORDER.slice(4, 15));
     expect(CONTINUING_EDUCATION.map((e) => e.id)).toEqual(["ce-stanford-xee100"]);
   });
 });
@@ -429,7 +448,7 @@ describe("the Google Skills categories", () => {
     // Concatenated, the categories ARE the array order: no path left out (it
     // would not render), none in two categories, none that does not exist.
     expect(GOOGLE_SKILLS_CATEGORIES.flatMap((c) => c.ids)).toEqual(
-      LEARNING_PATHS.map((p) => p.id),
+      GOOGLE_SKILLS_CREDENTIALS.map((p) => p.id),
     );
     expect(GOOGLE_SKILLS_CATEGORIES.every((c) => c.ids.length > 0)).toBe(true);
   });
@@ -461,18 +480,18 @@ describe("the three coursework group headers", () => {
   });
 
   it("count DISTINCT badge pages, not badge references", () => {
-    // 114 references resolve to 80 distinct badge pages for Google Skills (4020
+    // 108 references resolve to 79 distinct badge pages for Google Skills (4020
     // shares four courses with 249 and three with 2480; 4243 shares ten
     // courses; Agent Fundamentals sits in 4020, 3546 and 3473; Gen AI Agents
-    // sits in 1951, 4020 and 3980), plus 11 verifiable for Claude Academy.
-    expect(badged).toHaveLength(128);
-    expect(new Set(badged.map((b) => b.badge.url)).size).toBe(94);
+    // sits in 4020 and 3980), plus 11 verifiable for Claude Academy.
+    expect(badged).toHaveLength(122);
+    expect(new Set(badged.map((b) => b.badge.url)).size).toBe(93);
     const googleEntries = LEARNING_PATHS.reduce((n, e) => n + e.courses.length, 0);
-    expect(googleEntries).toBe(114);
+    expect(googleEntries).toBe(108);
     const claudeEntries = CLAUDE_ACADEMY_PATHS.reduce((n, e) => n + e.courses.length, 0);
     expect(claudeEntries).toBe(14);
     expect(COURSEWORK_GROUPS[0].countLabel).toBe("4 learning paths · 11 course badges");
-    expect(COURSEWORK_GROUPS[1].countLabel).toBe("12 learning paths · 80 course badges");
+    expect(COURSEWORK_GROUPS[1].countLabel).toBe("12 learning paths · 79 course badges");
     expect(COURSEWORK_GROUPS[2].countLabel).toBe("1 short course · 5 modules");
   });
 
@@ -509,8 +528,8 @@ describe("the row template's own fields are populated for every card", () => {
       headings.add(e.headingId);
       testIds.add(e.testId);
     }
-    expect(headings.size).toBe(17);
-    expect(testIds.size).toBe(17);
+    expect(headings.size).toBe(16);
+    expect(testIds.size).toBe(16);
   });
 
   it("keeps the chip noun and the unit count honest on every card", () => {
@@ -533,7 +552,6 @@ describe("the row template's own fields are populated for every card", () => {
       "ce-google-skills-adk-3473": [3, "Courses", 3],
       "ce-google-skills-agents-3546": [3, "Courses", 3],
       "ce-google-skills-smb-4020": [13, "Courses", 13],
-      "ce-google-skills-gen-ai-leader-1951": [6, "Courses", 6],
       "ce-stanford-xee100": [5, "Modules", 5],
     });
   });
@@ -614,7 +632,6 @@ describe("course-level badges", () => {
       "ce-google-skills-adk-3473": [3, 3],
       "ce-google-skills-agents-3546": [3, 3],
       "ce-google-skills-smb-4020": [13, 13],
-      "ce-google-skills-gen-ai-leader-1951": [6, 6],
       "ce-stanford-xee100": [5, 0],
     });
   });
@@ -704,7 +721,7 @@ describe("course-level badges", () => {
     }
   });
 
-  it("links exactly six badges at Credly, everything else at Google Skills, kind independent", () => {
+  it("links exactly five badges at Credly, everything else at Google Skills, kind independent", () => {
     // `kind` (what the ARTWORK says the award is) and `provider` (which
     // platform's copy is linked) are separate fields and are pinned
     // separately. This test used to assert that the skill-badge set equalled
@@ -736,7 +753,7 @@ describe("course-level badges", () => {
     }
   });
 
-  it("displays all six Credly badges as art, not merely as links", () => {
+  it("displays all five Credly badges as art, not merely as links", () => {
     // The owner asked for these explicitly. Credly art sits flat in /badges/,
     // beside the ledger's other Credly art.
     const credlyImages = badged
@@ -745,7 +762,6 @@ describe("course-level badges", () => {
     expect([...new Set(credlyImages)].sort()).toEqual([
       "/badges/create-your-first-gemini-enterprise-application.webp",
       "/badges/deploy-multi-agent-architectures.webp",
-      "/badges/generative-ai-leader.webp",
       "/badges/orchestrate-multi-agent-workflows-with-gemini-enterprise.webp",
       "/badges/prompt-design-in-vertex-ai.webp",
       "/badges/store-process-and-manage-data-on-google-cloud-console.webp",
@@ -775,8 +791,8 @@ describe("course-level badges", () => {
       if (seen) expect(seen).toBe(badge.image);
       else imageByUrl.set(badge.url, badge.image);
     }
-    expect(imageByUrl.size).toBe(94);
-    expect(new Set(imageByUrl.values()).size).toBe(94);
+    expect(imageByUrl.size).toBe(93);
+    expect(new Set(imageByUrl.values()).size).toBe(93);
     // 27855015 was withheld while path 4459 was unfinished. The path completed
     // on 2026-09-11, so its three badges are now on the page — this asserts
     // they arrived, and with the art the scrape recorded for them.
@@ -805,9 +821,6 @@ describe("course-level badges", () => {
     expect(imageByUrl.get(CREDLY_BADGE_URLS[4])).toBe(
       "/badges/orchestrate-multi-agent-workflows-with-gemini-enterprise.webp",
     );
-    expect(imageByUrl.get(CREDLY_BADGE_URLS[5])).toBe(
-      "/badges/generative-ai-leader.webp",
-    );
     expect(imageByUrl.get(`${GS_PROFILE}/badges/28674224`)).toBe(
       "/badges/google-skills/human-centered-ai.webp",
     );
@@ -835,33 +848,64 @@ describe("course-level badges", () => {
 });
 
 describe("the Generative AI Leader card", () => {
-  const leader = byId("ce-google-skills-gen-ai-leader-1951");
-
-  it("is headed 'Generative AI Leader Certification'", () => {
-    expect(leader?.titleLines[0]).toBe("Generative AI Leader Certification");
-  });
-
-  it("carries Google's 'Google Cloud Certification' framing in the collapsed meta line", () => {
-    expect(leader?.metaSuffix).toBe("“Google Cloud Certification”");
-    // Exactly one card carries a metaSuffix, and it is not a disclaimer.
-    expect(ALL_COURSEWORK.filter((e) => e.metaSuffix !== undefined)).toHaveLength(1);
-  });
-
-  it("keeps Google's official path title searchable as an attributed citation", () => {
-    expect(leader?.officialTitleNote).toBe(
-      "Listed by Google as “Generative AI Leader Certification”, official Google Cloud certification.",
-    );
-    // Exactly one card cites an official title.
-    expect(ALL_COURSEWORK.filter((e) => e.officialTitleNote !== undefined)).toHaveLength(1);
-  });
-
-  it("has the verified Credly badge as course #1 on top of the list", () => {
-    expect(leader?.courses[0].title).toBe("Generative AI Leader Certification");
-    expect(leader?.courses[0].badge?.provider).toBe("Credly");
-    expect(leader?.courses[0].badge?.url).toBe(
+  it("uses the Specialization template matching Google AI Professional", () => {
+    expect(GEN_AI_LEADER_SPEC.id).toBe("ce-google-skills-gen-ai-leader-1951");
+    expect(GEN_AI_LEADER_SPEC.headingId).toBe("ce-google-skills-gen-ai-leader-1951-heading");
+    expect(GEN_AI_LEADER_SPEC.testId).toBe("coursework-courses-gen-ai-leader");
+    expect(GEN_AI_LEADER_SPEC.titleLines).toEqual([
+      "Generative AI Leader Certification",
+      "5-Course Path",
+    ]);
+    expect(GEN_AI_LEADER_SPEC.issuer).toBe("Google Cloud");
+    expect(GEN_AI_LEADER_SPEC.date).toBe("2026");
+    expect(GEN_AI_LEADER_SPEC.url).toBe(
       "https://www.credly.com/badges/83e6a77f-b58b-4741-9de9-88b258a53fc2/public_url",
     );
-    expect(leader?.courses[0].badge?.image).toBe("/badges/generative-ai-leader.webp");
+    expect(GEN_AI_LEADER_SPEC.totalCourses).toBe(5);
+    expect(GEN_AI_LEADER_SPEC.childrenLayout).toBe("badges");
+    expect(GEN_AI_LEADER_SPEC.ribbon).toEqual({ emoji: "🌟", label: "AI Skills" });
+    expect(GEN_AI_LEADER_SPEC.image).toBe(
+      "/certificates/google_cloud_generative_ai_leader_thumb.jpg",
+    );
+    expect(GEN_AI_LEADER_SPEC.parentBadge).toEqual({
+      image: "/badges/generative-ai-leader.webp",
+      credlyUrl:
+        "https://www.credly.com/badges/83e6a77f-b58b-4741-9de9-88b258a53fc2/public_url",
+    });
+    expect(
+      existsSync(
+        path.resolve(PUBLIC_DIR, "certificates/google_cloud_generative_ai_leader_thumb.jpg"),
+      ),
+    ).toBe(true);
+    expect(existsSync(path.resolve(PUBLIC_DIR, "badges/generative-ai-leader.webp"))).toBe(true);
+  });
+
+  it("lists all 5 child courses with their verified Google Skills badges", () => {
+    expect(GEN_AI_LEADER_SPEC.children).toHaveLength(5);
+    expect(GEN_AI_LEADER_SPEC.children.map((c) => c.title)).toEqual([
+      "Gen AI: Beyond the Chatbot",
+      "Gen AI: Unlock Foundational Concepts",
+      "Gen AI: Navigate the Landscape",
+      "Gen AI Apps: Transform Your Work",
+      "Gen AI Agents: Transform Your Organization",
+    ]);
+    for (const child of GEN_AI_LEADER_SPEC.children) {
+      expect(child.badge).toBeDefined();
+      expect(child.badge?.image).toMatch(/^\/badges\/google-skills\//);
+      expect(child.badge?.credlyUrl).toMatch(BADGE_URL_BY_PROVIDER["Google Skills"]);
+      expect(
+        existsSync(path.resolve(PUBLIC_DIR, child.badge!.image.replace(/^\//, ""))),
+      ).toBe(true);
+    }
+  });
+
+  it("is placed at the top of Strategic Leadership inside Google Skills", () => {
+    const strategicLeadership = GOOGLE_SKILLS_CATEGORIES.find(
+      (c) => c.id === "strategic-leadership",
+    );
+    expect(strategicLeadership?.ids[0]).toBe("ce-google-skills-gen-ai-leader-1951");
+    expect(GOOGLE_SKILLS_CREDENTIALS[0].id).toBe("ce-google-skills-gen-ai-leader-1951");
+    expect(GOOGLE_SKILLS_CREDENTIALS[0].kind).toBe("specialization");
   });
 });
 

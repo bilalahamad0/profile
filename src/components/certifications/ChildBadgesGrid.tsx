@@ -65,15 +65,23 @@ export const ChildBadgesGrid = ({ spec }: { spec: SpecializationData }) => {
                   step: child.step,
                 })
               }
-              aria-label={`View ${child.title} verified badge on Credly`}
-              className="group/badge relative h-[76px] w-[76px] shrink-0 rounded-full transition-transform duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70 md:h-[112px] md:w-[112px]"
+              aria-label={`View ${child.title} verified badge${badge.credlyUrl.includes("credly.com") ? " on Credly" : ""}`}
+              className={cn(
+                "group/badge relative h-[76px] w-[76px] shrink-0 transition-transform duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70 md:h-[112px] md:w-[112px]",
+                badge.image.includes("/google-skills/")
+                  ? "overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-line/10 p-1"
+                  : "rounded-full",
+              )}
             >
               <Image
                 src={badge.image}
                 alt={`${child.title} verified badge`}
                 fill
                 sizes="(max-width: 768px) 76px, 112px"
-                className="object-contain drop-shadow-[0_4px_16px_rgba(16,185,129,0.25)]"
+                className={cn(
+                  "object-contain",
+                  !badge.image.includes("/google-skills/") && "drop-shadow-[0_4px_16px_rgba(16,185,129,0.25)]",
+                )}
               />
             </button>
             <button
@@ -86,7 +94,7 @@ export const ChildBadgesGrid = ({ spec }: { spec: SpecializationData }) => {
                   specialization: spec.titleLines[0],
                 })
               }
-              aria-label={`Verify ${child.title} certificate on Coursera`}
+              aria-label={`Verify ${child.title} certificate${spec.issuer.includes("Coursera") ? " on Coursera" : ""}`}
               className={cn(
                 TILE_PILL,
                 "group/verify hover:border-emerald-300/60 hover:bg-emerald-500/20 hover:text-emerald-800 dark:hover:text-emerald-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70",

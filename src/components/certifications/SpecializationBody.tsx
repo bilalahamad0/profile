@@ -41,7 +41,7 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
               specialization: spec.titleLines[0],
             })
           }
-          aria-label={`View ${spec.titleLines[0]} certificate on Coursera`}
+          aria-label={`View ${spec.titleLines[0]} certificate${spec.issuer.includes("Coursera") ? " on Coursera" : ""}`}
           className="group/thumb relative block aspect-[1.4/1] w-full cursor-pointer overflow-hidden rounded-2xl border border-line/10 bg-black/20 ring-1 ring-line/10 transition-transform duration-300 hover:scale-[1.01]"
         >
           <Image
@@ -101,7 +101,7 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
                 specialization: spec.titleLines[0],
               })
             }
-            aria-label={`View ${spec.titleLines[0]} details on Coursera`}
+            aria-label={`View ${spec.titleLines[0]} details${spec.issuer.includes("Coursera") ? " on Coursera" : ""}`}
             className="group/details inline-flex shrink-0 items-center gap-1 t-label font-semibold tracking-wider text-ink/60 transition-colors hover:text-blue-700 focus:outline-none focus-visible:text-blue-700 dark:hover:text-blue-400 dark:focus-visible:text-blue-400"
           >
             VIEW DETAILS
