@@ -948,6 +948,59 @@ export const DEFAULT_OPEN_IDS = [
   "ce-google-skills-gen-ai-leader-1951",
 ] as const;
 
+export interface FeaturedBadge {
+  id: string;
+  slug: string;
+  title: string;
+  issuer: string;
+  image: string;
+  halo: string;
+  shadow: string;
+}
+
+/** Featured showcase badges rendered prominently in the header hero row,
+ *  ordered left to right: Generative AI Leader, Google AI Professional,
+ *  Google Project Management Professional, ISTQB Foundation Level.
+ *  Each badge hyperlinks down to its respective card. */
+export const FEATURED_BADGES: readonly FeaturedBadge[] = [
+  {
+    id: "gen-ai-leader",
+    slug: "ce-google-skills-gen-ai-leader-1951",
+    title: "Generative AI Leader",
+    issuer: "Google Cloud",
+    image: "/badges/generative-ai-leader.webp",
+    halo: "bg-sky-400/30",
+    shadow: "drop-shadow-[0_8px_24px_rgba(56,189,248,0.45)]",
+  },
+  {
+    id: "ai-professional",
+    slug: "spec-google-ai-professional",
+    title: "Google AI Professional",
+    issuer: "Google",
+    image: "/badges/google-ai-professional-certificate.png",
+    halo: "bg-sky-400/30",
+    shadow: "drop-shadow-[0_8px_24px_rgba(56,189,248,0.45)]",
+  },
+  {
+    id: "project-management",
+    slug: "spec-google-project-management",
+    title: "Google Project Management Professional",
+    issuer: "Google",
+    image: "/badges/google-project-management-certificate.png",
+    halo: "bg-amber-300/35",
+    shadow: "drop-shadow-[0_8px_24px_rgba(245,158,11,0.45)]",
+  },
+  {
+    id: "istqb",
+    slug: "cert-g-1",
+    title: "ISTQB Foundation Level",
+    issuer: "ISTQB®",
+    image: "/badges/ISTQB-CTFL-badge.png",
+    halo: "bg-blue-500/30",
+    shadow: "drop-shadow-[0_6px_20px_rgba(37,99,235,0.45)]",
+  },
+] as const;
+
 // --- SUMMARY STATS (always computed, never hardcoded) ---
 
 const ALL_SINGLES = [...AI_CERTIFICATES, ...GENERAL_CERTIFICATES];

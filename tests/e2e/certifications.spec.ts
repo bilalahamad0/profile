@@ -124,6 +124,30 @@ test.describe('Certifications — Page-level layout', () => {
     await expect(page.getByText('Google Specializations', { exact: true })).toBeVisible();
   });
 
+  test('featured badges row renders between the header description and stats strip in exact left-to-right order', async ({ page }) => {
+    await page.goto('/certifications');
+
+    const featuredNav = page.getByTestId('featured-badges-row');
+    await expect(featuredNav).toBeVisible();
+
+    const badgeLinks = featuredNav.locator('a');
+    await expect(badgeLinks).toHaveCount(4);
+
+    const expectedBadges = [
+      { href: '#ce-google-skills-gen-ai-leader-1951', title: 'Generative AI Leader' },
+      { href: '#spec-google-ai-professional', title: 'Google AI Professional' },
+      { href: '#spec-google-project-management', title: 'Google Project Management Professional' },
+      { href: '#cert-g-1', title: 'ISTQB Foundation Level' },
+    ];
+
+    for (let i = 0; i < expectedBadges.length; i++) {
+      const link = badgeLinks.nth(i);
+      await expect(link).toHaveAttribute('href', expectedBadges[i].href);
+      await expect(link).toContainText(expectedBadges[i].title);
+      await expect(link.locator('img')).toBeVisible();
+    }
+  });
+
   test('specialization sections keep their aria-labelledby wrappers; AI group orders Pro → Essentials → Prompting, PM lives in Leadership', async ({ page }) => {
     await page.goto('/certifications');
 

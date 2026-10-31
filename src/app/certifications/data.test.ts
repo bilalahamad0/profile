@@ -9,6 +9,7 @@ import {
   COURSEWORK_GROUPS,
   CREDENTIAL_GROUPS,
   DEFAULT_OPEN_IDS,
+  FEATURED_BADGES,
   GENERAL_CERTIFICATES,
   GEN_AI_LEADER_SPEC,
   GOOGLE_SKILLS_CATEGORIES,
@@ -916,6 +917,36 @@ describe("the Generative AI Leader card", () => {
       "spec-google-project-management",
       "ce-google-skills-gen-ai-leader-1951",
     ]);
+  });
+});
+
+describe("FEATURED_BADGES showcase row", () => {
+  it("contains exactly 4 badges in the owner's specified left-to-right order", () => {
+    expect(FEATURED_BADGES).toHaveLength(4);
+    expect(FEATURED_BADGES.map((b) => b.title)).toEqual([
+      "Generative AI Leader",
+      "Google AI Professional",
+      "Google Project Management Professional",
+      "ISTQB Foundation Level",
+    ]);
+  });
+
+  it("hyperlinks each badge to its respective credential card slug", () => {
+    expect(FEATURED_BADGES.map((b) => b.slug)).toEqual([
+      "ce-google-skills-gen-ai-leader-1951",
+      "spec-google-ai-professional",
+      "spec-google-project-management",
+      "cert-g-1",
+    ]);
+  });
+
+  it("points to existing badge images in public/badges/", () => {
+    for (const badge of FEATURED_BADGES) {
+      expect(
+        existsSync(path.resolve(PUBLIC_DIR, badge.image.replace(/^\//, ""))),
+        `Image missing for ${badge.title}: ${badge.image}`
+      ).toBe(true);
+    }
   });
 });
 
