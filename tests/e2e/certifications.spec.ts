@@ -340,7 +340,7 @@ test.describe('Certifications — Google AI Professional row (default open)', ()
 
   test('AI Skills ribbon renders on the expanded thumbnail', async ({ page }) => {
     await page.goto('/certifications');
-    await expect(page.locator(SECTION).getByText('AI Skills', { exact: true })).toBeVisible();
+    await expect(page.locator(SECTION).getByText('AI Skills', { exact: true }).first()).toBeVisible();
   });
 
   test('child badge click opens its Credly URL; VERIFY linker opens the course verify URL', async ({ page }) => {
