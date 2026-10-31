@@ -193,6 +193,7 @@ export type Certification = {
 // in Action, AI Fluency) were listed here while they were counted credentials
 // and were removed with the move — not dropped for space.
 export const certifications: Certification[] = [
+  { title: "Google Cloud Certified Generative AI Leader (2026)", category: "ai" },
   { title: "Google AI Professional (2026)", category: "ai" },
   { title: "Google AI Essentials (2026)", category: "ai" },
   { title: "Google Prompting Essentials (2026)", category: "ai" },

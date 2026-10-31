@@ -77,6 +77,7 @@ const CREDLY_BADGE_URLS = [
   "https://www.credly.com/badges/97b82f44-68ec-4c85-8847-4c488e076a9a/public_url",
   "https://www.credly.com/badges/d1393a27-6858-4ce9-96a6-eb07a5d8578b/public_url",
   "https://www.credly.com/badges/8487b712-c3c4-44ef-bf2a-ca537dc1d822/public_url",
+  "https://www.credly.com/badges/83e6a77f-b58b-4741-9de9-88b258a53fc2/public_url",
 ];
 const GS_PROFILE =
   "https://www.skills.google/public_profiles/aece174b-451d-4d6f-928d-6def28946025";
@@ -117,16 +118,16 @@ const EXPECTED_ORDER = [
   ...CLAUDE_ACADEMY_ORDER,
   // Google Skills, by the owner's four categories, each highest-impact first
   // (2026-10-03/04/10-07).
+  // Strategic Leadership, Digital Transformation & Startup Operations
+  "ce-google-skills-gen-ai-leader-1951",
+  "ce-google-skills-smb-4020",
+  "ce-google-skills-startup-essentials-4666",
   // Agentic Engineering & Multi-Agent Ecosystems (GEAR Program)
   "ce-google-skills-multi-agent-4459",
   "ce-google-skills-scale-agents-3980",
   "ce-google-skills-deploy-agents-3802",
   "ce-google-skills-agents-3546",
   "ce-google-skills-adk-3473",
-  // Strategic Leadership, Digital Transformation & Startup Operations
-  "ce-google-skills-gen-ai-leader-1951",
-  "ce-google-skills-smb-4020",
-  "ce-google-skills-startup-essentials-4666",
   // Generative AI Foundations & Prompt Engineering
   "ce-google-skills-beginner-gen-ai-118",
   // Applied Productivity & Industry-Specific AI Solutions
@@ -405,12 +406,12 @@ describe("the Google Skills categories", () => {
   it("are the owner's four, verbatim and in order", () => {
     expect(GOOGLE_SKILLS_CATEGORIES.map((c) => [c.title, c.description])).toEqual([
       [
-        "Agentic Engineering & Multi-Agent Ecosystems (GEAR Program)",
-        "Designing, orchestrating, deploying, and scaling autonomous agent networks using the Agent Development Kit (ADK), Model Context Protocol (MCP), and Agent-to-Agent (A2A) protocol.",
-      ],
-      [
         "Strategic Leadership, Digital Transformation & Startup Operations",
         "Executive AI vision, business model transformation, cloud digital literacy, startup resource management, and organizational enablement.",
+      ],
+      [
+        "Agentic Engineering & Multi-Agent Ecosystems (GEAR Program)",
+        "Designing, orchestrating, deploying, and scaling autonomous agent networks using the Agent Development Kit (ADK), Model Context Protocol (MCP), and Agent-to-Agent (A2A) protocol.",
       ],
       [
         "Generative AI Foundations & Prompt Engineering",
@@ -460,18 +461,18 @@ describe("the three coursework group headers", () => {
   });
 
   it("count DISTINCT badge pages, not badge references", () => {
-    // 113 references resolve to 79 distinct badge pages for Google Skills (4020
+    // 114 references resolve to 80 distinct badge pages for Google Skills (4020
     // shares four courses with 249 and three with 2480; 4243 shares ten
     // courses; Agent Fundamentals sits in 4020, 3546 and 3473; Gen AI Agents
     // sits in 1951, 4020 and 3980), plus 11 verifiable for Claude Academy.
-    expect(badged).toHaveLength(127);
-    expect(new Set(badged.map((b) => b.badge.url)).size).toBe(93);
+    expect(badged).toHaveLength(128);
+    expect(new Set(badged.map((b) => b.badge.url)).size).toBe(94);
     const googleEntries = LEARNING_PATHS.reduce((n, e) => n + e.courses.length, 0);
-    expect(googleEntries).toBe(113);
+    expect(googleEntries).toBe(114);
     const claudeEntries = CLAUDE_ACADEMY_PATHS.reduce((n, e) => n + e.courses.length, 0);
     expect(claudeEntries).toBe(14);
     expect(COURSEWORK_GROUPS[0].countLabel).toBe("4 learning paths · 11 course badges");
-    expect(COURSEWORK_GROUPS[1].countLabel).toBe("12 learning paths · 79 course badges");
+    expect(COURSEWORK_GROUPS[1].countLabel).toBe("12 learning paths · 80 course badges");
     expect(COURSEWORK_GROUPS[2].countLabel).toBe("1 short course · 5 modules");
   });
 
@@ -532,7 +533,7 @@ describe("the row template's own fields are populated for every card", () => {
       "ce-google-skills-adk-3473": [3, "Courses", 3],
       "ce-google-skills-agents-3546": [3, "Courses", 3],
       "ce-google-skills-smb-4020": [13, "Courses", 13],
-      "ce-google-skills-gen-ai-leader-1951": [5, "Courses", 5],
+      "ce-google-skills-gen-ai-leader-1951": [6, "Courses", 6],
       "ce-stanford-xee100": [5, "Modules", 5],
     });
   });
@@ -613,7 +614,7 @@ describe("course-level badges", () => {
       "ce-google-skills-adk-3473": [3, 3],
       "ce-google-skills-agents-3546": [3, 3],
       "ce-google-skills-smb-4020": [13, 13],
-      "ce-google-skills-gen-ai-leader-1951": [5, 5],
+      "ce-google-skills-gen-ai-leader-1951": [6, 6],
       "ce-stanford-xee100": [5, 0],
     });
   });
@@ -703,7 +704,7 @@ describe("course-level badges", () => {
     }
   });
 
-  it("links exactly five badges at Credly, everything else at Google Skills, kind independent", () => {
+  it("links exactly six badges at Credly, everything else at Google Skills, kind independent", () => {
     // `kind` (what the ARTWORK says the award is) and `provider` (which
     // platform's copy is linked) are separate fields and are pinned
     // separately. This test used to assert that the skill-badge set equalled
@@ -735,7 +736,7 @@ describe("course-level badges", () => {
     }
   });
 
-  it("displays all five Credly badges as art, not merely as links", () => {
+  it("displays all six Credly badges as art, not merely as links", () => {
     // The owner asked for these explicitly. Credly art sits flat in /badges/,
     // beside the ledger's other Credly art.
     const credlyImages = badged
@@ -744,6 +745,7 @@ describe("course-level badges", () => {
     expect([...new Set(credlyImages)].sort()).toEqual([
       "/badges/create-your-first-gemini-enterprise-application.webp",
       "/badges/deploy-multi-agent-architectures.webp",
+      "/badges/generative-ai-leader.webp",
       "/badges/orchestrate-multi-agent-workflows-with-gemini-enterprise.webp",
       "/badges/prompt-design-in-vertex-ai.webp",
       "/badges/store-process-and-manage-data-on-google-cloud-console.webp",
@@ -773,8 +775,8 @@ describe("course-level badges", () => {
       if (seen) expect(seen).toBe(badge.image);
       else imageByUrl.set(badge.url, badge.image);
     }
-    expect(imageByUrl.size).toBe(93);
-    expect(new Set(imageByUrl.values()).size).toBe(93);
+    expect(imageByUrl.size).toBe(94);
+    expect(new Set(imageByUrl.values()).size).toBe(94);
     // 27855015 was withheld while path 4459 was unfinished. The path completed
     // on 2026-09-11, so its three badges are now on the page — this asserts
     // they arrived, and with the art the scrape recorded for them.
@@ -802,6 +804,9 @@ describe("course-level badges", () => {
     );
     expect(imageByUrl.get(CREDLY_BADGE_URLS[4])).toBe(
       "/badges/orchestrate-multi-agent-workflows-with-gemini-enterprise.webp",
+    );
+    expect(imageByUrl.get(CREDLY_BADGE_URLS[5])).toBe(
+      "/badges/generative-ai-leader.webp",
     );
     expect(imageByUrl.get(`${GS_PROFILE}/badges/28674224`)).toBe(
       "/badges/google-skills/human-centered-ai.webp",
@@ -832,24 +837,31 @@ describe("course-level badges", () => {
 describe("the Generative AI Leader card", () => {
   const leader = byId("ce-google-skills-gen-ai-leader-1951");
 
-  it("is headed exactly 'Generative AI Leader', with no appended qualifier", () => {
-    expect(leader?.titleLines[0]).toBe("Generative AI Leader");
-    expect(leader?.titleLines[0]).not.toMatch(/certification|exam|prep|path|—|–/i);
+  it("is headed 'Generative AI Leader Certification'", () => {
+    expect(leader?.titleLines[0]).toBe("Generative AI Leader Certification");
   });
 
-  it("carries Google's own 'Train for the exam' framing in the collapsed meta line", () => {
-    expect(leader?.metaSuffix).toBe("“Train for the exam”");
+  it("carries Google's 'Google Cloud Certification' framing in the collapsed meta line", () => {
+    expect(leader?.metaSuffix).toBe("“Google Cloud Certification”");
     // Exactly one card carries a metaSuffix, and it is not a disclaimer.
     expect(ALL_COURSEWORK.filter((e) => e.metaSuffix !== undefined)).toHaveLength(1);
   });
 
   it("keeps Google's official path title searchable as an attributed citation", () => {
     expect(leader?.officialTitleNote).toBe(
-      "Listed by Google as “Generative AI Leader Certification”, the “Train for the exam” path for the Google Cloud Generative AI Leader certification.",
+      "Listed by Google as “Generative AI Leader Certification”, official Google Cloud certification.",
     );
-    expect(JSON.stringify(leader)).not.toMatch(/certified/i);
     // Exactly one card cites an official title.
     expect(ALL_COURSEWORK.filter((e) => e.officialTitleNote !== undefined)).toHaveLength(1);
+  });
+
+  it("has the verified Credly badge as course #1 on top of the list", () => {
+    expect(leader?.courses[0].title).toBe("Generative AI Leader Certification");
+    expect(leader?.courses[0].badge?.provider).toBe("Credly");
+    expect(leader?.courses[0].badge?.url).toBe(
+      "https://www.credly.com/badges/83e6a77f-b58b-4741-9de9-88b258a53fc2/public_url",
+    );
+    expect(leader?.courses[0].badge?.image).toBe("/badges/generative-ai-leader.webp");
   });
 });
 

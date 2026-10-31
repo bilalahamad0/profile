@@ -1182,6 +1182,17 @@ const ABB_CONTENT_GENERATION = {
  *  until the owner says where it belongs. Headings only: they count nothing. */
 export const GOOGLE_SKILLS_CATEGORIES: readonly GroupCategory[] = [
   {
+    id: "strategic-leadership",
+    title: "Strategic Leadership, Digital Transformation & Startup Operations",
+    description:
+      "Executive AI vision, business model transformation, cloud digital literacy, startup resource management, and organizational enablement.",
+    ids: [
+      "ce-google-skills-gen-ai-leader-1951",
+      "ce-google-skills-smb-4020",
+      "ce-google-skills-startup-essentials-4666",
+    ],
+  },
+  {
     id: "agentic-engineering",
     title: "Agentic Engineering & Multi-Agent Ecosystems (GEAR Program)",
     description:
@@ -1192,17 +1203,6 @@ export const GOOGLE_SKILLS_CATEGORIES: readonly GroupCategory[] = [
       "ce-google-skills-deploy-agents-3802",
       "ce-google-skills-agents-3546",
       "ce-google-skills-adk-3473",
-    ],
-  },
-  {
-    id: "strategic-leadership",
-    title: "Strategic Leadership, Digital Transformation & Startup Operations",
-    description:
-      "Executive AI vision, business model transformation, cloud digital literacy, startup resource management, and organizational enablement.",
-    ids: [
-      "ce-google-skills-gen-ai-leader-1951",
-      "ce-google-skills-smb-4020",
-      "ce-google-skills-startup-essentials-4666",
     ],
   },
   {
@@ -1226,14 +1226,14 @@ export const GOOGLE_SKILLS_CATEGORIES: readonly GroupCategory[] = [
 ];
 
 /** THIS ARRAY'S ORDER IS THE DISPLAY ORDER, and it is the OWNER'S CHOICE: the
- *  four categories above, top to bottom, each highest-impact first (owner,
- *  2026-10-03/04/10-07) — Build High-Performance Multi-Agent Systems (4459) · Scale
- *  Agents Across the Enterprise (3980) · Deploy Production Ready Agents (3802) ·
- *  Introduction to Agents (3546) · Fundamentals of ADK (3473) | Generative AI
- *  Leader (1951) · SMB Learning Path (4020) · Google Cloud Console: Startup
- *  Essentials (4666) | Beginner: Introduction to Generative AI (118) | Google
- *  Workspace with Gemini (249) · AI Boost Bites (2480) · AI for City Hall (4243).
- *  Stanford follows alone in CONTINUING_EDUCATION.
+ *  four categories above, top to bottom, each highest-impact first —
+ *  Generative AI Leader (1951) · SMB Learning Path (4020) · Google Cloud
+ *  Console: Startup Essentials (4666) | Build High-Performance Multi-Agent
+ *  Systems (4459) · Scale Agents Across the Enterprise (3980) · Deploy
+ *  Production Ready Agents (3802) · Introduction to Agents (3546) ·
+ *  Fundamentals of ADK (3473) | Beginner: Introduction to Generative AI (118) |
+ *  Google Workspace with Gemini (249) · AI Boost Bites (2480) · AI for City
+ *  Hall (4243). Stanford follows alone in CONTINUING_EDUCATION.
  *
  *  IT IS CURATED, NOT DERIVED. Nothing sorts at runtime and no `date` is read
  *  for ordering — dates carry the year only (owner, 2026-10-03), so there is
@@ -1241,6 +1241,121 @@ export const GOOGLE_SKILLS_CATEGORIES: readonly GroupCategory[] = [
  *  puts it. data.test.ts pins this array to the categories' concatenation and
  *  to EXPECTED_ORDER. */
 export const LEARNING_PATHS: readonly LearningPathData[] = [
+  {
+    // Official Google Cloud Generative AI Leader certification and prep path.
+    // Series ID: 84586, Credly badge verified.
+    id: "ce-google-skills-gen-ai-leader-1951",
+    headingId: "ce-google-skills-gen-ai-leader-1951-heading",
+    testId: "coursework-courses-gen-ai-leader",
+    titleLines: ["Generative AI Leader Certification", "6-Course Path"],
+    issuer: "Google Skills",
+    issuerShort: "Google Skills",
+    date: "2026",
+    metaSuffix: "“Google Cloud Certification”",
+    url: "https://www.skills.google/paths/1951",
+    urlLabel: "Path page",
+    urlNoun: "path",
+    logo: "/logos/google.png",
+    tile: GOOGLE_SKILLS_TILE,
+    description:
+      "A Generative AI Leader articulates the capabilities of generative AI and understands how it can benefit an organization. This path focuses on the essential skills for the Generative AI Leader role, from understanding the fundamentals of generative AI to applying it for business innovation using tools like Gemini Advanced, Gemini Notebook, and Google AI Studio.",
+    officialTitleNote:
+      "Listed by Google as “Generative AI Leader Certification”, official Google Cloud certification.",
+    totalCourses: 6,
+    unitNoun: "Courses",
+    gradient: "from-violet-600/20 via-indigo-500/12 to-blue-600/20",
+    aiSkills: true,
+    coursesLayout: "badges",
+    courses: [
+      {
+        step: 1,
+        title: "Generative AI Leader Certification",
+        badge: credlyBadge(
+          "83e6a77f-b58b-4741-9de9-88b258a53fc2",
+          "generative-ai-leader",
+        ),
+      },
+      { step: 2, title: "Gen AI: Beyond the Chatbot", badge: gsBadge(27812324, "gen-ai-beyond-the-chatbot") },
+      { step: 3, title: "Gen AI: Unlock Foundational Concepts", badge: gsBadge(27814445, "gen-ai-unlock-foundational-concepts") },
+      { step: 4, title: "Gen AI: Navigate the Landscape", badge: gsBadge(27825264, "gen-ai-navigate-the-landscape") },
+      { step: 5, title: "Gen AI Apps: Transform Your Work", badge: gsBadge(27846258, "gen-ai-apps-transform-your-work") },
+      { step: 6, title: "Gen AI Agents: Transform Your Organization", badge: gsBadge(27847477, "gen-ai-agents-transform-your-organization") },
+    ],
+  },
+  {
+    id: "ce-google-skills-smb-4020",
+    headingId: "ce-google-skills-smb-4020-heading",
+    testId: "coursework-courses-smb",
+    titleLines: ["SMB Learning Path", "13-Course Path"],
+    issuer: "Google Skills",
+    issuerShort: "Google Skills",
+    date: "2026",
+    url: "https://www.skills.google/paths/4020",
+    urlLabel: "Path page",
+    urlNoun: "path",
+    logo: "/logos/google.png",
+    tile: GOOGLE_SKILLS_TILE,
+    // `description` arm 1 — Google's own first sentence, verbatim; its
+    // GEAR-registration CTA is dropped. Keep Google's capitalisation of
+    // "Small/Medium-sized Businesses (SMBs)".
+    description:
+      "This path was curated for Small/Medium-sized Businesses (SMBs) and focuses on scaling business operations by combining introductory Generative AI technical foundations with Gemini-led automation and the GEAR framework for custom agent development.",
+    totalCourses: 13,
+    unitNoun: "Courses",
+    gradient: "from-sky-600/20 via-blue-500/12 to-violet-600/20",
+    aiSkills: true,
+    coursesLayout: "badges",
+    courses: [
+      { step: 1, ...INTRO_GENERATIVE_AI },
+      { step: 2, ...INTRO_LARGE_LANGUAGE_MODELS },
+      { step: 3, title: "Introduction to AI Agents", badge: gsBadge(27848206, "intro-ai-agents") },
+      { step: 4, ...AGENT_FUNDAMENTALS },
+      { step: 5, ...ENTERPRISE_AGENTS },
+      { step: 6, ...FIRST_GEMINI_ENTERPRISE_APP },
+      { step: 7, ...WORKSPACE_GEMINI_FOUNDATIONS },
+      { step: 8, ...GEMINI_IN_GMAIL },
+      { step: 9, ...GEMINI_IN_SHEETS },
+      { step: 10, ...ABB_TLDR_DOCS_DRIVE },
+      { step: 11, ...ABB_GEMINI_GEMS },
+      { step: 12, ...ABB_CONTENT_GENERATION },
+      { step: 13, ...GEMINI_IN_VIDS },
+    ],
+  },
+  {
+    // Added at the owner's request (2026-10-04). Earned 2026-10-04,
+    // public Credly and Google Skills badge pages verified logged-out.
+    id: "ce-google-skills-startup-essentials-4666",
+    headingId: "ce-google-skills-startup-essentials-4666-heading",
+    testId: "coursework-courses-startup-essentials",
+    titleLines: ["Google Cloud Console: Startup Essentials", "1-Course Path"],
+    issuer: "Google Skills",
+    issuerShort: "Google Skills",
+    date: "2026",
+    url: "https://www.skills.google/paths/4666",
+    urlLabel: "Path page",
+    urlNoun: "path",
+    logo: "/logos/google.png",
+    tile: GOOGLE_SKILLS_TILE,
+    // `description` arm 1 — Google's own first sentence, verbatim and unedited;
+    // its onboarding CTA is dropped per the established convention.
+    description:
+      "This path focuses on accelerating startup growth by combining introductory Google Cloud Console navigation with foundational resource configuration and console-led data workflows.",
+    totalCourses: 1,
+    unitNoun: "Course",
+    gradient: "from-blue-600/20 via-sky-500/12 to-cyan-600/20",
+    aiSkills: true,
+    coursesLayout: "badges",
+    courses: [
+      {
+        step: 1,
+        title: "Store, Process, and Manage Data on Google Cloud - Console",
+        badge: credlyBadge(
+          "d1393a27-6858-4ce9-96a6-eb07a5d8578b",
+          "store-process-and-manage-data-on-google-cloud-console",
+        ),
+      },
+    ],
+  },
   {
     id: "ce-google-skills-multi-agent-4459",
     headingId: "ce-google-skills-multi-agent-4459-heading",
@@ -1495,136 +1610,6 @@ export const LEARNING_PATHS: readonly LearningPathData[] = [
       { step: 1, ...AGENT_FUNDAMENTALS },
       { step: 2, title: "Build Your First Agent with Agent Development Kit (ADK)", badge: gsBadge(28611290, "build-your-first-agent-with-adk") },
       { step: 3, title: "Optimize Agent Behavior", badge: gsBadge(28628972, "optimize-agent-behavior") },
-    ],
-  },
-  {
-    // The heading is EXACTLY the role name — no suffix, no appended qualifier,
-    // no chip. Google Cloud's certification page lists this path under Quick
-    // links as "Train for the exam" (target cloudskillsboost.google/paths/1951
-    // = skills.google/paths/1951); that phrase is the card's `metaSuffix`, so
-    // the exam-prep framing is present in the COLLAPSED row. Google's official
-    // path title survives verbatim, quoted and attributed, in
-    // `officialTitleNote` — a citation, not a claim — which is what keeps it
-    // ATS-searchable. The word "certified" appears nowhere, and nothing states
-    // what Google does not issue.
-    id: "ce-google-skills-gen-ai-leader-1951",
-    headingId: "ce-google-skills-gen-ai-leader-1951-heading",
-    testId: "coursework-courses-gen-ai-leader",
-    titleLines: ["Generative AI Leader", "5-Course Path"],
-    issuer: "Google Skills",
-    issuerShort: "Google Skills",
-    date: "2026",
-    metaSuffix: "“Train for the exam”",
-    url: "https://www.skills.google/paths/1951",
-    urlLabel: "Path page",
-    urlNoun: "path",
-    logo: "/logos/google.png",
-    tile: GOOGLE_SKILLS_TILE,
-    // `description` arm 2 — a SELECTION of Google's own sentences, not a
-    // contiguous trim. Google's description runs six sentences; this prints #1
-    // and #4, each verbatim and unedited, and drops #2, #3, #5 and #6:
-    //   #2 "This certification learning path provides the foundational
-    //      knowledge, preparing you to successfully leverage generative AI for
-    //      organizational transformation." — dropped because it calls the path
-    //      a "certification learning path"; reprinting that on a résumé page
-    //      is the exact overclaim this section exists to avoid.
-    //   #3 "Through a curated collection of on-demand courses, you will gain
-    //      practical experience with Google Cloud's generative AI tools." and
-    //   #5 "Upon completion, you will be equipped with the skills to apply
-    //      generative AI for business transformation and innovation." —
-    //      second-person marketing copy about what a reader will get.
-    //   #6 the "prepare for the … certification exam" CTA.
-    // Nothing is reworded and no sentence is spliced; the join is #1 + #4.
-    // Google's full description is in scratchpad/google-skills-paths.json.
-    description:
-      "A Generative AI Leader articulates the capabilities of generative AI and understands how it can benefit an organization. This path focuses on the essential skills for the Generative AI Leader role, from understanding the fundamentals of generative AI to applying it for business innovation using tools like Gemini Advanced, Gemini Notebook, and Google AI Studio.",
-    officialTitleNote:
-      "Listed by Google as “Generative AI Leader Certification”, the “Train for the exam” path for the Google Cloud Generative AI Leader certification.",
-    totalCourses: 5,
-    unitNoun: "Courses",
-    gradient: "from-violet-600/20 via-indigo-500/12 to-blue-600/20",
-    aiSkills: true,
-    coursesLayout: "badges",
-    courses: [
-      { step: 1, title: "Gen AI: Beyond the Chatbot", badge: gsBadge(27812324, "gen-ai-beyond-the-chatbot") },
-      { step: 2, title: "Gen AI: Unlock Foundational Concepts", badge: gsBadge(27814445, "gen-ai-unlock-foundational-concepts") },
-      { step: 3, title: "Gen AI: Navigate the Landscape", badge: gsBadge(27825264, "gen-ai-navigate-the-landscape") },
-      { step: 4, title: "Gen AI Apps: Transform Your Work", badge: gsBadge(27846258, "gen-ai-apps-transform-your-work") },
-      { step: 5, title: "Gen AI Agents: Transform Your Organization", badge: gsBadge(27847477, "gen-ai-agents-transform-your-organization") },
-    ],
-  },
-  {
-    id: "ce-google-skills-smb-4020",
-    headingId: "ce-google-skills-smb-4020-heading",
-    testId: "coursework-courses-smb",
-    titleLines: ["SMB Learning Path", "13-Course Path"],
-    issuer: "Google Skills",
-    issuerShort: "Google Skills",
-    date: "2026",
-    url: "https://www.skills.google/paths/4020",
-    urlLabel: "Path page",
-    urlNoun: "path",
-    logo: "/logos/google.png",
-    tile: GOOGLE_SKILLS_TILE,
-    // `description` arm 1 — Google's own first sentence, verbatim; its
-    // GEAR-registration CTA is dropped. Keep Google's capitalisation of
-    // "Small/Medium-sized Businesses (SMBs)".
-    description:
-      "This path was curated for Small/Medium-sized Businesses (SMBs) and focuses on scaling business operations by combining introductory Generative AI technical foundations with Gemini-led automation and the GEAR framework for custom agent development.",
-    totalCourses: 13,
-    unitNoun: "Courses",
-    gradient: "from-sky-600/20 via-blue-500/12 to-violet-600/20",
-    aiSkills: true,
-    coursesLayout: "badges",
-    courses: [
-      { step: 1, ...INTRO_GENERATIVE_AI },
-      { step: 2, ...INTRO_LARGE_LANGUAGE_MODELS },
-      { step: 3, title: "Introduction to AI Agents", badge: gsBadge(27848206, "intro-ai-agents") },
-      { step: 4, ...AGENT_FUNDAMENTALS },
-      { step: 5, ...ENTERPRISE_AGENTS },
-      { step: 6, ...FIRST_GEMINI_ENTERPRISE_APP },
-      { step: 7, ...WORKSPACE_GEMINI_FOUNDATIONS },
-      { step: 8, ...GEMINI_IN_GMAIL },
-      { step: 9, ...GEMINI_IN_SHEETS },
-      { step: 10, ...ABB_TLDR_DOCS_DRIVE },
-      { step: 11, ...ABB_GEMINI_GEMS },
-      { step: 12, ...ABB_CONTENT_GENERATION },
-      { step: 13, ...GEMINI_IN_VIDS },
-    ],
-  },
-  {
-    // Added at the owner's request (2026-10-04). Earned 2026-10-04,
-    // public Credly and Google Skills badge pages verified logged-out.
-    id: "ce-google-skills-startup-essentials-4666",
-    headingId: "ce-google-skills-startup-essentials-4666-heading",
-    testId: "coursework-courses-startup-essentials",
-    titleLines: ["Google Cloud Console: Startup Essentials", "1-Course Path"],
-    issuer: "Google Skills",
-    issuerShort: "Google Skills",
-    date: "2026",
-    url: "https://www.skills.google/paths/4666",
-    urlLabel: "Path page",
-    urlNoun: "path",
-    logo: "/logos/google.png",
-    tile: GOOGLE_SKILLS_TILE,
-    // `description` arm 1 — Google's own first sentence, verbatim and unedited;
-    // its onboarding CTA is dropped per the established convention.
-    description:
-      "This path focuses on accelerating startup growth by combining introductory Google Cloud Console navigation with foundational resource configuration and console-led data workflows.",
-    totalCourses: 1,
-    unitNoun: "Course",
-    gradient: "from-blue-600/20 via-sky-500/12 to-cyan-600/20",
-    aiSkills: true,
-    coursesLayout: "badges",
-    courses: [
-      {
-        step: 1,
-        title: "Store, Process, and Manage Data on Google Cloud - Console",
-        badge: credlyBadge(
-          "d1393a27-6858-4ce9-96a6-eb07a5d8578b",
-          "store-process-and-manage-data-on-google-cloud-console",
-        ),
-      },
     ],
   },
   {
