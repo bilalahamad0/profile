@@ -1100,6 +1100,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     await expect(
       el.locator('img[alt="Generative AI Leader Certification certificate preview"]'),
     ).toBeVisible();
+    await expect(el.locator('button.group\\/thumb').getByText('AI Skills')).toHaveCount(0);
     await expect(el.getByText('All 5 course credentials', { exact: true })).toBeVisible();
     // Child badges grid
     const list = el.locator('ol[data-testid="coursework-courses-gen-ai-leader"]');
