@@ -918,6 +918,12 @@ describe("the Generative AI Leader card", () => {
       "ce-google-skills-gen-ai-leader-1951",
     ]);
   });
+
+  it("gives Google AI Professional the AI Skills ribbon matching Generative AI Leader", () => {
+    const aiPro = SPECIALIZATIONS.find((s) => s.id === "spec-google-ai-professional");
+    expect(aiPro?.ribbon).toEqual({ emoji: "🌟", label: "AI Skills" });
+    expect(aiPro?.ribbon).toEqual(GEN_AI_LEADER_SPEC.ribbon);
+  });
 });
 
 describe("FEATURED_BADGES showcase row", () => {

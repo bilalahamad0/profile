@@ -375,6 +375,7 @@ export const SPECIALIZATIONS: SpecializationData[] = [
     gradient: "from-emerald-600/25 via-teal-500/15 to-cyan-600/25",
     badgeHalo: "bg-sky-400/30",
     badgeShadow: "drop-shadow-[0_8px_30px_rgba(56,189,248,0.55)]",
+    ribbon: { emoji: "🌟", label: "AI Skills" },
     childrenLayout: "badges",
     parentBadge: {
       image: "/badges/google-ai-professional-certificate.png",
