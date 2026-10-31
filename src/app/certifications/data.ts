@@ -471,6 +471,7 @@ export const SPECIALIZATIONS: SpecializationData[] = [
     gradient: "from-amber-500/25 via-yellow-500/15 to-emerald-600/25",
     badgeHalo: "bg-emerald-400/35",
     badgeShadow: "drop-shadow-[0_8px_30px_rgba(16,185,129,0.6)]",
+    ribbon: { emoji: "🌟", label: "AI Skills" },
     childrenLayout: "list",
     parentBadge: {
       image: "/badges/google-prompting-essentials.png",
@@ -536,6 +537,7 @@ export const SPECIALIZATIONS: SpecializationData[] = [
     gradient: "from-blue-600/25 via-indigo-500/15 to-purple-600/25",
     badgeHalo: "bg-amber-400/30",
     badgeShadow: "drop-shadow-[0_8px_30px_rgba(251,191,36,0.55)]",
+    ribbon: { emoji: "🌟", label: "AI Skills" },
     childrenLayout: "list",
     parentBadge: {
       image: "/badges/google-ai-essentials.png",
