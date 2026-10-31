@@ -614,7 +614,6 @@ export const AI_CERTIFICATES: GalleryCertificate[] = [
     logo: "/logos/linkedin.png",
     description: "Modernizing QA workflows by integrating Generative AI into test planning, execution, and reporting.",
     gradient: "from-emerald-600/20 to-teal-600/20",
-    aiSkills: true
   },
   {
     id: "ai-1",
@@ -626,7 +625,6 @@ export const AI_CERTIFICATES: GalleryCertificate[] = [
     logo: "/logos/linkedin.png",
     description: "Deep dive into leveraging AI agents, GitHub Copilot, and Cursor for accelerated software development.",
     gradient: "from-blue-600/20 to-purple-600/20",
-    aiSkills: true
   },
 ];
 

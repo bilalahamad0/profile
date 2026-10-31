@@ -501,6 +501,12 @@ test.describe('Certifications — Google Project Management Professional row', (
 });
 
 test.describe('Certifications — single-certificate rows', () => {
+  test('AI Skills ribbon chip does not render on Software Testing Foundations or AI Coding Agents', async ({ page }) => {
+    await page.goto('/certifications');
+    await expect(page.locator('#cert-ai-2').getByText('AI Skills', { exact: true })).toHaveCount(0);
+    await expect(page.locator('#cert-ai-1').getByText('AI Skills', { exact: true })).toHaveCount(0);
+  });
+
   test('ISTQB flagship row: official badge chip collapsed, badge + verify in expanded body', async ({ page }) => {
     await page.goto('/certifications');
 
