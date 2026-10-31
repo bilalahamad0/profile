@@ -99,6 +99,16 @@ export const PathBody = ({ path }: { path: LearningPathData }) => {
           instead of the six or seven a half-width column forced. */}
       <div className="flex flex-col gap-4 rounded-2xl border border-line/10 bg-ink/[0.03] p-4 md:flex-row md:items-center md:gap-6 md:p-5">
         <div className="flex min-w-0 flex-1 flex-col gap-2">
+          {path.ribbon && (
+            <div className="flex items-center">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-gradient-to-r from-amber-400/20 to-yellow-500/20 px-3 py-1 shadow-[0_4px_16px_rgba(245,158,11,0.25)] backdrop-blur-md">
+                <span className="t-caption" aria-hidden>{path.ribbon.emoji}</span>
+                <span className="t-caption font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300">
+                  {path.ribbon.label}
+                </span>
+              </span>
+            </div>
+          )}
           <p className="t-small text-ink/88">{path.description}</p>
           {path.officialTitleNote ? (
             // A CITATION of the issuer's own title for this path, not a

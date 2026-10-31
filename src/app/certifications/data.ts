@@ -282,6 +282,8 @@ export type LearningPathData = {
    *  course and would be misdescribed by it. A subject claim, so it is stated
    *  per path rather than inferred from the section a row renders in. */
   aiSkills?: boolean;
+  /** Skills ribbon — qualifier chip in row header and ribbon banner in expanded panel. */
+  ribbon?: { emoji: string; label: string };
   coursesLayout: "list" | "badges";
   courses: readonly PathCourse[];
 };
@@ -1954,6 +1956,7 @@ export const CONTINUING_EDUCATION: readonly LearningPathData[] = [
     // lockup is reconstructed. The panel's issuer row falls back to a neutral
     // BookOpen glyph; the cardinal XEE100 tile is the card's real mark.
     tile: STANFORD_TILE,
+    ribbon: { emoji: "🌐", label: "IoT Skills" },
     // `description` arm 3 — an ATTRIBUTED SUMMARY, the only one on this page.
     // Stanford publishes no quotable paragraph for XEE100: the course page is a
     // spec sheet (title, school, faculty list, a bulleted "5 modules" list), so

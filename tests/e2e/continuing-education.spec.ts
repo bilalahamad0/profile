@@ -603,7 +603,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     }
   });
 
-  test('every Google Skills and Claude Academy path carries AI Skills before its Courses chip; Stanford carries neither', async ({ page }) => {
+  test('every Google Skills and Claude Academy path carries AI Skills before its Courses chip; Stanford carries IoT Skills', async ({ page }) => {
     await page.goto('/certifications');
     for (const card of CARDS.filter((c) => c.section === 'google-skills' || c.section === 'claude-academy')) {
       const el = page.locator(`#${card.id}`);
@@ -615,12 +615,14 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
         await expect(el.getByText(card.chip, { exact: true })).toBeVisible();
       }
     }
-    // Stanford XEE100 is an Internet-of-Things course. It keeps its Modules
-    // chip and must never gain the AI Skills one — the chip is a subject claim
-    // driven by data, not by the coursework section a row happens to sit in.
+    // Stanford XEE100 is an Internet-of-Things course. It carries its IoT Skills
+    // ribbon chip alongside its Modules chip and never the AI Skills one.
     const stanford = page.locator('#ce-stanford-xee100');
-    expect(await chipRun(stanford)).toEqual(['5 Modules']);
+    expect(await chipRun(stanford)).toEqual(['🌐IoT Skills', '5 Modules']);
     await expect(stanford.getByText('AI Skills', { exact: true })).toHaveCount(0);
+    if (lgViewport(page)) {
+      await expect(stanford.getByText('IoT Skills', { exact: true })).toBeVisible();
+    }
   });
 
   test('every card uses the credential row template: article, numeral, meta, chip, disclosure, panel', async ({ page }) => {
@@ -1070,6 +1072,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     await expect(el.locator('img')).toHaveCount(0); // no logo asset, no badge art
     await expect(badgeLinks(el)).toHaveCount(0);
     await expect(el.getByText(/six Stanford faculty members will deliver an overview/i)).toBeVisible();
+    await expect(el.getByText('IoT Skills', { exact: true }).first()).toBeVisible();
     const modulesChip = el.getByText('5 Modules', { exact: true });
     await (wideViewport(page) ? expect(modulesChip).toBeVisible() : expect(modulesChip).toBeAttached());
     await expect(el.getByTestId('coursework-courses-stanford').locator('li')).toHaveCount(5);
