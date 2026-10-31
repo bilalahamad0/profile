@@ -343,9 +343,10 @@ test.describe('Certifications — Google AI Professional row (default open)', ()
     }
   });
 
-  test('AI Skills ribbon renders on the expanded thumbnail', async ({ page }) => {
+  test('AI Skills ribbon renders in the expanded summary panel, not on the certificate thumbnail', async ({ page }) => {
     await page.goto('/certifications');
     await expect(page.locator(SECTION).getByText('AI Skills', { exact: true }).first()).toBeVisible();
+    await expect(page.locator(SECTION).locator('button.group\\/thumb').getByText('AI Skills')).toHaveCount(0);
   });
 
   test('child badge click opens its Credly URL; VERIFY linker opens the course verify URL', async ({ page }) => {
@@ -456,6 +457,7 @@ test.describe('Certifications — Google Project Management Professional row', (
 
     await expandRow(page, SECTION);
     await expect(section.getByText('PM Skills', { exact: true }).last()).toBeVisible();
+    await expect(section.locator('button.group\\/thumb').getByText('PM Skills')).toHaveCount(0);
   });
 
   test('expanded body lists all 7 courses with icons and a Bonus tag on course 7', async ({ page }) => {

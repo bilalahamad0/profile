@@ -51,13 +51,6 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
             className="object-cover transition-transform duration-700 group-hover/thumb:scale-105"
             sizes="(max-width: 768px) 100vw, 32rem"
           />
-          {/* Skills ribbon (AI Skills by default, per-spec override) */}
-          <div className="pointer-events-none absolute right-4 top-4 z-20 flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-gradient-to-r from-amber-500/95 via-yellow-400/95 to-amber-500/95 px-3 py-1 shadow-[0_4px_20px_-4px_rgba(251,191,36,0.6)] backdrop-blur-sm">
-            <span className="t-caption" aria-hidden>{ribbon.emoji}</span>
-            <span className="t-label font-black uppercase tracking-wider text-amber-950">
-              {ribbon.label}
-            </span>
-          </div>
           {/* Hover overlay — the scrim, not the theme, is the background for
               this label: certificates are near-white, so 40% black left the
               white text at ~2.5:1 on the real pixels. 65% holds it at 5.5:1
@@ -112,9 +105,21 @@ export const SpecializationBody = ({ spec }: { spec: SpecializationData }) => {
         {/* Summary + parent badge — lives under the certificate so the left
             column carries the story and the right column stays pure courses */}
         <div className="flex flex-col gap-4 rounded-2xl border border-line/10 bg-ink/[0.03] p-4 lg:flex-row lg:items-center lg:gap-6 lg:p-5">
-          <p className="min-w-0 flex-1 t-small text-ink/88">
-            {spec.description}
-          </p>
+          <div className="flex min-w-0 flex-1 flex-col gap-2">
+            {ribbon && (
+              <div className="flex items-center">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-gradient-to-r from-amber-400/20 to-yellow-500/20 px-3 py-1 shadow-[0_4px_16px_rgba(245,158,11,0.25)] backdrop-blur-md">
+                  <span className="t-caption" aria-hidden>{ribbon.emoji}</span>
+                  <span className="t-caption font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300">
+                    {ribbon.label}
+                  </span>
+                </span>
+              </div>
+            )}
+            <p className="min-w-0 flex-1 t-small text-ink/88">
+              {spec.description}
+            </p>
+          </div>
           <button
             type="button"
             onClick={() =>
