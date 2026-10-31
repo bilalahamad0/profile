@@ -939,11 +939,13 @@ export const CREDENTIAL_GROUPS: LedgerGroupDef[] = [
 ];
 
 /** Rows that start expanded on load — the flagship specialization of each
- *  track (AI Engineering & Agentic Systems, Leadership & Project Management).
+ *  track (AI Engineering & Agentic Systems, Leadership & Project Management)
+ *  and Generative AI Leader Certification in Google Skills.
  *  SSR-deterministic so there is never a hydration mismatch. */
 export const DEFAULT_OPEN_IDS = [
   "spec-google-ai-professional",
   "spec-google-project-management",
+  "ce-google-skills-gen-ai-leader-1951",
 ] as const;
 
 // --- SUMMARY STATS (always computed, never hardcoded) ---

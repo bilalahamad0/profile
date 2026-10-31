@@ -165,8 +165,8 @@ test.describe('Certifications — collapse/expand behavior', () => {
   test('both flagship specializations start expanded; collapsed content stays attached but hidden', async ({ page }) => {
     await page.goto('/certifications');
 
-    // DEFAULT_OPEN_IDS — the flagship of each track opens on load.
-    for (const id of ['#spec-google-ai-professional', '#spec-google-project-management']) {
+    // DEFAULT_OPEN_IDS — the flagship specializations plus Generative AI Leader open on load.
+    for (const id of ['#spec-google-ai-professional', '#spec-google-project-management', '#ce-google-skills-gen-ai-leader-1951']) {
       await expect(page.locator(`${id} [aria-expanded]`)).toHaveAttribute('aria-expanded', 'true');
       await expect(page.locator(`${id} [data-collapsible]`)).not.toHaveAttribute('inert', '');
     }
