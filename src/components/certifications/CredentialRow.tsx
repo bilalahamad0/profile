@@ -256,7 +256,7 @@ export function CredentialRow({
           heads the run because it names WHAT the course is about; AI Skills
           then qualifies it, and the count closes the row. */}
       <span data-chips className="hidden items-center gap-2 sm:flex">
-        {isSpec && credential.ribbon && (
+        {"ribbon" in credential && credential.ribbon && (
           <Chip className={cn("hidden lg:inline-flex", CHIP_SKILLS)}>
             <span aria-hidden>{credential.ribbon.emoji}</span>
             {credential.ribbon.label}

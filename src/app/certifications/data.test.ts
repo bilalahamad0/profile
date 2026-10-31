@@ -98,7 +98,6 @@ const CREDENTIAL_ONLY_KEYS = [
   "isOfficial",
   "courseBadge",
   "formatNote",
-  "ribbon",
 ];
 /** The seven literal class strings the Professional Certificate grid has always
  *  produced. tests/e2e/certifications.spec.ts asserts that grid down to li/img
@@ -930,6 +929,11 @@ describe("the Generative AI Leader card", () => {
     const prompting = SPECIALIZATIONS.find((s) => s.id === "spec-google-prompting-essentials");
     expect(aiEssentials?.ribbon).toEqual({ emoji: "🌟", label: "AI Skills" });
     expect(prompting?.ribbon).toEqual({ emoji: "🌟", label: "AI Skills" });
+  });
+
+  it("gives Introduction to Internet of Things the IoT Skills ribbon", () => {
+    const stanford = byId("ce-stanford-xee100");
+    expect(stanford?.ribbon).toEqual({ emoji: "🌐", label: "IoT Skills" });
   });
 });
 
