@@ -35,20 +35,23 @@ export function CredentialLedger() {
   );
   const [inspected, setInspected] = useState<GalleryCertificate | null>(null);
 
-  // Deep link: /certifications#<row-id> opens that row on load. The hash is
+  // Deep link: /certifications#<row-id> opens that row on load or hashchange. The hash is
   // only knowable client-side, so this must run after hydration (the server
   // always renders the deterministic default-open state). Deferred a frame so
   // the state update isn't synchronous within the effect body.
   useEffect(() => {
-    const hash = window.location.hash.slice(1);
-    if (!hash || !ALL_SLUGS.has(hash)) return;
-    const raf = requestAnimationFrame(() => {
+    const handleHash = () => {
+      const hash = window.location.hash.slice(1);
+      if (!hash || !ALL_SLUGS.has(hash)) return;
       setOpenIds((prev) => (prev.has(hash) ? prev : new Set([...prev, hash])));
       requestAnimationFrame(() => {
         document.getElementById(hash)?.scrollIntoView({ block: "start" });
       });
-    });
-    return () => cancelAnimationFrame(raf);
+    };
+
+    handleHash();
+    window.addEventListener("hashchange", handleHash);
+    return () => window.removeEventListener("hashchange", handleHash);
   }, []);
 
   // Side effects (analytics) stay OUT of the state updater — React is free to

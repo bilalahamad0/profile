@@ -1,8 +1,9 @@
 import React from "react";
+import Image from "next/image";
 import { Award } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CredentialLedger } from "@/components/certifications/CredentialLedger";
-import { ALL_SECTIONS, CERT_STATS, COURSEWORK_GROUPS } from "./data";
+import { ALL_SECTIONS, CERT_STATS, COURSEWORK_GROUPS, FEATURED_BADGES } from "./data";
 
 // Server Component by design: the hero, stats, and jump pills are static
 // SEO-critical HTML; all interactivity lives in <CredentialLedger />.
@@ -41,6 +42,43 @@ export default function CertificationsPage() {
             and continuous education in QA, Development, and Artificial Intelligence.
           </p>
         </div>
+
+        {/* Featured Badges Showcase Row */}
+        <nav
+          aria-label="Featured credential badges"
+          data-testid="featured-badges-row"
+          className="mx-auto mt-8 grid w-full max-w-3xl grid-cols-4 items-start justify-items-center gap-2 sm:gap-6 md:gap-8"
+        >
+          {FEATURED_BADGES.map((badge) => (
+            <a
+              key={badge.id}
+              href={`#${badge.slug}`}
+              title={`${badge.title} — ${badge.issuer}`}
+              aria-label={`Jump to ${badge.title} credential card`}
+              className="group flex flex-col items-center gap-1.5 sm:gap-2 p-1 sm:p-2 rounded-2xl transition-transform duration-300 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
+            >
+              <div className="relative h-14 w-14 sm:h-20 sm:w-20 md:h-22 md:w-22 shrink-0 transition-transform duration-300 group-hover:scale-110">
+                <span
+                  aria-hidden
+                  className={cn(
+                    "absolute -inset-1 rounded-full opacity-60 blur-md transition-opacity duration-300 group-hover:opacity-100",
+                    badge.halo
+                  )}
+                />
+                <Image
+                  src={badge.image}
+                  alt={`${badge.title} badge`}
+                  fill
+                  sizes="(max-width: 640px) 56px, (max-width: 768px) 80px, 88px"
+                  className={cn("relative object-contain", badge.shadow)}
+                />
+              </div>
+              <span className="text-center text-[10px] sm:text-xs font-semibold leading-tight text-ink/75 transition-colors group-hover:text-ink line-clamp-2">
+                {badge.title}
+              </span>
+            </a>
+          ))}
+        </nav>
 
         {/* At-a-glance stats — computed from the data, never hardcoded.
             flex-col-reverse keeps conforming dt→dd source order while
