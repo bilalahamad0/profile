@@ -145,6 +145,7 @@ test.describe('Certifications — Page-level layout', () => {
       await expect(link).toHaveAttribute('href', expectedBadges[i].href);
       await expect(link).toContainText(expectedBadges[i].title);
       await expect(link.locator('img')).toBeVisible();
+      await expect(link.locator('span.text-center')).not.toHaveClass(/line-clamp/);
     }
   });
 
