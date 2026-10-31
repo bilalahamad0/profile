@@ -56,6 +56,7 @@ const SMB_COURSES = [
   'Gemini in Google Vids',
 ];
 const LEADER_COURSES = [
+  'Generative AI Leader Certification',
   'Gen AI: Beyond the Chatbot',
   'Gen AI: Unlock Foundational Concepts',
   'Gen AI: Navigate the Landscape',
@@ -159,13 +160,13 @@ const SCALE_AGENTS_COURSES = [
 /** The owner's four Google Skills categories (2026-10-03/04), verbatim, with
  *  their paths top to bottom — highest impact first, a standing rule. */
 const GOOGLE_SKILLS_CATEGORIES = [
+  { title: 'Strategic Leadership, Digital Transformation & Startup Operations',
+    description: 'Executive AI vision, business model transformation, cloud digital literacy, startup resource management, and organizational enablement.',
+    ids: ['ce-google-skills-gen-ai-leader-1951', 'ce-google-skills-smb-4020', 'ce-google-skills-startup-essentials-4666'] },
   { title: 'Agentic Engineering & Multi-Agent Ecosystems (GEAR Program)',
     description: 'Designing, orchestrating, deploying, and scaling autonomous agent networks using the Agent Development Kit (ADK), Model Context Protocol (MCP), and Agent-to-Agent (A2A) protocol.',
     ids: ['ce-google-skills-multi-agent-4459', 'ce-google-skills-scale-agents-3980', 'ce-google-skills-deploy-agents-3802',
       'ce-google-skills-agents-3546', 'ce-google-skills-adk-3473'] },
-  { title: 'Strategic Leadership, Digital Transformation & Startup Operations',
-    description: 'Executive AI vision, business model transformation, cloud digital literacy, startup resource management, and organizational enablement.',
-    ids: ['ce-google-skills-gen-ai-leader-1951', 'ce-google-skills-smb-4020', 'ce-google-skills-startup-essentials-4666'] },
   { title: 'Generative AI Foundations & Prompt Engineering',
     description: 'Core generative model mechanics, multimodal prompt design, Responsible AI guidelines, and foundational platform capabilities.',
     ids: ['ce-google-skills-beginner-gen-ai-118'] },
@@ -259,57 +260,57 @@ const CLAUDE_CARDS: Card[] = [
  *  It is NOT chronological. Never re-sort this list by date. */
 const CARDS: Card[] = [
   ...CLAUDE_CARDS,
-  // Google Skills — Agentic Engineering & Multi-Agent Architecture (GEAR Program)
-  { section: 'google-skills', id: 'ce-google-skills-multi-agent-4459',
-    title: 'Build High-Performance Multi-Agent Systems',
-    meta: 'Google Skills · 2026 · 3-Course Path', chip: '3 Courses', numeral: '01',
-    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
-    url: /^https:\/\/www\.skills\.google\/paths\/4459$/,
-    courses: MULTI_AGENT_COURSES, badges: 3, credly: 0, pill: /^3 public course badges$/i },
-  { section: 'google-skills', id: 'ce-google-skills-scale-agents-3980',
-    title: 'Scale Agents Across the Enterprise',
-    meta: 'Google Skills · 2026 · 3-Course Path', chip: '3 Courses', numeral: '02',
-    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
-    url: /^https:\/\/www\.skills\.google\/paths\/3980$/,
-    courses: SCALE_AGENTS_COURSES, badges: 3, credly: 1, pill: /^3 public course badges$/i },
-  { section: 'google-skills', id: 'ce-google-skills-deploy-agents-3802',
-    title: 'Deploy Production Ready Agents',
-    meta: 'Google Skills · 2026 · 3-Course Path', chip: '3 Courses', numeral: '03',
-    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
-    url: /^https:\/\/www\.skills\.google\/paths\/3802$/,
-    courses: DEPLOY_COURSES, badges: 3, credly: 1, pill: /^3 public course badges$/i },
-  { section: 'google-skills', id: 'ce-google-skills-agents-3546',
-    title: 'Introduction to Agents and Google’s Agent Ecosystem',
-    meta: 'Google Skills · 2026 · 3-Course Path', chip: '3 Courses', numeral: '04',
-    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
-    url: /^https:\/\/www\.skills\.google\/paths\/3546$/,
-    courses: AGENTS_COURSES, badges: 3, credly: 1, pill: /^3 public course badges$/i },
-  { section: 'google-skills', id: 'ce-google-skills-adk-3473',
-    title: 'Fundamentals of Agent Development Kit (ADK)',
-    meta: 'Google Skills · 2026 · 3-Course Path', chip: '3 Courses', numeral: '05',
-    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
-    url: /^https:\/\/www\.skills\.google\/paths\/3473$/,
-    courses: ADK_COURSES, badges: 3, credly: 0, pill: /^3 public course badges$/i },
   // Google Skills — Strategic Leadership, Digital Transformation & Startup Operations
   { section: 'google-skills', id: 'ce-google-skills-gen-ai-leader-1951',
-    title: 'Generative AI Leader',
-    meta: 'Google Skills · 2026 · 5-Course Path · “Train for the exam”',
-    chip: '5 Courses', numeral: '06',
+    title: 'Generative AI Leader Certification',
+    meta: 'Google Skills · 2026 · 6-Course Path · “Google Cloud Certification”',
+    chip: '6 Courses', numeral: '01',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/1951$/,
-    courses: LEADER_COURSES, badges: 5, credly: 0, pill: /^5 public course badges$/i },
+    courses: LEADER_COURSES, badges: 6, credly: 1, pill: /^6 public course badges$/i },
   { section: 'google-skills', id: 'ce-google-skills-smb-4020',
     title: 'SMB Learning Path',
-    meta: 'Google Skills · 2026 · 13-Course Path', chip: '13 Courses', numeral: '07',
+    meta: 'Google Skills · 2026 · 13-Course Path', chip: '13 Courses', numeral: '02',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/4020$/,
     courses: SMB_COURSES, badges: 13, credly: 1, pill: /^13 public course badges$/i },
   { section: 'google-skills', id: 'ce-google-skills-startup-essentials-4666',
     title: 'Google Cloud Console: Startup Essentials',
-    meta: 'Google Skills · 2026 · 1-Course Path', chip: '1 Course', numeral: '08',
+    meta: 'Google Skills · 2026 · 1-Course Path', chip: '1 Course', numeral: '03',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
     url: /^https:\/\/www\.skills\.google\/paths\/4666$/,
     courses: STARTUP_ESSENTIALS_COURSES, badges: 1, credly: 1, pill: /^1 public course badge$/i },
+  // Google Skills — Agentic Engineering & Multi-Agent Architecture (GEAR Program)
+  { section: 'google-skills', id: 'ce-google-skills-multi-agent-4459',
+    title: 'Build High-Performance Multi-Agent Systems',
+    meta: 'Google Skills · 2026 · 3-Course Path', chip: '3 Courses', numeral: '04',
+    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
+    url: /^https:\/\/www\.skills\.google\/paths\/4459$/,
+    courses: MULTI_AGENT_COURSES, badges: 3, credly: 0, pill: /^3 public course badges$/i },
+  { section: 'google-skills', id: 'ce-google-skills-scale-agents-3980',
+    title: 'Scale Agents Across the Enterprise',
+    meta: 'Google Skills · 2026 · 3-Course Path', chip: '3 Courses', numeral: '05',
+    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
+    url: /^https:\/\/www\.skills\.google\/paths\/3980$/,
+    courses: SCALE_AGENTS_COURSES, badges: 3, credly: 1, pill: /^3 public course badges$/i },
+  { section: 'google-skills', id: 'ce-google-skills-deploy-agents-3802',
+    title: 'Deploy Production Ready Agents',
+    meta: 'Google Skills · 2026 · 3-Course Path', chip: '3 Courses', numeral: '06',
+    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
+    url: /^https:\/\/www\.skills\.google\/paths\/3802$/,
+    courses: DEPLOY_COURSES, badges: 3, credly: 1, pill: /^3 public course badges$/i },
+  { section: 'google-skills', id: 'ce-google-skills-agents-3546',
+    title: 'Introduction to Agents and Google’s Agent Ecosystem',
+    meta: 'Google Skills · 2026 · 3-Course Path', chip: '3 Courses', numeral: '07',
+    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
+    url: /^https:\/\/www\.skills\.google\/paths\/3546$/,
+    courses: AGENTS_COURSES, badges: 3, credly: 1, pill: /^3 public course badges$/i },
+  { section: 'google-skills', id: 'ce-google-skills-adk-3473',
+    title: 'Fundamentals of Agent Development Kit (ADK)',
+    meta: 'Google Skills · 2026 · 3-Course Path', chip: '3 Courses', numeral: '08',
+    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
+    url: /^https:\/\/www\.skills\.google\/paths\/3473$/,
+    courses: ADK_COURSES, badges: 3, credly: 0, pill: /^3 public course badges$/i },
   // Google Skills — Generative AI Foundations & Prompt Engineering
   { section: 'google-skills', id: 'ce-google-skills-beginner-gen-ai-118',
     title: 'Beginner: Introduction to Generative AI',
@@ -454,9 +455,8 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       'Claude Academy',
       'Stanford School of Engineering', 'XEE100',
       '4 learning paths · 11 course badges',
-      '12 learning paths · 79 course badges', '1 short course · 5 modules',
-      'Generative AI Leader Certification', 'Train for the exam',
-      'Google Cloud Generative AI Leader certification',
+      '12 learning paths · 80 course badges', '1 short course · 5 modules',
+      'Generative AI Leader Certification', 'official Google Cloud certification',
       'six Stanford faculty members will deliver an overview',
       ...CARDS.map((c) => c.title),
       ...CARDS.flatMap((c) => c.courses),
@@ -544,7 +544,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     const google = page.locator('#google-skills');
     await expect(google.getByRole('heading', { level: 2 })).toHaveText('Google Skills');
     await expect(google.getByText('Completed Learning Paths', { exact: true })).toBeVisible();
-    const googleCount = google.getByText('12 learning paths · 79 course badges', { exact: true });
+    const googleCount = google.getByText('12 learning paths · 80 course badges', { exact: true });
     await (wideViewport(page) ? expect(googleCount).toBeVisible() : expect(googleCount).toBeAttached());
     const cont = page.locator('#continuing-education');
     await expect(cont.getByRole('heading', { level: 2 })).toHaveText('Continuing Education');
@@ -768,7 +768,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     await page.goto('/certifications');
     await expandAll(page, 'google-skills');
     const links = badgeLinks(page.locator('#google-skills'));
-    await expect(links).toHaveCount(113);
+    await expect(links).toHaveCount(114);
     const rows = await links.evaluateAll((els) =>
       els.map((el) => ({
         text: (el.textContent ?? '').replace(/\s+/g, ' '),
@@ -806,9 +806,9 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       }
       expect(clipped, `a tile span is clipped in "${text}"`).toBe(false);
     }
-    expect(rows.filter((r) => r.text.includes('Verify in Credly'))).toHaveLength(6);
+    expect(rows.filter((r) => r.text.includes('Verify in Credly'))).toHaveLength(7);
     expect(rows.filter((r) => r.text.includes('Verify in Google Skills'))).toHaveLength(0);
-    expect(rows.filter((r) => r.text.includes('Verify'))).toHaveLength(113);
+    expect(rows.filter((r) => r.text.includes('Verify'))).toHaveLength(114);
   });
 
   test('only the Credly skill badges glow', async ({ page }) => {
@@ -826,7 +826,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
         };
       }),
     );
-    expect(tiles.filter((t) => t.credly)).toHaveLength(6);
+    expect(tiles.filter((t) => t.credly)).toHaveLength(7);
     for (const t of tiles) {
       expect(t.amber, 'glow must follow badge.provider === "Credly"').toBe(t.credly);
       expect(t.halo, 'halo must follow badge.provider === "Credly"').toBe(t.credly);
@@ -837,7 +837,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     await page.goto('/certifications');
     await expandAll(page, 'google-skills');
     const links = badgeLinks(page.locator('#google-skills'));
-    await expect(links).toHaveCount(113);
+    await expect(links).toHaveCount(114);
     const rows = await links.evaluateAll((els) =>
       els.map((e) => [e.getAttribute('href') ?? '', e.textContent ?? ''] as const),
     );
@@ -846,9 +846,9 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       expect(href).toMatch(/badge on Credly/i.test(text) ? CREDLY_BADGE_URL : GOOGLE_SKILLS_BADGE_URL);
     }
     const hrefs = rows.map(([h]) => h);
-    // 113 references, 79 distinct badge pages — the number the header prints.
-    expect(new Set(hrefs).size).toBe(79);
-    expect(hrefs.filter((h) => CREDLY_BADGE_URL.test(h))).toHaveLength(6);
+    // 114 references, 80 distinct badge pages — the number the header prints.
+    expect(new Set(hrefs).size).toBe(80);
+    expect(hrefs.filter((h) => CREDLY_BADGE_URL.test(h))).toHaveLength(7);
     expect(hrefs.filter((h) => GOOGLE_SKILLS_BADGE_URL.test(h))).toHaveLength(107);
     // Path 4459's badges (withheld while it was unfinished) and path 3802's.
     for (const id of ['27855015', '27885513', '27886491', '27888328', '27888392']) {
@@ -856,7 +856,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     }
   });
 
-  test('all five Credly badges are DISPLAYED as art, not merely linked', async ({ page }) => {
+  test('all Credly badges are DISPLAYED as art, not merely linked', async ({ page }) => {
     await page.goto('/certifications');
     await expandAll(page, 'google-skills');
     const srcs = await page
@@ -864,6 +864,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       .evaluateAll((els) => els.map((e) => e.getAttribute('src') ?? ''));
     // Credly art sits flat in /badges/ (no google-skills segment).
     for (const file of [
+      'generative-ai-leader',
       'create-your-first-gemini-enterprise-application',
       'prompt-design-in-vertex-ai',
       'deploy-multi-agent-architectures',
@@ -942,7 +943,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       ['coursework-courses-beginner-gen-ai', 4, 4],
       ['coursework-courses-agents', 3, 3],
       ['coursework-courses-smb', 13, 13],
-      ['coursework-courses-gen-ai-leader', 5, 5],
+      ['coursework-courses-gen-ai-leader', 6, 6],
       ['coursework-courses-workspace-gemini', 11, 11],
       ['coursework-courses-ai-boost-bites', 43, 43],
       ['coursework-courses-city-hall', 21, 21],
@@ -1050,7 +1051,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       ['ce-google-skills-deploy-agents-3802', 'coursework-courses-deploy-agents', 3],
       ['ce-google-skills-agents-3546', 'coursework-courses-agents', 3],
       ['ce-google-skills-beginner-gen-ai-118', 'coursework-courses-beginner-gen-ai', 4],
-      ['ce-google-skills-gen-ai-leader-1951', 'coursework-courses-gen-ai-leader', 5],
+      ['ce-google-skills-gen-ai-leader-1951', 'coursework-courses-gen-ai-leader', 6],
       ['ce-google-skills-adk-3473', 'coursework-courses-adk', 3],
     ] as const) {
       await openRow(page, id);
@@ -1082,20 +1083,17 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     await expect(el.locator('[data-collapsible]')).toHaveCount(1);
   });
 
-  test('the Generative AI Leader card cannot be read as a held certification', async ({ page }) => {
+  test('the Generative AI Leader card displays the held certification and badge', async ({ page }) => {
     await page.goto('/certifications');
     const el = page.locator('#ce-google-skills-gen-ai-leader-1951');
-    await expect(rowTitle(el)).toHaveText('Generative AI Leader');
-    await expect(rowTitle(el)).not.toContainText(/certification/i);
+    await expect(rowTitle(el)).toHaveText('Generative AI Leader Certification');
     await expect(
-      el.getByText('Google Skills · 2026 · 5-Course Path · “Train for the exam”', { exact: true }),
+      el.getByText('Google Skills · 2026 · 6-Course Path · “Google Cloud Certification”', { exact: true }),
     ).toBeVisible();
     await openRow(page, 'ce-google-skills-gen-ai-leader-1951');
     await expect(
       el.getByText(/Listed by Google as “Generative AI Leader Certification”/),
     ).toBeVisible();
-    await expect(el.getByText(/certified/i)).toHaveCount(0);
-    await expect(el.getByText(/no certificate/i)).toHaveCount(0);
   });
 
   test('expand all / collapse all works on all three sections', async ({ page }) => {
@@ -1158,7 +1156,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
   test('no EducationalOccupationalCredential or Course node is emitted for any entry', async ({ request }) => {
     const html = await (await request.get('/certifications')).text();
     for (const needle of [
-      'XEE100', 'Internet of Things', 'SMB Learning Path', 'Generative AI Leader',
+      'XEE100', 'Internet of Things', 'SMB Learning Path',
       'Agent Ecosystem', 'Beginner: Introduction to Generative AI',
       'Deploy Production Ready Agents',
       // The Claude Academy paths and courses emit none either, now that they are coursework:
