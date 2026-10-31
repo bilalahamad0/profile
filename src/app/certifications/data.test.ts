@@ -924,6 +924,13 @@ describe("the Generative AI Leader card", () => {
     expect(aiPro?.ribbon).toEqual({ emoji: "🌟", label: "AI Skills" });
     expect(aiPro?.ribbon).toEqual(GEN_AI_LEADER_SPEC.ribbon);
   });
+
+  it("gives Google AI Essentials and Google Prompting Essentials the AI Skills ribbon", () => {
+    const aiEssentials = SPECIALIZATIONS.find((s) => s.id === "spec-google-ai-essentials");
+    const prompting = SPECIALIZATIONS.find((s) => s.id === "spec-google-prompting-essentials");
+    expect(aiEssentials?.ribbon).toEqual({ emoji: "🌟", label: "AI Skills" });
+    expect(prompting?.ribbon).toEqual({ emoji: "🌟", label: "AI Skills" });
+  });
 });
 
 describe("FEATURED_BADGES showcase row", () => {

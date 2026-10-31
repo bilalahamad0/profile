@@ -268,6 +268,11 @@ test.describe('Certifications — collapse/expand behavior', () => {
     await expect(page.getByTestId('specialization-courses-list-prompting')).toBeVisible();
   });
 
+  test('AI Skills ribbon chip renders on Google Prompting Essentials', async ({ page }) => {
+    await page.goto('/certifications');
+    await expect(page.locator('#spec-google-prompting-essentials').getByText('AI Skills', { exact: true }).first()).toBeVisible();
+  });
+
   test('header Verify works on a collapsed row without expanding it', async ({ page }) => {
     await page.goto('/certifications');
 
@@ -428,6 +433,11 @@ test.describe('Certifications — Google AI Essentials row', () => {
     expect(calls[0].url).toContain(
       'coursera.org/account/accomplishments/specialization/0YNZJF3R5PJA',
     );
+  });
+
+  test('AI Skills ribbon chip renders on Google AI Essentials', async ({ page }) => {
+    await page.goto('/certifications');
+    await expect(page.locator(SECTION).getByText('AI Skills', { exact: true }).first()).toBeVisible();
   });
 });
 
