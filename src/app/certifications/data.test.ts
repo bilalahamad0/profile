@@ -274,8 +274,8 @@ describe("coursework is never counted as a credential", () => {
     ]);
   });
 
-  it("earns the AI Skills chip from a data flag, on paths as well as certificates", () => {
-    expect(AI_CERTIFICATES.filter((c) => c.aiSkills).map((c) => c.id)).toEqual(["ai-2", "ai-1"]);
+  it("earns the AI Skills chip from a data flag on paths, but not single certificates", () => {
+    expect(AI_CERTIFICATES.filter((c) => c.aiSkills).map((c) => c.id)).toEqual([]);
     expect(CLAUDE_ACADEMY_PATHS.every((p) => p.aiSkills === true)).toBe(true);
     expect(LEARNING_PATHS.every((p) => p.aiSkills === true)).toBe(true);
     for (const c of CONTINUING_EDUCATION) {
@@ -289,7 +289,7 @@ describe("coursework is never counted as a credential", () => {
       ...GENERAL_CERTIFICATES,
       ...ALL_COURSEWORK,
     ].filter((c) => c.aiSkills === true);
-    expect(flagged).toHaveLength(17);
+    expect(flagged).toHaveLength(15);
   });
 
   it("leaves no orphan decagon and no trace of the superseded Skilljar thumbnails", () => {
