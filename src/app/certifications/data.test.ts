@@ -8,6 +8,7 @@ import {
   CONTINUING_EDUCATION,
   COURSEWORK_GROUPS,
   CREDENTIAL_GROUPS,
+  DEFAULT_OPEN_IDS,
   GENERAL_CERTIFICATES,
   GEN_AI_LEADER_SPEC,
   GOOGLE_SKILLS_CATEGORIES,
@@ -906,6 +907,15 @@ describe("the Generative AI Leader card", () => {
     expect(strategicLeadership?.ids[0]).toBe("ce-google-skills-gen-ai-leader-1951");
     expect(GOOGLE_SKILLS_CREDENTIALS[0].id).toBe("ce-google-skills-gen-ai-leader-1951");
     expect(GOOGLE_SKILLS_CREDENTIALS[0].kind).toBe("specialization");
+  });
+
+  it("starts expanded by default on page load alongside the flagship specializations", () => {
+    expect(DEFAULT_OPEN_IDS).toContain("ce-google-skills-gen-ai-leader-1951");
+    expect(DEFAULT_OPEN_IDS).toEqual([
+      "spec-google-ai-professional",
+      "spec-google-project-management",
+      "ce-google-skills-gen-ai-leader-1951",
+    ]);
   });
 });
 

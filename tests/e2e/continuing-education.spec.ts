@@ -261,13 +261,6 @@ const CLAUDE_CARDS: Card[] = [
 const CARDS: Card[] = [
   ...CLAUDE_CARDS,
   // Google Skills — Strategic Leadership, Digital Transformation & Startup Operations
-  { section: 'google-skills', id: 'ce-google-skills-gen-ai-leader-1951',
-    title: 'Generative AI Leader Certification',
-    meta: 'Google Skills · 2026 · 6-Course Path · “Google Cloud Certification”',
-    chip: '6 Courses', numeral: '01',
-    linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Google Skills',
-    url: /^https:\/\/www\.skills\.google\/paths\/1951$/,
-    courses: LEADER_COURSES, badges: 6, credly: 1, pill: /^6 public course badges$/i },
   { section: 'google-skills', id: 'ce-google-skills-smb-4020',
     title: 'SMB Learning Path',
     meta: 'Google Skills · 2026 · 13-Course Path', chip: '13 Courses', numeral: '02',
@@ -455,8 +448,8 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       'Claude Academy',
       'Stanford School of Engineering', 'XEE100',
       '4 learning paths · 11 course badges',
-      '12 learning paths · 80 course badges', '1 short course · 5 modules',
-      'Generative AI Leader Certification', 'official Google Cloud certification',
+      '12 learning paths · 79 course badges', '1 short course · 5 modules',
+      'Generative AI Leader Certification',
       'six Stanford faculty members will deliver an overview',
       ...CARDS.map((c) => c.title),
       ...CARDS.flatMap((c) => c.courses),
@@ -476,7 +469,15 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       expect(start, `#${id} missing`).toBeGreaterThan(-1);
       // Both sections are <section>s whose rows are <article>s, so the first
       // </section> after the opening tag closes the section.
-      const body = html.slice(start, html.indexOf('</section>', start));
+      let body = html.slice(start, html.indexOf('</section>', start));
+      // Google Skills hosts the Generative AI Leader Certification specialization at the top.
+      if (id === 'google-skills') {
+        const leaderStart = body.indexOf('id="ce-google-skills-gen-ai-leader-1951"');
+        if (leaderStart !== -1) {
+          const leaderEnd = body.indexOf('</article>', leaderStart);
+          body = body.slice(0, leaderStart) + body.slice(leaderEnd + 10);
+        }
+      }
       expect(body).not.toMatch(/certified/i);
       expect(body).not.toMatch(/all verified/i);
       expect(body).not.toMatch(/\bcredentials?\b/i);
@@ -544,7 +545,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     const google = page.locator('#google-skills');
     await expect(google.getByRole('heading', { level: 2 })).toHaveText('Google Skills');
     await expect(google.getByText('Completed Learning Paths', { exact: true })).toBeVisible();
-    const googleCount = google.getByText('12 learning paths · 80 course badges', { exact: true });
+    const googleCount = google.getByText('12 learning paths · 79 course badges', { exact: true });
     await (wideViewport(page) ? expect(googleCount).toBeVisible() : expect(googleCount).toBeAttached());
     const cont = page.locator('#continuing-education');
     await expect(cont.getByRole('heading', { level: 2 })).toHaveText('Continuing Education');
@@ -675,9 +676,10 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     const titles = await page
       .locator('#google-skills article[id^="ce-"] h4 button > span:first-child')
       .evaluateAll((els) => els.map((e) => e.textContent?.trim()));
-    expect(titles).toEqual(
-      CARDS.filter((c) => c.section === 'google-skills').map((c) => c.title),
-    );
+    expect(titles).toEqual([
+      'Generative AI Leader Certification',
+      ...CARDS.filter((c) => c.section === 'google-skills').map((c) => c.title),
+    ]);
   });
 
   test('the Verify slot holds the issuer page link — never a Verify control', async ({ page }) => {
@@ -768,7 +770,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     await page.goto('/certifications');
     await expandAll(page, 'google-skills');
     const links = badgeLinks(page.locator('#google-skills'));
-    await expect(links).toHaveCount(114);
+    await expect(links).toHaveCount(108);
     const rows = await links.evaluateAll((els) =>
       els.map((el) => ({
         text: (el.textContent ?? '').replace(/\s+/g, ' '),
@@ -806,9 +808,9 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       }
       expect(clipped, `a tile span is clipped in "${text}"`).toBe(false);
     }
-    expect(rows.filter((r) => r.text.includes('Verify in Credly'))).toHaveLength(7);
+    expect(rows.filter((r) => r.text.includes('Verify in Credly'))).toHaveLength(6);
     expect(rows.filter((r) => r.text.includes('Verify in Google Skills'))).toHaveLength(0);
-    expect(rows.filter((r) => r.text.includes('Verify'))).toHaveLength(114);
+    expect(rows.filter((r) => r.text.includes('Verify'))).toHaveLength(108);
   });
 
   test('only the Credly skill badges glow', async ({ page }) => {
@@ -826,7 +828,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
         };
       }),
     );
-    expect(tiles.filter((t) => t.credly)).toHaveLength(7);
+    expect(tiles.filter((t) => t.credly)).toHaveLength(6);
     for (const t of tiles) {
       expect(t.amber, 'glow must follow badge.provider === "Credly"').toBe(t.credly);
       expect(t.halo, 'halo must follow badge.provider === "Credly"').toBe(t.credly);
@@ -837,7 +839,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     await page.goto('/certifications');
     await expandAll(page, 'google-skills');
     const links = badgeLinks(page.locator('#google-skills'));
-    await expect(links).toHaveCount(114);
+    await expect(links).toHaveCount(108);
     const rows = await links.evaluateAll((els) =>
       els.map((e) => [e.getAttribute('href') ?? '', e.textContent ?? ''] as const),
     );
@@ -846,10 +848,10 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       expect(href).toMatch(/badge on Credly/i.test(text) ? CREDLY_BADGE_URL : GOOGLE_SKILLS_BADGE_URL);
     }
     const hrefs = rows.map(([h]) => h);
-    // 114 references, 80 distinct badge pages — the number the header prints.
-    expect(new Set(hrefs).size).toBe(80);
-    expect(hrefs.filter((h) => CREDLY_BADGE_URL.test(h))).toHaveLength(7);
-    expect(hrefs.filter((h) => GOOGLE_SKILLS_BADGE_URL.test(h))).toHaveLength(107);
+    // 108 references in learning paths, 79 distinct badge pages.
+    expect(new Set(hrefs).size).toBe(79);
+    expect(hrefs.filter((h) => CREDLY_BADGE_URL.test(h))).toHaveLength(6);
+    expect(hrefs.filter((h) => GOOGLE_SKILLS_BADGE_URL.test(h))).toHaveLength(102);
     // Path 4459's badges (withheld while it was unfinished) and path 3802's.
     for (const id of ['27855015', '27885513', '27886491', '27888328', '27888392']) {
       expect(hrefs.some((h) => h.endsWith(`/badges/${id}`)), `badge ${id} missing`).toBe(true);
@@ -860,7 +862,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     await page.goto('/certifications');
     await expandAll(page, 'google-skills');
     const srcs = await page
-      .locator('#google-skills ol[data-testid^="coursework-courses-"] img')
+      .locator('#google-skills img')
       .evaluateAll((els) => els.map((e) => e.getAttribute('src') ?? ''));
     // Credly art sits flat in /badges/ (no google-skills segment).
     for (const file of [
@@ -943,7 +945,6 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       ['coursework-courses-beginner-gen-ai', 4, 4],
       ['coursework-courses-agents', 3, 3],
       ['coursework-courses-smb', 13, 13],
-      ['coursework-courses-gen-ai-leader', 6, 6],
       ['coursework-courses-workspace-gemini', 11, 11],
       ['coursework-courses-ai-boost-bites', 43, 43],
       ['coursework-courses-city-hall', 21, 21],
@@ -1051,7 +1052,6 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       ['ce-google-skills-deploy-agents-3802', 'coursework-courses-deploy-agents', 3],
       ['ce-google-skills-agents-3546', 'coursework-courses-agents', 3],
       ['ce-google-skills-beginner-gen-ai-118', 'coursework-courses-beginner-gen-ai', 4],
-      ['ce-google-skills-gen-ai-leader-1951', 'coursework-courses-gen-ai-leader', 6],
       ['ce-google-skills-adk-3473', 'coursework-courses-adk', 3],
     ] as const) {
       await openRow(page, id);
@@ -1083,17 +1083,24 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
     await expect(el.locator('[data-collapsible]')).toHaveCount(1);
   });
 
-  test('the Generative AI Leader card displays the held certification and badge', async ({ page }) => {
+  test('the Generative AI Leader card starts expanded by default and displays the held certification, thumbnail and child badges', async ({ page }) => {
     await page.goto('/certifications');
     const el = page.locator('#ce-google-skills-gen-ai-leader-1951');
     await expect(rowTitle(el)).toHaveText('Generative AI Leader Certification');
     await expect(
-      el.getByText('Google Skills · 2026 · 6-Course Path · “Google Cloud Certification”', { exact: true }),
+      el.getByText('Google Cloud · 2026 · 5-Course Path', { exact: true }),
     ).toBeVisible();
-    await openRow(page, 'ce-google-skills-gen-ai-leader-1951');
+    // Starts expanded by default
+    await expect(el.locator('button[aria-expanded]')).toHaveAttribute('aria-expanded', 'true');
+    await expect(el.locator('[data-collapsible]')).not.toHaveAttribute('inert', '');
+    // Certificate preview thumbnail
     await expect(
-      el.getByText(/Listed by Google as “Generative AI Leader Certification”/),
+      el.locator('img[alt="Generative AI Leader Certification certificate preview"]'),
     ).toBeVisible();
+    await expect(el.getByText('All 5 course credentials', { exact: true })).toBeVisible();
+    // Child badges grid
+    const list = el.locator('ol[data-testid="coursework-courses-gen-ai-leader"]');
+    await expect(list.locator('li')).toHaveCount(5);
   });
 
   test('expand all / collapse all works on all three sections', async ({ page }) => {
