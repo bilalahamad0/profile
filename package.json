@@ -10,7 +10,8 @@
     "lint:fix": "eslint . --fix",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "sync-tokens": "node scripts/sync-claude-tokens.js"
+    "sync-tokens": "node scripts/sync-claude-tokens.js",
+    "heartbeat": "node scripts/gcp-heartbeat.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",

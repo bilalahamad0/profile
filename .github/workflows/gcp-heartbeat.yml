@@ -1,0 +1,46 @@
+name: Google Cloud Project Heartbeat
+
+on:
+  schedule:
+    # Twice a week in regular cadence to prevent Google Cloud project & OAuth inactivity:
+    # - Primary ping: Mondays at 09:00 UTC (start of weekly cadence)
+    # - Fallback ping: Thursdays at 09:00 UTC (~3.5 days later, mid-cadence safety net)
+    - cron: '0 9 * * 1'
+    - cron: '0 9 * * 4'
+  workflow_dispatch:
+    inputs:
+      cadence:
+        description: 'Cadence mode (auto, primary, or fallback)'
+        required: false
+        default: 'auto'
+        type: choice
+        options:
+          - auto
+          - primary
+          - fallback
+
+permissions:
+  contents: read
+
+jobs:
+  heartbeat:
+    name: Ping Google Cloud Activity
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '20'
+
+      - name: Run GCP Heartbeat
+        env:
+          GA_OAUTH_CLIENT_ID: ${{ secrets.GA_OAUTH_CLIENT_ID }}
+          GA_OAUTH_CLIENT_SECRET: ${{ secrets.GA_OAUTH_CLIENT_SECRET }}
+          GA_OAUTH_REFRESH_TOKEN: ${{ secrets.GA_OAUTH_REFRESH_TOKEN }}
+          GA_PROPERTY_ID: ${{ secrets.GA_PROPERTY_ID }}
+        run: |
+          node scripts/gcp-heartbeat.mjs --cadence=${{ github.event.inputs.cadence || 'auto' }}
