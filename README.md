@@ -61,9 +61,10 @@ Copy [`.env.local.example`](.env.local.example) to `.env.local` for local develo
 **Analytics & visitor counter**
 - `NEXT_PUBLIC_GA_ID` – GA4 Measurement ID (public, safe to expose)
 - `GA_PROPERTY_ID` – numeric GA4 property ID powering the `/api/visitors` badge
-- `GA_OAUTH_CLIENT_ID`, `GA_OAUTH_CLIENT_SECRET`, `GA_OAUTH_REFRESH_TOKEN` – OAuth credentials for the GA Data API (preferred auth)
+- `GA_OAUTH_CLIENT_ID`, `GA_OAUTH_CLIENT_SECRET`, `GA_OAUTH_REFRESH_TOKEN` – OAuth credentials for the GA Data API (preferred auth). Associated with GCP project `portfolio-analytics-497506`.
 - `GA_SERVICE_ACCOUNT_JSON` – *(optional)* base64-encoded service-account key (fallback auth)
 - `KV_REST_API_URL`, `KV_REST_API_TOKEN` – *(optional)* Upstash Redis (KV) for a persistent, monotonic count; auto-injected by Vercel's Upstash integration
+- **Heartbeat & Inactivity Prevention**: [`.github/workflows/gcp-heartbeat.yml`](.github/workflows/gcp-heartbeat.yml) runs twice weekly (Primary on Mondays 09:00 UTC, Fallback on Thursdays 09:00 UTC) via `npm run heartbeat` to exercise the OAuth refresh flow and GA Data API, keeping `portfolio-analytics-497506` and credentials active.
 
 **Contact form (SMTP)**
 - `SMTP_HOST` – mail server host (e.g., `smtp.gmail.com`)
