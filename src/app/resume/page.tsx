@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   title: "Resume",
   description:
     "Resume of Bilal Ahamad — Systems Validation Architect with 18+ years across Amazon Lab126, Google, Rivian, Cruise, and Samsara. Download as PDF.",
-  alternates: { canonical: "https://bilalahamad.com/resume" },
+  alternates: { canonical: "/resume" },
   openGraph: {
     title: "Resume | Bilal Ahamad",
     description:

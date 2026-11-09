@@ -95,17 +95,17 @@ const nextConfig: NextConfig = {
       {
         source: "/book",
         destination: "/contact?book=true#book",
-        permanent: false,
+        permanent: true,
       },
       {
         source: "/schedule",
         destination: "/contact?book=true#book",
-        permanent: false,
+        permanent: true,
       },
       {
         source: "/calendar",
         destination: "/contact?book=true#book",
-        permanent: false,
+        permanent: true,
       },
     ];
   },
