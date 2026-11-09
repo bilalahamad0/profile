@@ -13,16 +13,17 @@ describe("NotFound component & metadata", () => {
 
   it("renders 404 heading and navigation recovery links", () => {
     render(<NotFound />);
-    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Page not found");
-    expect(screen.getByText("Error 404")).toBeInTheDocument();
+    const heading = screen.getByRole("heading", { level: 1 });
+    expect(heading.textContent).toContain("Page not found");
+    expect(screen.getByText("Error 404")).toBeDefined();
 
     const homeLinks = screen.getAllByRole("link", { name: /home/i });
     expect(homeLinks.length).toBeGreaterThanOrEqual(1);
-    expect(homeLinks[0]).toHaveAttribute("href", "/");
+    expect(homeLinks[0].getAttribute("href")).toBe("/");
 
-    expect(screen.getByRole("link", { name: /experience/i })).toHaveAttribute("href", "/experience");
-    expect(screen.getByRole("link", { name: /projects/i })).toHaveAttribute("href", "/projects");
-    expect(screen.getByRole("link", { name: /blog/i })).toHaveAttribute("href", "/blog");
-    expect(screen.getByRole("link", { name: /contact/i })).toHaveAttribute("href", "/contact");
+    expect(screen.getByRole("link", { name: /experience/i }).getAttribute("href")).toBe("/experience");
+    expect(screen.getByRole("link", { name: /projects/i }).getAttribute("href")).toBe("/projects");
+    expect(screen.getByRole("link", { name: /blog/i }).getAttribute("href")).toBe("/blog");
+    expect(screen.getByRole("link", { name: /contact/i }).getAttribute("href")).toBe("/contact");
   });
 });
