@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   // The root layout's title template appends " | Bilal Ahamad".
   title: "Privacy Policy",
   description: DESCRIPTION,
-  alternates: { canonical: "https://bilalahamad.com/privacy" },
+  alternates: { canonical: "/privacy" },
   // Without these, /privacy inherits the homepage's og:url and og:title.
   openGraph: {
     type: "website",
