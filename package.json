@@ -36,7 +36,7 @@
   },
   "overrides": {
     "axios": "^1.15.0",
-    "follow-redirects": "^1.16.1",
+    "follow-redirects": "^1.16.2",
     "form-data": "^4.0.4",
     "esbuild": "^0.25.0",
     "minimatch@3": ">=3.1.3",
