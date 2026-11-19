@@ -82,29 +82,54 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/adhan",
-        destination: "/projects#adhan",
+        destination: "/projects?project=adhan",
+        permanent: true,
+      },
+      {
+        source: "/adhan/:path*",
+        destination: "/projects?project=adhan",
         permanent: true,
       },
       {
         source: "/warn",
-        destination: "/projects#warn",
+        destination: "/projects?project=warn",
+        permanent: true,
+      },
+      {
+        source: "/warn/:path*",
+        destination: "/projects?project=warn",
         permanent: true,
       },
       // Direct shareable calendar & booking shortcuts that route visitors
       // to the on-site scheduler on /contact with automatic loading and scrolling
       {
         source: "/book",
-        destination: "/contact?book=true#book",
+        destination: "/contact?book=true",
+        permanent: true,
+      },
+      {
+        source: "/book/:path*",
+        destination: "/contact?book=true",
         permanent: true,
       },
       {
         source: "/schedule",
-        destination: "/contact?book=true#book",
+        destination: "/contact?book=true",
+        permanent: true,
+      },
+      {
+        source: "/schedule/:path*",
+        destination: "/contact?book=true",
         permanent: true,
       },
       {
         source: "/calendar",
-        destination: "/contact?book=true#book",
+        destination: "/contact?book=true",
+        permanent: true,
+      },
+      {
+        source: "/calendar/:path*",
+        destination: "/contact?book=true",
         permanent: true,
       },
     ];

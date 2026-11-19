@@ -112,21 +112,24 @@ export function ProjectsExplorer({ metrics }: { metrics: Record<string, AIMetric
 
   // Deep links land here from three places: the AI metrics table further down
   // this page, the `/ai` -> `/projects` redirect (browsers carry the original
-  // fragment across, so `/ai#adhan-ce` becomes `/projects#adhan-ce`), and the
-  // published blog posts. `hashchange` is listened to as well as read once,
+  // fragment across, so `/ai#adhan-ce` becomes `/projects#adhan-ce`), the
+  // vanity redirects (`/warn` -> `/projects?project=warn`, `/adhan` -> `/projects?project=adhan`),
+  // and the published blog posts. `hashchange` is listened to as well as read once,
   // because the metrics table's rows are same-page anchors.
   useEffect(() => {
-    const readHash = () => {
-      const hash = decodeURIComponent(window.location.hash.slice(1));
-      if (!hash) return;
+    const readTarget = () => {
+      const hash = typeof window !== "undefined" ? decodeURIComponent(window.location.hash.slice(1)) : "";
+      const params = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+      const target = hash || params?.get("project") || params?.get("p") || "";
+      if (!target) return;
       // The target card may be hidden behind the current category filter —
       // widen back to "All" so the anchor has something to scroll to.
-      if (projectsData.some((p) => p.id === hash)) setActive("All");
-      setPendingHash(hash);
+      if (projectsData.some((p) => p.id === target)) setActive("All");
+      setPendingHash(target);
     };
-    readHash();
-    window.addEventListener("hashchange", readHash);
-    return () => window.removeEventListener("hashchange", readHash);
+    readTarget();
+    window.addEventListener("hashchange", readTarget);
+    return () => window.removeEventListener("hashchange", readTarget);
   }, []);
 
   // Runs after the filter change above has been committed, so the element exists.
