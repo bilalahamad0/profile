@@ -77,7 +77,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/adhan-ce/:path*",
-        destination: "https://adhan.bilalahamad.com/:path*",
+        destination: "https://adhan.bilalahamad.com",
         permanent: true,
       },
       {
