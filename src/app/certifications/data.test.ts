@@ -64,8 +64,10 @@ const BADGE_URL_BY_PROVIDER = {
   "Google Skills":
     /^https:\/\/www\.skills\.google\/public_profiles\/aece174b-451d-4d6f-928d-6def28946025\/badges\/\d+$/,
   Credly: /^https:\/\/www\.credly\.com\/badges\/[0-9a-f-]{36}\/public_url$/,
+  // NO `badges/<uuid>` arm: those are the owner's private pages and send a
+  // logged-out visitor to /login (five shipped that way until 2026-11-25).
   "Claude Academy":
-    /^https:\/\/academy\.claude\.com\/(verify\/[0-9a-f]{32}|badges\/[0-9a-f-]{36}|courses\/[a-z0-9-]+)$/,
+    /^https:\/\/academy\.claude\.com\/(verify\/[0-9a-f]{32}|courses\/[a-z0-9-]+)$/,
 } as const;
 const BADGE_IMAGE_BY_PROVIDER = {
   "Google Skills": /^\/badges\/google-skills\/[a-z0-9-]+\.webp$/,
@@ -241,9 +243,38 @@ describe("coursework is never counted as a credential", () => {
     const allCourses = CLAUDE_ACADEMY_PATHS.flatMap((p) => p.courses);
     expect(allCourses).toHaveLength(14);
     for (const c of allCourses) {
-      expect(c.badge?.url).toMatch(/^https:\/\/academy\.claude\.com\/(verify\/[0-9a-f]{32}|badges\/[0-9a-f-]{36}|courses\/[a-z0-9-]+)$/);
+      expect(c.badge?.url).toMatch(/^https:\/\/academy\.claude\.com\/(verify\/[0-9a-f]{32}|courses\/[a-z0-9-]+)$/);
       expect(existsSync(path.join(PUBLIC_DIR, c.badge!.image)), `${c.badge!.image} missing`).toBe(true);
     }
+    // An EARNED course (thumbnail + Verify pill) must land on its PUBLIC
+    // verify page, never the owner's private academy.claude.com/badges/<uuid>,
+    // which redirects a logged-out recruiter to /login. A not-yet-completed
+    // course has no token and links its public /courses/ page instead. Tokens
+    // pinned from the signed-in dashboard and re-checked logged-out in a fresh
+    // headless browser on 2026-11-25: all 11 render "Verified completion
+    // badge" with the owner's name, and a fabricated token does not.
+    const verifyUrls = Object.fromEntries(
+      allCourses
+        .filter((c) => c.badge?.isVerifiable !== false)
+        .map((c) => [c.title, c.badge!.url.replace("https://academy.claude.com/verify/", "")]),
+    );
+    expect(verifyUrls).toEqual({
+      "Claude Platform 101": "3c4c3e6f631c31fa9bc2189ea22f693e",
+      "Claude Code 101": "906865ee77b53507c289141ed39e25f3",
+      "Claude Code in Action": "4d7c863adbe9b8db4d518c6800d494ea",
+      "Introduction to Claude Cowork": "fcf45c0d8bd08cfbdfe1cda2716ed394",
+      "Building Effective Human Agent Teams (Beta)": "158250357ac93005cec8552388fb168a",
+      "Claude 101": "26fc2b7fb0801c5c6d8168316b99dcae",
+      "AI Capabilities and Limitations": "26ca031c24fcae649b974ae7694f7579",
+      "AI Fluency: Framework & Foundations": "87cca4700437d5b08cdfc43b538849e0",
+      "AI Fluency for Builders": "04939e8d3b923085f10ae7c7ec4f10f5",
+      "AI Fluency for Creative Work": "ef379edff308acee623499bff41ab001",
+      "AI Fluency for Small Businesses": "287a8617d394c54bb0f10065f4b98067",
+    });
+    for (const c of allCourses.filter((x) => x.badge?.isVerifiable === false)) {
+      expect(c.badge?.url, c.title).toMatch(/^https:\/\/academy\.claude\.com\/courses\/[a-z0-9-]+$/);
+    }
+    expect(JSON.stringify(CLAUDE_ACADEMY_PATHS)).not.toContain("academy.claude.com/badges/");
     const allPathUrls = ALL_COURSEWORK.map((p) => p.url);
     for (const u of allPathUrls) {
       expect(u).not.toContain("skilljar.com");

@@ -2013,8 +2013,16 @@ export const CONTINUING_EDUCATION: readonly LearningPathData[] = [
 // issuing organisation, as its own footer says.
 //
 // NEVER link academy.claude.com/badges/<uuid>: those are the owner's private
-// badge pages and render a sign-in wall logged out. They are where the verify
-// tokens came from, not something to publish.
+// badge pages and redirect a logged-out visitor to /login. They are where the
+// verify tokens came from, not something to publish. Five of them slipped in
+// with the Sep 14–15 courses and were swapped for /verify/ URLs on 2026-11-25;
+// data.test.ts now rejects any /badges/ link, so it cannot happen again.
+//
+// WHERE A TOKEN COMES FROM: open the badge on the signed-in dashboard
+// (academy.claude.com/dashboard → Badges). Its "Add to LinkedIn" link carries
+// the public URL, URL-encoded, as `certUrl`. Every EARNED course gets one; a
+// course in a track that is not yet completed has none and keeps its
+// /courses/<slug> page with `isVerifiable: false`.
 //
 // Both URL sets were confirmed logged-out in a real browser (this SPA is
 // client-rendered, so curl returns an identical empty shell for a real URL and
@@ -2084,7 +2092,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
         title: "Claude Platform 101",
         badge: claudeBadge(
           "claude-platform-101",
-          "https://academy.claude.com/badges/19d840c1-afd4-4598-a887-92143b8e02be",
+          "https://academy.claude.com/verify/3c4c3e6f631c31fa9bc2189ea22f693e",
         ),
       },
     ],
@@ -2228,7 +2236,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
         title: "AI Capabilities and Limitations",
         badge: claudeBadge(
           "ai-capabilities-and-limitations",
-          "https://academy.claude.com/badges/f4e2d9ea-b48c-4a71-92f0-a618a6775c84",
+          "https://academy.claude.com/verify/26ca031c24fcae649b974ae7694f7579",
         ),
       },
       {
@@ -2244,7 +2252,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
         title: "AI Fluency for Builders",
         badge: claudeBadge(
           "ai-fluency-for-builders",
-          "https://academy.claude.com/badges/98e570fd-babb-4016-9fe6-07acf81cfb27",
+          "https://academy.claude.com/verify/04939e8d3b923085f10ae7c7ec4f10f5",
         ),
       },
       {
@@ -2252,7 +2260,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
         title: "AI Fluency for Creative Work",
         badge: claudeBadge(
           "ai-fluency-for-creative-work",
-          "https://academy.claude.com/badges/cd9f0b1e-f2b6-4814-a6cb-d10c364955c3",
+          "https://academy.claude.com/verify/ef379edff308acee623499bff41ab001",
         ),
       },
       {
@@ -2260,7 +2268,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
         title: "AI Fluency for Small Businesses",
         badge: claudeBadge(
           "ai-fluency-for-small-businesses",
-          "https://academy.claude.com/badges/9f17edad-5b1a-489c-aa62-fe29d2440724",
+          "https://academy.claude.com/verify/287a8617d394c54bb0f10065f4b98067",
         ),
       },
     ],
