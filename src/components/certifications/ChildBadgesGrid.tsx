@@ -7,7 +7,7 @@ import { ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { LearningPathData, SpecializationData } from "@/app/certifications/data";
 import { panelBadgeVariants, reducedBadgeVariants } from "./CollapsePanel";
-import { openBadgeUrl, openVerifyUrl, trackCourseBadge } from "./verify";
+import { openBadgeUrl, openVerifyUrl, trackCourseBadge, trackCourseCertificate } from "./verify";
 import { gridPositions } from "./gridPositions";
 
 /**
@@ -207,6 +207,48 @@ const COURSE_TILE_ITEM = "flex min-w-0 items-center gap-3 text-left sm:flex-col 
  *  where `mt-auto` can align the pills of a row to one baseline. */
 const COURSE_TILE_TEXT = "flex min-w-0 flex-1 flex-col items-start gap-1.5 sm:contents";
 
+/** A grid where SOME tiles carry a second link (CourseBadge.certificateUrl —
+ *  the Skilljar certificate on five Claude Academy courses) uses a two-row
+ *  tile instead. The second link cannot sit inside the tile's <a> (nested
+ *  anchors are invalid HTML), so it is the <li>'s second row:
+ *
+ *  • `sm` and up: the <li> is a SUBGRID spanning two of the gallery's rows, so
+ *    every tile in a visual row shares the same two tracks. Row 1 holds the
+ *    tile link, row 2 the Certificate pill. A tile without one leaves its row 2
+ *    empty — so the Verify pills, which `mt-auto` pins to the bottom of row 1,
+ *    stay on ONE baseline across the row whether or not a neighbour has the
+ *    extra pill. Content-driven: no reserved height, no spacer.
+ *  • Below `sm` the tile is sideways and alone in its row, so nothing needs to
+ *    align across tiles. The <li> is a two-column grid and the <a> subgrids its
+ *    columns, so column 1 is exactly the art's width and the pill, placed in
+ *    column 2, starts flush under the course title — again with no px offset.
+ *    A tile without a pill has no second row, so it costs no extra height.
+ *    On a tile WITH one, the <a> also subgrids the two rows (PAIR_LINK_SPAN)
+ *    and the art spans both, so title + Verify + Certificate stack as one
+ *    cluster centred on the art. Without that, a one-line title left the
+ *    Certificate pill hanging below the 76px art, ~25px under its Verify pill
+ *    while a two-line title's sat 6px under — measured 2026-11-25.
+ *
+ *  Grids with no second link never take this path (every Google Skills grid). */
+const PAIR_TILE_ITEM =
+  "grid min-w-0 grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 sm:row-span-2 sm:grid-cols-1 sm:grid-rows-subgrid";
+const PAIR_TILE_LINK =
+  "col-span-2 grid min-w-0 grid-cols-subgrid items-center text-left sm:col-span-1 sm:flex sm:flex-col sm:gap-2 sm:text-center";
+/** Phone only, on a tile that HAS a Certificate pill: the <a> spans both rows
+ *  so its art can too. Its START is explicit (row 1, col 1), not just its span:
+ *  the pill is explicitly placed at row 2 / col 2, and an auto-placed 2×2 item
+ *  must avoid occupied cells, so with a bare span the <a> was pushed down to
+ *  rows 3–4 and the pill floated above it. From `sm` up it is reset to one
+ *  cell — row 1 of the gallery subgrid, where the <a> is a flex column. */
+const PAIR_LINK_SPAN =
+  "row-[1/span_2] col-[1/span_2] grid-rows-subgrid sm:row-span-1 sm:col-span-1";
+/** The Certificate pill: TILE_PILL's shape, in NEUTRAL ink. Emerald stays the
+ *  tile's own Verify pill; this is a secondary, separate destination. Ink/70 is
+ *  the same t-label colour PathBody measures at 6.21–6.35:1 on these open
+ *  cards (dark: ink/60, 6.97–7.09:1). */
+const CERT_PILL =
+  "row-start-2 col-start-2 self-start justify-self-start sm:col-start-1 sm:justify-self-center inline-flex max-w-full items-center gap-1 rounded-full border border-line/20 bg-ink/[0.04] px-2.5 py-0.5 text-center t-label font-bold uppercase tracking-wider text-ink/70 transition-colors hover:border-line/40 hover:bg-ink/[0.08] hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-ink/70 dark:text-ink/60 dark:hover:text-ink dark:focus-visible:ring-ink/60";
+
 /** The gallery track. `items-stretch` is load-bearing: it makes every tile in a
  *  row as tall as the tallest one, which is the only thing that lets the
  *  `mt-auto` on the pill below push each pill to a shared baseline. With items
@@ -284,6 +326,8 @@ export const CourseBadgesGrid = ({ path }: { path: LearningPathData }) => {
   const plan = COURSE_GRID_ROW_PLANS[units.length];
   const columns =
     plan?.track ?? COURSE_GRID_COLS[units.length] ?? COURSE_GRID_COLS_DEFAULT;
+  // Two-row tiles only where some course has a second link — see PAIR_TILE_ITEM.
+  const paired = units.some((c) => c.badge?.certificateUrl);
 
   return (
     <ol data-testid={path.testId} className={cn(COURSE_GRID_OL, columns)}>
@@ -310,12 +354,13 @@ export const CourseBadgesGrid = ({ path }: { path: LearningPathData }) => {
         // sixth path with a Credly badge lights up without touching this file.
         const glow = badge.provider === "Credly";
         const isVerifiable = badge.isVerifiable !== false;
+        const certificateUrl = isVerifiable ? badge.certificateUrl : undefined;
         return (
           <motion.li
             key={course.step}
             variants={badgeVariants}
             className={cn(
-              COURSE_TILE_ITEM,
+              paired ? PAIR_TILE_ITEM : COURSE_TILE_ITEM,
               "h-full sm:px-1",
               plan && [plan.span, plan.starts[index]],
             )}
@@ -333,7 +378,8 @@ export const CourseBadgesGrid = ({ path }: { path: LearningPathData }) => {
                 })
               }
               className={cn(
-                COURSE_TILE_ITEM,
+                paired ? PAIR_TILE_LINK : COURSE_TILE_ITEM,
+                certificateUrl && PAIR_LINK_SPAN,
                 // h-full/w-full so the link fills the stretched <li>; without a
                 // filled box there is no slack for `mt-auto` to distribute.
                 "group/badge h-full w-full rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 dark:focus-visible:ring-emerald-400/70",
@@ -342,6 +388,10 @@ export const CourseBadgesGrid = ({ path }: { path: LearningPathData }) => {
               <span
                 className={cn(
                   COURSE_TILE_BOX,
+                  // Phone: the art spans both rows (see PAIR_LINK_SPAN). From
+                  // `sm` the parent is a flex column, where self-center
+                  // matches its own items-center.
+                  certificateUrl && "row-span-2 self-center",
                   "transition-transform duration-300 group-hover/badge:scale-110",
                 )}
               >
@@ -376,7 +426,10 @@ export const CourseBadgesGrid = ({ path }: { path: LearningPathData }) => {
                   />
                 </span>
               </span>
-              <span className={COURSE_TILE_TEXT}>
+              {/* Phone, with a Certificate pill: bottom of row 1, so Verify
+                  and Certificate sit one gap apart. `sm:contents` dissolves
+                  this box from `sm` up, which makes self-end inert there. */}
+              <span className={cn(COURSE_TILE_TEXT, certificateUrl && "self-end")}>
                 {course.level && (
                   <span
                     data-level={course.level}
@@ -464,6 +517,27 @@ export const CourseBadgesGrid = ({ path }: { path: LearningPathData }) => {
                   : ` — course on ${badge.provider}, opens in a new tab`}
               </span>
             </a>
+            {certificateUrl ? (
+              <a
+                href={certificateUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-course-certificate
+                onClick={() =>
+                  trackCourseCertificate({ title: course.title, coursework: path.titleLines[0] })
+                }
+                className={cn(CERT_PILL, "group/cert")}
+              >
+                Certificate
+                <ExternalLink
+                  className="h-3 w-3 shrink-0 transition-transform group-hover/cert:translate-x-0.5"
+                  aria-hidden
+                />
+                <span className="sr-only">
+                  {` — ${course.title}: original Anthropic Academy certificate on Skilljar, opens in a new tab`}
+                </span>
+              </a>
+            ) : null}
           </motion.li>
         );
       })}

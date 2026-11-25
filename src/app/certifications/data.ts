@@ -171,6 +171,14 @@ export type CourseBadge = {
   /** If false, this course tile displays its thumbnail art and title, but does not carry
    *  an issued public credential/badge and thus does not display the "Verify" tag. */
   isVerifiable?: boolean;
+  /** A SECOND public proof of the same completion, on the issuer's previous
+   *  platform: the verify.skilljar.com/c/<code> certificate Anthropic Academy
+   *  issued before it moved to academy.claude.com. Only the five Claude courses
+   *  completed before that move have one. Rendered as a separate neutral
+   *  "Certificate" link beside the tile (owner, 2026-11-25: "Keep both") —
+   *  `url` stays the tile's primary destination, so the thumbnail and the
+   *  Verify pill never change target. Never set on a non-verifiable course. */
+  certificateUrl?: string;
 };
 
 /** One unit inside a path.
@@ -2012,9 +2020,27 @@ export const CONTINUING_EDUCATION: readonly LearningPathData[] = [
 // STAYS — the site ships no replacement wordmark and Anthropic PBC is still the
 // issuing organisation, as its own footer says.
 //
+// SKILLJAR, KEPT AS A SECOND PROOF (owner, 2026-11-25: "Keep both"). The five
+// courses completed BEFORE the move also hold an original
+// verify.skilljar.com/c/<code> certificate, which is still public. They ride
+// along as `certificateUrl` (see withSkilljar) and render as a separate
+// "Certificate" link — the academy.claude.com /verify/ page stays the tile's
+// primary destination. The six courses completed after the move have no
+// Skilljar certificate and never will. Skilljar is server-rendered, so curl
+// does discriminate here: a real code 200s with the owner's name and course,
+// and a fabricated one — even one character off — 404s (checked 2026-11-25).
+//
 // NEVER link academy.claude.com/badges/<uuid>: those are the owner's private
-// badge pages and render a sign-in wall logged out. They are where the verify
-// tokens came from, not something to publish.
+// badge pages and redirect a logged-out visitor to /login. They are where the
+// verify tokens came from, not something to publish. Five of them slipped in
+// with the Sep 14–15 courses and were swapped for /verify/ URLs on 2026-11-25;
+// data.test.ts now rejects any /badges/ link, so it cannot happen again.
+//
+// WHERE A TOKEN COMES FROM: open the badge on the signed-in dashboard
+// (academy.claude.com/dashboard → Badges). Its "Add to LinkedIn" link carries
+// the public URL, URL-encoded, as `certUrl`. Every EARNED course gets one; a
+// course in a track that is not yet completed has none and keeps its
+// /courses/<slug> page with `isVerifiable: false`.
 //
 // Both URL sets were confirmed logged-out in a real browser (this SPA is
 // client-rendered, so curl returns an identical empty shell for a real URL and
@@ -2050,6 +2076,13 @@ function claudeBadge(slug: string, url: string, isVerifiable = true): CourseBadg
   };
 }
 
+/** Attach a course's original Skilljar certificate (CourseBadge.certificateUrl)
+ *  by its 12-character code. */
+const withSkilljar = (badge: CourseBadge, code: string): CourseBadge => ({
+  ...badge,
+  certificateUrl: `https://verify.skilljar.com/c/${code}`,
+});
+
 export const CLAUDE_ACADEMY_TILE: IssuerTile = {
   tile: "bg-[#D97757]",
   wordmark: "Claude",
@@ -2084,7 +2117,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
         title: "Claude Platform 101",
         badge: claudeBadge(
           "claude-platform-101",
-          "https://academy.claude.com/badges/19d840c1-afd4-4598-a887-92143b8e02be",
+          "https://academy.claude.com/verify/3c4c3e6f631c31fa9bc2189ea22f693e",
         ),
       },
     ],
@@ -2113,17 +2146,23 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
       {
         step: 1,
         title: "Claude Code 101",
-        badge: claudeBadge(
-          "claude-code-101",
-          "https://academy.claude.com/verify/906865ee77b53507c289141ed39e25f3",
+        badge: withSkilljar(
+          claudeBadge(
+            "claude-code-101",
+            "https://academy.claude.com/verify/906865ee77b53507c289141ed39e25f3",
+          ),
+          "gotmwte64yio",
         ),
       },
       {
         step: 2,
         title: "Claude Code in Action",
-        badge: claudeBadge(
-          "claude-code-in-action",
-          "https://academy.claude.com/verify/4d7c863adbe9b8db4d518c6800d494ea",
+        badge: withSkilljar(
+          claudeBadge(
+            "claude-code-in-action",
+            "https://academy.claude.com/verify/4d7c863adbe9b8db4d518c6800d494ea",
+          ),
+          "7nwu9ya84ew7",
         ),
       },
       {
@@ -2179,9 +2218,12 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
       {
         step: 1,
         title: "Introduction to Claude Cowork",
-        badge: claudeBadge(
-          "introduction-to-claude-cowork",
-          "https://academy.claude.com/verify/fcf45c0d8bd08cfbdfe1cda2716ed394",
+        badge: withSkilljar(
+          claudeBadge(
+            "introduction-to-claude-cowork",
+            "https://academy.claude.com/verify/fcf45c0d8bd08cfbdfe1cda2716ed394",
+          ),
+          "3vve9s3naozo",
         ),
       },
       {
@@ -2218,9 +2260,12 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
       {
         step: 1,
         title: "Claude 101",
-        badge: claudeBadge(
-          "claude-101",
-          "https://academy.claude.com/verify/26fc2b7fb0801c5c6d8168316b99dcae",
+        badge: withSkilljar(
+          claudeBadge(
+            "claude-101",
+            "https://academy.claude.com/verify/26fc2b7fb0801c5c6d8168316b99dcae",
+          ),
+          "bwxhr69okhdw",
         ),
       },
       {
@@ -2228,15 +2273,18 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
         title: "AI Capabilities and Limitations",
         badge: claudeBadge(
           "ai-capabilities-and-limitations",
-          "https://academy.claude.com/badges/f4e2d9ea-b48c-4a71-92f0-a618a6775c84",
+          "https://academy.claude.com/verify/26ca031c24fcae649b974ae7694f7579",
         ),
       },
       {
         step: 3,
         title: "AI Fluency: Framework & Foundations",
-        badge: claudeBadge(
-          "ai-fluency-framework-foundations",
-          "https://academy.claude.com/verify/87cca4700437d5b08cdfc43b538849e0",
+        badge: withSkilljar(
+          claudeBadge(
+            "ai-fluency-framework-foundations",
+            "https://academy.claude.com/verify/87cca4700437d5b08cdfc43b538849e0",
+          ),
+          "357mqg884cnc",
         ),
       },
       {
@@ -2244,7 +2292,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
         title: "AI Fluency for Builders",
         badge: claudeBadge(
           "ai-fluency-for-builders",
-          "https://academy.claude.com/badges/98e570fd-babb-4016-9fe6-07acf81cfb27",
+          "https://academy.claude.com/verify/04939e8d3b923085f10ae7c7ec4f10f5",
         ),
       },
       {
@@ -2252,7 +2300,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
         title: "AI Fluency for Creative Work",
         badge: claudeBadge(
           "ai-fluency-for-creative-work",
-          "https://academy.claude.com/badges/cd9f0b1e-f2b6-4814-a6cb-d10c364955c3",
+          "https://academy.claude.com/verify/ef379edff308acee623499bff41ab001",
         ),
       },
       {
@@ -2260,7 +2308,7 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
         title: "AI Fluency for Small Businesses",
         badge: claudeBadge(
           "ai-fluency-for-small-businesses",
-          "https://academy.claude.com/badges/9f17edad-5b1a-489c-aa62-fe29d2440724",
+          "https://academy.claude.com/verify/287a8617d394c54bb0f10065f4b98067",
         ),
       },
     ],

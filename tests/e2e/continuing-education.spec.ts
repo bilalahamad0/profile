@@ -221,6 +221,9 @@ type Card = {
   badges: number;
   /** Image count if different from verifiable badges count (e.g. Claude Code where 3 courses have no verifiable badge). */
   images?: number;
+  /** Secondary "Certificate" links (the original Skilljar certificate) — only
+   *  on the five Claude courses completed before the academy left Skilljar. */
+  certificates?: number;
   credly: number;
   pill: RegExp;
 };
@@ -239,21 +242,21 @@ const CLAUDE_CARDS: Card[] = [
     chip: '5 Courses', numeral: '02',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Claude Academy',
     url: /^https:\/\/academy\.claude\.com\/all\?kind=course&product=code$/,
-    courses: CLAUDE_CODE_COURSES, badges: 2, images: 5, credly: 0, pill: /^2 public course badges$/i },
+    courses: CLAUDE_CODE_COURSES, badges: 2, images: 5, certificates: 2, credly: 0, pill: /^2 public course badges$/i },
   { section: 'claude-academy', id: 'ce-claude-academy-cowork',
     title: 'Claude Cowork',
     meta: 'Claude Academy · 2026 · 2-Course Track',
     chip: '2 Courses', numeral: '03',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Claude Academy',
     url: /^https:\/\/academy\.claude\.com\/all\?kind=course&product=cowork$/,
-    courses: CLAUDE_COWORK_COURSES, badges: 2, credly: 0, pill: /^2 public course badges$/i },
+    courses: CLAUDE_COWORK_COURSES, badges: 2, certificates: 1, credly: 0, pill: /^2 public course badges$/i },
   { section: 'claude-academy', id: 'ce-claude-academy-chat',
     title: 'Claude.ai',
     meta: 'Claude Academy · 2026 · 6-Course Track',
     chip: '6 Courses', numeral: '04',
     linkLabel: 'Path page', urlNoun: 'path', issuerShort: 'Claude Academy',
     url: /^https:\/\/academy\.claude\.com\/all\?kind=course&product=chat$/,
-    courses: CLAUDE_CHAT_COURSES, badges: 6, credly: 0, pill: /^6 public course badges$/i },
+    courses: CLAUDE_CHAT_COURSES, badges: 6, certificates: 2, credly: 0, pill: /^6 public course badges$/i },
 ];
 
 /** The CURATED top-to-bottom order the owner chose on 2026-09-11 and 2026-09-15.
@@ -490,6 +493,7 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       expect(body).not.toMatch(/Verify in (?:<!-- -->)?Google Skills/);
       const rest = body
         .replace(/https:\/\/academy\.claude\.com\/verify\/[a-f0-9]+/g, '')
+        .replace(/https:\/\/verify\.skilljar\.com\/c\/[a-z0-9]+/g, '')
         .replace(/Verify in (?:<!-- -->)?Credly/g, '')
         .replace(/Verify/g, '');
       expect(rest).not.toMatch(/\bverif(y|ied)\b/i);
@@ -719,6 +723,16 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       await expect(list.locator('img')).toHaveCount(card.images ?? card.badges);
       await expect(badgeLinks(el)).toHaveCount(card.badges);
       await expect(credlyLinks(el)).toHaveCount(card.credly);
+      const certs = el.locator('a[data-course-certificate]');
+      await expect(certs).toHaveCount(card.certificates ?? 0);
+      for (const a of await certs.all()) {
+        await expect(a).toHaveAttribute('href', /^https:\/\/verify\.skilljar\.com\/c\/[a-z0-9]{12}$/);
+        await expect(a).toHaveAttribute('target', '_blank');
+        await expect(a).toHaveAttribute('rel', /noopener/);
+        await expect(a).toHaveAccessibleName(
+          /^Certificate — .+: original Anthropic Academy certificate on Skilljar, opens in a new tab$/,
+        );
+      }
       // Two issuer-page controls, each with its own accessible name — and the
       // deleted hero slab is not one of them.
       for (const locate of [rowLink, detailsLink]) {
@@ -765,6 +779,62 @@ test.describe('Certifications — completed coursework (Google Skills + Claude A
       expect(fill.split, `${card.id} still has a two-column split`).toBe(false);
       expect(fill.ratio, `${card.id} course list fills only ${fill.ratio} of the panel`)
         .toBeGreaterThan(0.95);
+    }
+  });
+
+  test('a Certificate pill never knocks a row of Verify pills off one baseline, and sits under its own tile', async ({ page }) => {
+    await page.goto('/certifications');
+    for (const card of CLAUDE_CARDS.filter((c) => (c.certificates ?? 0) > 0)) {
+      await openRow(page, card.id);
+      const list = page.locator(`#${card.id} ol[data-testid^="coursework-courses-"]`);
+      const tiles = await list.locator(':scope > li').evaluateAll((lis) =>
+        lis.map((li) => {
+          const r = (el: Element | null | undefined) => {
+            const b = el?.getBoundingClientRect();
+            return b ? { top: b.top, bottom: b.bottom, left: b.left, cx: b.left + b.width / 2 } : null;
+          };
+          const main = li.querySelector('a:not([data-course-certificate])');
+          return {
+            li: r(li),
+            title: r(main?.querySelector('span.t-small')),
+            verify: r([...(main?.querySelectorAll('span') ?? [])].find((s) => s.textContent?.trim() === 'Verify')),
+            cert: r(li.querySelector('a[data-course-certificate]')),
+            tile: r(main?.querySelector('span.relative')),
+            sideways: getComputedStyle(li).gridTemplateColumns.split(' ').length === 2,
+          };
+        }),
+      );
+      // Visual rows = tiles whose boxes start on the same line.
+      const rows = new Map<number, typeof tiles>();
+      for (const t of tiles) {
+        const key = Math.round(t.li!.top);
+        rows.set(key, [...(rows.get(key) ?? []), t]);
+      }
+      for (const row of rows.values()) {
+        const bottoms = row.flatMap((t) => (t.verify ? [t.verify.bottom] : []));
+        if (bottoms.length > 1) {
+          expect(Math.max(...bottoms) - Math.min(...bottoms), `${card.id}: Verify pills off one baseline`).toBeLessThanOrEqual(1);
+        }
+      }
+      const tops = [...rows.keys()].sort((a, b) => a - b);
+      // One rhythm: every Certificate pill sits the same distance under its
+      // Verify pill, whatever the title's line count (a one-line title on a
+      // phone once left it ~25px down, hanging below the art).
+      const gaps = tiles.filter((x) => x.cert).map((t) => t.cert!.top - t.verify!.bottom);
+      expect(Math.max(...gaps) - Math.min(...gaps), `${card.id}: uneven Verify→Certificate gaps ${gaps}`).toBeLessThanOrEqual(1);
+      for (const t of tiles.filter((x) => x.cert)) {
+        // Below its own Verify pill, and above the next row of tiles.
+        expect(t.cert!.top).toBeGreaterThan(t.verify!.bottom);
+        const next = tops.find((top) => top > t.li!.top + 1);
+        if (next !== undefined) expect(t.cert!.bottom).toBeLessThanOrEqual(next);
+        if (t.sideways) {
+          // Phone: flush under the course title, not under the art.
+          expect(Math.abs(t.cert!.left - t.title!.left)).toBeLessThanOrEqual(1);
+        } else {
+          // Gallery: centred under the tile art.
+          expect(Math.abs(t.cert!.cx - t.tile!.cx)).toBeLessThanOrEqual(1.5);
+        }
+      }
     }
   });
 
