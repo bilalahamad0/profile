@@ -275,6 +275,32 @@ describe("coursework is never counted as a credential", () => {
       expect(c.badge?.url, c.title).toMatch(/^https:\/\/academy\.claude\.com\/courses\/[a-z0-9-]+$/);
     }
     expect(JSON.stringify(CLAUDE_ACADEMY_PATHS)).not.toContain("academy.claude.com/badges/");
+    // "Keep both" (owner, 2026-11-25): the five courses completed before the
+    // academy left Skilljar ALSO carry their original, still-public Skilljar
+    // certificate as a second link. Pinned course → code; each was checked with
+    // curl (200 + owner's name + this course title; a one-character-off code
+    // 404s). Only ever on an earned course, never the tile's primary URL.
+    const skilljar = Object.fromEntries(
+      allCourses
+        .filter((c) => c.badge?.certificateUrl)
+        .map((c) => [c.title, c.badge!.certificateUrl!.replace("https://verify.skilljar.com/c/", "")]),
+    );
+    expect(skilljar).toEqual({
+      "Claude Code 101": "gotmwte64yio",
+      "Claude Code in Action": "7nwu9ya84ew7",
+      "Introduction to Claude Cowork": "3vve9s3naozo",
+      "Claude 101": "bwxhr69okhdw",
+      "AI Fluency: Framework & Foundations": "357mqg884cnc",
+    });
+    for (const c of allCourses.filter((x) => x.badge?.certificateUrl)) {
+      expect(c.badge!.certificateUrl, c.title).toMatch(/^https:\/\/verify\.skilljar\.com\/c\/[a-z0-9]{12}$/);
+      expect(c.badge!.isVerifiable, c.title).not.toBe(false);
+      expect(c.badge!.url, c.title).toMatch(/^https:\/\/academy\.claude\.com\/verify\//);
+    }
+    // No other provider grows a second link.
+    for (const { badge } of ALL_COURSEWORK.flatMap((e) => e.courses)) {
+      if (badge?.certificateUrl) expect(badge.provider).toBe("Claude Academy");
+    }
     const allPathUrls = ALL_COURSEWORK.map((p) => p.url);
     for (const u of allPathUrls) {
       expect(u).not.toContain("skilljar.com");
@@ -867,9 +893,12 @@ describe("course-level badges", () => {
     // Skill Badge" would make the card disagree with the path page it links to.
     for (const { badge } of badged) {
       expect(badge).not.toHaveProperty("linkTitle");
+      // `certificateUrl` is a second public URL (the Skilljar certificate on
+      // five Claude courses), not a name for the destination — it is pinned in
+      // its own test above and prints only the fixed word "Certificate".
       expect(
         Object.keys(badge)
-          .filter((k) => k !== "isVerifiable")
+          .filter((k) => k !== "isVerifiable" && k !== "certificateUrl")
           .sort(),
       ).toEqual(["image", "kind", "provider", "url"]);
     }

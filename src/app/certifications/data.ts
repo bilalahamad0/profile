@@ -171,6 +171,14 @@ export type CourseBadge = {
   /** If false, this course tile displays its thumbnail art and title, but does not carry
    *  an issued public credential/badge and thus does not display the "Verify" tag. */
   isVerifiable?: boolean;
+  /** A SECOND public proof of the same completion, on the issuer's previous
+   *  platform: the verify.skilljar.com/c/<code> certificate Anthropic Academy
+   *  issued before it moved to academy.claude.com. Only the five Claude courses
+   *  completed before that move have one. Rendered as a separate neutral
+   *  "Certificate" link beside the tile (owner, 2026-11-25: "Keep both") —
+   *  `url` stays the tile's primary destination, so the thumbnail and the
+   *  Verify pill never change target. Never set on a non-verifiable course. */
+  certificateUrl?: string;
 };
 
 /** One unit inside a path.
@@ -2012,6 +2020,16 @@ export const CONTINUING_EDUCATION: readonly LearningPathData[] = [
 // STAYS — the site ships no replacement wordmark and Anthropic PBC is still the
 // issuing organisation, as its own footer says.
 //
+// SKILLJAR, KEPT AS A SECOND PROOF (owner, 2026-11-25: "Keep both"). The five
+// courses completed BEFORE the move also hold an original
+// verify.skilljar.com/c/<code> certificate, which is still public. They ride
+// along as `certificateUrl` (see withSkilljar) and render as a separate
+// "Certificate" link — the academy.claude.com /verify/ page stays the tile's
+// primary destination. The six courses completed after the move have no
+// Skilljar certificate and never will. Skilljar is server-rendered, so curl
+// does discriminate here: a real code 200s with the owner's name and course,
+// and a fabricated one — even one character off — 404s (checked 2026-11-25).
+//
 // NEVER link academy.claude.com/badges/<uuid>: those are the owner's private
 // badge pages and redirect a logged-out visitor to /login. They are where the
 // verify tokens came from, not something to publish. Five of them slipped in
@@ -2057,6 +2075,13 @@ function claudeBadge(slug: string, url: string, isVerifiable = true): CourseBadg
     ...(isVerifiable ? {} : { isVerifiable: false }),
   };
 }
+
+/** Attach a course's original Skilljar certificate (CourseBadge.certificateUrl)
+ *  by its 12-character code. */
+const withSkilljar = (badge: CourseBadge, code: string): CourseBadge => ({
+  ...badge,
+  certificateUrl: `https://verify.skilljar.com/c/${code}`,
+});
 
 export const CLAUDE_ACADEMY_TILE: IssuerTile = {
   tile: "bg-[#D97757]",
@@ -2121,17 +2146,23 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
       {
         step: 1,
         title: "Claude Code 101",
-        badge: claudeBadge(
-          "claude-code-101",
-          "https://academy.claude.com/verify/906865ee77b53507c289141ed39e25f3",
+        badge: withSkilljar(
+          claudeBadge(
+            "claude-code-101",
+            "https://academy.claude.com/verify/906865ee77b53507c289141ed39e25f3",
+          ),
+          "gotmwte64yio",
         ),
       },
       {
         step: 2,
         title: "Claude Code in Action",
-        badge: claudeBadge(
-          "claude-code-in-action",
-          "https://academy.claude.com/verify/4d7c863adbe9b8db4d518c6800d494ea",
+        badge: withSkilljar(
+          claudeBadge(
+            "claude-code-in-action",
+            "https://academy.claude.com/verify/4d7c863adbe9b8db4d518c6800d494ea",
+          ),
+          "7nwu9ya84ew7",
         ),
       },
       {
@@ -2187,9 +2218,12 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
       {
         step: 1,
         title: "Introduction to Claude Cowork",
-        badge: claudeBadge(
-          "introduction-to-claude-cowork",
-          "https://academy.claude.com/verify/fcf45c0d8bd08cfbdfe1cda2716ed394",
+        badge: withSkilljar(
+          claudeBadge(
+            "introduction-to-claude-cowork",
+            "https://academy.claude.com/verify/fcf45c0d8bd08cfbdfe1cda2716ed394",
+          ),
+          "3vve9s3naozo",
         ),
       },
       {
@@ -2226,9 +2260,12 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
       {
         step: 1,
         title: "Claude 101",
-        badge: claudeBadge(
-          "claude-101",
-          "https://academy.claude.com/verify/26fc2b7fb0801c5c6d8168316b99dcae",
+        badge: withSkilljar(
+          claudeBadge(
+            "claude-101",
+            "https://academy.claude.com/verify/26fc2b7fb0801c5c6d8168316b99dcae",
+          ),
+          "bwxhr69okhdw",
         ),
       },
       {
@@ -2242,9 +2279,12 @@ export const CLAUDE_ACADEMY_PATHS: readonly LearningPathData[] = [
       {
         step: 3,
         title: "AI Fluency: Framework & Foundations",
-        badge: claudeBadge(
-          "ai-fluency-framework-foundations",
-          "https://academy.claude.com/verify/87cca4700437d5b08cdfc43b538849e0",
+        badge: withSkilljar(
+          claudeBadge(
+            "ai-fluency-framework-foundations",
+            "https://academy.claude.com/verify/87cca4700437d5b08cdfc43b538849e0",
+          ),
+          "357mqg884cnc",
         ),
       },
       {

@@ -61,6 +61,17 @@ export function trackCourseworkPage(meta: {
  *  is INDEPENDENT of it: it records what the artwork says the award is (a
  *  lab-based skill badge or an on-demand completion badge), and one skill badge
  *  here has no Credly twin, so neither field may be derived from the other. */
+/** The secondary "Certificate" link on a Claude Academy tile: the course's
+ *  original Skilljar certificate (CourseBadge.certificateUrl). Its own event,
+ *  so a GA report never merges it into the tile's open_course_badge clicks. */
+export function trackCourseCertificate(meta: { title: string; coursework: string }) {
+  trackEvent("open_course_certificate", {
+    title: meta.title,
+    platform: "Skilljar",
+    coursework: meta.coursework,
+  });
+}
+
 export function trackCourseBadge(meta: {
   title: string;
   provider: "Google Skills" | "Credly" | "Claude Academy";
